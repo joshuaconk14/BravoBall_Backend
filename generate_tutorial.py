@@ -33,10 +33,10 @@ model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 
-def generate_tutorial(prompt):
+def generate_tutorial(prompt, player_details):
     conversation = [
         {"role": "user", "parts": [{"text": "You are a soccer coach."}]},
-        {"role": "user", "parts": [{"text": f"{prompt}. Provide the instructions in a single, coherent paragraph."}]}
+        {"role": "user", "parts": [{"text": f"{prompt} for a player with details: {player_details}. Provide the instructions in a single, coherent paragraph."}]}
     ]
     
     try:
@@ -48,7 +48,12 @@ def generate_tutorial(prompt):
 
 if __name__ == "__main__":
     test_prompt = "Provide a soccer training session plan"
-    tutorial = generate_tutorial(test_prompt)
+    test_player_details = {
+        "name": "Joe Lolley",
+        "age": 18,
+        "position": "LW"
+    }
+    tutorial = generate_tutorial(test_prompt, test_player_details)
     print("Soccer Training Session")
     print("-----------------------")
     print(tutorial)
