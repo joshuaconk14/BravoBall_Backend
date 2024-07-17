@@ -62,14 +62,14 @@ async def generate_tutorial(prompt: str, player_details: PlayerDetails):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
-if __name__ == "__main__":
-    test_prompt = "Provide a soccer training session plan"
-    test_player_details = {
-        "name": "Joe Lolley",
-        "age": 18,
-        "position": "LW"
-    }
-    tutorial = generate_tutorial(test_prompt, test_player_details)
-    print("Soccer Training Session")
-    print("-----------------------")
-    print(tutorial)
+# if __name__ == "__main__":
+#     test_prompt = "Provide a soccer training session plan"
+#     test_player_details = {
+#         "name": "Joe Lolley",
+#         "age": 18,
+#         "position": "LW"
+#     }
+#     tutorial = generate_tutorial(test_prompt, test_player_details)
+#     print("Soccer Training Session")
+#     print("-----------------------")
+#     print(tutorial)
