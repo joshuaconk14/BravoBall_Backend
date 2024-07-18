@@ -11,6 +11,9 @@ class PlayerDetails(BaseModel):
     age: int
     position: str
 
+class RequestModel(BaseModel):
+    prompt: str
+    player_details: PlayerDetails
 
 # Load environment variables from .env file
 load_dotenv()
@@ -45,22 +48,40 @@ model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 
+# Decorator function for POST FastAPI endpoint
 @app.post("/generate_tutorial/")
-async def generate_tutorial(prompt: str, player_details: PlayerDetails):
-    conversation = [
-        {"role": "user", "parts": [{"text": "You are a soccer coach."}]},
-        {"role": "user", "parts": [{"text": f"{prompt} for a player with details: {player_details}. Provide the instructions in a single, coherent paragraph."}]}
-    ]
-    
+# async def generate_tutorial(prompt: str, player_details: PlayerDetails):
+async def generate_tutorial(request: RequestModel):
+
     try:
-        response = model.generate_content(conversation)
-        parts = response.get('parts', [])
-        
-        tutorial = ' '.join(part.get('text', '') for part in parts).strip()
-        
-        return {"tutorial": tutorial}
+        if "Hello" in request.prompt:
+            bot_response = "Hey!"
+        elif "How are you" in request.prompt:
+            bot_response = "Im doing well"
+        else:
+            bot_response = "Oh oh ohhhhiiiiooooo!"
+        response = {
+            "tutorial": bot_response
+        }
+
+        return response
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+        return HTTPException(status_code=500, detail=f"An error has occured: {str(e)}")
+
+    # conversation = [
+    #     {"role": "user", "parts": [{"text": "You are a soccer coach."}]},
+    #     {"role": "user", "parts": [{"text": f"{prompt} for a player with details: {player_details}. Provide the instructions in a single, coherent paragraph."}]}
+    # ]
+    
+    # try:
+    #     response = model.generate_content(conversation)
+    #     parts = response.get('parts', [])          
+    #     tutorial = ' '.join(part.get('text', '') for part in parts).strip()              
+    #     return {"tutorial": tutorial}             
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+
 
 # if __name__ == "__main__":
 #     test_prompt = "Provide a soccer training session plan"
