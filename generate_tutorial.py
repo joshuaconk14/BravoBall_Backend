@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import logging
 
 import os
 from dotenv import load_dotenv
@@ -44,7 +45,7 @@ safety_settings = [
     {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"}
 ]
 
-model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
+model = genai.GenerativeModel(model_name='gemini-1.5-flash',
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 
@@ -53,20 +54,40 @@ model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
 # async def generate_tutorial(prompt: str, player_details: PlayerDetails):
 async def generate_tutorial(request: RequestModel):
 
-    try:
-        if "Hello" in request.prompt:
-            bot_response = "Hey!"
-        elif "How are you" in request.prompt:
-            bot_response = "Im doing well"
-        else:
-            bot_response = "Oh oh ohhhhiiiiooooo!"
-        response = {
-            "tutorial": bot_response
-        }
+    conversation = [
+        {"role": "user", "parts": [{"text": "You are a soccer coach."}]},
+        {"role": "user", "parts": [{"text": f"{request.prompt} for a player with details: {request.player_details}. Provide the instructions in a single, coherent paragraph."}]}
+    ]
 
-        return response
+    # try:
+    #     if "Hello" in request.prompt:
+    #         bot_response = "Hey!"
+    #     elif "How are you" in request.prompt:
+    #         bot_response = "Im doing well"  
+    #     else:
+    #         bot_response = "Oh oh ohhhhiiiiooooo!"
+
+    #     return {
+    #         "tutorial": bot_response
+    #     }
+
+    # logger = logging.getLogger("my_debug_logger")
+    # logger.debug(f"Conversation sent to model: {conversation}")
+
+    try:
+        response = model.generate_content("what is the meaning of life")
+        # logger.debug(f"Raw response from model: {response}")
+
+        # parts = response.get('parts', [])
+        # tutorial = ' '.join(part.get('text', '') for part in parts).strip()
+        # logger.debug(f"Generated tutorial: {tutorial}")
+
+        
+        return {"tutorial": response.text}
+    
     except Exception as e:
-        return HTTPException(status_code=500, detail=f"An error has occured: {str(e)}")
+        # logger.error(f"Error generating tutorial: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"An error has occured: {str(e)}")
 
     # conversation = [
     #     {"role": "user", "parts": [{"text": "You are a soccer coach."}]},
