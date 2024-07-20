@@ -71,7 +71,7 @@ async def generate_tutorial(request: RequestModel):
     #         "tutorial": bot_response
     #     }
 
-    # logger = logging.getLogger("my_debug_logger")
+    logger = logging.getLogger("my_debug_logger")
     # logger.debug(f"Conversation sent to model: {conversation}")
 
     try:
@@ -79,14 +79,13 @@ async def generate_tutorial(request: RequestModel):
         tutorial = model.generate_content("You are a soccer coach." f"Answer this question for them as if you are a polite soccer coach {request.prompt} for a player with details: {request.player_details}, act like a normal human thats friendly and conversative. If they ask for soccer training or technique advice, give the instructions in a single, coherent paragraph. only provide the instructions if necessary")
 
 
-        # logger.debug(f"Raw response from model: {response}")
+        # logger.debug(f"Raw response from model: {tutorial}")
 
-        # parts = response.get('parts', [])
-        # tutorial = ' '.join(part.get('text', '') for part in parts).strip()
-        # logger.debug(f"Generated tutorial: {tutorial}")
+        # # parts = response.get('parts', [])
+        # # tutorial = ' '.join(part.get('text', '') for part in parts).strip()
+        # logger.warning(f"Generated tutorial: {tutorial}")
 
         return {"tutorial": tutorial.text}
-
     
     except Exception as e:
         # logger.error(f"Error generating tutorial: {str(e)}")
