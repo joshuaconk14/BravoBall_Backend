@@ -22,7 +22,7 @@ async def generate_tutorial(request: ChatbotRequest):
             messages=[
                 {
                     "role": "user",
-                    "content": f"Give a tutorial for soccer players with player details: name is {name}, age is {str(age)}, and position is {position}",
+                    "content": f"Player details: name is {name}, age is {str(age)}, position is {position}. {request.prompt}",
                 }
             ],
             model="llama3-8b-8192",
