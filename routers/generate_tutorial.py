@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 # from chatbot_config import model
 from groq_llama3 import client
 from models import ChatbotRequest
-# from langchain.chains.conversation.memory import ConvserationBufferWindowMemory
+from langchain.memory.buffer import ConversationBufferMemory
 
 router = APIRouter()
 
@@ -10,7 +10,6 @@ router = APIRouter()
 async def generate_tutorial(request: ChatbotRequest):
 
     # Try getting generated response from configured gemini model
-
     try:
         # Extract player details
         name = request.player_details.name
@@ -28,6 +27,7 @@ async def generate_tutorial(request: ChatbotRequest):
             model="llama3-8b-8192",
         )
         tutorial = chat_completion.choices[0].message.content
+
         return {"tutorial": tutorial}
     
     except Exception as e:
