@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from groq import Groq
 
-# Load environment variables from .env file
+# Load environ  ment variables from .env file
 load_dotenv()
 
 groq_key = os.getenv("GROQ_KEY")
