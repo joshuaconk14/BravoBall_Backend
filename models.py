@@ -1,5 +1,11 @@
 from pydantic import BaseModel
-from typing import List, Dict
+from typing import List
+
+class Settings(BaseModel):
+    api_key: str
+
+    class Config:
+        env_file = ".env"
 
 class PlayerDetails(BaseModel):
     name: str
@@ -13,3 +19,4 @@ class BufferMessage(BaseModel):
 class ChatbotRequest(BaseModel):
     prompt: str
     player_details: PlayerDetails
+    buffer: List[BufferMessage]
