@@ -1,11 +1,18 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, ValidationError
+from pydantic_settings import BaseSettings
 from typing import List
 
-class Settings(BaseModel):
-    api_key: str
+class Settings(BaseSettings):
+    groq_api_key: str = Field(..., env="GROQ_KEY")
 
     class Config:
         env_file = ".env"
+
+# try:
+#     settings = Settings()
+#     print(f"GROQ_KEY: {settings.groq_api_key}")
+# except ValidationError as e:
+#     print("Validation Error:", e.errors())
 
 class PlayerDetails(BaseModel):
     name: str
