@@ -9,7 +9,7 @@ try:
 
     # Initialize Groq client
     client = Groq(api_key=groq_key)
-    print(groq_key)
+    # print(groq_key)
 except Exception as e:
     print(f"An error occurred: {e}")
 
