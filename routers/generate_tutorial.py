@@ -72,10 +72,12 @@ class StreamingConversationChain:
 
         print("lets goooo")
 
+
 streaming_conversation_chain = StreamingConversationChain()
 
 
 @router.post('/generate_tutorial/')
+# @router.post('/generate_tutorial/', response_class=StreamingResponse)
 def generate_tutorial(request: ChatbotRequest):
 
     # Try getting generated response from configured gemini model
