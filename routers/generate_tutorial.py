@@ -12,7 +12,7 @@ from fastapi.responses import StreamingResponse
 from langchain.memory.buffer_window import ConversationBufferWindowMemory
 from langchain.callbacks import AsyncIteratorCallbackHandler
 from langchain.chains import ConversationChain
-from langchain.prompts import (
+from langchain.prompts import (    
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
     MessagesPlaceholder,
