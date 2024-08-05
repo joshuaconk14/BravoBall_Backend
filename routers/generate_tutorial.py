@@ -23,7 +23,21 @@ from groq import Groq
 import asyncio
 from typing import AsyncGenerator
 
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory
+
+
 router = APIRouter()
+
+
+# In-memory store for session history
+store = {}
+
+def get_session_history(user_id: str, conversation_id: str) -> BaseChatMessageHistory:
+    if (user_id, conversation_id) not in store:
+        store[(user_id, conversation_id)] = InMemoryHistory()
+    return store[(user_id, conversation_id)]
+
 
 CHAT_PROMPT_TEMPLATE = ChatPromptTemplate.from_messages(
     [
@@ -37,6 +51,8 @@ class StreamingConversationChain:
     def __init__(self, temperature: float = 0.0):
         self.memories = {}
         self.temperature = temperature
+        self.llm = client.chat.completions
+        print("initialized")
 
     def generate_response(self, conversation_id: str, message: str):
     # async def generate_response(self, conversation_id: str, message: str) -> AsyncGenerator[str, None]:
@@ -51,26 +67,23 @@ class StreamingConversationChain:
 
         # callback_handler = AsyncIteratorCallbackHandler()
 
-        # chain = ConversationChain(
+        # chain = RunnableWithMessageHistory(
         #     memory=memory,
         #     prompt=CHAT_PROMPT_TEMPLATE,
-        #     llm=None, 
+        #     llm=self.llm, 
         # )
 
-        # async def run_chain():
-        #     response = client.chat.completions.create(
-        #         messages=memory.get_messages() + [{"role": "user", "content": message}],
-        #         model="llama3-8b-8192",
-        #     )
-        #     return response
+        # response = self.llm.create(
+        #     messages=memory.get_messages() + [{"role": "user", "content": message}],
+        #     model="llama3-8b-8192",
+        #     stream=True,
+        # )
 
-        # run = asyncio.create_task(run_chain())
-        # async for token in callback_handler.aiter():
-        #     yield token
+        # for chunk in response:
+        #     if "choices" in chunk and len(chunk.choices) > 0:
+        #         yield chunk.choices[0].delta.get('content', '')
 
-        # await run
-
-        print("lets goooo")
+        # print("lets goooo")
 
 
 streaming_conversation_chain = StreamingConversationChain()
@@ -80,7 +93,6 @@ streaming_conversation_chain = StreamingConversationChain()
 # @router.post('/generate_tutorial/', response_class=StreamingResponse)
 def generate_tutorial(request: ChatbotRequest):
 
-    # Try getting generated response from configured gemini model
     try:
         # Extract player details
         name = request.player_details.name
@@ -104,11 +116,11 @@ def generate_tutorial(request: ChatbotRequest):
 
         return {"tutorial": tutorial}
     
-        # # Generate response using StreamingConversationChain
-        # return StreamingResponse(
-        #     streaming_conversation_chain.generate_response(conversation_id, request.prompt),
-        #     media_type="text/event-stream",
-        # )
+        # Generate response using StreamingConversationChain
+        return StreamingResponse(
+            streaming_conversation_chain.generate_response(conversation_id, request.prompt),
+            media_type="text/event-stream",
+        )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error has occurred: {str(e)}")
