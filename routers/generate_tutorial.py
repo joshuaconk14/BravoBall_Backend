@@ -33,10 +33,11 @@ router = APIRouter()
 # In-memory store for session history
 store = {}
 
-def get_session_history(user_id: str, conversation_id: str) -> BaseChatMessageHistory:
-    if (user_id, conversation_id) not in store:
-        store[(user_id, conversation_id)] = InMemoryHistory()
-    return store[(user_id, conversation_id)]
+# # Get the session history from the memory store
+# def get_session_history(user_id: str, conversation_id: str) -> BaseChatMessageHistory:
+#     if (user_id, conversation_id) not in store:
+#         store[(user_id, conversation_id)] = InMemoryHistory()
+#     return store[(user_id, conversation_id)]
 
 
 CHAT_PROMPT_TEMPLATE = ChatPromptTemplate.from_messages(
@@ -47,6 +48,7 @@ CHAT_PROMPT_TEMPLATE = ChatPromptTemplate.from_messages(
     ]
 )
 
+# This class stores memories and generates responses based on conversation memory through streaming response
 class StreamingConversationChain:
     def __init__(self, temperature: float = 0.0):
         self.memories = {}
@@ -116,11 +118,11 @@ def generate_tutorial(request: ChatbotRequest):
 
         return {"tutorial": tutorial}
     
-        # Generate response using StreamingConversationChain
-        return StreamingResponse(
-            streaming_conversation_chain.generate_response(conversation_id, request.prompt),
-            media_type="text/event-stream",
-        )
+        # # Generate response using StreamingConversationChain
+        # return StreamingResponse(
+        #     streaming_conversation_chain.generate_response(conversation_id, request.prompt),
+        #     media_type="text/event-stream",
+        # )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error has occurred: {str(e)}")
