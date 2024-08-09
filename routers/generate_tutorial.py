@@ -65,7 +65,7 @@ def generate_tutorial(request: ChatbotRequest):
                 {
                     "role": "user",
                     # "content": f"Player details: name is {name}, age is {str(age)}, position is {position}. {request.prompt}. Keep response short.",
-                    "content": f"{request.prompt}. Keep response short.",
+                    "content": request.prompt,
 
                 }
             ],
@@ -80,7 +80,7 @@ def generate_tutorial(request: ChatbotRequest):
 
         # memory.add_message({"role": "assistant", "content": tutorial})
 
-        if len(message_buffer) > 200:
+        if len(message_buffer) > 500:
             message_buffer = ""
         message_buffer += tutorial
         print(message_buffer)
