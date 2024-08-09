@@ -65,8 +65,7 @@ def generate_tutorial(request: ChatbotRequest):
                 {
                     "role": "user",
                     # "content": f"Player details: name is {name}, age is {str(age)}, position is {position}. {request.prompt}. Keep response short.",
-                    "content": request.prompt,
-
+                    "content": f"{request.prompt}. # Directly reply to everything before the pound sign and dont reply to anything after this semicolon ; Keep some of this information in mind: {message_buffer}",
                 }
             ],
             # messages=messages,
@@ -80,7 +79,7 @@ def generate_tutorial(request: ChatbotRequest):
 
         # memory.add_message({"role": "assistant", "content": tutorial})
 
-        if len(message_buffer) > 500:
+        if len(message_buffer) > 8000:
             message_buffer = ""
         message_buffer += tutorial
         print(message_buffer)
