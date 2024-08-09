@@ -26,4 +26,4 @@ class BufferMessage(BaseModel):
 class ChatbotRequest(BaseModel):
     prompt: str
     player_details: PlayerDetails
-    buffer: List[BufferMessage]
+    
