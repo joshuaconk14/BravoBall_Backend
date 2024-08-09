@@ -1,17 +1,9 @@
-# from fastapi import APIRouter, HTTPException
-# # from chatbot_config import model
-from chatbot_config import client
-# from models import ChatbotRequest
-# from langchain.memory.buffer import ConversationBufferMemory
-
-# from fastapi.responses import StreamingResponse
-
 import os
-from fastapi import FastAPI, APIRouter, HTTPException, Depends
+from chatbot_config import client
+from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from langchain.memory.buffer_window import ConversationBufferWindowMemory
 from langchain.callbacks import AsyncIteratorCallbackHandler
-from langchain.chains import ConversationChain
 from langchain.prompts import (    
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
@@ -94,58 +86,6 @@ def generate_tutorial(request: ChatbotRequest):
         print(message_buffer)
 
         return {"tutorial": tutorial}
-    
-        # # Generate response using StreamingConversationChain
-        # return StreamingResponse(
-        #     streaming_conversation_chain.generate_response(conversation_id, request.prompt),
-        #     media_type="text/event-stream",
-        # )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error has occurred: {str(e)}")
-
-
-
-
-
-# # This class stores memories and generates responses based on conversation memory through streaming response
-# class StreamingConversationChain:
-#     def __init__(self, temperature: float = 0.0):
-#         self.memories = {}
-#         self.temperature = temperature
-#         self.llm = client.chat.completions
-#         print("initialized")
-
-#     def generate_response(self, conversation_id: str, message: str):
-#     # async def generate_response(self, conversation_id: str, message: str) -> AsyncGenerator[str, None]:
-
-#         print("generating responses")
-
-#         memory = self.memories.get(conversation_id)
-#         if memory is None:
-#             memory = ConversationBufferWindowMemory(k=10)
-#             self.memories[conversation_id] = memory
-#         print(self.memories[conversation_id])
-
-#         callback_handler = AsyncIteratorCallbackHandler()
-
-#         chain = RunnableWithMessageHistory(
-#             memory=memory,
-#             prompt=CHAT_PROMPT_TEMPLATE,
-#             llm=self.llm, 
-#         )
-
-#         response = self.llm.create(
-#             messages=memory.get_messages() + [{"role": "user", "content": message}],
-#             model="llama3-8b-8192",
-#             stream=True,
-#         )
-
-#         for chunk in response:
-#             if "choices" in chunk and len(chunk.choices) > 0:
-#                 yield chunk.choices[0].delta.get('content', '')
-
-#         print("lets goooo")
-
-
-# streaming_conversation_chain = StreamingConversationChain()
