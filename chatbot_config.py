@@ -1,7 +1,7 @@
 import os
 from groq import Groq
 from functions import get_settings
-from langchain_groq import GroqChat
+from langchain_groq import ChatGroq
 
 try:
     groq_key = get_settings().groq_api_key
@@ -11,8 +11,9 @@ try:
     # Initialize Groq client
     client = Groq(api_key=groq_key)
 
-    groq_chat = GroqChat(
-        api_key=groq_key,
+    groq_chat = ChatGroq(
+        temperature=0,
+        groq_api_key=groq_key,
         model_name="llama3-8b-8192"
     )
     
