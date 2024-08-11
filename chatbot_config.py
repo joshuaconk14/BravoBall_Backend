@@ -1,29 +1,14 @@
 import os
-from groq import Groq
-from functions import get_settings
-from langchain_groq import ChatGroq
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
 
-try:
-    groq_key = get_settings().groq_api_key
-    if not groq_key:
-        raise ValueError("API key not found")
+nvapi_key = os.getenv('NVAPI_KEY')
+if not nvapi_key:
+    raise ValueError("API key not found")
 
-    # Initialize Groq client
-    client = Groq(api_key=groq_key)
+client = ChatNVIDIA(
+    model="meta/llama3-70b-instruct",
+    api_key=nvapi_key
+)
 
-    groq_chat = ChatGroq(
-        temperature=0,
-        groq_api_key=groq_key,
-        model_name="llama3-8b-8192"
-    )
-    
-    # print(groq_key)
-except Exception as e:
-    print(f"An error occurred: {e}")
-
-# # Initialize Groq client
-# client = Groq(
-#     api_key=groq_key,
-# )
-
-# print(groq_key)
+# for chunk in client.stream([{"role":"user","content":"Write a limerick about the wonders of GPU computing."}]): 
+#   print(chunk.content, end="")

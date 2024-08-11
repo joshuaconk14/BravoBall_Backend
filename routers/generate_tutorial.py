@@ -1,5 +1,5 @@
 import os
-from chatbot_config import client, groq_chat
+from chatbot_config import client
 from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from langchain.memory.buffer_window import ConversationBufferWindowMemory
@@ -27,7 +27,7 @@ router = APIRouter()
 print("initialized")
 
 conversation_chain = ConversationChain(
-    llm=groq_chat,
+    llm=client,
     memory=ConversationBufferWindowMemory(k=10),  # Keep the last 2 interactions in memory
     verbose=True
 )
