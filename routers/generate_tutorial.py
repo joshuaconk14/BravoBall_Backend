@@ -1,91 +1,55 @@
-import os
-from chatbot_config import client
-from fastapi import FastAPI, APIRouter, HTTPException
-from fastapi.responses import StreamingResponse
-from langchain.memory.buffer_window import ConversationBufferWindowMemory
-from langchain.callbacks import AsyncIteratorCallbackHandler
-from langchain.prompts import (    
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    MessagesPlaceholder,
-    SystemMessagePromptTemplate,
-)
-from models import ChatbotRequest, PlayerDetails
-from groq import Groq
-import asyncio
-from typing import Dict, AsyncGenerator
+from chatbot_config import model
+from fastapi import APIRouter, HTTPException
+from models import ChatbotRequest
 
+from langchain_core.chat_history import (
+    BaseChatMessageHistory,
+    InMemoryChatMessageHistory,
+)
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.messages import HumanMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 
 router = APIRouter()
 
+store = {}
 
-# # In-memory store for session history
-# conversation_histories: Dict[str, ConversationBufferWindowMemory] = {}
+prompt = ChatPromptTemplate.from_messages(
+    [
+        (
+            "system",
+            "You are a helpful assistant specialized in soccer. Answer all questions to the best of your ability.",
+        ),
+        MessagesPlaceholder(variable_name="messages"),
+    ]
+)
 
-# def get_conversation_history(conversation_id: str) -> BaseChatMessageHistory:
-#     """
-#     This function returns the conversation history if it exists. If it doesn't, create a new one
-#     with conversation_id as the key and a buffer window capacity of 10.
-#     """
-#     if conversation_id not in conversation_histories:
-#         conversation_histories[conversation_id] = ConversationBufferWindowMemory(k=10)
-#     return conversation_histories[conversation_id]
+def get_session_history(session_id: str) -> BaseChatMessageHistory:
+    if session_id not in store:
+        store[session_id] = InMemoryChatMessageHistory()
+    return store[session_id]
 
-message_buffer = ""
-print("initialized buffer")
+chain = prompt | model
+
+with_message_history = RunnableWithMessageHistory(chain, get_session_history)
+
+
+print("initialized")
 
 @router.post('/generate_tutorial/')
-# @router.post('/generate_tutorial/', response_class=StreamingResponse)
 def generate_tutorial(request: ChatbotRequest):
-
-    # TODO dont really wont global
-    global message_buffer
-
     try:
-        # Extract player details
-        name = request.player_details.name
-        age = request.player_details.age
-        position = request.player_details.position
-        conversation_id = f"{name}-{age}-{position}"
+        config = {"configurable": {"session_id": "abc"}}
+        prompt = request.prompt
 
-        # # Get reference to or create conversation history
-        # memory = get_conversation_history(conversation_id)
-
-        # # Add current user input into the conversation history
-        # memory.add_message({"role": "user", "content": request.prompt})
-        
-        # messages = memory.get_messages()
-
-        # Generate chat completion using Groq
-        chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "user",
-                    # "content": f"Player details: name is {name}, age is {str(age)}, position is {position}. {request.prompt}. Keep response short.",
-                    "content": request.prompt,
-
-                }
-            ],
-            # messages=messages,
-
-            model="llama3-8b-8192",
+        response = with_message_history.invoke(
+            [HumanMessage(content=prompt)],
+            config=config,
         )
-        tutorial = chat_completion.choices[0].message.content
 
-        # conversation_id = f"{request.player_details.name}-{request.player_details.age}-{request.player_details.position}"
-        # streaming_conversation_chain.generate_response(conversation_id, request.prompt)
-
-        # memory.add_message({"role": "assistant", "content": tutorial})
-
-        if len(message_buffer) > 500:
-            message_buffer = ""
-        message_buffer += tutorial
-        print(message_buffer)
-
-        return {"tutorial": tutorial}
-
+        return {"tutorial": response.content}
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error has occurred: {str(e)}")
+    
