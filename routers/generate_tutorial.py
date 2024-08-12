@@ -1,46 +1,22 @@
-from chatbot_config import model
+from memory_store import with_message_history, memory_store
 from fastapi import APIRouter, HTTPException
 from models import ChatbotRequest
-
-from langchain_core.chat_history import (
-    BaseChatMessageHistory,
-    InMemoryChatMessageHistory,
-)
-from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.messages import HumanMessage
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
-
+# Initialize router for 'generate_tutorial' endpoint handler
 router = APIRouter()
-
-store = {}
-
-prompt = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            "You are a helpful assistant specialized in soccer. Answer all questions to the best of your ability.",
-        ),
-        MessagesPlaceholder(variable_name="messages"),
-    ]
-)
-
-def get_session_history(session_id: str) -> BaseChatMessageHistory:
-    if session_id not in store:
-        store[session_id] = InMemoryChatMessageHistory()
-    return store[session_id]
-
-chain = prompt | model
-
-with_message_history = RunnableWithMessageHistory(chain, get_session_history)
-
 
 print("initialized")
 
 @router.post('/generate_tutorial/')
 def generate_tutorial(request: ChatbotRequest):
+    '''
+    This decorated function listens for POST requests made to server and returns
+    a Llama3 response based on user input in ChatbotRequest
+    '''
     try:
-        config = {"configurable": {"session_id": "abc"}}
+        session_id = "user123"
+        config = {"configurable": {"session_id": session_id}}
         prompt = request.prompt
 
         response = with_message_history.invoke(
