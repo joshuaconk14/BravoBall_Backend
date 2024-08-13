@@ -45,10 +45,10 @@ TekkAI is an intelligent soccer coaching application that leverages the power of
     uvicorn main:app --reload
     ```
 
-6. *Access the API:**
+6. **Access the API:**
 
-    - Once the server is running, you can interact with the API using tools like curl, Postman, or directly from a frontend application. Clone my frontend repository to run application on XCode:
+    - Once the server is running, you can interact with the API using tools like curl, Postman, or directly from a frontend application. Follow my frontend guide to use on XCode:
     ```bash
-    git clone https://github.com/jordanconklin/Tekk_frontend.git
+    https://github.com/jordanconklin/Tekk_frontend.git
     ```
     - The main endpoint available is /generate_tutorial/, which processes user input and generates soccer tutorials based on the Llama3 model.
