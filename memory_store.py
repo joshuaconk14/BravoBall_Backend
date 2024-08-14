@@ -6,7 +6,8 @@ from langchain_core.chat_history import (
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
-# In-memory store for chatbot
+# In-memory store for chatbot. Session ID maps to InMemoryChatMessageHistory object that contains list of messages 
+# "session_id" : InMemoryChatMessageHistory -> [ messages ]
 memory_store = {}
 
 # ChatPromptTemplate provides initial context for model
@@ -44,5 +45,5 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
 # Chain pipelines the prompt into the model
 chain = prompt | model
 
-# Runnable instance with chain and function to obtain memory store every time it's invoked
+# Llama3 chain wrapped as a Runnable with message history accessible
 with_message_history = RunnableWithMessageHistory(chain, get_session_history)
