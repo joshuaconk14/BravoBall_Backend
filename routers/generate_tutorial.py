@@ -22,7 +22,7 @@ async def generate_tutorial(request: ChatbotRequest):
         config = {"configurable": {"session_id": session_id}}
         prompt = request.prompt 
 
-        # Llama3 runnable invoked with user question and config, async streaming response
+        # Async streaming response to generate chunks for response so user can see updated response. Llama3 runnable invoked with astream
         async def generate():
             async for chunk in with_message_history.astream(
                 [HumanMessage(content=prompt)],
