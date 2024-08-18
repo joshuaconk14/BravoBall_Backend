@@ -1,3 +1,9 @@
+"""
+memory_store.py
+In-memory store initialized, prompt is pipelined into our model, and Runnable with 
+session history is initialized
+"""
+
 from chatbot_config import model
 from langchain_core.chat_history import (
     BaseChatMessageHistory,
@@ -7,7 +13,7 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 # In-memory store for chatbot. Session ID maps to InMemoryChatMessageHistory object that contains list of messages 
-# "session_id" : InMemoryChatMessageHistory -> [ messages ]
+# "session_id" : InMemoryChatMessageHistory->[messages]
 memory_store = {}
 
 # ChatPromptTemplate provides initial context for model
@@ -15,7 +21,7 @@ prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "You are a helpfuls assistant who knows soccer.",
+            "You are a helpful soccer assistant that gives concise responses.",
         ),
         MessagesPlaceholder(variable_name="messages"),
     ]

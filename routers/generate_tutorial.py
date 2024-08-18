@@ -1,3 +1,9 @@
+"""
+generate_tutorial.py
+Endpoint listening for POST requests from frontend, handles user questions and uses Runnable from
+memory_store.py to communicate with Llama3
+"""
+
 from memory_store import with_message_history
 from fastapi import APIRouter, HTTPException
 from models import ChatbotRequest
@@ -18,7 +24,7 @@ def generate_tutorial(request: ChatbotRequest):
         
         # Session ID in config identifies the user's unique conversation when Runnable is made
         config = {"configurable": {"session_id": session_id}}
-        prompt = request.prompt
+        prompt = request.prompt 
 
         # Llama3 runnable invoked with user question and config
         response = with_message_history.invoke(
