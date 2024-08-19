@@ -28,7 +28,7 @@ async def generate_tutorial(request: ChatbotRequest):
                 [HumanMessage(content=prompt)],
                 config=config,
             ):
-                print(chunk.content)
+                print("[" + chunk.content + "]")
                 yield f"data: {chunk.content}\n\n"
 
         # Return Llama3 response as dictionary so frontend can read JSON payload
