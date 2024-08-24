@@ -8,6 +8,7 @@ from memory_store import with_message_history
 from fastapi import APIRouter, HTTPException
 from models import ChatbotRequest
 from langchain_core.messages import HumanMessage
+import uuid
 
 # Initialize router for 'generate_tutorial' endpoint handler
 router = APIRouter()
@@ -19,8 +20,8 @@ def generate_tutorial(request: ChatbotRequest):
     a Llama3 response based on user input in ChatbotRequest
     '''
     try:
-        # TODO make a better session ID for each conversation
-        session_id = "user123"
+        # Generate a unique session ID for each conversation
+        session_id = str(uuid.uuid4())
         
         # Session ID in config identifies the user's unique conversation when Runnable is made
         config = {"configurable": {"session_id": session_id}}
@@ -33,7 +34,7 @@ def generate_tutorial(request: ChatbotRequest):
         )
 
         # Return Llama3 response as dictionary so frontend can read JSON payload
-        return {"tutorial": response.content}
+        return {"tutorial": response.content, "session_id": session_id}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error has occurred: {str(e)}")

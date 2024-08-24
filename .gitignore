@@ -1,6 +1,5 @@
 /venv
 .env
-test.py
-temp-venv
-data
-test2.ipynb
+
+test*
+db.py
