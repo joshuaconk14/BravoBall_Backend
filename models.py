@@ -1,5 +1,9 @@
-from pydantic import BaseModel, Field, ValidationError
-from pydantic_settings import BaseSettings
+"""
+models.py
+This defines all models used in chatbot app
+"""
+
+from pydantic import BaseModel
 from typing import List
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON
@@ -23,8 +27,9 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
+    first_name = Column(String)
+    last_name = Column(String)
     hashed_password = Column(String)
     player_details = Column(JSON)
 
