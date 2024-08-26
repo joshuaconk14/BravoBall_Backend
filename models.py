@@ -4,8 +4,6 @@ This defines all models used in chatbot app
 """
 
 from pydantic import BaseModel
-from typing import List
-
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 from db import Base
@@ -22,7 +20,15 @@ class ChatbotRequest(BaseModel):
     prompt: str 
     session_id: str = None
     
+# Request model for profile creation
+class PlayerInfo(BaseModel):
+    first_name: str
+    last_name: str
+    age: int
+    position: str
+    email: str
 
+# 
 class User(Base):
     __tablename__ = "users"
 
@@ -30,6 +36,8 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
+    age = Column(Integer)
+    position = Column(String)
     hashed_password = Column(String)
     player_details = Column(JSON)
 

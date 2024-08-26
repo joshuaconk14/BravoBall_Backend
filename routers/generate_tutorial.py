@@ -4,14 +4,17 @@ Endpoint listening for POST requests from frontend, handles user questions and u
 memory_store.py to communicate with Llama3, while integrating with a PostgreSQL database
 """
 
-from memory_store import with_message_history
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
-from models import ChatbotRequest, User, ChatHistory
-from db import get_db
-from langchain_core.messages import HumanMessage
-import uuid
+from sqlalchemy.future import select
 from datetime import datetime
+import uuid
+
+from models import ChatbotRequest, User, ChatHistory, PlayerInfo
+from db import get_db
+from memory_store import with_message_history
+from langchain_core.messages import HumanMessage
 
 # Initialize router for 'generate_tutorial' endpoint handler
 router = APIRouter()
@@ -68,43 +71,36 @@ async def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_d
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error has occurred: {str(e)}")
+    
 
-@router.get('/chat_history/{user_id}')
-async def get_chat_history(user_id: int, db: Session = Depends(get_db)):
-    '''
-    This function retrieves the chat history for a specific user
-    '''
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    chat_history = db.query(ChatHistory).filter(ChatHistory.user_id == user_id).order_by(ChatHistory.timestamp).all()
-    return {"chat_history": [{"message": ch.message, "timestamp": ch.timestamp, "is_user": ch.is_user} for ch in chat_history]}
-
-@router.post('/create_user/')
-async def create_user(username: str, email: str, password: str, db: Session = Depends(get_db)):
-    '''
-    This function creates a new user in the database
-    '''
-    existing_user = db.query(User).filter((User.username == username) | (User.email == email)).first()
+@router.post("/register/")
+async def register(player_info: PlayerInfo, db: AsyncSession = Depends(get_db)):
+    # Check if the email already exists
+    result = await db.execute(select(User).filter(User.email == player_info.email))
+    existing_user = result.scalars().first()
+    
     if existing_user:
-        raise HTTPException(status_code=400, detail="Username or email already exists")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
 
-    new_user = User(username=username, email=email, hashed_password=password)  # In production, hash the password!
+    # Create new user and save to the database
+    new_user = User(
+        first_name=player_info.first_name,
+        last_name=player_info.last_name,
+        age=player_info.age,
+        position=player_info.position,
+        email=player_info.email,
+        player_details=player_info.dict()
+    )
     db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return {"user_id": new_user.id, "username": new_user.username}
+    await db.commit()  # Use `await` here
+    await db.refresh(new_user)  # Use `await` here
+    return {"message": "User registered successfully", "user_id": new_user.id}
 
-@router.put('/update_player_details/{user_id}')
-async def update_player_details(user_id: int, player_details: dict, db: Session = Depends(get_db)):
-    '''
-    This function updates the player details for a specific user
-    '''
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
 
-    user.player_details = player_details
-    db.commit()
-    return {"message": "Player details updated successfully"}
+
+# @router.get("/profile_status/")
+# async def profile_status(email: str, db: Session = Depends(get_db)):
+#     user = db.query(User).filter(User.email == email).first()
+#     if not user or not user.player_details:
+#         return {"profile_completed": False}
+#     return {"profile_completed": True}
