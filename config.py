@@ -1,5 +1,6 @@
 import os
 from langchain_nvidia_ai_endpoints import ChatNVIDIA
+from passlib.context import CryptContext
 
 # Obtain NVIDIA api key
 NVAPI_KEY = os.getenv('NVAPI_KEY')
@@ -14,3 +15,8 @@ model = ChatNVIDIA(
   top_p=0.7,
   max_tokens=1024,
 )
+
+
+SECRET_KEY = "your-secret-key"
+ALGORITHM = "HS256"
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

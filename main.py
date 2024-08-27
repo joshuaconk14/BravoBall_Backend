@@ -1,11 +1,13 @@
-from fastapi import FastAPI
-from routers.generate_tutorial import router
+from fastapi import FastAPI, APIRouter
+from routers import generate_tutorial, login, register
 
-# Initialize FastAPI app
+# Initialize FastAPI app and router for endpoints
 app = FastAPI()
 
-# Include router in FastAPI app
-app.include_router(router)
+# Include routers for endpoints in FastAPI app
+app.include_router(generate_tutorial.router)
+app.include_router(login.router)
+app.include_router(register.router)
 
 # Run FastAPI on local host
 if __name__ == "__main__":

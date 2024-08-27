@@ -30,6 +30,10 @@ class PlayerInfo(BaseModel):
     email: str
     password: str
 
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
 # User model for PostgreSQL users data table
 class User(Base):
     __tablename__ = "users"
