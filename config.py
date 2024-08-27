@@ -16,7 +16,7 @@ model = ChatNVIDIA(
   max_tokens=1024,
 )
 
-
+# TODO: make better key, store safely
 SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
