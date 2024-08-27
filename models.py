@@ -18,7 +18,7 @@ class PlayerDetails(BaseModel):
 class ChatbotRequest(BaseModel):
     user_id: int
     prompt: str 
-    session_id: str = None
+    session_id: str
     
 # Request model for profile creation
 class PlayerInfo(BaseModel):
@@ -32,7 +32,7 @@ class PlayerInfo(BaseModel):
 
 class LoginRequest(BaseModel):
     email: str
-    password: str
+    password: str   
 
 # User model for PostgreSQL users data table
 class User(Base):

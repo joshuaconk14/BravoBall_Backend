@@ -5,6 +5,7 @@ from models import User, PlayerInfo
 from db import get_db
 from config import pwd_context
 
+
 router = APIRouter()
 
 def hash_password(password: str) -> str:

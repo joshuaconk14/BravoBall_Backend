@@ -13,9 +13,12 @@ from models import ChatbotRequest, User, ChatHistory
 from db import get_db
 from memory_store import with_message_history
 from langchain_core.messages import HumanMessage
+import logging
 
 
 router = APIRouter()
+
+print("starting")
 
 @router.post('/generate_tutorial/')
 async def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_db)):
@@ -23,6 +26,8 @@ async def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_d
     Handle POST requests to generate a tutorial based on user input,
     using Llama3 and storing the conversation in PostgreSQL.
     '''
+    print("in endpoint")
+
     try:
         user = db.query(User).filter(User.id == request.user_id).first()
         if not user:
