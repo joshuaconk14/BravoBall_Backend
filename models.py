@@ -26,9 +26,15 @@ class PlayerInfo(BaseModel):
     last_name: str
     age: int
     position: str
+    # TODO put this in another class
     email: str
+    password: str
 
-# 
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+# User model for PostgreSQL users data table
 class User(Base):
     __tablename__ = "users"
 
@@ -43,6 +49,7 @@ class User(Base):
 
     chat_histories = relationship("ChatHistory", back_populates="user")
 
+# ChatHistory model for PostgreSQL chat_history data table
 class ChatHistory(Base):
     __tablename__ = "chat_histories"
 

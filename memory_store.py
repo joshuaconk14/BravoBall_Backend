@@ -7,7 +7,7 @@ session history is initialized
 from sqlalchemy.orm import Session
 from models import ChatHistory
 from db import get_db
-from chatbot_config import model
+from config import model
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder

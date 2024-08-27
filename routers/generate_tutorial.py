@@ -5,18 +5,14 @@ memory_store.py to communicate with Llama3, while integrating with a PostgreSQL 
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
-from sqlalchemy.future import select
 from datetime import datetime
 import uuid
-
-from models import ChatbotRequest, User, ChatHistory, PlayerInfo
+from models import ChatbotRequest, User, ChatHistory
 from db import get_db
 from memory_store import with_message_history
 from langchain_core.messages import HumanMessage
 
-# Initialize router for 'generate_tutorial' endpoint handler
 router = APIRouter()
 
 @router.post('/generate_tutorial/')
@@ -71,36 +67,4 @@ async def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_d
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error has occurred: {str(e)}")
-    
 
-@router.post("/register/")
-async def register(player_info: PlayerInfo, db: AsyncSession = Depends(get_db)):
-    # Check if the email already exists
-    result = await db.execute(select(User).filter(User.email == player_info.email))
-    existing_user = result.scalars().first()
-    
-    if existing_user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
-
-    # Create new user and save to the database
-    new_user = User(
-        first_name=player_info.first_name,
-        last_name=player_info.last_name,
-        age=player_info.age,
-        position=player_info.position,
-        email=player_info.email,
-        player_details=player_info.dict()
-    )
-    db.add(new_user)
-    await db.commit()  # Use `await` here
-    await db.refresh(new_user)  # Use `await` here
-    return {"message": "User registered successfully", "user_id": new_user.id}
-
-
-
-# @router.get("/profile_status/")
-# async def profile_status(email: str, db: Session = Depends(get_db)):
-#     user = db.query(User).filter(User.email == email).first()
-#     if not user or not user.player_details:
-#         return {"profile_completed": False}
-#     return {"profile_completed": True}
