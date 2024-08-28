@@ -4,7 +4,7 @@ This defines all models used in chatbot app
 """
 
 from pydantic import BaseModel
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 from db import Base
 
@@ -58,5 +58,6 @@ class ChatHistory(Base):
     session_id = Column(String, index=True)
     message = Column(String)
     timestamp = Column(DateTime)
+    is_user = Column(Boolean, default=True)
 
     user = relationship("User", back_populates="chat_histories")

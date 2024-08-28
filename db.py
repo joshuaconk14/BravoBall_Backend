@@ -20,6 +20,8 @@ AsyncSessionLocal = sessionmaker(
     class_=AsyncSession,
     expire_on_commit=False
 )
+
+# Used for Users and ChatHistory in models.py
 Base = declarative_base()
 
 # Dependency for async session
