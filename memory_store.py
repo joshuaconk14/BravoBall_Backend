@@ -8,10 +8,6 @@ from models import ChatHistory
 from db import get_db
 from config import model
 from langchain_core.chat_history import BaseChatMessageHistory
-from langchain_postgres import PostgresChatMessageHistory
-from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from datetime import datetime
 
 
 import psycopg
@@ -21,6 +17,7 @@ from langchain_postgres import PostgresChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
+# TODO make more secure
 # Define connection information
 conn_info = {
     'host': 'localhost',
@@ -82,3 +79,4 @@ with_message_history = RunnableWithMessageHistory(chain, get_session_history)
 # # Invoke the runnable with the current messages and print the output
 # result = with_message_history.invoke([], config={"configurable": {"session_id": session_id}})
 # print("Result from with_message_history.invoke:", result)
+    
