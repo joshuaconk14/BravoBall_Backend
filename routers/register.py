@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models import User, PlayerInfo
-from db import get_db
+from db import aget_db
 from config import pwd_context
 
 
@@ -12,7 +12,7 @@ def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 @router.post("/register/")
-async def register(player_info: PlayerInfo, db: AsyncSession = Depends(get_db)):
+async def register(player_info: PlayerInfo, db: AsyncSession = Depends(aget_db)):
     # Check if the email already exists
     result = await db.execute(select(User).filter(User.email == player_info.email))
     existing_user = result.scalars().first()

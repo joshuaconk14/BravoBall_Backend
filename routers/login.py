@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models import User, LoginRequest
-from db import get_db
+from db import aget_db
 import jwt
 from config import SECRET_KEY, ALGORITHM, pwd_context
 from passlib.context import CryptContext
@@ -17,7 +17,7 @@ def create_access_token(data: dict):
     return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 
 @router.post("/login/")
-async def login(login_request: LoginRequest, db: AsyncSession = Depends(get_db)):
+async def login(login_request: LoginRequest, db: AsyncSession = Depends(aget_db)):
     # Find user by email
     result = await db.execute(select(User).filter(User.email == login_request.email))
     user = result.scalars().first()
