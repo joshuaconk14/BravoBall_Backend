@@ -60,6 +60,8 @@ def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_db)):
             timestamp=datetime.utcnow(),
             is_user=False
         )
+        # Delete rows where is_user is null
+        db.query(ChatHistory).filter(ChatHistory.is_user.is_(None)).delete()
         db.add(ai_message)
         db.commit()
 
