@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.orm import Session
 from models import User, LoginRequest
 from db import get_db
 import jwt
@@ -10,10 +9,6 @@ from passlib.context import CryptContext
 
 router = APIRouter()
 
-SECRET_KEY = "your-secret-key"
-ALGORITHM = "HS256"
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
@@ -21,12 +16,9 @@ def create_access_token(data: dict):
     return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 
 @router.post("/login/")
-async def login(login_request: LoginRequest, db: AsyncSession = Depends(get_db)):
-    # Find user by email
-    result = await db.execute(select(User).filter(User.email == login_request.email))
-    user = result.scalars().first()
+def login(login_request: LoginRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == login_request.email).first()
     
-    # Check if the user exists and password matches
     if not user or not verify_password(login_request.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -34,6 +26,6 @@ async def login(login_request: LoginRequest, db: AsyncSession = Depends(get_db))
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # Generate access token
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
+

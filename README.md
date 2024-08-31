@@ -52,3 +52,7 @@ TekkAI is an intelligent soccer coaching application that leverages the power of
     https://github.com/jordanconklin/Tekk_frontend.git
     ```
     - The main endpoint available is /generate_tutorial/, which processes user input and generates soccer tutorials based on the Llama3 model.
+    - For Swagger UI:
+    ```bash
+    http://127.0.0.1:8000/docs
+    ```
