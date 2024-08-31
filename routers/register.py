@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.orm import Session
 from models import User, PlayerInfo
-from db import aget_db
+from db import get_db
 from config import pwd_context
 
 
@@ -12,17 +11,14 @@ def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 @router.post("/register/")
-async def register(player_info: PlayerInfo, db: AsyncSession = Depends(aget_db)):
-    # Check if the email already exists
-    result = await db.execute(select(User).filter(User.email == player_info.email))
-    existing_user = result.scalars().first()
+def register(player_info: PlayerInfo, db: Session = Depends(get_db)):
+    existing_user = db.query(User).filter(User.email == player_info.email).first()
     
-    hashed_password = hash_password(player_info.password)
-
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
 
-    # Create new user and save to the database
+    hashed_password = hash_password(player_info.password)
+
     new_user = User(
         first_name=player_info.first_name,
         last_name=player_info.last_name,
@@ -33,6 +29,6 @@ async def register(player_info: PlayerInfo, db: AsyncSession = Depends(aget_db))
         player_details=player_info.dict()
     )
     db.add(new_user)
-    await db.commit()  # Use `await` here
-    await db.refresh(new_user)  # Use `await` here
+    db.commit()
+    db.refresh(new_user)
     return {"message": "User registered successfully", "user_id": new_user.id}
