@@ -19,6 +19,7 @@ router = APIRouter()
 @router.post('/generate_tutorial/')
 def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_db)):
     try:
+        # print(f"user id: {request.user_id}")
         stmt = select(User).where(User.id == request.user_id)
         user = db.execute(stmt).scalars().first()
 
