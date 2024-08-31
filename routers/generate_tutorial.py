@@ -26,6 +26,7 @@ async def generate_tutorial(request: ChatbotRequest, db: AsyncSession = Depends(
         result = await db.execute(stmt)
         print("GOT HERE2")
         user = result.scalars().first()
+        print(user.id)
 
         if not user:
             await transaction.rollback()  # Ensure to rollback on error
