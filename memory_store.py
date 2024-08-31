@@ -16,6 +16,7 @@ from langchain_postgres import PostgresChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 import json
+
 # TODO make more secure
 # Define connection information
 conn_info = {
@@ -49,12 +50,29 @@ table_name = 'chat_histories'
 
 # Define a function to retrieve the chat history for a session
 def get_session_history(session_id: str):
-    return PostgresChatMessageHistory(
+    history = PostgresChatMessageHistory(
         table_name,
         session_id,
-        connection=conn
+        sync_connection=conn
     )
+    print("Session history:", history.messages)
+    return history
 
 # Create the Runnable with the chat history and prompt template
 chain = prompt | model
 with_message_history = RunnableWithMessageHistory(chain, get_session_history)
+
+# session_id = str(uuid.uuid4())
+
+# # Print the result from invoking the runnable
+# result = with_message_history.invoke([], config={"configurable": {"session_id": session_id}})
+# print("Result from with_message_history.invoke:", result)
+
+
+
+# print("RunnableWithMessageHistory initialized with chain and session history function.")
+
+# # Test the functionality with a sample message
+# test_message = HumanMessage(content="How do I improve my dribbling skills?")
+# result = with_message_history.invoke([test_message], config={"configurable": {"session_id": session_id}})
+# print("Result from test invocation:", result)

@@ -33,7 +33,7 @@ def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_db)):
         user_message = ChatHistory(
             user_id=user.id,
             session_id=session_id,
-            message=prompt,
+            message={"type": "human", "data": {"content": prompt}},
             timestamp=datetime.utcnow(),
             is_user=True
         )
@@ -42,6 +42,8 @@ def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_db)):
         print("HERE2")
 
         try:
+            print("Invoking model with session_id:", session_id)
+            print("Config:", config)
             response = with_message_history.invoke(
                 [HumanMessage(content=prompt)],
                 config=config,
@@ -54,7 +56,7 @@ def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_db)):
         ai_message = ChatHistory(
             user_id=user.id,
             session_id=session_id,
-            message=response.content,
+            message={"type": "ai", "data": {"content": response.content}},
             timestamp=datetime.utcnow(),
             is_user=False
         )
