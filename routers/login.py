@@ -13,7 +13,8 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 def create_access_token(data: dict):
-    return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+    to_encode = data.copy()
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 @router.post("/login/")
 def login(login_request: LoginRequest, db: Session = Depends(get_db)):
@@ -26,6 +27,7 @@ def login(login_request: LoginRequest, db: Session = Depends(get_db)):
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    access_token = create_access_token(data={"sub": user.email})
+    access_token = create_access_token(data={"sub": user.email, "user_id": user.id})
+    print(f"access token: {access_token}")
     return {"access_token": access_token, "token_type": "bearer"}
 

@@ -17,7 +17,7 @@ class PlayerDetails(BaseModel):
 
 # Request model to be used in payload
 class ChatbotRequest(BaseModel):
-    user_id: int
+    # user_id: int
     prompt: str 
     session_id: str
     

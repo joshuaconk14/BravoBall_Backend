@@ -13,18 +13,19 @@ from models import ChatbotRequest, User, ChatHistory
 from db import get_db
 from memory_store import with_message_history
 from langchain_core.messages import HumanMessage
+from auth import get_current_user
 
 router = APIRouter()
 
 @router.post('/generate_tutorial/')
-def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_db)):
+def generate_tutorial(request: ChatbotRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
-        # print(f"user id: {request.user_id}")
-        stmt = select(User).where(User.id == request.user_id)
-        user = db.execute(stmt).scalars().first()
+        # # print(f"user id: {request.user_id}")
+        # stmt = select(User).where(User.id == request.user_id)
+        # user = db.execute(stmt).scalars().first()
 
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
+        # if not user:
+        #     raise HTTPException(status_code=404, detail="User not found")
 
         print("HERE1")
         session_id = request.session_id or str(uuid.uuid4())
@@ -32,7 +33,7 @@ def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_db)):
         prompt = request.prompt
 
         user_message = ChatHistory(
-            user_id=user.id,
+            user_id=current_user.id,
             session_id=session_id,
             message={"type": "human", "data": {"content": prompt}},
             timestamp=datetime.utcnow(),
@@ -55,7 +56,7 @@ def generate_tutorial(request: ChatbotRequest, db: Session = Depends(get_db)):
 
         print("HERE3")
         ai_message = ChatHistory(
-            user_id=user.id,
+            user_id=current_user.id,
             session_id=session_id,
             message={"type": "ai", "data": {"content": response.content}},
             timestamp=datetime.utcnow(),
