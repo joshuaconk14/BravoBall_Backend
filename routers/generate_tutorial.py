@@ -1,7 +1,7 @@
 """
 generate_tutorial.py
-Endpoint listening for POST requests from frontend, handles user questions and uses Runnable from
-memory_store.py to communicate with Llama3, while integrating with a PostgreSQL database
+Endpoint handling user questions and uses Runnable from memory_store.py 
+to communicate with Llama3, while integrating with PostgreSQL database
 """
 
 from fastapi import APIRouter, Depends, HTTPException

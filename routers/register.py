@@ -1,3 +1,9 @@
+"""
+register.py
+Endpoint that takes in user information and registers a new user with a hashed password
+"""
+
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from models import User, PlayerInfo

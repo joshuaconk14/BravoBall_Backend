@@ -1,3 +1,10 @@
+"""
+config.py
+This file contains all the configuration for the application, including the NVIDIA API key, 
+the model, and the secret key for hashing passwords
+"""
+
+
 import os
 from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from passlib.context import CryptContext

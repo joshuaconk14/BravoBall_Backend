@@ -1,3 +1,9 @@
+"""
+main.py
+Main entry point of application that initializes the FastAPI app and includes all endpoints
+"""
+
+
 from fastapi import FastAPI, APIRouter
 from routers import generate_tutorial, login, register
 

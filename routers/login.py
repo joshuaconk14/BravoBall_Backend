@@ -1,3 +1,8 @@
+"""
+login.py
+Endpoint using JWT to authenticate user upon login
+"""
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from models import User, LoginRequest
