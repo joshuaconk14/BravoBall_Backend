@@ -5,7 +5,7 @@ Main entry point of application that initializes the FastAPI app and includes al
 
 
 from fastapi import FastAPI, APIRouter
-from routers import generate_tutorial, login, register
+from routers import generate_tutorial, login, register, conversations
 
 # Initialize FastAPI app and router for endpoints
 app = FastAPI()
@@ -14,6 +14,7 @@ app = FastAPI()
 app.include_router(generate_tutorial.router)
 app.include_router(login.router)
 app.include_router(register.router)
+app.include_router(conversations.router)
 
 # Run FastAPI on local host
 if __name__ == "__main__":
