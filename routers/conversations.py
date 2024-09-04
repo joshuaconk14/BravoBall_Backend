@@ -8,8 +8,8 @@ import uuid
 
 router = APIRouter()
 
-@router.get("/get_conversation_history/")
-def get_conversation_history(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+@router.get("/get_previous_conversations/")
+def get_previous_conversations(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     conversations = db.query(ChatHistory.session_id,
                              ChatHistory.timestamp,
                              ChatHistory.message)\
