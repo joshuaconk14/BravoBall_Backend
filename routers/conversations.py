@@ -47,3 +47,24 @@ def get_conversation(session_id: str, current_user: User = Depends(get_current_u
 @router.post("/conversations/new")
 def new_conversation(current_user: User = Depends(get_current_user)):
     return {"session_id": str(uuid.uuid4())}
+
+
+# Endpoint handler to delete a conversation by session_id
+@router.delete("/conversations/{session_id}")
+def delete_conversation(session_id: str, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    try:
+        # Delete all messages associated with the given session_id for the current user
+        deleted = db.query(ChatHistory).filter(
+            ChatHistory.user_id == current_user.id,
+            ChatHistory.session_id == session_id
+        ).delete(synchronize_session=False)
+        
+        db.commit()
+        
+        if deleted:
+            return {"message": f"Conversation with session ID {session_id} has been deleted"}
+        else:
+            raise HTTPException(status_code=404, detail="Conversation not found")
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
