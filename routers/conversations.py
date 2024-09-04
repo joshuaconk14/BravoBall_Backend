@@ -8,6 +8,7 @@ import uuid
 
 router = APIRouter()
 
+# Endpoint handler to get all previous conversations from the user
 @router.get("/get_previous_conversations/")
 def get_previous_conversations(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     conversations = db.query(ChatHistory.session_id,
@@ -28,6 +29,7 @@ def get_previous_conversations(current_user: User = Depends(get_current_user), d
         ]
     }
 
+# Endpoint handler to get a specific conversation by session_id
 @router.get("/conversations/{session_id}")
 def get_conversation(session_id: str, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     messages = db.query(ChatHistory).filter(ChatHistory.user_id == current_user.id, ChatHistory.session_id == session_id).order_by(ChatHistory.timestamp).all()
@@ -41,6 +43,7 @@ def get_conversation(session_id: str, current_user: User = Depends(get_current_u
         ]
     }
 
+# Endpoint handler to create a new conversation
 @router.post("/conversations/new")
 def new_conversation(current_user: User = Depends(get_current_user)):
     return {"session_id": str(uuid.uuid4())}
