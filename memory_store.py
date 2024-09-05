@@ -42,7 +42,7 @@ except psycopg.OperationalError as e:
 
 # Define the prompt template with placeholders
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are a helpful soccer assistant that gives concise responses."),
+    ("system", "You are a helpful soccer assistant."),
     MessagesPlaceholder(variable_name="messages"),
 ])
 
