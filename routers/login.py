@@ -11,7 +11,7 @@ import jwt
 from config import SECRET_KEY, ALGORITHM, pwd_context
 from passlib.context import CryptContext
 
-
+    
 router = APIRouter()
 
 def verify_password(plain_password, hashed_password):

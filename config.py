@@ -4,15 +4,23 @@ This file contains all the configuration for the application, including the NVID
 the model, and the secret key for hashing passwords
 """
 
-
 import os
 from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from passlib.context import CryptContext
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path='.env', verbose=True)
 
 # Obtain NVIDIA api key
 NVAPI_KEY = os.getenv('NVAPI_KEY')
 if not NVAPI_KEY:
-    raise ValueError("API key not found")
+    raise ValueError("NVAPI_KEY not found in environment variables")
+print(NVAPI_KEY)
+
+# Get SECRET_KEY from environment variables
+SECRET_KEY = os.getenv('SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY not found in environment variables")
 
 # Initialize ChatNVIDIA client to connect with Llama3
 model = ChatNVIDIA(
@@ -24,6 +32,5 @@ model = ChatNVIDIA(
 )
 
 # TODO: make better key, store safely
-SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
