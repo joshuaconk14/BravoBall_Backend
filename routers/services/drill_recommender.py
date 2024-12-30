@@ -39,8 +39,14 @@ class DrillRecommender:
         if user.primary_goal.lower() in [focus.lower() for focus in drill.skill_focus]:
             score += 0.4
         
-        # TODO add equipment availability into frontend
-        # Equipment availability (if we had this info)
-        # score += equipment_match_score * 0.2
+        # Equipment availability check
+        required_equipment = set(drill.equipment)
+        available_equipment = set(user.available_equipment)
+        if required_equipment.issubset(available_equipment):
+            score += 0.3  # Full equipment bonus
+        else:
+            # Partial equipment match
+            equipment_match_ratio = len(required_equipment.intersection(available_equipment)) / len(required_equipment)
+            score += equipment_match_ratio * 0.15
         
         return score

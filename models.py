@@ -9,6 +9,7 @@ from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, J
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from db import Base
+from sqlalchemy.orm import validates
 
 # Player details the user states in the frontend
 class PlayerDetails(BaseModel):
@@ -46,6 +47,7 @@ class User(Base):
     has_team = Column(Boolean, default=False)
     primary_goal = Column(String)
     skill_level = Column(String)
+    available_equipment = Column(JSON)
     
     # Only keep the relationships that we have tables for
     chat_histories = relationship("ChatHistory", back_populates="user")
@@ -65,6 +67,7 @@ class OnboardingData(BaseModel):
     timeline: str
     skillLevel: str
     trainingDays: List[str]
+    availableEquipment: List[str]
 
 
 # *** PROGRAM MODELS ***``
