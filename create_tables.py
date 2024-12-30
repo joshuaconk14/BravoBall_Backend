@@ -1,23 +1,37 @@
-# """
-# create_tables.py
-# This file is ran once to create tables for postgres db
-# """
+"""
+create_tables.py
+This file is ran once to create tables for postgres db
+"""
 
-# from sqlalchemy.ext.asyncio import create_async_engine
-# from sqlalchemy.orm import sessionmaker
-# import models
-# import asyncio
+from sqlalchemy import create_engine, inspect
+from sqlalchemy.orm import sessionmaker
+import models
+from db import SQLALCHEMY_DATABASE_URL
 
-# # Create an async engine
-# DATABASE_URL = "postgresql+asyncpg://jordinho:m44YMQsbrxpewhTJRzzX@localhost/tekkdb"
-# engine = create_async_engine(DATABASE_URL, echo=True)
+def create_tables():
+    # Create an engine
+    engine = create_engine(SQLALCHEMY_DATABASE_URL)
+    inspector = inspect(engine)
+    
+    # Get list of existing tables
+    existing_tables = inspector.get_table_names()
+    
+    # List of new tables we want to create
+    new_tables = ["drill_categories", "drills"]
+    
+    # Print status for each table
+    for table in new_tables:
+        if table in existing_tables:
+            print(f"Table '{table}' already exists")
+        else:
+            print(f"Creating table '{table}'...")
+    
+    try:    
+        # This will only create tables that don't exist
+        models.Base.metadata.create_all(bind=engine)
+        print("\nTable creation completed successfully!")
+    except Exception as e:
+        print(f"\nError creating tables: {str(e)}")
 
-# # Define an async function to create tables
-# async def create_tables():
-#     # Connect to the database asynchronously
-#     async with engine.begin() as conn:
-#         # Run the synchronous create_all() method in an async context
-#         await conn.run_sync(models.Base.metadata.create_all)
-
-# # Run the async function using an event loop
-# asyncio.run(create_tables())
+if __name__ == "__main__":
+    create_tables()

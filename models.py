@@ -15,12 +15,6 @@ class PlayerDetails(BaseModel):
     name: str
     age: int
     position: str
-
-# Request model to be used in payload
-class ChatbotRequest(BaseModel):
-    # user_id: int
-    prompt: str 
-    session_id: str
     
 # Request model for profile creation
 class PlayerInfo(BaseModel):
@@ -53,27 +47,9 @@ class User(Base):
     primary_goal = Column(String)
     skill_level = Column(String)
     
-    # Relationships
-    goals = relationship("PlayerGoals", back_populates="user")
-    strengths = relationship("PlayerStrengths", back_populates="user")
-    weaknesses = relationship("PlayerWeaknesses", back_populates="user")
-    style_references = relationship("PlayerStyleReferences", back_populates="user")
-
-    # for future use
+    # Only keep the relationships that we have tables for
     chat_histories = relationship("ChatHistory", back_populates="user")
-
-# ChatHistory model for PostgreSQL chat_history data table
-class ChatHistory(Base):
-    __tablename__ = "chat_histories"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    session_id = Column(String, index=True)
-    message = Column(JSONB)
-    timestamp = Column(DateTime)
-    is_user = Column(Boolean, default=True)
-
-    user = relationship("User", back_populates="chat_histories")
+    program = relationship("UserProgram", back_populates="user", uselist=False)
 
 class OnboardingData(BaseModel):
     firstName: str
@@ -109,18 +85,31 @@ class Week(BaseModel):
     description: str
     training_days: List[TrainingDay]  # Instead of just drills
 
-class Drill(BaseModel):
-    title: str
-    description: str
-    duration: int
-    type: str
-    difficulty: str
-    equipment: List[str]
-    instructions: List[str]
-    tips: List[str]
-    video_url: str | None = None
+class DrillCategory(Base):
+    __tablename__ = "drill_categories"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True)
+    description = Column(String)
+
+class Drill(Base):
+    __tablename__ = "drills"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    description = Column(String)
+    category_id = Column(Integer, ForeignKey("drill_categories.id"))
+    duration = Column(Integer)  # in minutes
+    difficulty = Column(String)
+    equipment = Column(JSON)  # List of required equipment
+    instructions = Column(JSON)  # List of steps
+    tips = Column(JSON)  # List of coaching tips
+    video_url = Column(String, nullable=True)
+
+    category = relationship("DrillCategory", backref="drills")
 
 # Database models
+#TODO figure out how to use this
 class UserProgram(Base):
     __tablename__ = "user_programs"
 
@@ -134,3 +123,24 @@ class UserProgram(Base):
 
 # Add this to your User model
 program = relationship("UserProgram", back_populates="user", uselist=False)
+
+
+# *** CHATBOT MODELS (for later use) ***
+# ChatHistory model for PostgreSQL chat_history data table
+class ChatHistory(Base):
+    __tablename__ = "chat_histories"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    session_id = Column(String, index=True)
+    message = Column(JSONB)
+    timestamp = Column(DateTime)
+    is_user = Column(Boolean, default=True)
+
+    user = relationship("User", back_populates="chat_histories")
+
+# Request model to be used in payload
+class ChatbotRequest(BaseModel):
+    # user_id: int
+    prompt: str 
+    session_id: str
