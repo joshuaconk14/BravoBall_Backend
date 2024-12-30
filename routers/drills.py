@@ -1,3 +1,8 @@
+"""
+drills.py
+API endpoints for obtaining drills and recommendations
+"""
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from db import get_db
@@ -7,6 +12,7 @@ from routers.services.drill_recommender import DrillRecommender
 
 router = APIRouter()
 
+# API endpoint for obtaining all drills
 @router.get("/drills/")
 def get_drills(category: str = None, db: Session = Depends(get_db)):
     query = db.query(Drill)
@@ -31,6 +37,7 @@ def get_drills(category: str = None, db: Session = Depends(get_db)):
         ]
     }
 
+# API endpoint for obtaining all drill categories
 @router.get("/drill-categories/")
 def get_categories(db: Session = Depends(get_db)):
     categories = db.query(DrillCategory).all()
@@ -44,6 +51,7 @@ def get_categories(db: Session = Depends(get_db)):
         ]
     }
 
+# API endpoint for obtaining recommendations
 @router.get("/drills/recommendations/")
 def get_recommendations(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     recommender = DrillRecommender(db)

@@ -17,6 +17,7 @@ from auth import get_current_user
 
 router = APIRouter()
 
+# API endpoing for generating a tutorial for Chatbot
 @router.post('/generate_tutorial/')
 def generate_tutorial(request: ChatbotRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
