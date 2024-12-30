@@ -58,6 +58,7 @@ def get_recommendations(user: User = Depends(get_current_user), db: Session = De
     recommended_drills = recommender.get_recommendations(user)
 
     return {
+        "status": "success",
         "recommendations": [
             {
                 "id": drill.id,
@@ -70,7 +71,17 @@ def get_recommendations(user: User = Depends(get_current_user), db: Session = De
                 "instructions": drill.instructions,
                 "tips": drill.tips,
                 "video_url": drill.video_url,
-                "skill_focus": drill.skill_focus
+                "matchScore": {
+                    "skillLevelMatch": True if drill.difficulty == user.skill_level else False,
+                    "equipmentAvailable": all(item in user.available_equipment for item in drill.equipment),
+                    "recommendedForPosition": user.position in drill.recommended_positions if drill.recommended_positions else False
+                }
             } for drill in recommended_drills
-        ]
+        ],
+        "metadata": {
+            "totalDrills": len(recommended_drills),
+            "userSkillLevel": user.skill_level,
+            "userPosition": user.position,
+            "availableEquipment": user.available_equipment
+        }
     }

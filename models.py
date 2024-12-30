@@ -9,7 +9,6 @@ from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, J
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from db import Base
-from sqlalchemy.orm import validates
 
 # Player details the user states in the frontend
 class PlayerDetails(BaseModel):
