@@ -1,3 +1,8 @@
+"""
+login.py
+Endpoint using JWT to authenticate user upon login
+"""
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from models import User, LoginRequest
@@ -6,7 +11,7 @@ import jwt
 from config import SECRET_KEY, ALGORITHM, pwd_context
 from passlib.context import CryptContext
 
-
+    
 router = APIRouter()
 
 def verify_password(plain_password, hashed_password):
