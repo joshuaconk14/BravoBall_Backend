@@ -1,3 +1,7 @@
+"""
+This file contains the ProgramGenerator class, which is used to generate a training program for a user based on their onboarding data.
+"""
+
 from typing import List
 from models import OnboardingData, Program, Week
 from config import model
@@ -130,35 +134,26 @@ class ProgramGenerator:
             raise ValueError(f"Error generating Week {week_num}: {str(e)}")
 
     def _determine_difficulty(self, data: OnboardingData) -> str:
-        # Map skill level and level to appropriate difficulty
+        # Map skill level to appropriate difficulty
         skill_level_map = {
             "Beginner": 1,
             "Intermediate": 2,
-            "Advanced": 3,
+            "Competitive": 3,
             "Professional": 4
         }
         
-        level_map = {
-            "Recreational": 0,
-            "Club": 1,
-            "Academy": 2,
-            "Professional": 3
-        }
-        
-        # Calculate combined score
+        # Simplified mapping based on skill level only
         skill_score = skill_level_map.get(data.skillLevel, 2)
-        level_score = level_map.get(data.level, 1)
-        combined_score = skill_score + level_score
         
-        # Map combined score to difficulty
-        if combined_score <= 2:
+        # Map score to difficulty
+        if skill_score == 1:
             return "Beginner"
-        elif combined_score <= 4:
+        elif skill_score == 2:
             return "Intermediate"
-        elif combined_score <= 6:
-            return "Advanced"
+        elif skill_score == 3:
+            return "Competitive"
         else:
-            return "Elite"
+            return "Professional"
 
     def _extract_focus_areas(self, weeks: List[Week]) -> List[str]:
         # Collect unique focus areas from all drills across all weeks

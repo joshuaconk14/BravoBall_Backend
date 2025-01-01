@@ -103,10 +103,12 @@ class Drill(Base):
     category_id = Column(Integer, ForeignKey("drill_categories.id"))
     duration = Column(Integer)  # in minutes
     difficulty = Column(String)
-    equipment = Column(JSON)  # List of required equipment
     instructions = Column(JSON)  # List of steps
     tips = Column(JSON)  # List of coaching tips
+    recommended_equipment = Column(JSON)  # List of required equipment
+    recommended_positions = Column(JSON)  # List of recommended positions
     video_url = Column(String, nullable=True)
+    skill_focus = Column(JSON)
 
     category = relationship("DrillCategory", backref="drills")
 
