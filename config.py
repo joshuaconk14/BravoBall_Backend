@@ -20,19 +20,3 @@ if not SECRET_KEY:
 ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-# **** CHATBOT CONFIGURATION (use later) ****
-
-# Obtain NVIDIA api key
-NVAPI_KEY = os.getenv('NVAPI_KEY')
-if not NVAPI_KEY:
-    raise ValueError("NVAPI_KEY not found in environment variables")
-
-# Initialize ChatNVIDIA client to connect with Llama3
-model = ChatNVIDIA(
-  model="meta/llama-3.1-8b-instruct",
-  api_key=NVAPI_KEY, 
-  temperature=0.2,
-  top_p=0.7,
-  max_tokens=1024,
-)

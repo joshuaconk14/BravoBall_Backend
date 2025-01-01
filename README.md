@@ -1,58 +1,75 @@
-# TekkAI Soccer App
+# Soccer Training App Backend
 
-TekkAI is an intelligent soccer coaching application that leverages the power of the Llama3 model to provide personalized tutorials and advice to soccer enthusiasts. The app uses FastAPI to create an API that interacts with a pre-trained Llama3 model, maintaining a stateful conversation with users to deliver context-aware responses.
+A FastAPI-based backend service that provides personalized soccer training recommendations and program generation.
 
-## Features
+## Core Features
 
-- **Contextual Soccer Coaching:** TekkAI remembers the context of your conversation and provides relevant soccer advice based on your inputs.
-- **Stateful Conversations:** The app uses an in-memory store to maintain the history of conversations, ensuring that each interaction builds on the last.
-- **NVIDIA-Powered Llama3 Model:** The app integrates with the Llama3 model via NVIDIA's API to deliver high-quality, instructional content.
+### 1. Drill Recommendation System
+- Personalized drill recommendations based on:
+  - Player skill level
+  - Position
+  - Available equipment
+  - Training goals
+- Scoring algorithm that considers:
+  - Difficulty match
+  - Position-specific drills
+  - Equipment availability
+  - Goal alignment
 
-## Getting Started
+### 2. Program Generation
+- AI-powered training program creation
+- Progressive weekly plans
+- Customized based on:
+  - Training availability
+  - Player goals
+  - Strengths/weaknesses
+  - Skill level
 
-### Prerequisites
+## API Endpoints
 
-- Python 3.8 or higher
-- NVIDIA API key for accessing the Llama3 model
+### Drills
+- `GET /drills/` - Get all drills with filtering and pagination
+- `GET /drills/recommendations/` - Get personalized drill recommendations
 
-### Installation
+### Onboarding
+- `POST /api/onboarding` - Create new user profile and get initial recommendations
 
-1. **Clone the Repository:**
-    ```bash
-    git clone https://github.com/your-username/tekkai-soccer-app.git
-    cd tekkai-soccer-app
-    ```
+## Data Models
 
-2. **Create and Activate a Virtual Environment:**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-    ```
+### User Profile
+- Skill level (Beginner/Intermediate/Competitive/Professional)
+- Position
+- Available equipment
+- Training preferences
+- Goals and timeline
 
-3. **Install the Required Python Packages:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+### Drills
+- Categories: Dribbling, Shooting, Passing, First Touch, Physical
+- Difficulty levels
+- Required equipment
+- Position recommendations
+- Skill focus areas
 
-4. **Set Up Environment Variables:**
-   - Set your NVIDIA API key as an environment variable. This key is required to interact with the Llama3 model.
-   ```bash
-   export NVAPI_KEY="your_nvapi_key"  # On Windows, use `set NVAPI_KEY=your_nvapi_key`
-    ```
+## Setup
 
-5. **Start the FastAPI Server Locally:**
-    ```bash
-    uvicorn main:app --reload
-    ```
+1. Install dependencies:
+bash
+```
+pip install -r requirements.txt
+```
+bash
+```
+python create_tables.py
+python seed_drills.py
+```
+3. Run the server:
+bash
+```
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
 
-6. **Access the API:**
-
-    - Once the server is running, you can interact with the API using tools like curl, Postman, or directly from a frontend application. Follow my frontend guide to use on XCode:
-    ```bash
-    https://github.com/jordanconklin/Tekk_frontend.git
-    ```
-    - The main endpoint available is /generate_tutorial/, which processes user input and generates soccer tutorials based on the Llama3 model.
-    - For Swagger UI:
-    ```bash
-    http://127.0.0.1:8000/docs
-    ```
+## Technologies
+- FastAPI
+- SQLAlchemy
+- PostgreSQL
+- Pydantic

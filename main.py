@@ -5,16 +5,14 @@ Main entry point of application that initializes the FastAPI app and includes al
 
 
 from fastapi import FastAPI, APIRouter
-from routers import generate_tutorial, login, register, conversations, onboarding, get_program, drills
+from routers import login, register, onboarding, get_program, drills
 
 # Initialize FastAPI app and router for endpoints
 app = FastAPI()
 
 # Include routers for endpoints in FastAPI app
-app.include_router(generate_tutorial.router)
 app.include_router(login.router)
 app.include_router(register.router)
-app.include_router(conversations.router)
 app.include_router(onboarding.router)
 app.include_router(get_program.router)
 app.include_router(drills.router)

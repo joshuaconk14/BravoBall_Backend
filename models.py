@@ -124,27 +124,4 @@ class UserProgram(Base):
     current_week = Column(Integer, default=1)
     
     user = relationship("User", back_populates="program")
-
-# Add this to your User model
-program = relationship("UserProgram", back_populates="user", uselist=False)
-
-
-# *** CHATBOT MODELS (for later use) ***
-# ChatHistory model for PostgreSQL chat_history data table
-class ChatHistory(Base):
-    __tablename__ = "chat_histories"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    session_id = Column(String, index=True)
-    message = Column(JSONB)
-    timestamp = Column(DateTime)
-    is_user = Column(Boolean, default=True)
-
-    user = relationship("User", back_populates="chat_histories")
-
-# Request model to be used in payload
-class ChatbotRequest(BaseModel):
-    # user_id: int
-    prompt: str 
-    session_id: str
+    
