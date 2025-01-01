@@ -21,6 +21,7 @@ def create_access_token(data: dict):
     to_encode = data.copy()
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
+# API endpoint for user login
 @router.post("/login/")
 def login(login_request: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == login_request.email).first()
