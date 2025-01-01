@@ -14,7 +14,7 @@ router = APIRouter()
 async def create_onboarding(data: OnboardingData, db: Session = Depends(get_db)):
     try:
         # Generate a mock email using the user's name
-        mock_email = "testdrills18@example.com"
+        mock_email = "testdrills20@example.com"
         mock_password = "defaultpassword123"  # TODO use a more secure method in production
         mock_first_name = "John"
         mock_last_name = "Doe"
