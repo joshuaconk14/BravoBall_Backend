@@ -49,7 +49,6 @@ class User(Base):
     available_equipment = Column(JSON)
     
     # Only keep the relationships that we have tables for
-    chat_histories = relationship("ChatHistory", back_populates="user")
     program = relationship("UserProgram", back_populates="user", uselist=False)
 
 class OnboardingData(BaseModel):

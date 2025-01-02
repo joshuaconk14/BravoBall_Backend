@@ -19,7 +19,18 @@ async def create_onboarding(data: OnboardingData, db: Session = Depends(get_db))
         mock_first_name = "John"
         mock_last_name = "Doe"
         mock_primary_goal = "Improve my skills"
+
+
+
+
         
+        
+        # TODO: implement hashed password so can get rid of register endpoint
+        # TODO: make registerview uipdate onboarding data like how firstQ and secondQ are doing
+
+
+
+
         user = User(
             email=mock_email,
             hashed_password=mock_password,
