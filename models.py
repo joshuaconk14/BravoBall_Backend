@@ -41,7 +41,6 @@ class User(Base):
     age = Column(Integer)
     position = Column(String)
     hashed_password = Column(String)
-    player_details = Column(JSON)
     level = Column(String)
     has_team = Column(Boolean, default=False)
     primary_goal = Column(String)
@@ -49,7 +48,7 @@ class User(Base):
     available_equipment = Column(JSON)
     
     # Only keep the relationships that we have tables for
-    chat_histories = relationship("ChatHistory", back_populates="user")
+    # chat_histories = relationship("ChatHistory", back_populates="user")
     program = relationship("UserProgram", back_populates="user", uselist=False)
 
 class OnboardingData(BaseModel):
