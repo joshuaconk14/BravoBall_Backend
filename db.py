@@ -18,14 +18,18 @@ username = os.getenv("POSTGRES_USER")
 host = os.getenv("POSTGRES_HOST")
 db = os.getenv("POSTGRES_DB")
 
-
+# defining the database URL
 SQLALCHEMY_DATABASE_URL = f"postgresql://{username}:{password}@{host}/{db}"
 
+# creating the engine variable to connect to database
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+# creating the session
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+# this function is used to get the db session running
 def get_db():
     db = SessionLocal()
     try:
