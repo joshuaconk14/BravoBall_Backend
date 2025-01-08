@@ -5,13 +5,10 @@ the model, and the secret key for hashing passwords
 """
 
 import os
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from passlib.context import CryptContext
 from dotenv import load_dotenv
 
 load_dotenv(dotenv_path='.env', verbose=True)
-
-# **** USER AUTHENTICATION ****
 
 # Get SECRET_KEY from environment variables
 SECRET_KEY = os.getenv('SECRET_KEY')
