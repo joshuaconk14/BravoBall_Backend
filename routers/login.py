@@ -25,7 +25,7 @@ def create_access_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 @router.post("/login/")
-def login(login_request: User, db: Session = Depends(get_db)):
+def login(login_request: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == login_request.email).first()
     
     if not user or not verify_password(login_request.password, user.hashed_password):

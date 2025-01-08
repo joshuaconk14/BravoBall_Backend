@@ -26,9 +26,9 @@ from db import Base
 #     email: str
 #     password: str
 
-# class LoginRequest(BaseModel):
-#     email: str
-#     password: str   
+class LoginRequest(BaseModel):
+    email: str
+    password: str   
 
 # User model for PostgreSQL users data table
 class User(Base):
