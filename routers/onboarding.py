@@ -19,13 +19,7 @@ def hash_password(password: str) -> str:
 
 @router.post("/api/onboarding")
 async def create_onboarding(player_info: OnboardingData, db: Session = Depends(get_db)):
-    # try:
-    #     # Generate a mock email using the user's name
-    #     mock_email = "testdrills20@example.com"
-    #     mock_password = "defaultpassword123"  # TODO use a more secure method in production
-    #     mock_first_name = "John"
-    #     mock_last_name = "Doe"
-    #     mock_primary_goal = "Improve my skills"
+
 
     # queries through the db to find user
     existing_user = db.query(User).filter(User.email == player_info.email).first()
@@ -78,33 +72,33 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
             "status": "success",
             "message": "Onboarding completed successfully",
             "access_token": access_token,
-            "token_type": "Bearer",
-            "recommendations": [
-                {
-                    "id": drill.id,
-                    "title": drill.title,
-                    "description": drill.description,
-                    "category": drill.category.name,
-                    "duration": drill.duration,
-                    "difficulty": drill.difficulty,
-                    "recommended_equipment": drill.recommended_equipment,
-                    "instructions": drill.instructions,
-                    "tips": drill.tips,
-                    "video_url": drill.video_url,
-                    "matchScore": {
-                        "skillLevelMatch": True if drill.difficulty == user.skill_level else False,
-                        "equipmentAvailable": all(item in user.available_equipment for item in drill.recommended_equipment),
-                        "recommendedForPosition": user.position in drill.recommended_positions if drill.recommended_positions else False,
-                        "calculatedScore": round(score, 2)
-                    }
-                } for drill, score in recommended_drills
-            ],
-            "metadata": {
-                "totalDrills": len(recommended_drills),
-                "userSkillLevel": user.skill_level,
-                "userPosition": user.position,
-                "availableEquipment": user.available_equipment
-            }
+            "token_type": "Bearer"
+            # "recommendations": [
+            #     {
+            #         "id": drill.id,
+            #         "title": drill.title,
+            #         "description": drill.description,
+            #         "category": drill.category.name,
+            #         "duration": drill.duration,
+            #         "difficulty": drill.difficulty,
+            #         "recommended_equipment": drill.recommended_equipment,
+            #         "instructions": drill.instructions,
+            #         "tips": drill.tips,
+            #         "video_url": drill.video_url,
+            #         "matchScore": {
+            #             "skillLevelMatch": True if drill.difficulty == user.skill_level else False,
+            #             "equipmentAvailable": all(item in user.available_equipment for item in drill.recommended_equipment),
+            #             "recommendedForPosition": user.position in drill.recommended_positions if drill.recommended_positions else False,
+            #             "calculatedScore": round(score, 2)
+            #         }
+            #     } for drill, score in recommended_drills
+            # ],
+            # "metadata": {
+            #     "totalDrills": len(recommended_drills),
+            #     "userSkillLevel": user.skill_level,
+            #     "userPosition": user.position,
+            #     "availableEquipment": user.available_equipment
+            # }
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

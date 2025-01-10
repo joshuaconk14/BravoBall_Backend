@@ -9,6 +9,7 @@ from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from db import get_db
 from models import User
+from models import UserInfoDisplay
 from datetime import datetime, timedelta
 from config import UserAuth
 
@@ -32,7 +33,7 @@ def create_access_token(data: dict):
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
         #401 unathorized error
-        status_code=status.HTTP_401_UNAUTHORIZED, ########
+        status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
@@ -50,6 +51,35 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
             raise credentials_exception
         # TODO is returning user like this safe?
         return user
+    
+    except JWTError:
+        raise credentials_exception
+    
+
+
+    # Get the current user's display info: first name, last name, and email
+def get_user_display_info(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(
+        #401 unathorized error
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        # decoding the JWT, checking if it's valid
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email = payload.get("sub")
+        user_id = payload.get("user_id")
+        if email is None or user_id is None:
+            raise credentials_exception
+        
+        # # find the user based off the user_id given from the encoded JWT payload
+        user = db.query(User).filter(User.id == user_id).first()
+        if user is None:
+            raise credentials_exception
+        # TODO is returning user like this safe?
+        # Return an instance of UserInfoDisplay
+        return UserInfoDisplay(email=user.email, firstName=user.first_name, lastName=user.last_name)
     
     except JWTError:
         raise credentials_exception

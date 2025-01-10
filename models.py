@@ -30,6 +30,14 @@ class LoginRequest(BaseModel):
     email: str
     password: str   
 
+class UserInfoDisplay(BaseModel):
+    email: str
+    first_name: str 
+    last_name: str
+
+    class Config:
+        orm_mode = True
+
 # User model for PostgreSQL users data table
 class User(Base):
     __tablename__ = "users"
