@@ -5,18 +5,14 @@ the model, and the secret key for hashing passwords
 """
 
 import os
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from passlib.context import CryptContext
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path='.env', verbose=True)
+load_dotenv()
 
 # **** USER AUTHENTICATION ****
-
-# Get SECRET_KEY from environment variables
-SECRET_KEY = os.getenv('SECRET_KEY')
-if not SECRET_KEY:
-    raise ValueError("SECRET_KEY not found in environment variables")
-ALGORITHM = "HS256"
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+class UserAuth:
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    ALGORITHM = os.getenv('ALGORITHM')
+    ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
