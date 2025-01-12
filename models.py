@@ -10,25 +10,33 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from db import Base
 
-# Player details the user states in the frontend
-class PlayerDetails(BaseModel):
-    name: str
-    age: int
-    position: str
+# # Player details the user states in the frontend
+# class PlayerDetails(BaseModel):
+#     name: str
+#     age: int
+#     position: str
     
-# Request model for profile creation
-class PlayerInfo(BaseModel):
-    first_name: str
-    last_name: str
-    age: int
-    position: str
-    # TODO put this in another class
-    email: str
-    password: str
+# # Request model for profile creation
+# class PlayerInfo(BaseModel):
+#     first_name: str
+#     last_name: str
+#     age: int
+#     position: str
+#     # TODO put this in another class
+#     email: str
+#     password: str
 
 class LoginRequest(BaseModel):
     email: str
     password: str   
+
+class UserInfoDisplay(BaseModel):
+    email: str
+    first_name: str 
+    last_name: str
+
+    class Config:
+        orm_mode = True
 
 # User model for PostgreSQL users data table
 class User(Base):
@@ -38,22 +46,31 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
-    age = Column(Integer)
-    position = Column(String)
     hashed_password = Column(String)
+    age = Column(String)
     level = Column(String)
+    position = Column(String)
+    # player_details = Column(JSON)
+    playstyle_representatives = Column(JSON)
+    strengths = Column(JSON)
+    weaknesses = Column(JSON)
     has_team = Column(Boolean, default=False)
     primary_goal = Column(String)
+    timeline = Column(String)
     skill_level = Column(String)
+    training_days = Column(JSON)
     available_equipment = Column(JSON)
     
     # Only keep the relationships that we have tables for
     # chat_histories = relationship("ChatHistory", back_populates="user")
     program = relationship("UserProgram", back_populates="user", uselist=False)
 
+# pydantic model that validates data received from client
 class OnboardingData(BaseModel):
     firstName: str
     lastName: str
+    email: str
+    password: str
     ageRange: str
     level: str
     position: str

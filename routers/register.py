@@ -43,3 +43,4 @@ def register(player_info: PlayerInfo, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return {"message": "User registered successfully", "user_id": new_user.id}
+
