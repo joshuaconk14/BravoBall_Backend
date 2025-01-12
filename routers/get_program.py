@@ -7,6 +7,9 @@ router = APIRouter()
 
 @router.get("/api/program/{user_id}")
 async def get_user_program(user_id: int, db: Session = Depends(get_db)):
+    """
+    Get the user's program for a given user_id
+    """
     try:
         # Get the user's program
         user_program = db.query(UserProgram).filter(UserProgram.user_id == user_id).first()

@@ -15,14 +15,23 @@ from passlib.context import CryptContext
 router = APIRouter()
 
 def verify_password(plain_password, hashed_password):
+    """
+    Verify the password of a user
+    """
     return pwd_context.verify(plain_password, hashed_password)
 
 def create_access_token(data: dict):
+    """
+    Create an access token for a user using JWT
+    """
     to_encode = data.copy()
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 @router.post("/login/")
 def login(login_request: LoginRequest, db: Session = Depends(get_db)):
+    """
+    Login a user and return an access token if the user is valid
+    """
     user = db.query(User).filter(User.email == login_request.email).first()
     
     if not user or not verify_password(login_request.password, user.hashed_password):

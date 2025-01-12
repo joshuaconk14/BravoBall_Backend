@@ -13,10 +13,16 @@ from config import pwd_context
 router = APIRouter()
 
 def hash_password(password: str) -> str:
+    """
+    Hash a password using the pwd_context
+    """
     return pwd_context.hash(password)
 
 @router.post("/register/")
 def register(player_info: PlayerInfo, db: Session = Depends(get_db)):
+    """
+    Register a new user and return a message if the user is already registered
+    """
     existing_user = db.query(User).filter(User.email == player_info.email).first()
     
     if existing_user:
