@@ -47,22 +47,19 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     hashed_password = Column(String)
-    age = Column(String)
-    level = Column(String)
-    position = Column(String)
-    # player_details = Column(JSON)
-    playstyle_representatives = Column(JSON)
-    strengths = Column(JSON)
-    weaknesses = Column(JSON)
-    has_team = Column(Boolean, default=False)
     primary_goal = Column(String)
-    timeline = Column(String)
-    skill_level = Column(String)
-    training_days = Column(JSON)
-    available_equipment = Column(JSON)
+    biggest_challenge = Column(String)
+    training_experience = Column(String)
+    position = Column(String)
+    playstyle = Column(String)
+    age_range = Column(String)
+    strengths = Column(JSON)  # List of strengths
+    areas_to_improve = Column(JSON)  # List of areas to improve
+    training_location = Column(JSON)  # List of training locations
+    available_equipment = Column(JSON)  # List of equipment
+    daily_training_time = Column(String)
+    weekly_training_days = Column(String)
     
-    # Only keep the relationships that we have tables for
-    # chat_histories = relationship("ChatHistory", back_populates="user")
     program = relationship("UserProgram", back_populates="user", uselist=False)
 
 # pydantic model that validates data received from client
@@ -71,18 +68,18 @@ class OnboardingData(BaseModel):
     lastName: str
     email: str
     password: str
-    ageRange: str
-    level: str
-    position: str
-    playstyleRepresentatives: List[str]
-    strengths: List[str]
-    weaknesses: List[str]
-    hasTeam: bool
     primaryGoal: str
-    timeline: str
-    skillLevel: str
-    trainingDays: List[str]
+    biggestChallenge: str
+    trainingExperience: str
+    position: str
+    playstyle: str
+    ageRange: str
+    strengths: List[str]
+    areasToImprove: List[str]
+    trainingLocation: List[str]
     availableEquipment: List[str]
+    dailyTrainingTime: str
+    weeklyTrainingDays: str
 
 
 # *** PROGRAM MODELS ***``
