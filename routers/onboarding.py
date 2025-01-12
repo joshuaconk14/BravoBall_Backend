@@ -1,11 +1,9 @@
 from fastapi import FastAPI, HTTPException, APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from datetime import datetime
-# from services.program_generator import ProgramGenerator
 from db import get_db
 from models import OnboardingData, User, UserProgram
 from auth import create_access_token
-from .services.drill_recommender import DrillRecommender
 from config import UserAuth
 
 router = APIRouter()
@@ -19,8 +17,6 @@ def hash_password(password: str) -> str:
 
 @router.post("/api/onboarding")
 async def create_onboarding(player_info: OnboardingData, db: Session = Depends(get_db)):
-
-
     # queries through the db to find user
     existing_user = db.query(User).filter(User.email == player_info.email).first()
 
@@ -28,8 +24,6 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
     
     hashed_password = hash_password(player_info.password)
-
-
 
     try:
         # connects pydantic onboarding data model to the User table
@@ -53,11 +47,7 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
         db.add(user)
         db.commit()
         db.refresh(user)
-        
-        # Get drill recommendations for the newly created user
-        recommender = DrillRecommender(db)
-        recommended_drills = recommender.get_recommendations(user)
-        
+
         # Create access token after user is created, made for specific user
         # create_access_token from auth.py
         access_token = create_access_token(
@@ -73,32 +63,6 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
             "message": "Onboarding completed successfully",
             "access_token": access_token,
             "token_type": "Bearer"
-            # "recommendations": [
-            #     {
-            #         "id": drill.id,
-            #         "title": drill.title,
-            #         "description": drill.description,
-            #         "category": drill.category.name,
-            #         "duration": drill.duration,
-            #         "difficulty": drill.difficulty,
-            #         "recommended_equipment": drill.recommended_equipment,
-            #         "instructions": drill.instructions,
-            #         "tips": drill.tips,
-            #         "video_url": drill.video_url,
-            #         "matchScore": {
-            #             "skillLevelMatch": True if drill.difficulty == user.skill_level else False,
-            #             "equipmentAvailable": all(item in user.available_equipment for item in drill.recommended_equipment),
-            #             "recommendedForPosition": user.position in drill.recommended_positions if drill.recommended_positions else False,
-            #             "calculatedScore": round(score, 2)
-            #         }
-            #     } for drill, score in recommended_drills
-            # ],
-            # "metadata": {
-            #     "totalDrills": len(recommended_drills),
-            #     "userSkillLevel": user.skill_level,
-            #     "userPosition": user.position,
-            #     "availableEquipment": user.available_equipment
-            # }
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
