@@ -2,4 +2,6 @@
 .env
 
 test*
+tests/
 __pycache__/
+.pytest_cache/

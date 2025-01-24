@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, DrillCategory, Drill
 from db import SQLALCHEMY_DATABASE_URL
-from test_drills import drills
+from sample_drills import sample_drills
 
 def seed_drills():
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -15,9 +15,9 @@ def seed_drills():
     try:
         # Create categories
         categories = [
-            DrillCategory(name="Dribbling", description="Drills focused on ball control and dribbling skills"),
-            DrillCategory(name="Shooting", description="Drills to improve shooting accuracy and power"),
             DrillCategory(name="Passing", description="Drills for passing accuracy and technique"),
+            DrillCategory(name="Shooting", description="Drills to improve shooting accuracy and power"),
+            DrillCategory(name="Dribbling", description="Drills focused on ball control and dribbling skills"),
             DrillCategory(name="First Touch", description="Drills to improve ball reception and control"),
             DrillCategory(name="Physical", description="Drills for improving speed, agility, and stamina")
         ]
@@ -29,15 +29,26 @@ def seed_drills():
                 db.add(category)
         db.commit()
 
+        # Map drill types to categories
+        category_map = {
+            "short_passing": "Passing",
+            "power_shots": "Shooting",
+            "speed_dribbling": "Dribbling"
+        }
+
         # Add drills
-        for drill_data in drills:
-            category = db.query(DrillCategory).filter_by(name=drill_data["category"]).first()
+        for drill_data in sample_drills:
+            # Determine category based on first skill focus
+            primary_skill = drill_data["skill_focus"][0]
+            category_name = category_map.get(primary_skill, "Physical")
+            category = db.query(DrillCategory).filter_by(name=category_name).first()
+
             if category:
                 existing = db.query(Drill).filter_by(title=drill_data["title"]).first()
                 if existing:
                     # Update existing drill
-                    existing.recommended_positions = drill_data.get("recommended_positions", [])
-                    existing.skill_focus = drill_data.get("skill_focus", [])
+                    for key, value in drill_data.items():
+                        setattr(existing, key, value)
                     db.merge(existing)
                 else:
                     # Create new drill
@@ -46,13 +57,20 @@ def seed_drills():
                         title=drill_data["title"],
                         description=drill_data["description"],
                         duration=drill_data["duration"],
+                        intensity_level=drill_data["intensity_level"],
+                        suitable_training_styles=drill_data["suitable_training_styles"],
+                        drill_type=drill_data["drill_type"],
+                        default_sets=drill_data.get("default_sets"),
+                        default_reps=drill_data.get("default_reps"),
+                        default_duration=drill_data.get("default_duration"),
+                        rest_between_sets=drill_data.get("rest_between_sets"),
+                        required_equipment=drill_data["required_equipment"],
+                        suitable_locations=drill_data["suitable_locations"],
                         difficulty=drill_data["difficulty"],
-                        recommended_equipment=drill_data["equipment"],
+                        skill_focus=drill_data["skill_focus"],
                         instructions=drill_data["instructions"],
                         tips=drill_data["tips"],
-                        video_url=drill_data["video_url"],
-                        recommended_positions=drill_data.get("recommended_positions", []),
-                        skill_focus=drill_data.get("skill_focus", [])
+                        variations=drill_data.get("variations", [])
                     )
                     db.add(drill)
 
