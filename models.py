@@ -5,7 +5,7 @@ This defines all models used in chatbot app
 
 from pydantic import BaseModel
 from typing import List, Optional
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from db import Base
@@ -103,10 +103,10 @@ class TrainingLocation(str, Enum):
     INDOOR_COURT = "At a gym or indoor court"
 
 class Equipment(str, Enum):
-    BALL = "Soccer ball"
-    CONES = "Cones"
-    WALL = "Wall"
-    GOALS = "Goals"
+    BALL = "BALL"
+    CONES = "CONES"
+    WALL = "WALL"
+    GOALS = "GOALS"
 
 class TrainingDuration(int, Enum):
     MINS_15 = 15
@@ -153,9 +153,16 @@ class TrainingStyle(str, Enum):
     REST_DAY = "rest_day"
 
 class Location(str, Enum):
-    FIELD_WITH_GOALS = "field_with_goals"
-    SMALL_FIELD = "small_field"
-    INDOOR_COURT = "indoor_court"
+    INDOOR_COURT = "INDOOR_COURT"
+    SMALL_FIELD = "SMALL_FIELD"
+    FIELD_WITH_GOALS = "FIELD_WITH_GOALS"
+    HOME = "HOME"
+    GYM = "GYM"
+
+class Difficulty(str, Enum):
+    BEGINNER = "beginner"
+    INTERMEDIATE = "intermediate"
+    ADVANCED = "advanced"
 
 class DrillType(str, Enum):
     TIME_BASED = "time_based"  # e.g., "Perform for 2 minutes"
@@ -215,33 +222,44 @@ class SessionPreferences(Base):
     __tablename__ = "session_preferences"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
     duration = Column(Integer)  # in minutes
-    equipment = Column(JSON)  # List of Equipment
-    training_style = Column(String)  # TrainingStyle enum
-    location = Column(String)  # Location enum
-    difficulty = Column(String)  # ExperienceLevel enum
+    available_equipment = Column(ARRAY(String))
+    training_style = Column(String)
+    location = Column(String)
+    difficulty = Column(String)
+    user_id = Column(Integer, ForeignKey("users.id"))
     target_skills = Column(JSON)  # List of Skill
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
 
     user = relationship("User", back_populates="session_preferences")
 
-class TrainingSession(BaseModel):
-    """Represents a complete training session"""
-    total_duration: int
-    drills: List["SessionDrill"]
-    focus_areas: List[str]
+    def __init__(self, duration: int, available_equipment: list, 
+                 training_style: TrainingStyle, location: Location, 
+                 difficulty: Difficulty, target_skills: List[str] = None):
+        self.duration = duration
+        self.available_equipment = available_equipment
+        self.training_style = training_style.value
+        self.location = location.value
+        self.difficulty = difficulty.value
+        self.target_skills = target_skills or []
 
 class SessionDrill(BaseModel):
     """Represents a drill within a training session"""
     title: str
-    sets: int
-    reps: int
     duration: int  # in minutes
-    type: str
     difficulty: str
-    equipment: List[str]
+    required_equipment: List[str]
+    suitable_locations: List[str]
     instructions: List[str]
     tips: List[str]
+
+class TrainingSession(BaseModel):
+    """Represents a complete training session"""
+    total_duration: int
+    drills: List[SessionDrill]
+    focus_areas: List[str]
+
+    class Config:
+        from_attributes = True  # This allows conversion from SQLAlchemy models
     

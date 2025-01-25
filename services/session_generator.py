@@ -1,70 +1,66 @@
-from sqlalchemy import func
-from typing import List
-from models import *
-from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Session
+from models import Drill, TrainingSession, SessionPreferences, SessionDrill
 
 class SessionGenerator:
     def __init__(self, db: Session):
         self.db = db
 
-    def _filter_drills(self, preferences: SessionPreferences) -> List[Drill]:
-        """Filter drills based on session preferences"""
-        query = self.db.query(Drill)
+    async def generate_session(self, preferences: SessionPreferences) -> TrainingSession:
+        """Generate a training session based on user preferences"""
+        
+        # Get all drills
+        all_drills = self.db.query(Drill).all()
+        print(f"\nFound {len(all_drills)} total drills")
+        
+        # Filter drills based on preferences
+        suitable_drills = []
+        for drill in all_drills:
+            # Debug print
+            print(f"\nChecking drill: {drill.title}")
+            print(f"Required equipment: {drill.required_equipment}")
+            print(f"Available equipment: {preferences.available_equipment}")
+            print(f"Location: {drill.suitable_locations}")
+            print(f"Preferred location: {preferences.location}")
+            print(f"Difficulty: {drill.difficulty}")
+            print(f"Preferred difficulty: {preferences.difficulty}")
+            
+            # Check equipment
+            required_equipment = set(drill.required_equipment)
+            available_equipment = set(preferences.available_equipment)
+            if not required_equipment.issubset(available_equipment):
+                print("❌ Failed equipment check")
+                continue
+                
+            # Check location
+            if preferences.location not in drill.suitable_locations:
+                print("❌ Failed location check")
+                continue
+                
+            # Check difficulty
+            if drill.difficulty != preferences.difficulty:
+                print("❌ Failed difficulty check")
+                continue
+                
+            print("✅ Drill matches all criteria!")
+            suitable_drills.append(drill)
 
-        # Basic filters using PostgreSQL JSONB operators
-        query = query.filter(
-            # Check if user has the required equipment
-            func.cast(Drill.required_equipment, JSONB).contained_by(
-                func.cast(preferences.equipment, JSONB)
-            ),
-            # Match location
-            func.cast(Drill.suitable_locations, JSONB).contains(preferences.location),
-            # Match any of the target skills
-            func.cast(Drill.skill_focus, JSONB).contains(preferences.target_skills[0])
+        print(f"\nFound {len(suitable_drills)} suitable drills")
+        
+        # Create session with filtered drills
+        session = TrainingSession(
+            drills=[
+                SessionDrill(
+                    title=drill.title,
+                    duration=drill.duration,
+                    difficulty=drill.difficulty,
+                    required_equipment=drill.required_equipment,
+                    suitable_locations=drill.suitable_locations,
+                    instructions=drill.instructions,
+                    tips=drill.tips
+                ) for drill in suitable_drills
+            ],
+            total_duration=sum(drill.duration for drill in suitable_drills),
+            focus_areas=preferences.target_skills if preferences.target_skills else []
         )
 
-        if preferences.difficulty:
-            query = query.filter(Drill.difficulty == preferences.difficulty)
-
-        return query.all()
-
-    async def generate_session(self, user: User, preferences: SessionPreferences) -> TrainingSession:
-        """Generate a training session based on preferences"""
-        available_drills = self._filter_drills(preferences)
-        if not available_drills:
-            raise ValueError("No suitable drills found for given preferences")
-
-        # Select drills that fit within the time limit
-        selected_drills = []
-        total_duration = 0
-
-        for drill in available_drills:
-            if total_duration + drill.duration <= preferences.duration:
-                selected_drills.append(drill)
-                total_duration += drill.duration
-
-            if total_duration >= preferences.duration:
-                break
-
-        # Create session drills
-        session_drills = [
-            SessionDrill(
-                title=drill.title,
-                sets=drill.default_sets or 3,
-                reps=drill.default_reps or 8,
-                duration=drill.duration,
-                type=drill.drill_type,
-                difficulty=drill.difficulty,
-                equipment=drill.required_equipment,
-                instructions=drill.instructions,
-                tips=drill.tips
-            )
-            for drill in selected_drills
-        ]
-
-        return TrainingSession(
-            total_duration=total_duration,
-            drills=session_drills,
-            focus_areas=preferences.target_skills
-        ) 
+        return session
