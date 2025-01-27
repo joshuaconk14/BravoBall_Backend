@@ -7,7 +7,6 @@ from auth import create_access_token
 from config import UserAuth
 
 router = APIRouter()
-# program_generator = ProgramGenerator()
 
 # hashing the password
 pwd_context = UserAuth.pwd_context
