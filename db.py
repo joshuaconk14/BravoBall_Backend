@@ -4,8 +4,7 @@ This file defintes the database URL and starts the engine to initialize the db
 """
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base
 from urllib.parse import quote
 
 import os
@@ -27,6 +26,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 # creating the session
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+# Create declarative base
 Base = declarative_base()
 
 # this function is used to get the db session running

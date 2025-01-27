@@ -1,88 +1,177 @@
+from utils.drill_factory import DrillBuilder
+
+# Using DrillBuilder
 sample_drills = [
-    # SHORT PASSING
-    {
-        "title": "Wall Pass Mastery",
-        "description": "Rapid fire passing against a wall to improve first touch and passing accuracy",
-        "drill_type": "TIME_BASED",
-        "duration": 10,
-        "default_sets": 3,
-        "default_duration": 120,  # 2 minutes per set
-        "required_equipment": ["BALL", "WALL"],
-        "suitable_locations": ["INDOOR_COURT", "SMALL_FIELD"],
-        "intensity_level": "medium",
-        "suitable_training_styles": ["MEDIUM_INTENSITY", "HIGH_INTENSITY"],
-        "difficulty": "beginner",
-        "skill_focus": ["short_passing", "first_touch"],
-        "instructions": [
+    DrillBuilder("Wall Pass Mastery")
+        .with_description("Rapid fire passing against a wall to improve first touch and passing accuracy")
+        .with_type("TIME_BASED")
+        .with_duration(10)
+        .with_sets(3)
+        .with_reps(0)  # Time-based drill
+        .with_equipment("BALL", "WALL")
+        .with_suitable_locations("INDOOR_COURT", "SMALL_FIELD")
+        .with_intensity("medium")
+        .with_training_styles("MEDIUM_INTENSITY", "HIGH_INTENSITY")
+        .with_difficulty("beginner")
+        .with_skills("short_passing", "first_touch")
+        .with_instructions(
             "Stand 3-5 meters from wall",
             "Pass ball against wall",
             "Control returning ball with first touch",
             "Pass again as quickly as possible while maintaining control"
-        ],
-        "tips": [
+        )
+        .with_tips(
             "Keep ball close to ground",
             "Use inside of foot for accuracy",
             "Stay on balls of feet"
-        ],
-        "variations": [
+        )
+        .with_variations(
             "Alternate feet",
             "One-touch passing",
             "Add movement between passes"
-        ]
-    },
-    
-    # POWER SHOTS
-    {
-        "title": "Power Shot Development",
-        "description": "Focus on generating maximum power while maintaining accuracy",
-        "drill_type": "REP_BASED",
-        "duration": 15,
-        "default_sets": 4,
-        "default_reps": 5,
-        "required_equipment": ["BALL", "GOALS"],
-        "suitable_locations": ["FIELD_WITH_GOALS"],
-        "intensity_level": "high",
-        "suitable_training_styles": ["HIGH_INTENSITY", "GAME_PREP"],
-        "difficulty": "intermediate",
-        "skill_focus": ["power_shots", "shooting_technique"],
-        "instructions": [
+        )
+        .with_rest(60)
+        .build(),
+        
+    DrillBuilder("Power Shot Development")
+        .with_description("Focus on generating maximum power while maintaining accuracy")
+        .with_type("REP_BASED")
+        .with_duration(15)
+        .with_sets(4)
+        .with_reps(5)
+        .with_equipment("BALL", "GOALS")
+        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_intensity("high")
+        .with_training_styles("HIGH_INTENSITY", "GAME_PREP")
+        .with_difficulty("intermediate")
+        .with_skills("power_shots", "shooting_technique")
+        .with_instructions(
             "Place ball 20 yards from goal",
             "Take 3-step run up",
             "Strike through ball with laces",
             "Aim for corners of goal"
-        ],
-        "tips": [
+        )
+        .with_tips(
             "Lock ankle when striking",
             "Follow through towards target",
             "Plant foot beside ball"
-        ]
-    },
-    
-    # SPEED DRIBBLING
-    {
-        "title": "Cone Slalom Sprint",
-        "description": "High-speed dribbling through cones with acceleration focus",
-        "drill_type": "SET_BASED",
-        "duration": 12,
-        "default_sets": 4,
-        "default_reps": 2,
-        "required_equipment": ["BALL", "CONES"],
-        "suitable_locations": ["SMALL_FIELD", "INDOOR_COURT"],
-        "intensity_level": "high",
-        "suitable_training_styles": ["HIGH_INTENSITY", "GAME_PREP"],
-        "difficulty": "advanced",
-        "skill_focus": ["speed_dribbling", "close_control"],
-        "instructions": [
+        )
+        .with_rest(60)
+        .build(),
+
+    DrillBuilder("Cone ZigZag Sprint")
+        .with_description("High-speed dribbling through cones with acceleration focus")
+        .with_type("SET_BASED")
+        .with_duration(12)
+        .with_sets(4)
+        .with_reps(2)
+        .with_equipment("BALL", "CONES")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("high")
+        .with_training_styles("HIGH_INTENSITY", "GAME_PREP")
+        .with_difficulty("advanced")
+        .with_skills("speed_dribbling", "close_control")
+        .with_instructions(
             "Set up 6 cones in zigzag pattern, 2 meters apart",
             "Start with ball at first cone",
             "Dribble through cones at maximum speed",
             "Sprint back to start with ball"
-        ],
-        "rest_between_sets": 60,
-        "tips": [
+        )
+        .with_tips(
             "Use both feet",
             "Keep head up",
             "Touch ball with every step"
-        ]
-    }
-] 
+        )
+        .with_rest(60)  # 60 seconds rest between sets
+        .build()
+]
+
+
+# sample_drills = [
+#     # SHORT PASSING
+#     {
+#         "title": "Wall Pass Mastery",
+#         "description": "Rapid fire passing against a wall to improve first touch and passing accuracy",
+#         "drill_type": "TIME_BASED",
+#         "duration": 10,
+#         "default_sets": 3,
+#         "default_duration": 120,  # 2 minutes per set
+#         "required_equipment": ["BALL", "WALL"],
+#         "suitable_locations": ["INDOOR_COURT", "SMALL_FIELD"],
+#         "intensity_level": "medium",
+#         "suitable_training_styles": ["MEDIUM_INTENSITY", "HIGH_INTENSITY"],
+#         "difficulty": "beginner",
+#         "skill_focus": ["short_passing", "first_touch"],
+#         "instructions": [
+#             "Stand 3-5 meters from wall",
+#             "Pass ball against wall",
+#             "Control returning ball with first touch",
+#             "Pass again as quickly as possible while maintaining control"
+#         ],
+#         "tips": [
+#             "Keep ball close to ground",
+#             "Use inside of foot for accuracy",
+#             "Stay on balls of feet"
+#         ],
+#         "variations": [
+#             "Alternate feet",
+#             "One-touch passing",
+#             "Add movement between passes"
+#         ]
+#     },
+    
+#     # POWER SHOTS
+#     {
+#         "title": "Power Shot Development",
+#         "description": "Focus on generating maximum power while maintaining accuracy",
+#         "drill_type": "REP_BASED",
+#         "duration": 15,
+#         "default_sets": 4,
+#         "default_reps": 5,
+#         "required_equipment": ["BALL", "GOALS"],
+#         "suitable_locations": ["FIELD_WITH_GOALS"],
+#         "intensity_level": "high",
+#         "suitable_training_styles": ["HIGH_INTENSITY", "GAME_PREP"],
+#         "difficulty": "intermediate",
+#         "skill_focus": ["power_shots", "shooting_technique"],
+#         "instructions": [
+#             "Place ball 20 yards from goal",
+#             "Take 3-step run up",
+#             "Strike through ball with laces",
+#             "Aim for corners of goal"
+#         ],
+#         "tips": [
+#             "Lock ankle when striking",
+#             "Follow through towards target",
+#             "Plant foot beside ball"
+#         ]
+#     },
+    
+#     # SPEED DRIBBLING
+#     {
+#         "title": "Cone Slalom Sprint",
+#         "description": "High-speed dribbling through cones with acceleration focus",
+#         "drill_type": "SET_BASED",
+#         "duration": 12,
+#         "default_sets": 4,
+#         "default_reps": 2,
+#         "required_equipment": ["BALL", "CONES"],
+#         "suitable_locations": ["SMALL_FIELD", "INDOOR_COURT"],
+#         "intensity_level": "high",
+#         "suitable_training_styles": ["HIGH_INTENSITY", "GAME_PREP"],
+#         "difficulty": "advanced",
+#         "skill_focus": ["speed_dribbling", "close_control"],
+#         "instructions": [
+#             "Set up 6 cones in zigzag pattern, 2 meters apart",
+#             "Start with ball at first cone",
+#             "Dribble through cones at maximum speed",
+#             "Sprint back to start with ball"
+#         ],
+#         "rest_between_sets": 60,
+#         "tips": [
+#             "Use both feet",
+#             "Keep head up",
+#             "Touch ball with every step"
+#         ]
+#     }
+# ]

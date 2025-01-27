@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import Drill, TrainingSession, SessionPreferences, SessionDrill
+from models import Drill, TrainingSession, SessionPreferences
 
 class SessionGenerator:
     def __init__(self, db: Session):
@@ -19,8 +19,8 @@ class SessionGenerator:
             print(f"\nChecking drill: {drill.title}")
             print(f"Required equipment: {drill.required_equipment}")
             print(f"Available equipment: {preferences.available_equipment}")
-            print(f"Location: {drill.suitable_locations}")
-            print(f"Preferred location: {preferences.location}")
+            print(f"Training location: {drill.suitable_locations}")
+            print(f"Preferred training location: {preferences.training_location}")
             print(f"Difficulty: {drill.difficulty}")
             print(f"Preferred difficulty: {preferences.difficulty}")
             
@@ -31,9 +31,9 @@ class SessionGenerator:
                 print("❌ Failed equipment check")
                 continue
                 
-            # Check location
-            if preferences.location not in drill.suitable_locations:
-                print("❌ Failed location check")
+            # Check training location
+            if preferences.training_location not in drill.suitable_locations:
+                print("❌ Failed training location check")
                 continue
                 
             # Check difficulty
@@ -48,19 +48,16 @@ class SessionGenerator:
         
         # Create session with filtered drills
         session = TrainingSession(
-            drills=[
-                SessionDrill(
-                    title=drill.title,
-                    duration=drill.duration,
-                    difficulty=drill.difficulty,
-                    required_equipment=drill.required_equipment,
-                    suitable_locations=drill.suitable_locations,
-                    instructions=drill.instructions,
-                    tips=drill.tips
-                ) for drill in suitable_drills
-            ],
             total_duration=sum(drill.duration for drill in suitable_drills),
+            drills=suitable_drills,
             focus_areas=preferences.target_skills if preferences.target_skills else []
         )
+
+        # Add to database if user is provided
+        if preferences.user_id:
+            session.user_id = preferences.user_id
+            self.db.add(session)
+            self.db.commit()
+            self.db.refresh(session)
 
         return session

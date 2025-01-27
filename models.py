@@ -3,16 +3,16 @@ models.py
 This defines all models used in chatbot app
 """
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from db import Base
 from enum import Enum
 from sqlalchemy.sql import func
 
-
+# *** AUTH MODELS ***
 class LoginRequest(BaseModel):
     email: str
     password: str   
@@ -22,33 +22,9 @@ class UserInfoDisplay(BaseModel):
     first_name: str 
     last_name: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
-# User model for PostgreSQL users data table
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    first_name = Column(String)
-    last_name = Column(String)
-    hashed_password = Column(String)
-    age = Column(String)
-    level = Column(String)
-    position = Column(String)
-    # player_details = Column(JSON)
-    playstyle_representatives = Column(JSON)
-    strengths = Column(JSON)
-    weaknesses = Column(JSON)
-    has_team = Column(Boolean, default=False)
-    primary_goal = Column(String)
-    timeline = Column(String)
-    skill_level = Column(String)
-    training_days = Column(JSON)
-    available_equipment = Column(JSON)
-    session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
-
+# *** ONBOARDING ENUMS ***
 class PrimaryGoal(str, Enum):
     IMPROVE_SKILL = "Improve my overall skill level"
     BEST_ON_TEAM = "Be the best player on my team"
@@ -97,10 +73,11 @@ class Skill(str, Enum):
     FITNESS = "Fitness"
 
 class TrainingLocation(str, Enum):
-    FIELD_WITH_GOALS = "At a soccer field with goals"
-    HOME = "At home (backyard or indoors)"
-    PARK = "At a park or open field"
-    INDOOR_COURT = "At a gym or indoor court"
+    INDOOR_COURT = "INDOOR_COURT"
+    SMALL_FIELD = "SMALL_FIELD"
+    FIELD_WITH_GOALS = "FIELD_WITH_GOALS"
+    HOME = "HOME"
+    GYM = "GYM"
 
 class Equipment(str, Enum):
     BALL = "BALL"
@@ -121,7 +98,42 @@ class TrainingFrequency(str, Enum):
     MODERATE = "4-5 days (moderate schedule)"
     INTENSE = "6-7 days (intense schedule)"
 
-# Updated OnboardingData model
+class TrainingStyle(str, Enum):
+    MEDIUM_INTENSITY = "medium_intensity"
+    HIGH_INTENSITY = "high_intensity"
+    GAME_PREP = "game_prep"
+    GAME_RECOVERY = "game_recovery"
+    REST_DAY = "rest_day"
+
+class Difficulty(str, Enum):
+    BEGINNER = "beginner"
+    INTERMEDIATE = "intermediate"
+    ADVANCED = "advanced"
+
+# *** USER MODELS ***
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    hashed_password = Column(String)
+    age = Column(String)
+    level = Column(String)
+    position = Column(String)
+    # player_details = Column(JSON)
+    playstyle_representatives = Column(JSON)
+    strengths = Column(JSON)
+    weaknesses = Column(JSON)
+    has_team = Column(Boolean, default=False)
+    primary_goal = Column(String)
+    timeline = Column(String)
+    skill_level = Column(String)
+    training_days = Column(JSON)
+    available_equipment = Column(JSON)
+    session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
+    
 class OnboardingData(BaseModel):
     primary_goal: PrimaryGoal
     main_challenge: Challenge
@@ -136,7 +148,9 @@ class OnboardingData(BaseModel):
     daily_training_time: TrainingDuration
     weekly_training_days: TrainingFrequency
 
-# *** SESSION MODELS ***``
+    model_config = ConfigDict(from_attributes=True)
+
+# *** DRILL MODELS ***
 
 class DrillCategory(Base):
     __tablename__ = "drill_categories"
@@ -145,32 +159,12 @@ class DrillCategory(Base):
     name = Column(String, unique=True)
     description = Column(String)
 
-class TrainingStyle(str, Enum):
-    MEDIUM_INTENSITY = "medium_intensity"
-    HIGH_INTENSITY = "high_intensity"
-    GAME_PREP = "game_prep"
-    GAME_RECOVERY = "game_recovery"
-    REST_DAY = "rest_day"
-
-class Location(str, Enum):
-    INDOOR_COURT = "INDOOR_COURT"
-    SMALL_FIELD = "SMALL_FIELD"
-    FIELD_WITH_GOALS = "FIELD_WITH_GOALS"
-    HOME = "HOME"
-    GYM = "GYM"
-
-class Difficulty(str, Enum):
-    BEGINNER = "beginner"
-    INTERMEDIATE = "intermediate"
-    ADVANCED = "advanced"
-
 class DrillType(str, Enum):
     TIME_BASED = "time_based"  # e.g., "Perform for 2 minutes"
     REP_BASED = "rep_based"    # e.g., "Do 10 shots"
     SET_BASED = "set_based"    # e.g., "3 sets of 5 reps"
     CONTINUOUS = "continuous"   # e.g., "Until successful completion"
 
-# Update the Drill model
 class Drill(Base):
     __tablename__ = "drills"
 
@@ -214,9 +208,8 @@ class Drill(Base):
 
     category = relationship("DrillCategory", backref="drills")
 
-
     
-# Add these new models after your existing models
+# *** SESSION MODELS ***
 
 class SessionPreferences(Base):
     __tablename__ = "session_preferences"
@@ -225,7 +218,7 @@ class SessionPreferences(Base):
     duration = Column(Integer)  # in minutes
     available_equipment = Column(ARRAY(String))
     training_style = Column(String)
-    location = Column(String)
+    training_location = Column(String)
     difficulty = Column(String)
     user_id = Column(Integer, ForeignKey("users.id"))
     target_skills = Column(JSON)  # List of Skill
@@ -235,31 +228,39 @@ class SessionPreferences(Base):
     user = relationship("User", back_populates="session_preferences")
 
     def __init__(self, duration: int, available_equipment: list, 
-                 training_style: TrainingStyle, location: Location, 
+                 training_style: TrainingStyle, training_location: TrainingLocation, 
                  difficulty: Difficulty, target_skills: List[str] = None):
         self.duration = duration
         self.available_equipment = available_equipment
         self.training_style = training_style.value
-        self.location = location.value
+        self.training_location = training_location.value
         self.difficulty = difficulty.value
         self.target_skills = target_skills or []
 
-class SessionDrill(BaseModel):
-    """Represents a drill within a training session"""
-    title: str
-    duration: int  # in minutes
-    difficulty: str
-    required_equipment: List[str]
-    suitable_locations: List[str]
-    instructions: List[str]
-    tips: List[str]
-
-class TrainingSession(BaseModel):
+class TrainingSession(Base):
     """Represents a complete training session"""
-    total_duration: int
-    drills: List[SessionDrill]
-    focus_areas: List[str]
+    __tablename__ = "training_sessions"
 
-    class Config:
-        from_attributes = True  # This allows conversion from SQLAlchemy models
+    id = Column(Integer, primary_key=True, index=True)
+    total_duration = Column(Integer)  # in minutes
+    focus_areas = Column(JSON)  # List of skill areas
+    created_at = Column(DateTime, server_default=func.now())
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Optional user association
+
+    # Many-to-many relationship with drills
+    drills = relationship(
+        "Drill",
+        secondary="session_drills",
+        backref="training_sessions"
+    )
+
+    user = relationship("User", backref="training_sessions")
+
+# Association table for many-to-many relationship between sessions and drills
+session_drills = Table(
+    "session_drills",
+    Base.metadata,
+    Column("session_id", Integer, ForeignKey("training_sessions.id")),
+    Column("drill_id", Integer, ForeignKey("drills.id")),
+)
     

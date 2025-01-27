@@ -30,7 +30,7 @@ class PreferenceService:
             duration=duration_map[onboarding_data.daily_training_time],
             equipment=[eq.value for eq in onboarding_data.available_equipment],
             training_style=training_style_map[onboarding_data.experience_level].value,
-            location=onboarding_data.training_location.value,
+            training_location=onboarding_data.training_location.value,
             difficulty=onboarding_data.experience_level.value,
             target_skills=[skill.value for skill in onboarding_data.areas_to_improve],
             created_at=datetime.now(UTC)
