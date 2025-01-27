@@ -1,6 +1,6 @@
 from typing import List, Optional
 from enum import Enum
-from models import DrillType, TrainingLocation, TrainingStyle, Difficulty
+from models import DrillType, TrainingLocation, TrainingStyle, Difficulty, Equipment, TrainingDuration
 
 class DrillBuilder:
     def __init__(self, title: str):
@@ -28,11 +28,11 @@ class DrillBuilder:
         self.drill["description"] = description
         return self
 
-    def with_type(self, drill_type: str):
+    def with_type(self, drill_type: DrillType):
         self.drill["drill_type"] = drill_type
         return self
 
-    def with_duration(self, duration: int):
+    def with_duration(self, duration: TrainingDuration):
         self.drill["duration"] = duration
         return self
 
@@ -44,11 +44,11 @@ class DrillBuilder:
         self.drill["default_reps"] = reps
         return self
 
-    def with_equipment(self, *equipment: str):
+    def with_equipment(self, *equipment: Equipment):
         self.drill["required_equipment"] = list(equipment)
         return self
 
-    def with_suitable_locations(self, *locations: str):
+    def with_suitable_locations(self, *locations: TrainingLocation):
         self.drill["suitable_locations"] = list(locations)
         return self
 
@@ -56,11 +56,11 @@ class DrillBuilder:
         self.drill["intensity_level"] = intensity
         return self
 
-    def with_training_styles(self, *styles: str):
+    def with_training_styles(self, *styles: TrainingStyle):
         self.drill["suitable_training_styles"] = list(styles)
         return self
 
-    def with_difficulty(self, difficulty: str):
+    def with_difficulty(self, difficulty: Difficulty):
         self.drill["difficulty"] = difficulty
         return self
 
