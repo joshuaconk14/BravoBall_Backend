@@ -1,88 +1,533 @@
 from utils.drill_factory import DrillBuilder
+from models import (
+    SkillCategory, PassingSubSkill, ShootingSubSkill,
+    DribblingSubSkill, FirstTouchSubSkill, FitnessSubSkill
+)
 
-# Using DrillBuilder
+# Using DrillBuilder to create one drill per subcategory
 sample_drills = [
+    # PASSING DRILLS
+    DrillBuilder("Quick Short Pass Combinations")
+        .with_description("Quick-fire passing between partners to improve short passing accuracy")
+        .with_type("TIME_BASED")
+        .with_duration(15)
+        .with_sets(4)
+        .with_reps(0)
+        .with_equipment("BALL")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("medium")
+        .with_training_styles("MEDIUM_INTENSITY")
+        .with_difficulty("beginner")
+        .with_primary_skill(SkillCategory.PASSING, PassingSubSkill.SHORT_PASSING)
+        .with_secondary_skills(
+            (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "Position 5 yards apart",
+            "Pass and move in triangular pattern",
+            "One-touch passing when possible"
+        )
+        .with_tips(
+            "Keep passes on ground",
+            "Use inside of foot",
+            "Maintain good body position"
+        )
+        .with_rest(30)
+        .build(),
+
+    DrillBuilder("Long Range Switch Play")
+        .with_description("Practice switching play with long diagonal passes")
+        .with_type("REP_BASED")
+        .with_duration(20)
+        .with_sets(3)
+        .with_reps(10)
+        .with_equipment("BALL", "CONES")
+        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_intensity("high")
+        .with_training_styles("GAME_PREP")
+        .with_difficulty("advanced")
+        .with_primary_skill(SkillCategory.PASSING, PassingSubSkill.LONG_PASSING)
+        .with_secondary_skills(
+            (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.AERIAL_CONTROL)
+        )
+        .with_instructions(
+            "Set up two 10-yard zones on opposite flanks",
+            "Switch play between zones",
+            "Receiver controls and returns"
+        )
+        .with_tips(
+            "Strike through ball with laces",
+            "Follow through towards target",
+            "Communicate with receiver"
+        )
+        .with_rest(45)
+        .build(),
+
     DrillBuilder("Wall Pass Mastery")
-        .with_description("Rapid fire passing against a wall to improve first touch and passing accuracy")
+        .with_description("Rapid fire passing against a wall to improve passing accuracy")
         .with_type("TIME_BASED")
         .with_duration(10)
         .with_sets(3)
-        .with_reps(0)  # Time-based drill
+        .with_reps(0)
         .with_equipment("BALL", "WALL")
-        .with_suitable_locations("INDOOR_COURT", "SMALL_FIELD")
+        .with_suitable_locations("INDOOR_COURT")
         .with_intensity("medium")
-        .with_training_styles("MEDIUM_INTENSITY", "HIGH_INTENSITY")
-        .with_difficulty("beginner")
-        .with_skills("short_passing", "first_touch")
+        .with_training_styles("MEDIUM_INTENSITY")
+        .with_difficulty("intermediate")
+        .with_primary_skill(SkillCategory.PASSING, PassingSubSkill.WALL_PASSING)
+        .with_secondary_skills(
+            (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.ONE_TOUCH_CONTROL),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
         .with_instructions(
-            "Stand 3-5 meters from wall",
-            "Pass ball against wall",
-            "Control returning ball with first touch",
-            "Pass again as quickly as possible while maintaining control"
+            "Stand 5 yards from wall",
+            "Pass against wall continuously",
+            "Control and pass quickly"
         )
         .with_tips(
-            "Keep ball close to ground",
-            "Use inside of foot for accuracy",
-            "Stay on balls of feet"
+            "Vary power and angle",
+            "Stay on toes",
+            "Use both feet"
         )
-        .with_variations(
-            "Alternate feet",
-            "One-touch passing",
-            "Add movement between passes"
-        )
-        .with_rest(60)
+        .with_rest(30)
         .build(),
-        
-    DrillBuilder("Power Shot Development")
-        .with_description("Focus on generating maximum power while maintaining accuracy")
+
+    # SHOOTING DRILLS
+    DrillBuilder("Power Shot Training")
+        .with_description("Focus on generating maximum power in shots")
         .with_type("REP_BASED")
-        .with_duration(15)
+        .with_duration(25)
         .with_sets(4)
         .with_reps(5)
         .with_equipment("BALL", "GOALS")
         .with_suitable_locations("FIELD_WITH_GOALS")
         .with_intensity("high")
-        .with_training_styles("HIGH_INTENSITY", "GAME_PREP")
+        .with_training_styles("HIGH_INTENSITY")
         .with_difficulty("intermediate")
-        .with_skills("power_shots", "shooting_technique")
+        .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.POWER)
+        .with_secondary_skills(
+            (SkillCategory.SHOOTING, ShootingSubSkill.LONG_SHOTS)
+        )
         .with_instructions(
             "Place ball 20 yards from goal",
-            "Take 3-step run up",
-            "Strike through ball with laces",
-            "Aim for corners of goal"
+            "Generate power through technique",
+            "Aim for corners"
         )
         .with_tips(
-            "Lock ankle when striking",
-            "Follow through towards target",
-            "Plant foot beside ball"
+            "Lock ankle",
+            "Strike ball cleanly",
+            "Follow through"
+        )
+        .with_rest(45)
+        .build(),
+
+    DrillBuilder("Clinical Finishing")
+        .with_description("Close range finishing drills to improve accuracy")
+        .with_type("REP_BASED")
+        .with_duration(20)
+        .with_sets(3)
+        .with_reps(8)
+        .with_equipment("BALL", "GOALS")
+        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_intensity("medium")
+        .with_training_styles("GAME_PREP")
+        .with_difficulty("beginner")
+        .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.FINISHING)
+        .with_secondary_skills(
+            (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
+            (SkillCategory.DRIBBLING, DribblingSubSkill.CLOSE_CONTROL)
+        )
+        .with_instructions(
+            "Set up 12 yards from goal",
+            "Receive and finish quickly",
+            "Vary finishing techniques"
+        )
+        .with_tips(
+            "Place shots accurately",
+            "Keep head steady",
+            "Pick spot before shooting"
+        )
+        .with_rest(30)
+        .build(),
+
+    DrillBuilder("Volley Practice")
+        .with_description("Improve technique for volleying the ball")
+        .with_type("REP_BASED")
+        .with_duration(15)
+        .with_sets(4)
+        .with_reps(6)
+        .with_equipment("BALL", "GOALS")
+        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_intensity("medium")
+        .with_training_styles("MEDIUM_INTENSITY")
+        .with_difficulty("advanced")
+        .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.VOLLEYS)
+        .with_secondary_skills(
+            (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.AERIAL_CONTROL),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "Partner tosses ball",
+            "Strike volley at goal",
+            "Vary height and angle"
+        )
+        .with_tips(
+            "Watch ball onto foot",
+            "Keep body over ball",
+            "Time jump correctly"
+        )
+        .with_rest(40)
+        .build(),
+
+    DrillBuilder("Long Range Accuracy")
+        .with_description("Practice shooting accurately from distance")
+        .with_type("REP_BASED")
+        .with_duration(25)
+        .with_sets(3)
+        .with_reps(7)
+        .with_equipment("BALL", "GOALS", "CONES")
+        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_intensity("high")
+        .with_training_styles("GAME_PREP")
+        .with_difficulty("advanced")
+        .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.LONG_SHOTS)
+        .with_secondary_skills(
+            (SkillCategory.SHOOTING, ShootingSubSkill.POWER)
+        )
+        .with_instructions(
+            "Set up 25 yards from goal",
+            "Aim for specific targets",
+            "Focus on technique first"
+        )
+        .with_tips(
+            "Strike through ball cleanly",
+            "Keep shot down",
+            "Follow through to target"
+        )
+        .with_rest(45)
+        .build(),
+
+    # DRIBBLING DRILLS
+    DrillBuilder("Ball Mastery Circuit")
+        .with_description("Fundamental ball control exercises")
+        .with_type("TIME_BASED")
+        .with_duration(15)
+        .with_sets(3)
+        .with_reps(0)
+        .with_equipment("BALL", "CONES")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("low")
+        .with_training_styles("MEDIUM_INTENSITY")
+        .with_difficulty("beginner")
+        .with_primary_skill(SkillCategory.DRIBBLING, DribblingSubSkill.BALL_MASTERY)
+        .with_secondary_skills(
+            (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "Perform various touches",
+            "Inside/outside rolls",
+            "Figure 8s through legs"
+        )
+        .with_tips(
+            "Keep ball close",
+            "Use both feet",
+            "Stay balanced"
+        )
+        .with_rest(30)
+        .build(),
+
+    DrillBuilder("Tight Space Control")
+        .with_description("Improve close control in confined spaces")
+        .with_type("TIME_BASED")
+        .with_duration(12)
+        .with_sets(4)
+        .with_reps(0)
+        .with_equipment("BALL", "CONES")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("medium")
+        .with_training_styles("MEDIUM_INTENSITY")
+        .with_difficulty("intermediate")
+        .with_primary_skill(SkillCategory.DRIBBLING, DribblingSubSkill.CLOSE_CONTROL)
+        .with_secondary_skills(
+            (SkillCategory.DRIBBLING, DribblingSubSkill.BALL_MASTERY),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "Create 3x3 yard box",
+            "Dribble within space",
+            "Respond to commands"
+        )
+        .with_tips(
+            "Quick small touches",
+            "Keep head up",
+            "Use all parts of feet"
+        )
+        .with_rest(30)
+        .build(),
+
+    DrillBuilder("Speed Dribbling Course")
+        .with_description("High-speed dribbling with directional changes")
+        .with_type("TIME_BASED")
+        .with_duration(15)
+        .with_sets(4)
+        .with_reps(0)
+        .with_equipment("BALL", "CONES")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("high")
+        .with_training_styles("HIGH_INTENSITY")
+        .with_difficulty("advanced")
+        .with_primary_skill(SkillCategory.DRIBBLING, DribblingSubSkill.SPEED_DRIBBLING)
+        .with_secondary_skills(
+            (SkillCategory.FITNESS, FitnessSubSkill.SPEED),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "Set up cone course",
+            "Dribble at pace",
+            "Change direction quickly"
+        )
+        .with_tips(
+            "Push ball ahead",
+            "Stay on toes",
+            "Use both feet"
+        )
+        .with_rest(45)
+        .build(),
+
+    DrillBuilder("1v1 Skills Training")
+        .with_description("Practice moves to beat defenders")
+        .with_type("REP_BASED")
+        .with_duration(20)
+        .with_sets(3)
+        .with_reps(6)
+        .with_equipment("BALL", "CONES")
+        .with_suitable_locations("SMALL_FIELD")
+        .with_intensity("high")
+        .with_training_styles("GAME_PREP")
+        .with_difficulty("advanced")
+        .with_primary_skill(SkillCategory.DRIBBLING, DribblingSubSkill.ONE_V_ONE_MOVES)
+        .with_secondary_skills(
+            (SkillCategory.DRIBBLING, DribblingSubSkill.CLOSE_CONTROL),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "Practice specific moves",
+            "Execute against defender",
+            "Accelerate after move"
+        )
+        .with_tips(
+            "Sell the fake",
+            "Change pace",
+            "Keep ball protected"
+        )
+        .with_rest(40)
+        .build(),
+
+    # FIRST TOUCH DRILLS
+    DrillBuilder("Ground Control Basics")
+        .with_description("Improve control of ground passes")
+        .with_type("TIME_BASED")
+        .with_duration(15)
+        .with_sets(3)
+        .with_reps(0)
+        .with_equipment("BALL")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("low")
+        .with_training_styles("MEDIUM_INTENSITY")
+        .with_difficulty("beginner")
+        .with_primary_skill(SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL)
+        .with_secondary_skills(
+            (SkillCategory.PASSING, PassingSubSkill.SHORT_PASSING),
+            (SkillCategory.DRIBBLING, DribblingSubSkill.CLOSE_CONTROL)
+        )
+        .with_instructions(
+            "Receive ground passes",
+            "Control into space",
+            "Maintain fluid motion"
+        )
+        .with_tips(
+            "Cushion the ball",
+            "Open body position",
+            "Look before receiving"
+        )
+        .with_rest(30)
+        .build(),
+
+    DrillBuilder("Aerial Control Practice")
+        .with_description("Develop control of aerial balls")
+        .with_type("REP_BASED")
+        .with_duration(20)
+        .with_sets(4)
+        .with_reps(8)
+        .with_equipment("BALL")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("medium")
+        .with_training_styles("GAME_PREP")
+        .with_difficulty("advanced")
+        .with_primary_skill(SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.AERIAL_CONTROL)
+        .with_secondary_skills(
+            (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "Partner serves high balls",
+            "Control with different surfaces",
+            "Keep ball close"
+        )
+        .with_tips(
+            "Watch ball all the way",
+            "Relax receiving surface",
+            "Prepare next action"
+        )
+        .with_rest(40)
+        .build(),
+
+    DrillBuilder("Turn and Face")
+        .with_description("Practice turning with the ball under control")
+        .with_type("TIME_BASED")
+        .with_duration(15)
+        .with_sets(3)
+        .with_reps(0)
+        .with_equipment("BALL", "CONES")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("medium")
+        .with_training_styles("MEDIUM_INTENSITY")
+        .with_difficulty("intermediate")
+        .with_primary_skill(SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.TURNING_WITH_BALL)
+        .with_secondary_skills(
+            (SkillCategory.DRIBBLING, DribblingSubSkill.CLOSE_CONTROL),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "Receive with back to goal",
+            "Turn quickly",
+            "Accelerate into space"
+        )
+        .with_tips(
+            "Check shoulder",
+            "Use first touch to turn",
+            "Keep ball close"
+        )
+        .with_rest(30)
+        .build(),
+
+    DrillBuilder("One Touch Control")
+        .with_description("Develop instant control and redistribution")
+        .with_type("TIME_BASED")
+        .with_duration(15)
+        .with_sets(4)
+        .with_reps(0)
+        .with_equipment("BALL")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("high")
+        .with_training_styles("HIGH_INTENSITY")
+        .with_difficulty("advanced")
+        .with_primary_skill(SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.ONE_TOUCH_CONTROL)
+        .with_secondary_skills(
+            (SkillCategory.PASSING, PassingSubSkill.SHORT_PASSING),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "One touch passing sequence",
+            "Vary pace and direction",
+            "Keep ball moving"
+        )
+        .with_tips(
+            "Stay on toes",
+            "Open body shape",
+            "Look before ball arrives"
+        )
+        .with_rest(45)
+        .build(),
+
+    # FITNESS DRILLS
+    DrillBuilder("Speed Development")
+        .with_description("Improve acceleration and top speed")
+        .with_type("SET_BASED")
+        .with_duration(20)
+        .with_sets(5)
+        .with_reps(4)
+        .with_equipment("CONES")
+        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_intensity("high")
+        .with_training_styles("HIGH_INTENSITY")
+        .with_difficulty("intermediate")
+        .with_primary_skill(SkillCategory.FITNESS, FitnessSubSkill.SPEED)
+        .with_secondary_skills(
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY),
+            (SkillCategory.FITNESS, FitnessSubSkill.ENDURANCE)
+        )
+        .with_instructions(
+            "Sprint intervals",
+            "Focus on technique",
+            "Full recovery between sets"
+        )
+        .with_tips(
+            "Drive arms",
+            "Stay on toes",
+            "Maintain form"
         )
         .with_rest(60)
         .build(),
 
-    DrillBuilder("Cone ZigZag Sprint")
-        .with_description("High-speed dribbling through cones with acceleration focus")
-        .with_type("SET_BASED")
-        .with_duration(12)
+    DrillBuilder("Agility Circuit")
+        .with_description("Improve quickness and change of direction")
+        .with_type("TIME_BASED")
+        .with_duration(15)
         .with_sets(4)
-        .with_reps(2)
-        .with_equipment("BALL", "CONES")
+        .with_reps(0)
+        .with_equipment("CONES")
         .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
         .with_intensity("high")
-        .with_training_styles("HIGH_INTENSITY", "GAME_PREP")
-        .with_difficulty("advanced")
-        .with_skills("speed_dribbling", "close_control")
+        .with_training_styles("HIGH_INTENSITY")
+        .with_difficulty("intermediate")
+        .with_primary_skill(SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        .with_secondary_skills(
+            (SkillCategory.FITNESS, FitnessSubSkill.SPEED),
+            (SkillCategory.FITNESS, FitnessSubSkill.ENDURANCE)
+        )
         .with_instructions(
-            "Set up 6 cones in zigzag pattern, 2 meters apart",
-            "Start with ball at first cone",
-            "Dribble through cones at maximum speed",
-            "Sprint back to start with ball"
+            "Complete agility course",
+            "Quick direction changes",
+            "Maintain speed throughout"
         )
         .with_tips(
-            "Use both feet",
-            "Keep head up",
-            "Touch ball with every step"
+            "Stay low",
+            "Quick feet",
+            "Sharp turns"
         )
-        .with_rest(60)  # 60 seconds rest between sets
-        .build()
+        .with_rest(45)
+        .build(),
+
+    DrillBuilder("Endurance Builder")
+        .with_description("Build stamina and aerobic capacity")
+        .with_type("TIME_BASED")
+        .with_duration(30)
+        .with_sets(2)
+        .with_reps(0)
+        .with_equipment("CONES")
+        .with_suitable_locations("SMALL_FIELD", "FIELD_WITH_GOALS")
+        .with_intensity("medium")
+        .with_training_styles("MEDIUM_INTENSITY")
+        .with_difficulty("intermediate")
+        .with_primary_skill(SkillCategory.FITNESS, FitnessSubSkill.ENDURANCE)
+        .with_secondary_skills(
+            (SkillCategory.FITNESS, FitnessSubSkill.SPEED),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        .with_instructions(
+            "Continuous movement",
+            "Vary intensity",
+            "Include ball work"
+        )
+        .with_tips(
+            "Pace yourself",
+            "Control breathing",
+            "Stay hydrated"
+        )
+        .with_rest(90)
+        .build(),
 ]
 

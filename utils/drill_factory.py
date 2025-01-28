@@ -1,6 +1,10 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Tuple
 from enum import Enum
-from models import DrillType, TrainingLocation, TrainingStyle, Difficulty, Equipment, TrainingDuration
+from models import (
+    DrillType, TrainingLocation, TrainingStyle, Difficulty, Equipment,
+    TrainingDuration, SkillCategory, PassingSubSkill, ShootingSubSkill,
+    DribblingSubSkill, FirstTouchSubSkill, FitnessSubSkill
+)
 
 class DrillBuilder:
     def __init__(self, title: str):
@@ -18,7 +22,7 @@ class DrillBuilder:
             "intensity_level": "medium",
             "suitable_training_styles": [],
             "difficulty": "beginner",
-            "skill_focus": [],
+            "skill_focus": [],  # List of {category: str, sub_skill: str, is_primary: bool}
             "instructions": [],
             "tips": [],
             "variations": []
@@ -64,8 +68,40 @@ class DrillBuilder:
         self.drill["difficulty"] = difficulty
         return self
 
-    def with_skills(self, *skills: str):
-        self.drill["skill_focus"] = list(skills)
+    def with_primary_skill(self, category: SkillCategory, sub_skill: str):
+        """Add the primary skill focus for the drill"""
+        # Remove any existing primary skills first
+        self.drill["skill_focus"] = [skill for skill in self.drill["skill_focus"] if not skill["is_primary"]]
+        self.drill["skill_focus"].append({
+            "category": category.value,
+            "sub_skill": sub_skill,
+            "is_primary": True
+        })
+        return self
+
+    def with_secondary_skill(self, category: SkillCategory, sub_skill: str):
+        """Add a secondary skill that is trained by this drill"""
+        self.drill["skill_focus"].append({
+            "category": category.value,
+            "sub_skill": sub_skill,
+            "is_primary": False
+        })
+        return self
+
+    def with_secondary_skills(self, *skills: Tuple[SkillCategory, str]):
+        """Add multiple secondary skills at once
+        Usage: with_secondary_skills(
+            (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
+            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
+        )
+        """
+        for category, sub_skill in skills:
+            self.with_secondary_skill(category, sub_skill)
+        return self
+
+    def clear_secondary_skills(self):
+        """Remove all secondary skills from the drill"""
+        self.drill["skill_focus"] = [skill for skill in self.drill["skill_focus"] if skill["is_primary"]]
         return self
 
     def with_instructions(self, *instructions: str):

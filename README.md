@@ -61,7 +61,12 @@ bash
 ```
 python create_tables.py
 python seed_drills.py
+
+# Run unit tests
+pytest unit_tests/drills.py -s
+pytest unit_tests/session_generator.py -s
 ```
+
 3. Run the server:
 bash
 ```
