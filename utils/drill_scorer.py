@@ -57,66 +57,73 @@ class DrillScorer:
         return scores
 
     def _score_skills(self, skill_focus: List[DrillSkillFocus]) -> Dict[str, float]:
-        """Score how well the drill's skills match user's target skills"""
+        """Score based on skill matches"""
+        if not skill_focus:  # Handles both None and empty list
+            return {"primary": 0.0, "secondary": 0.0}
+
+        # Rest of the method remains the same
+        primary_skill = next((focus for focus in skill_focus if focus.is_primary), None)
+        if not primary_skill:
+            return {"primary": 0.0, "secondary": 0.0}
+
+        # Score primary skill
         primary_score = 0.0
+        for target in self.preferences.target_skills:
+            if (primary_skill.category == target["category"] and 
+                primary_skill.sub_skill in target["sub_skills"]):
+                primary_score = 1.0
+                break
+
+        # Score secondary skills
         secondary_score = 0.0
-        
-        for focus in skill_focus:
-            # Check if this skill category is in user's target skills
-            for target in self.preferences.target_skills:
-                if focus.category == target["category"]:
-                    # Check if specific sub-skill is targeted
-                    if focus.sub_skill in target["sub_skills"]:
-                        if focus.is_primary:
-                            primary_score = 1.0
-                        else:
-                            secondary_score += 0.5  # Each matching secondary skill adds 0.5
-        
-        # Cap secondary score at 1.0
-        secondary_score = min(secondary_score, 1.0)
-        
-        return {
-            "primary": primary_score,
-            "secondary": secondary_score
-        }
+        secondary_skills = [focus for focus in skill_focus if not focus.is_primary]
+        if secondary_skills:
+            matches = 0
+            for skill in secondary_skills:
+                for target in self.preferences.target_skills:
+                    if (skill.category == target["category"] and 
+                        skill.sub_skill in target["sub_skills"]):
+                        matches += 1
+                        break
+            secondary_score = min(matches * 0.5, 0.5)  # Cap at 0.5
+
+        return {"primary": primary_score, "secondary": secondary_score}
 
     def _score_equipment(self, required_equipment: List[str]) -> float:
-        """Score based on whether user has all required equipment"""
-        if not required_equipment:
-            return 1.0  # No equipment needed is good
-            
-        available = set(self.preferences.available_equipment)
-        required = set(required_equipment)
-        
-        if required.issubset(available):
-            return 1.0  # Has all required equipment
-        return 0.0  # Missing some equipment
+        """Score based on equipment availability"""
+        if not required_equipment:  # Handles both None and empty list
+            return 1.0
+        return 1.0 if all(equip in self.preferences.available_equipment for equip in required_equipment) else 0.0
 
     def _score_location(self, suitable_locations: List[str]) -> float:
         """Score based on location match"""
+        if not suitable_locations:  # Handles both None and empty list
+            return 0.0
         return 1.0 if self.preferences.training_location in suitable_locations else 0.0
 
     def _score_difficulty(self, difficulty: str) -> float:
-        """Score how well the difficulty matches user's level"""
-        difficulty_levels = {"beginner": 0, "intermediate": 1, "advanced": 2}
-        pref_level = difficulty_levels[self.preferences.difficulty]
-        drill_level = difficulty_levels[difficulty]
-        
-        # Perfect match gets 1.0, one level difference gets 0.5, two levels difference gets 0
-        difference = abs(pref_level - drill_level)
-        return max(0.0, 1.0 - (difference * 0.5))
+        """Score based on difficulty match"""
+        if not difficulty:  # Handle None value
+            return 0.0
+        difficulties = ["beginner", "intermediate", "advanced"]
+        try:
+            drill_idx = difficulties.index(difficulty)
+            pref_idx = difficulties.index(self.preferences.difficulty)
+            diff = abs(drill_idx - pref_idx)
+            return 1.0 if diff == 0 else 0.5
+        except ValueError:
+            raise KeyError(f"Invalid difficulty value: {difficulty}")
 
     def _score_intensity(self, intensity: str) -> float:
-        """Score how well the intensity matches training style"""
-        intensity_map = {
-            "low": ["GAME_RECOVERY", "REST_DAY"],
-            "medium": ["MEDIUM_INTENSITY", "GAME_PREP"],
-            "high": ["HIGH_INTENSITY"]
+        """Score based on intensity match"""
+        if not intensity:  # Handle None value
+            return 0.0
+        intensities = {
+            "low": ["LOW_INTENSITY"],
+            "medium": ["MEDIUM_INTENSITY"],
+            "high": ["HIGH_INTENSITY", "GAME_PREP"]
         }
-        
-        if self.preferences.training_style in intensity_map[intensity]:
-            return 1.0
-        return 0.5  # Not ideal but not completely unsuitable
+        return 1.0 if self.preferences.training_style in intensities.get(intensity, []) else 0.0
 
     def _score_duration(self, duration: int) -> float:
         """Score how well the drill duration fits within session time"""
@@ -131,9 +138,11 @@ class DrillScorer:
                 return 1.0
         return 0.0  # Drill is too long
 
-    def _score_training_style(self, suitable_styles: List[str]) -> float:
-        """Score how well the drill matches the desired training style"""
-        return 1.0 if self.preferences.training_style in suitable_styles else 0.0
+    def _score_training_style(self, training_styles: List[str]) -> float:
+        """Score based on training style match"""
+        if not training_styles:  # Handles both None and empty list
+            return 0.0
+        return 1.0 if self.preferences.training_style in training_styles else 0.0
 
     def rank_drills(self, drills: List[Drill]) -> List[Dict[str, Any]]:
         """
