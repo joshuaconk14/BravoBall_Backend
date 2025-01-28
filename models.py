@@ -15,7 +15,7 @@ from sqlalchemy.sql import func
 # *** AUTH MODELS ***
 class LoginRequest(BaseModel):
     email: str
-    password: str   
+    password: str
 
 class UserInfoDisplay(BaseModel):
     email: str
@@ -110,6 +110,42 @@ class Difficulty(str, Enum):
     INTERMEDIATE = "intermediate"
     ADVANCED = "advanced"
 
+# *** SKILL CATEGORY ENUMS ***
+class SkillCategory(str, Enum):
+    PASSING = "passing"
+    SHOOTING = "shooting"
+    DRIBBLING = "dribbling"
+    FIRST_TOUCH = "first_touch"
+    FITNESS = "fitness"
+
+class PassingSubSkill(str, Enum):
+    SHORT_PASSING = "short_passing"
+    LONG_PASSING = "long_passing"
+    WALL_PASSING = "wall_passing"
+
+class ShootingSubSkill(str, Enum):
+    POWER = "power"
+    FINISHING = "finishing"
+    VOLLEYS = "volleys"
+    LONG_SHOTS = "long_shots"
+
+class DribblingSubSkill(str, Enum):
+    BALL_MASTERY = "ball_mastery"
+    CLOSE_CONTROL = "close_control"
+    SPEED_DRIBBLING = "speed_dribbling"
+    ONE_V_ONE_MOVES = "1v1_moves"
+
+class FirstTouchSubSkill(str, Enum):
+    GROUND_CONTROL = "ground_control"
+    AERIAL_CONTROL = "aerial_control"
+    TURNING_WITH_BALL = "turning_with_ball"
+    ONE_TOUCH_CONTROL = "one_touch_control"
+
+class FitnessSubSkill(str, Enum):
+    SPEED = "speed"
+    AGILITY = "agility"
+    ENDURANCE = "endurance"
+
 # *** USER MODELS ***
 class User(Base):
     __tablename__ = "users"
@@ -165,6 +201,15 @@ class DrillType(str, Enum):
     SET_BASED = "set_based"    # e.g., "3 sets of 5 reps"
     CONTINUOUS = "continuous"   # e.g., "Until successful completion"
 
+class DrillSkillFocus(Base):
+    __tablename__ = "drill_skill_focus"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    drill_id = Column(Integer, ForeignKey("drills.id"))
+    category = Column(String)  # SkillCategory enum value
+    sub_skill = Column(String)  # Corresponding SubSkill enum value
+    is_primary = Column(Boolean, default=True)  # Whether this is a primary or secondary skill focus
+
 class Drill(Base):
     __tablename__ = "drills"
 
@@ -194,8 +239,7 @@ class Drill(Base):
     
     # Technical
     difficulty = Column(String)
-    skill_focus = Column(JSON)  # Primary skills trained
-    secondary_benefits = Column(JSON)  # Secondary skills improved
+    skill_focus = relationship("DrillSkillFocus", backref="drill")  # Relationship to skill focus
     
     # Content
     instructions = Column(JSON)  # List of steps
@@ -221,21 +265,11 @@ class SessionPreferences(Base):
     training_location = Column(String)
     difficulty = Column(String)
     user_id = Column(Integer, ForeignKey("users.id"))
-    target_skills = Column(JSON)  # List of Skill
+    target_skills = Column(JSON)  # List of {category: str, sub_skills: List[str]}
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
 
     user = relationship("User", back_populates="session_preferences")
-
-    def __init__(self, duration: int, available_equipment: list, 
-                 training_style: TrainingStyle, training_location: TrainingLocation, 
-                 difficulty: Difficulty, target_skills: List[str] = None):
-        self.duration = duration
-        self.available_equipment = available_equipment
-        self.training_style = training_style.value
-        self.training_location = training_location.value
-        self.difficulty = difficulty.value
-        self.target_skills = target_skills or []
 
 class TrainingSession(Base):
     """Represents a complete training session"""

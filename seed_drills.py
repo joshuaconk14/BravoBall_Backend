@@ -3,7 +3,7 @@ This file is used to seed the database with drills.
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, DrillCategory, Drill
+from models import Base, DrillCategory, Drill, DrillSkillFocus, SkillCategory
 from db import SQLALCHEMY_DATABASE_URL
 from sample_drills import sample_drills
 
@@ -15,11 +15,11 @@ def seed_drills():
     try:
         # Create categories
         categories = [
-            DrillCategory(name="Passing", description="Drills for passing accuracy and technique"),
-            DrillCategory(name="Shooting", description="Drills to improve shooting accuracy and power"),
-            DrillCategory(name="Dribbling", description="Drills focused on ball control and dribbling skills"),
-            DrillCategory(name="First Touch", description="Drills to improve ball reception and control"),
-            DrillCategory(name="Physical", description="Drills for improving speed, agility, and stamina")
+            DrillCategory(name=SkillCategory.PASSING.value, description="Drills for passing accuracy and technique"),
+            DrillCategory(name=SkillCategory.SHOOTING.value, description="Drills to improve shooting accuracy and power"),
+            DrillCategory(name=SkillCategory.DRIBBLING.value, description="Drills focused on ball control and dribbling skills"),
+            DrillCategory(name=SkillCategory.FIRST_TOUCH.value, description="Drills to improve ball reception and control"),
+            DrillCategory(name=SkillCategory.FITNESS.value, description="Drills for improving speed, agility, and stamina")
         ]
 
         # Add categories
@@ -29,26 +29,31 @@ def seed_drills():
                 db.add(category)
         db.commit()
 
-        # Map drill types to categories
-        category_map = {
-            "short_passing": "Passing",
-            "power_shots": "Shooting",
-            "speed_dribbling": "Dribbling"
-        }
-
         # Add drills
         for drill_data in sample_drills:
-            # Determine category based on first skill focus
-            primary_skill = drill_data["skill_focus"][0]
-            category_name = category_map.get(primary_skill, "Physical")
-            category = db.query(DrillCategory).filter_by(name=category_name).first()
+            # Get primary skill category
+            primary_skill = next(skill for skill in drill_data["skill_focus"] if skill["is_primary"])
+            category = db.query(DrillCategory).filter_by(name=primary_skill["category"]).first()
 
             if category:
                 existing = db.query(Drill).filter_by(title=drill_data["title"]).first()
                 if existing:
                     # Update existing drill
                     for key, value in drill_data.items():
-                        setattr(existing, key, value)
+                        if key != "skill_focus":  # Handle skill focus separately
+                            setattr(existing, key, value)
+                    
+                    # Update skill focus
+                    db.query(DrillSkillFocus).filter_by(drill_id=existing.id).delete()
+                    for skill in drill_data["skill_focus"]:
+                        skill_focus = DrillSkillFocus(
+                            drill_id=existing.id,
+                            category=skill["category"],
+                            sub_skill=skill["sub_skill"],
+                            is_primary=skill["is_primary"]
+                        )
+                        db.add(skill_focus)
+                    
                     db.merge(existing)
                 else:
                     # Create new drill
@@ -67,12 +72,22 @@ def seed_drills():
                         required_equipment=drill_data["required_equipment"],
                         suitable_locations=drill_data["suitable_locations"],
                         difficulty=drill_data["difficulty"],
-                        skill_focus=drill_data["skill_focus"],
                         instructions=drill_data["instructions"],
                         tips=drill_data["tips"],
                         variations=drill_data.get("variations", [])
                     )
                     db.add(drill)
+                    db.flush()  # Get the drill ID
+
+                    # Add skill focus relationships
+                    for skill in drill_data["skill_focus"]:
+                        skill_focus = DrillSkillFocus(
+                            drill_id=drill.id,
+                            category=skill["category"],
+                            sub_skill=skill["sub_skill"],
+                            is_primary=skill["is_primary"]
+                        )
+                        db.add(skill_focus)
 
         db.commit()
         print("Successfully seeded drill categories and drills!")
@@ -80,6 +95,7 @@ def seed_drills():
     except Exception as e:
         db.rollback()
         print(f"Error seeding drills: {str(e)}")
+        raise  # Re-raise the exception to see the full traceback
     finally:
         db.close()
 
