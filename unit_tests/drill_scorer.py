@@ -288,6 +288,7 @@ def test_rank_drills():
         )
     ]
     
+    # Score the drills
     ranked_drills = scorer.rank_drills(drills)
     
     # Print rankings
