@@ -4,7 +4,14 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 import pytest
 from sqlalchemy.orm import Session
-from models import Drill, SessionPreferences, DrillSkillFocus
+from models import (
+    Drill, 
+    SessionPreferences, 
+    DrillSkillFocus, 
+    TrainingLocation,
+    TrainingStyle,
+    Difficulty
+)
 from utils.drill_scorer import DrillScorer
 from db import get_db
 
@@ -26,9 +33,9 @@ class TestDrillScorerWithDB:
         return SessionPreferences(
             duration=60,
             available_equipment=["BALL", "CONES"],
-            training_style="MEDIUM_INTENSITY",
-            training_location="INDOOR_COURT",
-            difficulty="intermediate",
+            training_style=TrainingStyle.MEDIUM_INTENSITY,
+            training_location=TrainingLocation.SMALL_FIELD.value,  # Using enum value
+            difficulty=Difficulty.INTERMEDIATE.value,
             target_skills=[{
                 "category": "passing",
                 "sub_skills": ["short_passing", "wall_passing"]
@@ -62,7 +69,7 @@ class TestDrillScorerWithDB:
             print(f"  Primary Skill: {[sf.category + '/' + sf.sub_skill for sf in entry['drill'].skill_focus if sf.is_primary]}")
             print(f"  Secondary Skills: {[sf.category + '/' + sf.sub_skill for sf in entry['drill'].skill_focus if not sf.is_primary]}")
             print(f"  Equipment: {entry['drill'].required_equipment}")
-            print(f"  Locations: {entry['drill'].suitable_locations}")
+            print(f"  Locations: {[loc for loc in entry['drill'].suitable_locations]}")  # Print raw location values
             print(f"  Difficulty: {entry['drill'].difficulty}")
             print(f"  Duration: {entry['drill'].duration} minutes")
 
@@ -82,7 +89,7 @@ class TestDrillScorerWithDB:
             if drill.difficulty != base_preferences.difficulty:
                 continue
                 
-            # Check location match
+            # Check location match - compare with enum value
             if not drill.suitable_locations or base_preferences.training_location not in drill.suitable_locations:
                 continue
                 
@@ -100,7 +107,7 @@ class TestDrillScorerWithDB:
             print(f"Total Score: {entry['total_score']}")
             print("Drill Details:")
             print(f"  Difficulty: {entry['drill'].difficulty}")
-            print(f"  Locations: {entry['drill'].suitable_locations}")
+            print(f"  Locations: {[TrainingLocation(loc).name for loc in entry['drill'].suitable_locations]}")  # Convert to enum names
             print(f"  Equipment: {entry['drill'].required_equipment}")
             print(f"  Duration: {entry['drill'].duration} minutes")
             

@@ -1,7 +1,8 @@
 from utils.drill_factory import DrillBuilder
 from models import (
     SkillCategory, PassingSubSkill, ShootingSubSkill,
-    DribblingSubSkill, FirstTouchSubSkill, FitnessSubSkill
+    DribblingSubSkill, FirstTouchSubSkill, FitnessSubSkill,
+    TrainingLocation, TrainingStyle, Difficulty, Equipment
 )
 
 # Using DrillBuilder to create one drill per subcategory
@@ -13,11 +14,11 @@ sample_drills = [
         .with_duration(15)
         .with_sets(4)
         .with_reps(0)
-        .with_equipment("BALL")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.BALL.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("medium")
-        .with_training_styles("MEDIUM_INTENSITY")
-        .with_difficulty("beginner")
+        .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
+        .with_difficulty(Difficulty.BEGINNER.value)
         .with_primary_skill(SkillCategory.PASSING, PassingSubSkill.SHORT_PASSING)
         .with_secondary_skills(
             (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
@@ -42,11 +43,11 @@ sample_drills = [
         .with_duration(20)
         .with_sets(3)
         .with_reps(10)
-        .with_equipment("BALL", "CONES")
-        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
         .with_intensity("high")
-        .with_training_styles("GAME_PREP")
-        .with_difficulty("advanced")
+        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.PASSING, PassingSubSkill.LONG_PASSING)
         .with_secondary_skills(
             (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.AERIAL_CONTROL)
@@ -70,11 +71,11 @@ sample_drills = [
         .with_duration(10)
         .with_sets(3)
         .with_reps(0)
-        .with_equipment("BALL", "WALL")
-        .with_suitable_locations("INDOOR_COURT")
+        .with_equipment(Equipment.BALL.value, Equipment.WALL.value)
+        .with_suitable_locations(TrainingLocation.INDOOR_COURT.value)
         .with_intensity("medium")
-        .with_training_styles("MEDIUM_INTENSITY")
-        .with_difficulty("intermediate")
+        .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
+        .with_difficulty(Difficulty.INTERMEDIATE.value)
         .with_primary_skill(SkillCategory.PASSING, PassingSubSkill.WALL_PASSING)
         .with_secondary_skills(
             (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.ONE_TOUCH_CONTROL),
@@ -100,11 +101,11 @@ sample_drills = [
         .with_duration(25)
         .with_sets(4)
         .with_reps(5)
-        .with_equipment("BALL", "GOALS")
-        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_equipment(Equipment.BALL.value, Equipment.GOALS.value)
+        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
         .with_intensity("high")
-        .with_training_styles("HIGH_INTENSITY")
-        .with_difficulty("intermediate")
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
+        .with_difficulty(Difficulty.INTERMEDIATE.value)
         .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.POWER)
         .with_secondary_skills(
             (SkillCategory.SHOOTING, ShootingSubSkill.LONG_SHOTS)
@@ -128,11 +129,11 @@ sample_drills = [
         .with_duration(20)
         .with_sets(3)
         .with_reps(8)
-        .with_equipment("BALL", "GOALS")
-        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_equipment(Equipment.BALL.value, Equipment.GOALS.value)
+        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
         .with_intensity("medium")
-        .with_training_styles("GAME_PREP")
-        .with_difficulty("beginner")
+        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_difficulty(Difficulty.BEGINNER.value)
         .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.FINISHING)
         .with_secondary_skills(
             (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
@@ -157,11 +158,11 @@ sample_drills = [
         .with_duration(15)
         .with_sets(4)
         .with_reps(6)
-        .with_equipment("BALL", "GOALS")
-        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_equipment(Equipment.BALL.value, Equipment.GOALS.value)
+        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
         .with_intensity("medium")
-        .with_training_styles("MEDIUM_INTENSITY")
-        .with_difficulty("advanced")
+        .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
+        .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.VOLLEYS)
         .with_secondary_skills(
             (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.AERIAL_CONTROL),
@@ -186,11 +187,11 @@ sample_drills = [
         .with_duration(25)
         .with_sets(3)
         .with_reps(7)
-        .with_equipment("BALL", "GOALS", "CONES")
-        .with_suitable_locations("FIELD_WITH_GOALS")
+        .with_equipment(Equipment.BALL.value, Equipment.GOALS.value, Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
         .with_intensity("high")
-        .with_training_styles("GAME_PREP")
-        .with_difficulty("advanced")
+        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.LONG_SHOTS)
         .with_secondary_skills(
             (SkillCategory.SHOOTING, ShootingSubSkill.POWER)
@@ -215,11 +216,11 @@ sample_drills = [
         .with_duration(15)
         .with_sets(3)
         .with_reps(0)
-        .with_equipment("BALL", "CONES")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("low")
-        .with_training_styles("MEDIUM_INTENSITY")
-        .with_difficulty("beginner")
+        .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
+        .with_difficulty(Difficulty.BEGINNER.value)
         .with_primary_skill(SkillCategory.DRIBBLING, DribblingSubSkill.BALL_MASTERY)
         .with_secondary_skills(
             (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
@@ -244,11 +245,11 @@ sample_drills = [
         .with_duration(12)
         .with_sets(4)
         .with_reps(0)
-        .with_equipment("BALL", "CONES")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("medium")
-        .with_training_styles("MEDIUM_INTENSITY")
-        .with_difficulty("intermediate")
+        .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
+        .with_difficulty(Difficulty.INTERMEDIATE.value)
         .with_primary_skill(SkillCategory.DRIBBLING, DribblingSubSkill.CLOSE_CONTROL)
         .with_secondary_skills(
             (SkillCategory.DRIBBLING, DribblingSubSkill.BALL_MASTERY),
@@ -273,11 +274,11 @@ sample_drills = [
         .with_duration(15)
         .with_sets(4)
         .with_reps(0)
-        .with_equipment("BALL", "CONES")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("high")
-        .with_training_styles("HIGH_INTENSITY")
-        .with_difficulty("advanced")
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
+        .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.DRIBBLING, DribblingSubSkill.SPEED_DRIBBLING)
         .with_secondary_skills(
             (SkillCategory.FITNESS, FitnessSubSkill.SPEED),
@@ -302,11 +303,11 @@ sample_drills = [
         .with_duration(20)
         .with_sets(3)
         .with_reps(6)
-        .with_equipment("BALL", "CONES")
-        .with_suitable_locations("SMALL_FIELD")
+        .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value)
         .with_intensity("high")
-        .with_training_styles("GAME_PREP")
-        .with_difficulty("advanced")
+        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.DRIBBLING, DribblingSubSkill.ONE_V_ONE_MOVES)
         .with_secondary_skills(
             (SkillCategory.DRIBBLING, DribblingSubSkill.CLOSE_CONTROL),
@@ -332,11 +333,11 @@ sample_drills = [
         .with_duration(15)
         .with_sets(3)
         .with_reps(0)
-        .with_equipment("BALL")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.BALL.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("low")
-        .with_training_styles("MEDIUM_INTENSITY")
-        .with_difficulty("beginner")
+        .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
+        .with_difficulty(Difficulty.BEGINNER.value)
         .with_primary_skill(SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL)
         .with_secondary_skills(
             (SkillCategory.PASSING, PassingSubSkill.SHORT_PASSING),
@@ -361,11 +362,11 @@ sample_drills = [
         .with_duration(20)
         .with_sets(4)
         .with_reps(8)
-        .with_equipment("BALL")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.BALL.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("medium")
-        .with_training_styles("GAME_PREP")
-        .with_difficulty("advanced")
+        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.AERIAL_CONTROL)
         .with_secondary_skills(
             (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
@@ -390,11 +391,11 @@ sample_drills = [
         .with_duration(15)
         .with_sets(3)
         .with_reps(0)
-        .with_equipment("BALL", "CONES")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("medium")
-        .with_training_styles("MEDIUM_INTENSITY")
-        .with_difficulty("intermediate")
+        .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
+        .with_difficulty(Difficulty.INTERMEDIATE.value)
         .with_primary_skill(SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.TURNING_WITH_BALL)
         .with_secondary_skills(
             (SkillCategory.DRIBBLING, DribblingSubSkill.CLOSE_CONTROL),
@@ -419,11 +420,11 @@ sample_drills = [
         .with_duration(15)
         .with_sets(4)
         .with_reps(0)
-        .with_equipment("BALL")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.BALL.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("high")
-        .with_training_styles("HIGH_INTENSITY")
-        .with_difficulty("advanced")
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
+        .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.ONE_TOUCH_CONTROL)
         .with_secondary_skills(
             (SkillCategory.PASSING, PassingSubSkill.SHORT_PASSING),
@@ -449,11 +450,11 @@ sample_drills = [
         .with_duration(20)
         .with_sets(5)
         .with_reps(4)
-        .with_equipment("CONES")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("high")
-        .with_training_styles("HIGH_INTENSITY")
-        .with_difficulty("intermediate")
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
+        .with_difficulty(Difficulty.INTERMEDIATE.value)
         .with_primary_skill(SkillCategory.FITNESS, FitnessSubSkill.SPEED)
         .with_secondary_skills(
             (SkillCategory.FITNESS, FitnessSubSkill.AGILITY),
@@ -478,11 +479,11 @@ sample_drills = [
         .with_duration(15)
         .with_sets(4)
         .with_reps(0)
-        .with_equipment("CONES")
-        .with_suitable_locations("SMALL_FIELD", "INDOOR_COURT")
+        .with_equipment(Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
         .with_intensity("high")
-        .with_training_styles("HIGH_INTENSITY")
-        .with_difficulty("intermediate")
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
+        .with_difficulty(Difficulty.INTERMEDIATE.value)
         .with_primary_skill(SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
         .with_secondary_skills(
             (SkillCategory.FITNESS, FitnessSubSkill.SPEED),
@@ -507,11 +508,11 @@ sample_drills = [
         .with_duration(30)
         .with_sets(2)
         .with_reps(0)
-        .with_equipment("CONES")
-        .with_suitable_locations("SMALL_FIELD", "FIELD_WITH_GOALS")
+        .with_equipment(Equipment.CONES.value)
+        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.FULL_FIELD.value)
         .with_intensity("medium")
-        .with_training_styles("MEDIUM_INTENSITY")
-        .with_difficulty("intermediate")
+        .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
+        .with_difficulty(Difficulty.INTERMEDIATE.value)
         .with_primary_skill(SkillCategory.FITNESS, FitnessSubSkill.ENDURANCE)
         .with_secondary_skills(
             (SkillCategory.FITNESS, FitnessSubSkill.SPEED),
