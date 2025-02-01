@@ -37,7 +37,7 @@ def create_test_onboarding_data():
         age_range=AgeRange.ADULT,
         strengths=[Skill.PASSING, Skill.DRIBBLING],
         areas_to_improve=[Skill.SHOOTING, Skill.FITNESS],
-        training_location=TrainingLocation.FIELD_WITH_GOALS,
+        training_location=TrainingLocation.FULL_FIELD,
         available_equipment=[Equipment.BALL, Equipment.CONES, Equipment.GOALS],
         daily_training_time=TrainingDuration.MINS_45,
         weekly_training_days=TrainingFrequency.MODERATE
@@ -53,7 +53,7 @@ async def test_session_generation():
             duration=30,
             available_equipment=["BALL", "WALL", "CONES", "GOALS"],
             training_style=TrainingStyle.MEDIUM_INTENSITY,
-            training_location=TrainingLocation.SMALL_FIELD,
+            training_location=TrainingLocation.SMALL_FIELD.value,
             difficulty=Difficulty.BEGINNER,
             target_skills=["passing", "shooting"]
         )
@@ -115,7 +115,7 @@ def test_session_generation_sync():
                 duration=45,
                 available_equipment=[eq.value for eq in onboarding_data.available_equipment],
                 training_style=TrainingStyle.MEDIUM_INTENSITY,
-                training_location=onboarding_data.training_location,
+                training_location=TrainingLocation.FULL_FIELD.value,
                 difficulty=Difficulty.INTERMEDIATE,
                 target_skills=[skill.value for skill in onboarding_data.areas_to_improve]
             )

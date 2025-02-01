@@ -73,11 +73,11 @@ class Skill(str, Enum):
     FITNESS = "Fitness"
 
 class TrainingLocation(str, Enum):
-    INDOOR_COURT = "INDOOR_COURT"
-    SMALL_FIELD = "SMALL_FIELD"
-    FIELD_WITH_GOALS = "FIELD_WITH_GOALS"
-    HOME = "HOME"
-    GYM = "GYM"
+    FULL_FIELD = "Full-Size 11v11 Field"
+    SMALL_FIELD = "Medium-Sized Grass/Turf Field"
+    INDOOR_COURT = "Indoor Court (Futsal/Basketball)"
+    BACKYARD = "Backyard/Small Outdoor Space"
+    SMALL_ROOM = "Small Indoor Room (Living Room/Hotel)"
 
 class Equipment(str, Enum):
     BALL = "BALL"

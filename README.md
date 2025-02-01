@@ -63,8 +63,10 @@ python create_tables.py
 python seed_drills.py
 
 # Run unit tests
-pytest unit_tests/drills.py -s
-pytest unit_tests/session_generator.py -s
+pytest unit_tests/drills.py -v -s
+pytest unit_tests/session_generator.py -v -s
+pytest unit_tests/drill_scorer.py -v -s
+pytest unit_tests/drill_scorer_db.py -v -s
 ```
 
 3. Run the server:
