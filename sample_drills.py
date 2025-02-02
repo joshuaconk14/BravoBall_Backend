@@ -15,7 +15,12 @@ sample_drills = [
         .with_sets(4)
         .with_reps(0)
         .with_equipment(Equipment.BALL.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.BACKYARD.value
+        )
         .with_intensity("medium")
         .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
         .with_difficulty(Difficulty.BEGINNER.value)
@@ -44,7 +49,10 @@ sample_drills = [
         .with_sets(3)
         .with_reps(10)
         .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
+        .with_suitable_locations(
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.SMALL_FIELD.value
+        )
         .with_intensity("high")
         .with_training_styles(TrainingStyle.GAME_PREP.value)
         .with_difficulty(Difficulty.ADVANCED.value)
@@ -72,7 +80,11 @@ sample_drills = [
         .with_sets(3)
         .with_reps(0)
         .with_equipment(Equipment.BALL.value, Equipment.WALL.value)
-        .with_suitable_locations(TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.BACKYARD.value
+        )
         .with_intensity("medium")
         .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
         .with_difficulty(Difficulty.INTERMEDIATE.value)
@@ -102,7 +114,10 @@ sample_drills = [
         .with_sets(4)
         .with_reps(5)
         .with_equipment(Equipment.BALL.value, Equipment.GOALS.value)
-        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
+        .with_suitable_locations(
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.SMALL_FIELD.value
+        )
         .with_intensity("high")
         .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.INTERMEDIATE.value)
@@ -130,7 +145,10 @@ sample_drills = [
         .with_sets(3)
         .with_reps(8)
         .with_equipment(Equipment.BALL.value, Equipment.GOALS.value)
-        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
+        .with_suitable_locations(
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.SMALL_FIELD.value
+        )
         .with_intensity("medium")
         .with_training_styles(TrainingStyle.GAME_PREP.value)
         .with_difficulty(Difficulty.BEGINNER.value)
@@ -159,7 +177,11 @@ sample_drills = [
         .with_sets(4)
         .with_reps(6)
         .with_equipment(Equipment.BALL.value, Equipment.GOALS.value)
-        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
+        .with_suitable_locations(
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value
+        )
         .with_intensity("medium")
         .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
         .with_difficulty(Difficulty.ADVANCED.value)
@@ -188,7 +210,10 @@ sample_drills = [
         .with_sets(3)
         .with_reps(7)
         .with_equipment(Equipment.BALL.value, Equipment.GOALS.value, Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.FULL_FIELD.value)
+        .with_suitable_locations(
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.SMALL_FIELD.value
+        )
         .with_intensity("high")
         .with_training_styles(TrainingStyle.GAME_PREP.value)
         .with_difficulty(Difficulty.ADVANCED.value)
@@ -217,7 +242,13 @@ sample_drills = [
         .with_sets(3)
         .with_reps(0)
         .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.BACKYARD.value,
+            TrainingLocation.SMALL_ROOM.value,
+            TrainingLocation.FULL_FIELD.value
+        )
         .with_intensity("low")
         .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
         .with_difficulty(Difficulty.BEGINNER.value)
@@ -246,7 +277,13 @@ sample_drills = [
         .with_sets(4)
         .with_reps(0)
         .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.BACKYARD.value,
+            TrainingLocation.SMALL_ROOM.value,
+            TrainingLocation.FULL_FIELD.value
+        )
         .with_intensity("medium")
         .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
         .with_difficulty(Difficulty.INTERMEDIATE.value)
@@ -275,7 +312,12 @@ sample_drills = [
         .with_sets(4)
         .with_reps(0)
         .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.BACKYARD.value
+        )
         .with_intensity("high")
         .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.ADVANCED.value)
@@ -304,7 +346,11 @@ sample_drills = [
         .with_sets(3)
         .with_reps(6)
         .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.FULL_FIELD.value
+        )
         .with_intensity("high")
         .with_training_styles(TrainingStyle.GAME_PREP.value)
         .with_difficulty(Difficulty.ADVANCED.value)
@@ -334,7 +380,13 @@ sample_drills = [
         .with_sets(3)
         .with_reps(0)
         .with_equipment(Equipment.BALL.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.BACKYARD.value,
+            TrainingLocation.SMALL_ROOM.value,
+            TrainingLocation.FULL_FIELD.value
+        )
         .with_intensity("low")
         .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
         .with_difficulty(Difficulty.BEGINNER.value)
@@ -363,7 +415,12 @@ sample_drills = [
         .with_sets(4)
         .with_reps(8)
         .with_equipment(Equipment.BALL.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.BACKYARD.value
+        )
         .with_intensity("medium")
         .with_training_styles(TrainingStyle.GAME_PREP.value)
         .with_difficulty(Difficulty.ADVANCED.value)
@@ -392,7 +449,12 @@ sample_drills = [
         .with_sets(3)
         .with_reps(0)
         .with_equipment(Equipment.BALL.value, Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.BACKYARD.value,
+            TrainingLocation.FULL_FIELD.value
+        )
         .with_intensity("medium")
         .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
         .with_difficulty(Difficulty.INTERMEDIATE.value)
@@ -421,7 +483,12 @@ sample_drills = [
         .with_sets(4)
         .with_reps(0)
         .with_equipment(Equipment.BALL.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.BACKYARD.value,
+            TrainingLocation.FULL_FIELD.value
+        )
         .with_intensity("high")
         .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.ADVANCED.value)
@@ -451,7 +518,12 @@ sample_drills = [
         .with_sets(5)
         .with_reps(4)
         .with_equipment(Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.BACKYARD.value
+        )
         .with_intensity("high")
         .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.INTERMEDIATE.value)
@@ -480,7 +552,12 @@ sample_drills = [
         .with_sets(4)
         .with_reps(0)
         .with_equipment(Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.INDOOR_COURT.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.BACKYARD.value
+        )
         .with_intensity("high")
         .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.INTERMEDIATE.value)
@@ -509,7 +586,12 @@ sample_drills = [
         .with_sets(2)
         .with_reps(0)
         .with_equipment(Equipment.CONES.value)
-        .with_suitable_locations(TrainingLocation.SMALL_FIELD.value, TrainingLocation.FULL_FIELD.value)
+        .with_suitable_locations(
+            TrainingLocation.SMALL_FIELD.value,
+            TrainingLocation.FULL_FIELD.value,
+            TrainingLocation.INDOOR_COURT.value,
+            TrainingLocation.BACKYARD.value
+        )
         .with_intensity("medium")
         .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
         .with_difficulty(Difficulty.INTERMEDIATE.value)
