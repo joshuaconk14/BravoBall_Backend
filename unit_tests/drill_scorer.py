@@ -255,7 +255,7 @@ class TestDrillScorer:
         assert ranked_drills[0]['drill'].title == "Perfect Match"
         assert ranked_drills[1]['drill'].title == "Good Match"
         assert ranked_drills[2]['drill'].title == "Poor Match"
-        
+            
         # Print detailed rankings if verbose
         if request.config.getoption("--verbose"):
             print("\nDrill Rankings:")
