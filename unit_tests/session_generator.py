@@ -107,6 +107,7 @@ async def test_session_generation():
     finally:
         db.close()
 
+# Test that the session generator works
 def test_session_generation_sync():
     """Test the session generator synchronously"""
     async def run_test():

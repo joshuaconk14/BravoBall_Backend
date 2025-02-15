@@ -250,7 +250,7 @@ class TestDrillScorer:
         ]
     
         ranked_drills = scorer.rank_drills(drills)
-        
+    
         # Verify ranking order
         assert ranked_drills[0]['drill'].title == "Perfect Match"
         assert ranked_drills[1]['drill'].title == "Good Match"
