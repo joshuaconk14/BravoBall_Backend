@@ -8,6 +8,7 @@ from models import (
     Difficulty
 )
 from typing import List
+from utils.drill_scorer import DrillScorer
 
 class SessionGenerator:
     def __init__(self, db: Session):
@@ -19,34 +20,34 @@ class SessionGenerator:
         all_drills = self.db.query(Drill).all()
         print(f"\nFound {len(all_drills)} total drills")
 
+        # Create drill scorer that scores drills based on user preferences
+        scorer = DrillScorer(preferences)
+        
+        # Score and rank all drills
+        ranked_drills = scorer.rank_drills(all_drills)
+        
         # Filter suitable drills
         suitable_drills = []
         current_duration = 0
 
-        # Filter drills based on user preferences
-        for drill in all_drills:
+        # Filter drills based on user preferences and scores
+        for ranked_drill in ranked_drills:
+            drill = ranked_drill['drill']
+            scores = ranked_drill['scores']
+            
             print(f"\nChecking drill: {drill.title}")
+            print(f"Total score: {ranked_drill['total_score']}")
+            print(f"Score breakdown: {scores}")
             
-            # Check equipment requirements
-            print(f"Required equipment: {drill.required_equipment}")
-            print(f"Available equipment: {preferences.available_equipment}")
-            if not all(equip in preferences.available_equipment for equip in drill.required_equipment):
-                print("❌ Failed equipment check")
+            # Skip drills with zero scores in critical areas
+            if scores['equipment'] == 0 or scores['location'] == 0:
+                print("❌ Failed critical requirements check")
                 continue
-
-            # Check location suitability
-            print(f"Training location: {drill.suitable_locations}")
-            print(f"Preferred training location: {preferences.training_location}")
-            
-            # Convert stored locations to enum values for comparison
-            drill_locations = [loc for loc in drill.suitable_locations]
-            if preferences.training_location not in drill_locations:
-                print("❌ Failed training location check")
+                
+            # Skip drills with very low skill relevance
+            if scores['primary_skill'] == 0 and scores['secondary_skill'] == 0:
+                print("❌ Failed skill relevance check")
                 continue
-
-            # Note: We no longer filter by difficulty, just print it for reference
-            print(f"Difficulty: {drill.difficulty}")
-            print(f"Preferred difficulty: {preferences.difficulty}")
 
             # Calculate intensity modifier based on player level vs drill difficulty
             intensity_modifier = self._calculate_intensity_modifier(preferences.difficulty, drill.difficulty)
