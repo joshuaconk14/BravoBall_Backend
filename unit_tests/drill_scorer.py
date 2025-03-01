@@ -266,7 +266,7 @@ class TestDrillScorer:
                 for category, score in entry['scores'].items():
                     if category != 'total':
                         print(f"  {category}: {score}")
-            
+    
     def test_edge_cases(self, base_preferences, drill_with_skill_focus):
         """Test edge cases and error handling"""
         scorer = DrillScorer(base_preferences)

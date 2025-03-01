@@ -69,8 +69,8 @@ class DrillScorer:
         # Score primary skill
         primary_score = 0.0
         for target in self.preferences.target_skills:
-            if (primary_skill.category == target["category"] and 
-                primary_skill.sub_skill in target["sub_skills"]):
+            # Simple string match with category
+            if primary_skill.category == target:
                 primary_score = 1.0
                 break
 
@@ -81,10 +81,11 @@ class DrillScorer:
             matches = 0
             for skill in secondary_skills:
                 for target in self.preferences.target_skills:
-                    if (skill.category == target["category"] and 
-                        skill.sub_skill in target["sub_skills"]):
+                    # Simple string match with category
+                    if skill.category == target:
                         matches += 1
                         break
+        
             secondary_score = min(matches * 0.5, 0.5)  # Cap at 0.5
 
         return {"primary": primary_score, "secondary": secondary_score}

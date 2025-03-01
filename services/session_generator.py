@@ -156,22 +156,26 @@ class SessionGenerator:
         """
         Normalize drill durations to fit within target session duration by proportionally
         reducing all drill durations while maintaining minimum effective durations.
+        For shorter sessions, allows more aggressive reduction to fit more drills.
         """
         current_duration = sum(drill.adjusted_duration for drill in drills)
         
         if current_duration <= target_duration:
             return drills
         
-        # Calculate the reduction ratio needed
+        # Calculate base minimum duration based on session length
+        # For shorter sessions (30 mins or less), allow drills as short as 3 minutes
+        # For longer sessions (60+ mins), keep minimum of 5 minutes
+        base_min_duration = max(3, min(5, target_duration // 10))
+        
+        # Calculate reduction ratio needed
         reduction_ratio = target_duration / current_duration
         
-        # Keep track of total reduction and remaining drills to adjust
-        total_adjusted = 0
-        
         # First pass: Try to reduce all drills proportionally
+        total_adjusted = 0
         for drill in drills:
-            # Calculate new duration with ratio, ensuring minimum of 5 minutes
-            new_duration = max(5, int(drill.adjusted_duration * reduction_ratio))
+            # Calculate new duration with ratio, ensuring minimum duration
+            new_duration = max(base_min_duration, int(drill.adjusted_duration * reduction_ratio))
             drill.adjusted_duration = new_duration
             total_adjusted += new_duration
         
@@ -180,13 +184,17 @@ class SessionGenerator:
             excess_time = total_adjusted - target_duration
             drills_by_duration = sorted(drills, key=lambda x: x.adjusted_duration, reverse=True)
             
+            # Calculate maximum reduction percentage based on session duration
+            # Shorter sessions allow up to 80% reduction, longer sessions up to 60%
+            max_reduction_pct = 0.8 if target_duration <= 30 else 0.7 if target_duration <= 45 else 0.6
+            
             for drill in drills_by_duration:
                 if excess_time <= 0:
                     break
                 
                 # Calculate how much we can reduce this drill
                 current_duration = drill.adjusted_duration
-                min_duration = max(5, int(drill.original_duration * 0.4))  # Allow up to 60% reduction
+                min_duration = max(base_min_duration, int(drill.original_duration * (1 - max_reduction_pct)))
                 potential_reduction = current_duration - min_duration
                 
                 if potential_reduction > 0:
