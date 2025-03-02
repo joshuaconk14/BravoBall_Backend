@@ -20,4 +20,4 @@ async def generate_session(
         session = await session_generator.generate_session(current_user, preferences)
         return session
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e)) 
+        raise HTTPException(status_code=500, detail=str(e))
