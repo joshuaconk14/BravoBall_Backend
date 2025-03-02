@@ -1,82 +1,137 @@
-# Soccer Training App Backend
+# Tekk - Personalized Soccer Training App
 
-A FastAPI-based backend service that provides personalized soccer training recommendations and program generation.
+Tekk is an intelligent soccer training application that generates personalized training sessions based on player profiles, equipment availability, and skill development goals.
 
-## Core Features
+## Features
 
-### 1. Drill Recommendation System
-- Personalized drill recommendations based on:
-  - Player skill level
-  - Position
-  - Available equipment
-  - Training goals
-- Scoring algorithm that considers:
-  - Difficulty match
-  - Position-specific drills
-  - Equipment availability
-  - Goal alignment
+### 1. Personalized Training Sessions
+- Adapts to player's skill level (Beginner to Advanced)
+- Considers available equipment and training location
+- Customizes session duration and intensity
+- Focuses on targeted skill development
 
-### 2. Program Generation
-- AI-powered training program creation
-- Progressive weekly plans
-- Customized based on:
-  - Training availability
-  - Player goals
-  - Strengths/weaknesses
-  - Skill level
+### 2. Smart Drill Selection
+- Scores and ranks drills based on multiple factors:
+  - Primary and secondary skill relevance
+  - Equipment availability and adaptability
+  - Location suitability
+  - Player skill level vs. drill difficulty
+  - Training style compatibility
+  - Session duration constraints
 
-## API Endpoints
+### 3. Equipment Flexibility
+- Adapts drills based on available equipment
+- Supports various training environments:
+  - Full-size fields
+  - Small outdoor spaces
+  - Indoor courts
+  - Small rooms
+- Equipment categories:
+  - Ball
+  - Cones
+  - Wall
+  - Goals
 
-### Drills
-- `GET /drills/` - Get all drills with filtering and pagination
-- `GET /drills/recommendations/` - Get personalized drill recommendations
+### 4. Skill Categories
+- Passing
+  - Short passing
+  - Long passing
+  - Wall passing
+- Shooting
+  - Power
+  - Finishing
+  - Volleys
+  - Long shots
+- Dribbling
+  - Ball mastery
+  - Close control
+  - Speed dribbling
+  - 1v1 moves
+- First Touch
+  - Ground control
+  - Aerial control
+  - Turning with ball
+  - One-touch control
+- Fitness
+  - Speed
+  - Agility
+  - Endurance
 
-### Onboarding
-- `POST /api/onboarding` - Create new user profile and get initial recommendations
+## Technical Architecture
 
-## Data Models
+### Database Structure
+- PostgreSQL database with SQLAlchemy ORM
+- Models for:
+  - Users
+  - Drills
+  - Training Sessions
+  - Session Preferences
+  - Drill Categories
+  - Skill Focus Areas
 
-### User Profile
-- Skill level (Beginner/Intermediate/Competitive/Professional)
-- Position
-- Available equipment
-- Training preferences
-- Goals and timeline
+### API Endpoints
+- `/api/session/generate`: Generate personalized training sessions
+- `/drills/`: Query and filter available drills
+- `/drill-categories/`: Get all drill categories
 
-### Drills
-- Categories: Dribbling, Shooting, Passing, First Touch, Physical
-- Difficulty levels
-- Required equipment
-- Position recommendations
-- Skill focus areas
+### Core Components
+1. **Session Generator**
+   - Intelligent drill selection algorithm
+   - Duration adjustment and normalization
+   - Equipment availability validation
+   - Skill relevance scoring
 
-## Setup
+2. **Drill Scorer**
+   - Multi-factor scoring system
+   - Weighted criteria evaluation
+   - Adaptable equipment handling
+   - Location compatibility checking
 
-1. Install dependencies:
-bash
+3. **Preference Service**
+   - User preference management
+   - Profile-based session customization
+   - Equipment and location tracking
+
+## Setup and Installation
+
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd tekk-app
 ```
+
+2. Set up Python virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
 pip install -r requirements.txt
 ```
-bash
-```
-python create_tables.py
-python seed_drills.py
 
-# Run unit tests
-pytest unit_tests/drills.py -v -s
+4. Initialize the database:
+```bash
+python reset_db.py
+```
+
+## Development
+
+### Running Tests
+```bash
 pytest unit_tests/session_generator.py -v -s
-pytest unit_tests/drill_scorer.py -v -s
-pytest unit_tests/drill_scorer_db.py -v -s
 ```
 
-3. Run the server:
-bash
-```
+### Starting the Server
+```bash
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-## Technologies
-- FastAPI
-- SQLAlchemy
-- PostgreSQL
-- Pydantic
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
