@@ -33,8 +33,13 @@ class DrillScorer:
         scores["primary_skill"] = skill_scores["primary"] * self.weights["primary_skill"]
         scores["secondary_skill"] = skill_scores["secondary"] * self.weights["secondary_skill"]
         
-        # Score equipment match
-        scores["equipment"] = self._score_equipment(drill.required_equipment) * self.weights["equipment"]
+        # Score equipment match - now with more flexible scoring
+        equipment_score = self._score_equipment(drill.required_equipment)
+        scores["equipment"] = equipment_score * self.weights["equipment"]
+        
+        # If equipment score is non-zero but less than 1, reduce the weight to be more lenient
+        if 0 < equipment_score < 1:
+            scores["equipment"] *= 0.8  # Reduce impact of equipment limitations
         
         # Score location suitability
         scores["location"] = self._score_location(drill.suitable_locations) * self.weights["location"]
@@ -69,8 +74,8 @@ class DrillScorer:
         # Score primary skill
         primary_score = 0.0
         for target in self.preferences.target_skills:
-            if (primary_skill.category == target["category"] and 
-                primary_skill.sub_skill in target["sub_skills"]):
+            # Simple string match with category
+            if primary_skill.category == target:
                 primary_score = 1.0
                 break
 
@@ -81,19 +86,49 @@ class DrillScorer:
             matches = 0
             for skill in secondary_skills:
                 for target in self.preferences.target_skills:
-                    if (skill.category == target["category"] and 
-                        skill.sub_skill in target["sub_skills"]):
+                    # Simple string match with category
+                    if skill.category == target:
                         matches += 1
                         break
+        
             secondary_score = min(matches * 0.5, 0.5)  # Cap at 0.5
 
         return {"primary": primary_score, "secondary": secondary_score}
 
     def _score_equipment(self, required_equipment: List[str]) -> float:
-        """Score based on equipment availability"""
-        if not required_equipment:  # Handles both None and empty list
+        """
+        Score based on equipment availability with flexibility for limited equipment scenarios.
+        Returns:
+        - 1.0: All equipment available
+        - 0.8: Only basic equipment needed (just ball)
+        - 0.6: Missing some equipment but drill can be adapted (e.g., cones can be replaced)
+        - 0.0: Missing critical equipment that cannot be substituted (e.g., goals)
+        """
+        if not required_equipment:  # No equipment needed
             return 1.0
-        return 1.0 if all(equip in self.preferences.available_equipment for equip in required_equipment) else 0.0
+            
+        # Equipment that can be substituted with household items
+        adaptable_equipment = {"CONES", "WALL"}  # Cones can be bottles/shoes, wall can be any vertical surface
+        critical_equipment = {"GOALS", "BALL"}   # These are harder to substitute
+        
+        # Check if only ball is required
+        if set(required_equipment) == {"BALL"}:
+            return 0.8 if "BALL" in self.preferences.available_equipment else 0.0
+            
+        # Check available equipment
+        missing_equipment = set(required_equipment) - set(self.preferences.available_equipment)
+        if not missing_equipment:  # Has all equipment
+            return 1.0
+            
+        # Check if missing equipment is adaptable
+        if missing_equipment & critical_equipment:  # Missing critical equipment
+            return 0.0
+            
+        # If only missing adaptable equipment, give partial score
+        if missing_equipment <= adaptable_equipment:
+            return 0.6
+            
+        return 0.0
 
     def _score_location(self, suitable_locations: List[str]) -> float:
         """Score based on location match"""
