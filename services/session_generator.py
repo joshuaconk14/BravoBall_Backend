@@ -36,29 +36,53 @@ class SessionGenerator:
             scores = ranked_drill['scores']
             
             print(f"\nChecking drill: {drill.title}")
-            print(f"Total score: {ranked_drill['total_score']}")
+            print(f": {ranked_drill['total_score']}")
             print(f"Score breakdown: {scores}")
             
-            # Skip drills with zero scores in critical areas
+            # For limited equipment scenarios, be more lenient with requirements
+            has_limited_equipment = len(preferences.available_equipment) <= 1
+            
+            # Skip drills only if they completely fail critical requirements
             if scores['equipment'] == 0 or scores['location'] == 0:
-                print("❌ Failed critical requirements check")
-                continue
+                if has_limited_equipment and scores['equipment'] == 0:
+                    # For limited equipment, only skip if it requires goals
+                    if not any(eq == "GOALS" for eq in drill.required_equipment):
+                        # Allow drill if it only needs adaptable equipment
+                        pass
+                    else:
+                        print("❌ Failed critical requirements check - requires goals")
+                        continue
+                else:
+                    print("❌ Failed critical requirements check")
+                    continue
                 
-            # Skip drills with very low skill relevance
+            # More lenient skill relevance check for limited equipment
             if scores['primary_skill'] == 0 and scores['secondary_skill'] == 0:
-                print("❌ Failed skill relevance check")
-                continue
+                if has_limited_equipment:
+                    # For limited equipment, accept drills that at least work on basic skills
+                    if any(skill in ["ball_mastery", "first_touch", "dribbling"] for skill in preferences.target_skills):
+                        pass
+                    else:
+                        print("❌ Failed skill relevance check")
+                        continue
+                else:
+                    print("❌ Failed skill relevance check")
+                    continue
 
             # Calculate intensity modifier based on player level vs drill difficulty
             intensity_modifier = self._calculate_intensity_modifier(preferences.difficulty, drill.difficulty)
             
-            # Adjust drill duration based on session time constraint
+            # For limited equipment, allow shorter minimum durations to fit more drills
             original_duration = drill.duration
+            min_duration = 3 if has_limited_equipment else 5
+            
+            # Adjust drill duration based on session time constraint
             adjusted_duration = self._adjust_duration_for_session_fit(
                 original_duration, 
                 preferences.duration,
                 current_duration,
-                len(suitable_drills)
+                len(suitable_drills),
+                min_duration
             )
 
             print(f"Original duration: {original_duration} minutes")
@@ -72,6 +96,10 @@ class SessionGenerator:
             # Add drill to suitable drills
             suitable_drills.append(drill)
             current_duration += adjusted_duration
+
+            # For limited equipment, try to get at least 3 drills if possible
+            if has_limited_equipment and len(suitable_drills) < 3:
+                continue
 
             # If we've significantly exceeded the preferred duration, stop adding drills
             if current_duration > preferences.duration * 1.2:  # Allow 20% overflow before stopping
@@ -127,7 +155,8 @@ class SessionGenerator:
         original_duration: int, 
         target_session_duration: int,
         current_session_duration: int,
-        num_drills_so_far: int
+        num_drills_so_far: int,
+        min_duration: int = 5
     ) -> int:
         """
         Adjust drill duration to better fit within session constraints while maintaining effectiveness.
@@ -136,7 +165,7 @@ class SessionGenerator:
         # If this is the first drill, aim for about 25-35% of session time
         if num_drills_so_far == 0:
             target_first_drill = target_session_duration * 0.3  # 30% of session time
-            return max(int(min(original_duration, target_first_drill)), 5)  # minimum 5 minutes
+            return max(int(min(original_duration, target_first_drill)), min_duration)
 
         # Calculate remaining session time
         remaining_time = target_session_duration - current_session_duration
@@ -147,8 +176,8 @@ class SessionGenerator:
 
         # If we're running short on time, scale duration down
         # but maintain a minimum effective duration
-        min_effective_duration = max(5, int(original_duration * 0.6))  # minimum 60% of original or 5 minutes
-        scaled_duration = min(original_duration, int(remaining_time * 0.7))  # take up to 70% of remaining time
+        min_effective_duration = max(min_duration, int(original_duration * 0.6))
+        scaled_duration = min(original_duration, int(remaining_time * 0.7))
         
         return max(min_effective_duration, scaled_duration)
 
