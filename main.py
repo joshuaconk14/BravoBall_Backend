@@ -13,9 +13,8 @@ app = FastAPI()
 app.include_router(login.router)
 app.include_router(onboarding.router)
 app.include_router(delete_account.router)
-app.include_router(get_program.router)
 app.include_router(drills.router)
-app.include_router(training.router)
+
 
 # Run FastAPI on local host
 if __name__ == "__main__":

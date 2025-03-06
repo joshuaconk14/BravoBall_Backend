@@ -150,39 +150,49 @@ class FitnessSubSkill(str, Enum):
 class User(Base):
     __tablename__ = "users"
 
+    # Registration / User ID
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
+    email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    age = Column(String)
-    level = Column(String)
-    position = Column(String)
-    # player_details = Column(JSON)
-    playstyle_representatives = Column(JSON)
-    strengths = Column(JSON)
-    weaknesses = Column(JSON)
-    has_team = Column(Boolean, default=False)
+
+    # Onboarding 
     primary_goal = Column(String)
-    timeline = Column(String)
-    skill_level = Column(String)
-    training_days = Column(JSON)
+    biggest_challenge = Column(String)
+    training_experience = Column(String)
+    position = Column(String)
+    playstyle = Column(String)
+    age_range = Column(String)
+    strengths = Column(JSON)
+    areas_to_improve = Column(JSON)
+    training_location = Column(JSON)
     available_equipment = Column(JSON)
+    daily_training_time = Column(String)
+    weekly_training_days = Column(String)
+    
+    
+    # Relationship
     session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
+
     
 class OnboardingData(BaseModel):
-    primary_goal: PrimaryGoal
-    main_challenge: Challenge
-    experience_level: ExperienceLevel
-    position: Position
-    playstyle_representative: str
-    age_range: AgeRange
-    strengths: List[Skill]
-    areas_to_improve: List[Skill]
-    training_location: TrainingLocation
-    available_equipment: List[Equipment]
-    daily_training_time: TrainingDuration
-    weekly_training_days: TrainingFrequency
+    primaryGoal: str
+    biggestChallenge: str
+    trainingExperience: str
+    position: str
+    playstyle: str
+    ageRange: str
+    strengths: List[str]
+    areasToImprove: List[str]
+    trainingLocation: List[str]
+    availableEquipment: List[str]
+    dailyTrainingTime: str
+    weeklyTrainingDays: str
+    firstName: str
+    lastName: str
+    email: str
+    password: str
 
     model_config = ConfigDict(from_attributes=True)
 
