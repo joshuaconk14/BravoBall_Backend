@@ -1,0 +1,1155 @@
+[
+    {
+      "title": "Inside-Foot Juggle with Catch",
+      "description": "A simple beginner-friendly juggling exercise to improve first touch and ball control.",
+      "type": "time_based",
+      "duration": 15,
+      "sets": null,
+      "reps": null,
+      "equipment": ["ball"],
+      "suitable_locations": [
+        "full_field",
+        "indoor_court",
+        "backyard",
+        "small_field"
+      ],
+      "intensity": "medium",
+      "training_styles": ["beginner"],
+      "difficulty": "beginner",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "one_touch_control"
+        }
+      ],
+      "instructions": [
+        "Hold the ball in your hands and drop it to your dominant foot.",
+        "Tap the ball lightly upwards using the inside of your foot.",
+        "Catch the ball with your hands after one touch.",
+        "Repeat using both feet alternately to improve control.",
+        "Increase the number of juggles before catching as you improve."
+      ],
+      "tips": [
+        "Use a relaxed foot to cushion the ball.",
+        "Keep your eyes on the ball to maintain control.",
+        "Start slow and focus on consistency before increasing speed."
+      ],
+      "common_mistakes": [
+        "Kicking the ball too hard and losing control.",
+        "Not aligning the foot correctly, causing the ball to move sideways.",
+        "Looking away from the ball before making contact."
+      ],
+      "progression_steps": [
+        "Start with one juggle and a catch.",
+        "Progress to two consecutive juggles before catching.",
+        "Increase the number of juggles progressively.",
+        "Try juggling without catching for an extended period."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/inside-foot-juggle-video",
+      "thumbnail_url": "https://example.com/inside-foot-juggle-thumbnail.jpg"
+    },
+    {
+      "title": "Lace Juggle with Catch",
+      "description": "A beginner-friendly juggling drill that helps improve aerial control and first touch using the laces.",
+      "type": "time_based",
+      "duration": 15,
+      "sets": null,
+      "reps": null,
+      "equipment": ["ball"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard",
+        "small_indoor_room"
+      ],
+      "intensity": "medium",
+      "training_styles": ["beginner"],
+      "difficulty": "beginner",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "one_touch_control"
+        }
+      ],
+      "instructions": [
+        "Hold the ball in your hands and drop it to your dominant foot.",
+        "Tap the ball lightly upwards using the laces.",
+        "Catch the ball with your hands after one touch.",
+        "Repeat using both feet alternately to improve control.",
+        "Increase the number of juggles before catching as you improve."
+      ],
+      "tips": [
+        "Keep your foot slightly pointed downward for better control.",
+        "Use a soft touch to keep the ball close.",
+        "Focus on consistency before increasing speed."
+      ],
+      "common_mistakes": [
+        "Kicking the ball too hard and losing control.",
+        "Not keeping the foot aligned properly, causing the ball to move off balance.",
+        "Not focusing on the ball before making contact."
+      ],
+      "progression_steps": [
+        "Start with one juggle and a catch.",
+        "Progress to two consecutive juggles before catching.",
+        "Increase the number of juggles progressively.",
+        "Try juggling without catching for an extended period."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/lace-juggle-with-catch-video",
+      "thumbnail_url": "https://example.com/lace-juggle-with-catch-thumbnail.jpg"
+    },
+    {
+      "title": "Inside-Foot Juggle with Bounce",
+      "description": "A beginner juggling drill that allows a bounce between touches to help improve foot-eye coordination and ball control.",
+      "type": "time_based",
+      "duration": 15,
+      "sets": null,
+      "reps": null,
+      "equipment": ["ball"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard",
+        "small_indoor_room"
+      ],
+      "intensity": "medium",
+      "training_styles": ["beginner"],
+      "difficulty": "beginner",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "one_touch_control"
+        }
+      ],
+      "instructions": [
+        "Drop the ball and let it bounce once before touching it with the inside of your foot.",
+        "Tap the ball lightly upwards using the inside of your foot.",
+        "Allow the ball to bounce again before making the next touch.",
+        "Continue alternating feet to improve control and rhythm.",
+        "Increase the number of consecutive juggles as you improve."
+      ],
+      "tips": [
+        "Let the ball bounce to give yourself more time to react.",
+        "Keep your eyes on the ball to track its movement.",
+        "Focus on soft, controlled touches."
+      ],
+      "common_mistakes": [
+        "Letting the ball bounce too high, making it harder to control.",
+        "Using too much force, causing the ball to move away.",
+        "Not positioning the foot correctly, leading to inconsistent bounces."
+      ],
+      "progression_steps": [
+        "Start with one touch after each bounce.",
+        "Progress to two consecutive touches before catching.",
+        "Increase the number of consecutive juggles before catching.",
+        "Try juggling with fewer bounces."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/inside-foot-juggle-with-bounce-video",
+      "thumbnail_url": "https://example.com/inside-foot-juggle-with-bounce-thumbnail.jpg"
+    },
+    {
+      "title": "Lace Juggle with Bounce",
+      "description": "A beginner juggling drill using the laces, allowing a bounce between touches to improve control and coordination.",
+      "type": "time_based",
+      "duration": 15,
+      "sets": null,
+      "reps": null,
+      "equipment": ["ball"],
+      "suitable_locations": [
+        "full_field",
+        "indoor_court",
+        "backyard",
+        "small_field"
+      ],
+      "intensity": "medium",
+      "training_styles": ["beginner"],
+      "difficulty": "beginner",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "one_touch_control"
+        }
+      ],
+      "instructions": [
+        "Drop the ball and let it bounce once before touching it with the laces.",
+        "Tap the ball lightly upwards using the laces.",
+        "Allow the ball to bounce again before making the next touch.",
+        "Alternate feet to improve control and rhythm.",
+        "Increase the number of consecutive juggles as you improve."
+      ],
+      "tips": [
+        "Let the ball bounce to give yourself more time to react.",
+        "Keep your foot slightly pointed downward for better control.",
+        "Use a soft touch to keep the ball close."
+      ],
+      "common_mistakes": [
+        "Letting the ball bounce too high, making it harder to control.",
+        "Kicking too hard and losing control.",
+        "Not positioning the foot correctly, leading to inconsistent touches."
+      ],
+      "progression_steps": [
+        "Start with one touch after each bounce.",
+        "Progress to two consecutive touches before catching.",
+        "Increase the number of consecutive juggles before catching.",
+        "Try juggling with fewer bounces."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/lace-juggle-with-bounce-video",
+      "thumbnail_url": "https://example.com/lace-juggle-with-bounce-thumbnail.jpg"
+    },
+    {
+      "title": "Juggle Knee-Height",
+      "description": "A juggling drill that focuses on controlling the ball at knee height to improve aerial touch and consistency.",
+      "type": "rep_based",
+      "duration": 10,
+      "sets": null,
+      "reps": 200,
+      "equipment": ["ball"],
+      "suitable_locations": [
+        "full_field",
+        "indoor_court",
+        "backyard",
+        "small_field"
+      ],
+      "intensity": "medium",
+      "training_styles": ["intermediate"],
+      "difficulty": "beginner",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "one_touch_control"
+        }
+      ],
+      "instructions": [
+        "Drop the ball from your hands and juggle it using your feet.",
+        "Maintain control by keeping the ball at knee height with each touch.",
+        "Alternate feet for better coordination.",
+        "Aim for consistent, soft touches without letting the ball rise too high.",
+        "Increase the number of consecutive juggles as you improve."
+      ],
+      "tips": [
+        "Keep your foot relaxed to cushion the ball.",
+        "Maintain a slight bend in your knees for balance.",
+        "Focus on small, controlled touches."
+      ],
+      "common_mistakes": [
+        "Kicking the ball too high, making it harder to control.",
+        "Not staying light on your feet, reducing mobility.",
+        "Using too much power instead of controlled touches."
+      ],
+      "progression_steps": [
+        "Start with one or two juggles before catching.",
+        "Progress to 5-10 consecutive juggles.",
+        "Maintain control for an extended period.",
+        "Try performing the drill while moving slightly."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/juggle-knee-height-video",
+      "thumbnail_url": "https://example.com/juggle-knee-height-thumbnail.jpg"
+    },
+    {
+      "title": "Juggle Waist-Height",
+      "description": "A juggling drill that helps players improve their touch and control by keeping the ball at waist height.",
+      "type": "rep_based",
+      "duration": 10,
+      "sets": null,
+      "reps": 200,
+      "equipment": ["soccer ball"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard",
+        "small_room"
+      ],
+      "intensity": "medium",
+      "training_styles": ["intermediate"],
+      "difficulty": "beginner",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "one_touch_control"
+        }
+      ],
+      "instructions": [
+        "Drop the ball from your hands and start juggling.",
+        "Keep the ball at waist height with each touch.",
+        "Use controlled touches with the laces or inside of your foot.",
+        "Alternate feet to maintain balance and rhythm.",
+        "Try to increase the number of juggles without letting the ball drop."
+      ],
+      "tips": [
+        "Use a firmer touch compared to knee-height juggling.",
+        "Stay light on your feet to adjust quickly.",
+        "Focus on making clean contact with the ball."
+      ],
+      "common_mistakes": [
+        "Using too much power, causing the ball to go too high.",
+        "Losing balance by not adjusting foot positioning.",
+        "Not watching the ball closely before making contact."
+      ],
+      "progression_steps": [
+        "Start with controlled juggles, then catch.",
+        "Increase the number of consecutive juggles.",
+        "Try juggling without catching for an extended time.",
+        "Add movement while maintaining waist-height control."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/juggle-waist-height-video",
+      "thumbnail_url": "https://example.com/juggle-waist-height-thumbnail.jpg"
+    },
+    {
+      "title": "Juggle Head-Height",
+      "description": "A juggling drill focused on keeping the ball at head height, helping players develop control and touch precision.",
+      "type": "rep_based",
+      "duration": 10,
+      "sets": null,
+      "reps": 200,
+      "equipment": ["soccer ball"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard",
+        "small_room"
+      ],
+      "intensity": "medium",
+      "training_styles": ["intermediate"],
+      "difficulty": "beginner",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "one_touch_control"
+        }
+      ],
+      "instructions": [
+        "Drop the ball from your hands and juggle it using your laces or inside of the foot.",
+        "Maintain the ball at head height with controlled touches.",
+        "Adjust foot positioning to keep balance.",
+        "Keep touches soft but firm enough to reach head level.",
+        "Continue increasing the number of consecutive juggles."
+      ],
+      "tips": [
+        "Use a controlled but firm touch to keep the ball elevated.",
+        "Keep your knees slightly bent to maintain stability.",
+        "Watch the ball closely to anticipate the next touch."
+      ],
+      "common_mistakes": [
+        "Kicking the ball too hard and losing control.",
+        "Not staying light on the feet, leading to poor adjustments.",
+        "Letting the ball drop due to inconsistent touch power."
+      ],
+      "progression_steps": [
+        "Start with controlled head-height juggles, then catch.",
+        "Increase the number of consecutive juggles.",
+        "Try to maintain the height for an extended period.",
+        "Add movement to simulate real-game scenarios."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/juggle-head-height-video",
+      "thumbnail_url": "https://example.com/juggle-head-height-thumbnail.jpg"
+    },
+    {
+      "title": "Knee Juggles",
+      "description": "A juggling drill using the knees to improve ball control and balance.",
+      "type": "time_based",
+      "duration": 15,
+      "sets": null,
+      "reps": null,
+      "equipment": ["soccer ball"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard",
+        "small_room"
+      ],
+      "intensity": "medium",
+      "training_styles": ["beginner"],
+      "difficulty": "intermediate",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "balance",
+          "sub_skill": null
+        }
+      ],
+      "instructions": [
+        "Start with the ball in your hands and drop it onto your knee.",
+        "Use soft, controlled knee touches to keep the ball in the air.",
+        "Alternate knees to develop coordination."
+      ],
+      "tips": [
+        "Slightly pop your knee up to keep the ball elevated.",
+        "Let the ball hit in between your knee and thigh for a more cushioned touch.",
+        "Watch the ball closely to anticipate the next touch."
+      ],
+      "common_mistakes": [
+        "Hitting the ball too hard and losing control.",
+        "Not staying light on the feet, leading to poor adjustments."
+      ],
+      "progression_steps": [
+        "Start by throwing the ball into the air, perform one knee touch, and catch the ball.",
+        "Increase the number of consecutive knee juggles.",
+        "Try to maintain the height for an extended period.",
+        "Add movement to simulate real-game scenarios."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/knee-juggles-video",
+      "thumbnail_url": "https://example.com/knee-juggles-thumbnail.jpg"
+    },
+    {
+      "title": "Wall Pass to Open-Body Touch",
+      "description": "A passing drill that helps players develop first touch control and body positioning when receiving a pass from the wall.",
+      "type": "set_based",
+      "duration": 15,
+      "sets": 3,
+      "reps": 20,
+      "equipment": ["soccer ball", "wall"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard",
+        "small_room"
+      ],
+      "intensity": "high",
+      "training_styles": ["intermediate"],
+      "difficulty": "intermediate",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "ground_control"
+      },
+      "instructions": [
+        "Stand at a comfortable distance from the wall.",
+        "Pass the ball against the wall with the inside of your foot.",
+        "Open your body to receive the ball with the inside of your far foot.",
+        "Control the ball with a soft first touch, preparing for the next pass.",
+        "Repeat the sequence while maintaining rhythm and control."
+      ],
+      "tips": [
+        "Position your body at an angle to receive the ball smoothly.",
+        "Use a light first touch to keep the ball close.",
+        "Scan your surroundings as you receive the ball to simulate game situations."
+      ],
+      "common_mistakes": [
+        "Standing too square to the wall, making the touch awkward.",
+        "Using too much power, causing a heavy first touch.",
+        "Not keeping the receiving foot relaxed, leading to poor control."
+      ],
+      "progression_steps": [
+        "Start with slow passes and controlled first touches.",
+        "Increase the speed of passes while maintaining control.",
+        "Perform the drill while moving slightly after each pass.",
+        "Try receiving the ball with different surfaces of the foot."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/wall-pass-open-body-touch-video",
+      "thumbnail_url": "https://example.com/wall-pass-open-body-touch-thumbnail.jpg"
+    },
+    {
+      "title": "Wall Pass to Outside-Foot Touch",
+      "description": "A first-touch drill that focuses on using the outside of the foot to control and redirect passes off the wall.",
+      "type": "set_based",
+      "duration": 15,
+      "sets": 3,
+      "reps": 20,
+      "equipment": ["soccer ball", "wall"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard",
+        "small_room"
+      ],
+      "intensity": "high",
+      "training_styles": ["intermediate"],
+      "difficulty": "intermediate",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "ground_control"
+      },
+      "instructions": [
+        "Pass the ball against the wall using the inside of your foot.",
+        "As the ball returns, use the outside of your foot to control it in a new direction.",
+        "Keep the ball close and set up for the next pass.",
+        "Alternate feet to develop balance and control.",
+        "Maintain rhythm and increase speed as you improve."
+      ],
+      "tips": [
+        "Angle your foot slightly to guide the ball smoothly.",
+        "Use a soft touch to prevent the ball from rolling too far.",
+        "Stay light on your feet to adjust quickly."
+      ],
+      "common_mistakes": [
+        "Using too much force, causing the ball to roll away.",
+        "Not positioning the body properly for the outside-foot touch.",
+        "Failing to keep a steady rhythm."
+      ],
+      "progression_steps": [
+        "Start with slow, controlled touches.",
+        "Increase pass speed and quicken the touch.",
+        "Practice redirecting the ball at different angles.",
+        "Incorporate movement after each touch."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/wall-pass-outside-foot-touch-video",
+      "thumbnail_url": "https://example.com/wall-pass-outside-foot-touch-thumbnail.jpg"
+    },
+    {
+      "title": "Wall Pass to Open-Body Turn",
+      "description": "A drill focusing on using the first touch to turn and face forward after receiving a pass from the wall.",
+      "type": "set_based",
+      "duration": 15,
+      "sets": 3,
+      "reps": 10,
+      "equipment": ["soccer ball", "wall"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard",
+        "small_room"
+      ],
+      "intensity": "high",
+      "training_styles": ["intermediate"],
+      "difficulty": "intermediate",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "ground_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "one_touch_control"
+        }
+      ],
+      "instructions": [
+        "Pass the ball against the wall and prepare to receive it.",
+        "As the ball returns, use the inside of your far foot to control and turn your body.",
+        "After turning, fake to pass the ball and turn back to facing the wall. Pass back to the wall.",
+        "After halfway through reps, use the other foot by alternating the turning directions.",
+        "Increase the speed and fluidity of the movement as you improve."
+      ],
+      "tips": [
+        "Scan the area before turning, just like in a game situation.",
+        "Keep your body low and balanced while turning.",
+        "Use a soft but firm touch to guide the ball into space."
+      ],
+      "common_mistakes": [
+        "Standing too straight, making the turn slow and awkward.",
+        "Not angling the foot correctly, leading to poor control.",
+        "Failing to scan before turning, reducing awareness."
+      ],
+      "progression_steps": [
+        "Start with slow, deliberate turns.",
+        "Increase the speed of passing and turning.",
+        "Try using your weaker foot to control the turn.",
+        "Incorporate dribbling or shooting after the turn."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/wall-pass-open-body-turn-video",
+      "thumbnail_url": "https://example.com/wall-pass-open-body-turn-thumbnail.jpg"
+    },
+    {
+      "title": "Knee-Height Juggles Across Line",
+      "description": "A juggling drill that focuses on ball control while moving forward with juggles below the knee.",
+      "type": "set_based",
+      "duration": 10,
+      "sets": 3,
+      "reps": null,
+      "equipment": ["soccer ball", "training cones"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard"
+      ],
+      "intensity": "medium",
+      "training_styles": ["intermediate"],
+      "difficulty": "intermediate",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "instructions": [
+        "Set two cones 10 yards apart.",
+        "Start at one cone and begin juggling below knee height.",
+        "Move forward at a walking pace while keeping the ball in the air.",
+        "Continue juggling until you reach the other cone.",
+        "If you drop the ball, pick it up and continue from where you left off."
+      ],
+      "tips": [
+        "Use light touches to maintain control.",
+        "Stay relaxed and keep your knees slightly bent.",
+        "Focus on consistency rather than speed."
+      ],
+      "common_mistakes": [
+        "Kicking too high, losing control.",
+        "Moving too fast, causing mis-hits.",
+        "Tensing up, making touches less accurate."
+      ],
+      "progression_steps": [
+        "Start at a slow walking pace.",
+        "Increase pace as control improves.",
+        "Try using your weaker foot only.",
+        "Perform the drill without dropping the ball."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/knee-height-juggles-video",
+      "thumbnail_url": "https://example.com/knee-height-juggles-thumbnail.jpg"
+    },
+    {
+      "title": "Waist-Height Juggles Across Line",
+      "description": "A juggling drill that emphasizes control while keeping the ball at waist height while moving forward.",
+      "type": "set_based",
+      "duration": 10,
+      "sets": 3,
+      "reps": null,
+      "equipment": ["soccer ball", "training cones"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard"
+      ],
+      "intensity": "medium",
+      "training_styles": ["advanced"],
+      "difficulty": "advanced",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "instructions": [
+        "Set two cones 10 yards apart.",
+        "Start at one cone and begin juggling at waist height.",
+        "Move forward at a walking pace while keeping the ball in the air.",
+        "Continue juggling until you reach the other cone.",
+        "If you drop the ball, pick it up and continue from where you left off."
+      ],
+      "tips": [
+        "Use a slight backspin to keep the ball close.",
+        "Stay balanced and adjust foot positioning as needed.",
+        "Maintain a soft, controlled touch to keep the ball at waist height."
+      ],
+      "common_mistakes": [
+        "Letting the ball get too high, making it harder to control.",
+        "Moving too fast, leading to poor balance.",
+        "Using too much power, causing inconsistent touches."
+      ],
+      "progression_steps": [
+        "Start at a slow walking pace.",
+        "Increase pace as control improves.",
+        "Try using your weaker foot only.",
+        "Perform the drill without dropping the ball."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/waist-height-juggles-video",
+      "thumbnail_url": "https://example.com/waist-height-juggles-thumbnail.jpg"
+    },
+    {
+      "title": "Head-Height Juggles Across Line",
+      "description": "A juggling drill that challenges players to control the ball at head height while moving forward.",
+      "type": "set_based",
+      "duration": 10,
+      "sets": 3,
+      "reps": null,
+      "equipment": ["soccer ball", "training cones"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard"
+      ],
+      "intensity": "medium",
+      "training_styles": ["advanced"],
+      "difficulty": "intermediate",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "instructions": [
+        "Set two cones 10 yards apart.",
+        "Start at one cone and begin juggling the ball at head height.",
+        "Move forward at a walking pace while keeping the ball in the air.",
+        "Continue juggling until you reach the other cone.",
+        "If you drop the ball, pick it up and continue from where you left off."
+      ],
+      "tips": [
+        "Use a soft touch to maintain control.",
+        "Keep your body relaxed and adjust as needed.",
+        "Focus on consistency rather than power."
+      ],
+      "common_mistakes": [
+        "Letting the ball get too high, making it harder to control.",
+        "Using too much force, causing inconsistent touches.",
+        "Moving too quickly and losing balance."
+      ],
+      "progression_steps": [
+        "Start at a slow walking pace.",
+        "Increase speed while keeping control.",
+        "Use only your weaker foot for juggles.",
+        "Complete the drill without dropping the ball."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/head-height-juggles-video",
+      "thumbnail_url": "https://example.com/head-height-juggles-thumbnail.jpg"
+    },
+    {
+      "title": "High Ball Juggles",
+      "description": "A juggling drill focused on controlling high balls within a designated space.",
+      "type": "rep_based",
+      "duration": 15,
+      "sets": null,
+      "reps": 20,
+      "equipment": ["ball", "training_cones"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court"
+      ],
+      "intensity": "medium",
+      "training_styles": ["professional"],
+      "difficulty": "intermediate",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "ball_control"
+        }
+      ],
+      "instructions": [
+        "Set up four cones in a box shape, with each cone 4 yards apart.",
+        "Begin juggling the ball within the box.",
+        "After a few juggles, kick the ball high into the air.",
+        "Control the ball with the inside or laces of your foot, keeping it within the box.",
+        "Continue juggling after taking the touch so the ball does not hit the ground.",
+        "If the ball hits the ground, pick it up and continue."
+      ],
+      "tips": [
+        "Use a soft touch when controlling the ball to keep it inside the box.",
+        "Keep your eyes on the ball while it's in the air.",
+        "Angle your foot correctly to absorb the impact and keep the ball close."
+      ],
+      "common_mistakes": [
+        "Kicking the ball too high and losing control.",
+        "Not positioning yourself under the ball before controlling it.",
+        "Using too much force when taking the touch, causing the ball to bounce away."
+      ],
+      "progression_steps": [
+        "Start by controlling the ball after one bounce.",
+        "Progress to controlling the ball directly without a bounce.",
+        "Increase the number of consecutive controlled touches.",
+        "Try moving around the box while juggling."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/high-ball-juggle-video",
+      "thumbnail_url": "https://example.com/high-ball-juggle-thumbnail.jpg"
+    },
+    {
+      "title": "Wall Juggles",
+      "description": "A juggling drill that improves first touch and ball control using a wall for consistent returns.",
+      "type": "set_based",
+      "duration": 20,
+      "sets": 3,
+      "reps": 15,
+      "equipment": ["ball", "wall"],
+      "suitable_locations": [
+        "wall_field",
+        "indoor_court",
+        "garage_wall",
+        "backyard"
+      ],
+      "intensity": "medium",
+      "training_styles": ["advanced"],
+      "difficulty": "intermediate",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "aerial_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "ball_control"
+        }
+      ],
+      "instructions": [
+        "Stand a few feet away from a wall.",
+        "Start juggling the ball using your feet.",
+        "Kick the ball against the wall with a controlled touch. Each successful juggle to the wall is one rep.",
+        "Control the ball upon return and continue juggling.",
+        "Repeat for the desired number of reps while keeping the ball in the air.",
+        "If the ball drops, restart from where you left off."
+      ],
+      "tips": [
+        "Use soft touches to maintain control.",
+        "Angle your foot correctly to direct the ball back to yourself.",
+        "Adjust your distance from the wall based on the pace of the return."
+      ],
+      "common_mistakes": [
+        "Kicking too hard, making it difficult to control the return.",
+        "Standing too close to the wall, limiting reaction time.",
+        "Not adjusting body position before receiving the return."
+      ],
+      "progression_steps": [
+        "Start by letting the ball bounce before controlling the return.",
+        "Progress to controlling the return without a bounce.",
+        "Increase the number of consecutive juggles between wall passes.",
+        "Try juggling continuously without breaks."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/wall-juggles-video",
+      "thumbnail_url": "https://example.com/wall-juggles-thumbnail.jpg"
+    },
+    {
+      "title": "High Ball to Touch Across Gate",
+      "description": "A ball control drill that focuses on first touch and directional movement using high ball control.",
+      "type": "set_based",
+      "duration": 15,
+      "sets": 3,
+      "reps": 14,
+      "equipment": ["Soccer ball", "Training cones"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court"
+      ],
+      "intensity": "medium",
+      "training_styles": ["Advanced"],
+      "difficulty": "Advanced",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": ["aerial_control", "ground_control"]
+      },
+      "instructions": [
+        "Set up four cones in a box shape, with each cone 3 yards apart.",
+        "Start juggling the ball inside the box.",
+        "Kick the ball high into the air.",
+        "As the ball comes down, take a controlled touch across the box using the inside or outside of your foot.",
+        "Take the touch right after the bounce to keep the ball skidding on the ground.",
+        "Continue juggling after taking the touch and repeat for the desired number of reps."
+      ],
+      "tips": [
+        "Angle your foot correctly to direct the ball smoothly across the box.",
+        "Use the inside or outside of your foot depending on the direction you want to move.",
+        "React quickly after the bounce to maintain control."
+      ],
+      "common_mistakes": [
+        "Waiting too long before taking the touch, causing loss of control.",
+        "Using too much power, sending the ball too far.",
+        "Not adjusting body position before making contact."
+      ],
+      "progression_steps": [
+        "Start by allowing the ball to bounce before taking a touch.",
+        "Progress to controlling the ball immediately upon landing.",
+        "Increase the speed and accuracy of your directional touch.",
+        "Try to complete the drill without dropping the ball at all."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/high-ball-touch-gate-video",
+      "thumbnail_url": "https://example.com/high-ball-touch-gate-thumbnail.jpg"
+    },
+    {
+      "title": "Two-Touch Wall Juggles",
+      "description": "A juggling drill that improves first touch and ball control using a wall for consistent returns.",
+      "type": "set_based",
+      "duration": 20,
+      "sets": 3,
+      "reps": 20,
+      "equipment": ["Soccer ball", "Wall"],
+      "suitable_locations": [
+        "Wall at a Field",
+        "Indoor Court (Futsal/Basketball)",
+        "Garage Wall",
+        "Backyard Fence"
+      ],
+      "intensity": "medium",
+      "training_styles": ["Advanced"],
+      "difficulty": "Advanced",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": ["aerial_control"]
+      },
+      "instructions": [
+        "Stand about 2-4 yards away from a wall.",
+        "Start juggling the ball using any surface of your foot.",
+        "Pass the ball to the wall using a controlled touch.",
+        "Control the ball upon return with two touches before passing it back.",
+        "Each pass to the wall counts as one rep.",
+        "Continue juggling without letting the ball hit the ground.",
+        "If the ball drops, pick it up and continue where you left off."
+      ],
+      "tips": [
+        "Use soft touches to maintain control.",
+        "Angle your foot correctly to direct the ball back to yourself.",
+        "Adjust your distance from the wall based on the pace of the return."
+      ],
+      "common_mistakes": [
+        "Kicking too hard, making it difficult to control the return.",
+        "Standing too close to the wall, limiting reaction time.",
+        "Not adjusting body position before receiving the return."
+      ],
+      "progression_steps": [
+        "Start by letting the ball bounce before controlling the return.",
+        "Progress to controlling the return without a bounce.",
+        "Increase the number of consecutive juggles between wall passes.",
+        "Try juggling continuously without breaks."
+      ],
+      "variations": [
+        "Use only your weaker foot for juggling.",
+        "Increase the speed and pace of juggles against the wall.",
+        "Try to juggle without letting the ball touch the ground at all.",
+        "Juggle with a partner."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/two-touch-wall-juggles-video",
+      "thumbnail_url": "https://example.com/two-touch-wall-juggles-thumbnail.jpg"
+    },
+    {
+      "title": "One-Touch Wall Juggles",
+      "description": "A juggling drill that improves first touch and ball control by continuously passing the ball against a wall with one-touch.",
+      "type": "set_based",
+      "duration": 20,
+      "sets": 3,
+      "reps": 30,
+      "equipment": ["Soccer ball", "Wall"],
+      "suitable_locations": [
+        "Wall at a Field",
+        "Indoor Court (Futsal/Basketball)",
+        "Garage Wall",
+        "Backyard Fence"
+      ],
+      "intensity": "medium",
+      "training_styles": ["Professional"],
+      "difficulty": "Professional",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": ["aerial_control", "ball_control"]
+      },
+      "instructions": [
+        "Stand about 2 yards away from a wall.",
+        "Start juggling the ball using any surface of your foot.",
+        "Pass the ball to the wall using a controlled one-touch.",
+        "Control the return using only one touch before passing it back.",
+        "Each pass to the wall counts as one rep.",
+        "Continue juggling without letting the ball hit the ground.",
+        "If the ball drops, pick it up and continue where you left off."
+      ],
+      "tips": [
+        "Use soft touches to maintain control.",
+        "Angle your foot correctly to direct the ball back to yourself.",
+        "Adjust your distance from the wall based on the pace of the return."
+      ],
+      "common_mistakes": [
+        "Kicking too hard, making it difficult to control the return.",
+        "Standing too close to the wall, limiting reaction time.",
+        "Not adjusting body position before receiving the return."
+      ],
+      "progression_steps": [
+        "Start by allowing the ball to bounce before controlling the return.",
+        "Progress to controlling the return without a bounce.",
+        "Increase the number of consecutive juggles between wall passes.",
+        "Try juggling continuously without breaks."
+      ],
+      "variations": [
+        "Use only your weaker foot for juggling.",
+        "Increase the speed and pace of juggles against the wall.",
+        "Try to juggle without letting the ball touch the ground at all.",
+        "Juggle with a partner."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/one-touch-wall-juggles-video",
+      "thumbnail_url": "https://example.com/one-touch-wall-juggles-thumbnail.jpg"
+    },
+    {
+      "title": "Touch from Wall to Skill",
+      "description": "A ball control and dribbling drill that improves first touch and directional movement towards a skill move.",
+      "type": "set_based",
+      "duration": 20,
+      "sets": 3,
+      "reps": 10,
+      "equipment": ["Soccer ball", "Wall", "Training cones"],
+      "suitable_locations": [
+        "Wall at a Field",
+        "Indoor Court (Futsal/Basketball)",
+        "Backyard"
+      ],
+      "intensity": "hard",
+      "training_styles": ["Advanced"],
+      "difficulty": "Intermediate",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": ["ball_control", "directional_control", "1v1_skills"]
+      },
+      "instructions": [
+        "Stand 2-3 yards away from a wall.",
+        "Set up two cones, one on each side, 3 yards from your starting position.",
+        "Throw the ball against the wall so it bounces back to you.",
+        "Control the ball with the instep of your foot and direct it toward one of the cones.",
+        "Dribble toward the selected cone.",
+        "Perform a 1v1 skill move when you reach the cone.",
+        "That is one rep. Switch the direction you are dribbling to after half the amount of reps are completed."
+      ],
+      "tips": [
+        "Use a soft first touch to keep the ball under control.",
+        "Alternate between using the inside and outside of your foot for directional touches.",
+        "Pick a specific skill move to focus on and execute it smoothly."
+      ],
+      "common_mistakes": [
+        "Taking too heavy of a touch, making it difficult to control.",
+        "Not directing the ball properly towards the cones.",
+        "Losing momentum before executing the skill move."
+      ],
+      "progression_steps": [
+        "Start by controlling the ball and stopping it before dribbling.",
+        "Progress to taking a quick touch and moving towards the cone immediately.",
+        "Increase the speed of your dribble and skill execution.",
+        "Perform the drill under time constraints for added difficulty."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/touch-from-wall-to-skill-video",
+      "thumbnail_url": "https://example.com/touch-from-wall-to-skill-thumbnail.jpg"
+    },
+    {
+      "title": "Freestyle Juggling",
+      "description": "A creative juggling drill that improves ball control and touch by allowing free-style movement and skill integration.",
+      "type": "time_based",
+      "duration": 10,
+      "sets": 4,
+      "reps": null,
+      "default_duration": 2,
+      "equipment": ["Soccer ball"],
+      "suitable_locations": [
+        "Any open space",
+        "Indoor Court (Futsal/Basketball)",
+        "Backyard"
+      ],
+      "intensity": "medium",
+      "training_styles": ["Advanced"],
+      "difficulty": "Advanced",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": ["ball_control", "foot-eye_coordination"]
+      },
+      "instructions": [
+        "Start juggling the ball using any part of your body except your hands.",
+        "Keep the ball in the air as long as possible without letting it drop.",
+        "Mix in different types of touches, such as using your laces, inside foot, thighs, and head.",
+        "Try incorporating freestyle tricks, such as stalls, around-the-world, and foot-rolls.",
+        "If the ball drops, pick it up and continue where you left off.",
+        "Aim to improve your juggling time and consistency."
+      ],
+      "tips": [
+        "Stay relaxed and maintain soft touches to control the ball better.",
+        "Use small, controlled movements to keep the ball close.",
+        "Challenge yourself by adding new juggling tricks to your routine."
+      ],
+      "common_mistakes": [
+        "Kicking the ball too hard, making it difficult to control.",
+        "Only using one part of the body instead of mixing touches.",
+        "Not keeping a steady rhythm while juggling."
+      ],
+      "progression_steps": [
+        "Start by juggling with just your feet.",
+        "Progress to incorporating thigh and head touches.",
+        "Add freestyle tricks to improve coordination.",
+        "Increase your juggling time without dropping the ball."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/freestyle-juggling-video",
+      "thumbnail_url": "https://example.com/freestyle-juggling-thumbnail.jpg"
+    },
+    {
+      "title": "Wall Pass to Clockwise Square Touches",
+      "description": "A first-touch drill focusing on ball control and directional movement using a wall pass and controlled touches around a square of cones.",
+      "type": "set_based",
+      "duration": 15,
+      "sets": 4,
+      "reps": 8,
+      "equipment": ["ball", "wall", "training_cones"],
+      "suitable_locations": [
+        "full_field",
+        "medium_field",
+        "indoor_court",
+        "backyard"
+      ],
+      "intensity": "high",
+      "training_styles": ["advanced"],
+      "difficulty": "advanced",
+      "primary_skill": {
+        "category": "first_touch",
+        "sub_skill": "directional_control"
+      },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "spatial_awareness"
+        }
+      ],
+      "instructions": [
+        "Set four cones in a square, 2-4 yards apart, about 4-5 yards from a wall.",
+        "Stand in the center of the square with the ball.",
+        "Pass the ball to the wall and receive it back.",
+        "Take a touch past the front gate (the cone in front of you) and drag it back to the center.",
+        "Repeat this movement in a clockwise direction through all four gates.",
+        "Complete the designated number of reps while maintaining control."
+      ],
+      "tips": [
+        "Use quick, controlled touches to keep the ball close.",
+        "Stay on your toes and be ready to adjust your positioning.",
+        "Focus on clean first touches that direct the ball efficiently."
+      ],
+      "common_mistakes": [
+        "Not positioning the body correctly before receiving the pass.",
+        "Heavy first touches that push the ball too far.",
+        "Losing balance and struggling to control the ball around the cones."
+      ],
+      "progression_steps": [
+        "Start by stopping the ball before moving to the next gate.",
+        "Progress to taking a continuous movement touch between gates.",
+        "Reduce the time between touches for a faster tempo.",
+        "Use only one foot to perform the entire drill."
+      ],
+      "rest": null,
+      "video_url": "https://example.com/wall-pass-clockwise-square-video",
+      "thumbnail_url": "https://example.com/wall-pass-clockwise-square-thumbnail.jpg"
+    }
+]

@@ -19,9 +19,9 @@ def reset_database():
         Base.metadata.create_all(bind=engine)
         print("✅ Successfully created all tables")
         
-        # Seed drills
-        seed_drills()
-        print("✅ Successfully seeded database")
+        # # Seed drills
+        # seed_drills()
+        # print("✅ Successfully seeded database")
         
     except Exception as e:
         print(f"❌ Error resetting database: {str(e)}")

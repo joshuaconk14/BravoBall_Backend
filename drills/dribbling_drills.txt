@@ -1,0 +1,1025 @@
+[
+    {
+        "title": "Toe-Taps",
+        "description": "A footwork drill focused on improving ball control and quick touches using the sole of your feet.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Stand with the ball in front of you.",
+            "Using the sole of your foot, tap the ball back and forth quickly between your feet.",
+            "Focus on speed and control while maintaining balance.",
+            "Each tap counts as one repetition."
+        ],
+        "tips": [
+            "Stay light on your feet to maintain quick movements.",
+            "Keep your eyes on the ball and your body balanced.",
+            "Start slowly to develop control, then increase speed."
+        ],
+        "common_mistakes": [
+            "Tapping the ball too hard or too softly, leading to loss of control.",
+            "Not keeping the ball close, which can result in inaccurate touches.",
+            "Failing to maintain a balanced stance while tapping."
+        ],
+        "progression_steps": [
+            "Begin with slower taps to master control.",
+            "Increase speed as you become more comfortable with the movement.",
+            "Challenge yourself by adding lateral movement or incorporating obstacles."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/toe-taps-video",
+        "thumbnail_url": "https://example.com/toe-taps-thumbnail.jpg"
+    },
+    {
+        "title": "Shuffles",
+        "description": "A fast footwork drill dedicated to improving agility and control using the inside of your feet.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Place the ball in front of you.",
+            "Using the inside of your feet, shuffle the ball back and forth quickly.",
+            "Aim to keep the ball under control while maintaining a fast pace.",
+            "Each tap counts as one repetition."
+        ],
+        "tips": [
+            "Use a light touch with the inside of your foot to maintain control.",
+            "Keep your knees bent and stay low for better stability.",
+            "Focus on both speed and precision as you perform the shuffles."
+        ],
+        "common_mistakes": [
+            "Overextending touches that lead to loss of control.",
+            "Staying too rigid rather than using fluid movements.",
+            "Not keeping the ball close to your body during the drill."
+        ],
+        "progression_steps": [
+            "Start with a slower pace to develop coordination.",
+            "Increase speed as you build confidence and control.",
+            "Incorporate directional changes or more complex footwork as you progress."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/shuffles-video",
+        "thumbnail_url": "https://example.com/shuffles-thumbnail.jpg"
+    },
+    {
+        "title": "Sole Rolls",
+        "description": "A footwork drill focused on improving ball control and quick touches using the sole of your feet.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Stand with the ball slightly in front of you.",
+            "Using the sole of your foot, roll the ball back and forth quickly between your feet.",
+            "Aim to maintain a fast pace while keeping the ball under control.",
+            "Each roll counts as one repetition."
+        ],
+        "tips": [
+            "Stay light on your feet to maintain quick movements.",
+            "Keep your eyes on the ball to enhance coordination.",
+            "Start slowly to develop comfort, then increase speed."
+        ],
+        "common_mistakes": [
+            "Rolling the ball too hard or too softly, leading to poor control.",
+            "Not keeping the ball close, which can cause inaccurate rolls.",
+            "Failing to maintain balance while rolling."
+        ],
+        "progression_steps": [
+            "Begin with a slower pace to focus on control.",
+            "Gradually increase speed as you build confidence.",
+            "Introduce lateral movements or obstacles to vary the drill."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/sole-rolls-video",
+        "thumbnail_url": "https://example.com/sole-rolls-thumbnail.jpg"
+    },
+    {
+        "title": "Inside-Outside Touches",
+        "description": "A stationary dribbling drill focusing on using the inside and outside surfaces of the foot.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Place the ball in front of you.",
+            "Touch the ball with the inside of one foot, then the outside of the opposite foot.",
+            "Alternate sides quickly to maintain a fast pace.",
+            "Every two touches count as one repetition."
+        ],
+        "tips": [
+            "Try to keep a consistent rhythm with your touches.",
+            "Stay low and balanced to enhance your control.",
+            "Focus on hitting the ball cleanly with both your inside and outside foot."
+        ],
+        "common_mistakes": [
+            "Overextending touches that can lead to loss of control.",
+            "Not maintaining a fluid motion between touches.",
+            "Failing to keep the ball close during the drill."
+        ],
+        "progression_steps": [
+            "Start with slower touches to develop coordination.",
+            "Increase speed as you become comfortable with the movements.",
+            "Challenge yourself by integrating additional footwork or obstacles."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/inside-outside-touches-video",
+        "thumbnail_url": "https://example.com/inside-outside-touches-thumbnail.jpg"
+    },
+    {
+        "title": "L-drags",
+        "description": "A stationary dribbling drill focusing on using multiple surfaces of the foot.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Begin in a small area with the ball in front of you.",
+            "Roll the ball backwards with the sole of your foot.",
+            "With the same foot, take a touch across and behind your body with the inside of your foot.",
+            "Repeat the process with the opposite foot.",
+            "Aim to move as quickly as possible."
+        ],
+        "tips": [
+            "Keep your movements quick and fluid for better control.",
+            "Stay low to the ground to maintain balance.",
+            "Focus on the rhythm of your touches."
+        ],
+        "common_mistakes": [
+            "Overcomplicating the movements and losing control.",
+            "Not maintaining balance while shifting your weight.",
+            "Moving too slowly and losing the drill's effectiveness."
+        ],
+        "progression_steps": [
+            "Slow down to focus on control before increasing speed.",
+            "Add lateral movements to make it more challenging.",
+            "Incorporate cones or obstacles to navigate around."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/l-drags-video",
+        "thumbnail_url": "https://example.com/l-drags-thumbnail.jpg"
+    },
+    {
+        "title": "V-touches sole-to-outside-foot",
+        "description": "A stationary dribbling drill focusing on using multiple surfaces of the foot and change of direction.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball", "training_cone"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Position a cone in front of you with the ball to one side.",
+            "Drag the ball back towards you with the sole of the foot closest to the cone.",
+            "Push the ball to the opposite side of the cone using the outside of the same foot.",
+            "This completes one repetition."
+        ],
+        "tips": [
+            "Keep your foot close to the ball during touches for better control.",
+            "Maintain a quick pace to enhance your agility.",
+            "Focus on accuracy while performing the touches."
+        ],
+        "common_mistakes": [
+            "Pushing the ball too far away, making it difficult to control.",
+            "Rushing the movements and losing touch quality.",
+            "Failing to use proper technique when dragging the ball."
+        ],
+        "progression_steps": [
+            "Start slow to ensure proper technique before speeding up.",
+            "Introduce additional cones for a more complex movement.",
+            "Work on increasing the distance between touches to improve control."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/v-touches-video",
+        "thumbnail_url": "https://example.com/v-touches-thumbnail.jpg"
+    },
+    {
+        "title": "V-touches sole-to-inside-foot",
+        "description": "A footwork drill involving dragging and pushing the ball around a cone.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball", "training_cone"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Position a cone in front of you with the ball to one side.",
+            "Drag the ball back towards you with the sole of the foot closest to the cone.",
+            "Push the ball to the opposite side of the cone using the inside of the same foot.",
+            "This completes one repetition."
+        ],
+        "tips": [
+            "Keep your foot close to the ball during touches for better control.",
+            "Maintain a quick pace to enhance your agility.",
+            "Focus on accuracy while performing the touches."
+        ],
+        "common_mistakes": [
+            "Pushing the ball too far away, making it difficult to control.",
+            "Rushing the movements and losing touch quality.",
+            "Failing to use proper technique when dragging the ball."
+        ],
+        "progression_steps": [
+            "Start slow to ensure proper technique before speeding up.",
+            "Introduce additional cones for a more complex movement.",
+            "Work on increasing the distance between touches to improve control."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/v-touches-inside-video",
+        "thumbnail_url": "https://example.com/v-touches-inside-thumbnail.jpg"
+    },
+    {
+        "title": "Sole square rolls",
+        "description": "A footwork drill using the sole to roll the ball around a cone in a square pattern.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball", "cone"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_touch"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "balance"
+            }
+        ],
+        "instructions": [
+            "Place a cone in front of you with the ball.",
+            "Using the sole of your foot, drag the ball around the cone in the shape of a square.",
+            "Face the same direction while hopping on your planted foot for balance.",
+            "Every full rotation of the ball around the cone counts as one repetition."
+        ],
+        "tips": [
+            "Maintain balance by staying light on your feet.",
+            "Focus on keeping the ball close to the cone.",
+            "Increase your speed as you become more comfortable with the drill."
+        ],
+        "common_mistakes": [
+            "Not maintaining balance while hopping on one foot.",
+            "Allowing the ball to stray too far from the cone.",
+            "Rushing through the movements, resulting in loss of control."
+        ],
+        "progression_steps": [
+            "Slow down to perfect your technique before speeding up.",
+            "Extend the distance of the square to increase difficulty.",
+            "Incorporate obstacles for added challenge."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/sole-square-rolls-video",
+        "thumbnail_url": "https://example.com/sole-square-rolls-thumbnail.jpg"
+    },
+    {
+        "title": "Cone weave same foot",
+        "description": "A dribbling drill focusing on zigzag movements using the same foot.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball", "training_cones"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 10 cones in a straight line, spaced about 1 ½ feet apart.",
+            "Perform a zigzag movement using the same foot, alternating between inside and outside touches.",
+            "Continue through the line of cones until you reach the end.",
+            "Halfway through your sets, switch to the opposite foot."
+        ],
+        "tips": [
+            "Maintain close control of the ball throughout the drill.",
+            "Keep your head up to improve awareness.",
+            "Stay light on your feet for better agility."
+        ],
+        "common_mistakes": [
+            "Not keeping the ball close while weaving.",
+            "Rushing through the cones, leading to loss of control.",
+            "Failing to alternate feet as instructed."
+        ],
+        "progression_steps": [
+            "Start slow to focus on control before gradually increasing speed.",
+            "Introduce changes in direction for added challenge.",
+            "Set up additional cones to increase the length of the drill."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/cone-weave-same-foot-video",
+        "thumbnail_url": "https://example.com/cone-weave-same-foot-thumbnail.jpg"
+    },
+    {
+        "title": "Cone weave inside-outside",
+        "description": "A dribbling drill emphasizing alternating touches with each foot.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball", "training_cones"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 10 cones in a straight line, spaced about 1 ½ feet apart.",
+            "Take an inside touch with one foot, then an outside touch with the other foot.",
+            "Continue alternating touches between every cone until you reach the end."
+        ],
+        "tips": [
+            "Focus on maintaining good balance throughout the movement.",
+            "Keep your touches light and controlled.",
+            "Increase your pace as you become more comfortable."
+        ],
+        "common_mistakes": [
+            "Neglecting to alternate feet between touches.",
+            "Rushing the movement, resulting in loss of control.",
+            "Failing to stay within the cone boundaries."
+        ],
+        "progression_steps": [
+            "Start at a slower pace to master the technique before speeding up.",
+            "Introduce deceptive moves between cones for added complexity.",
+            "Increase the distance between cones to enhance challenge."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/cone-weave-inside-outside-video",
+        "thumbnail_url": "https://example.com/cone-weave-inside-outside-thumbnail.jpg"
+    },
+    {
+        "title": "Cone weave roll-to-inside",
+        "description": "A dribbling drill focusing on rolling the ball and then taking an inside touch.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball", "training_cones"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 10 cones in a straight line, spaced about 1 ½ feet apart.",
+            "Roll the ball with the sole of one foot across the cone.",
+            "Take a forward touch with the inside of your other foot after each roll.",
+            "Continue this sequence through the line of cones until you reach the end."
+        ],
+        "tips": [
+            "Keep your touches light and controlled for better accuracy.",
+            "Use your body to help shield the ball as you maneuver.",
+            "Stay aware of your positioning relative to the cones."
+        ],
+        "common_mistakes": [
+            "Not rolling the ball far enough, making control difficult.",
+            "Rushing through the cones, which leads to loss of accuracy.",
+            "Focusing too much on speed and neglecting technique."
+        ],
+        "progression_steps": [
+            "Start slow to ensure proper technique before increasing speed.",
+            "Add slight feints or changes in direction between cones.",
+            "Try to incorporate a small sprint after each touch to improve pace."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/cone-weave-roll-to-inside-video",
+        "thumbnail_url": "https://example.com/cone-weave-roll-to-inside-thumbnail.jpg"
+    },
+    {
+        "title": "Cone weave in-in out-out",
+        "description": "A dribbling drill emphasizing zigzag movements with inside and outside touches.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 10 cones in a straight line, spaced about 1 to 1 ½ feet apart.",
+            "Dribble with one foot, performing two inside touches followed by two outside touches.",
+            "Continue this zigzag sequence until you reach the end."
+        ],
+        "tips": [
+            "Focus on keeping the ball close during touches.",
+            "Maintain good posture for better balance and control.",
+            "Increase your speed gradually as you master the drill."
+        ],
+        "common_mistakes": [
+            "Not alternating touches accurately between inside and outside.",
+            "Focusing too much on speed at the expense of control.",
+            "Allowing the ball to stray too far from the body."
+        ],
+        "progression_steps": [
+            "Begin at a slower pace to perfect the technique before speeding up.",
+            "Introduce deceptive movements or fakes between touches.",
+            "Increase the number of cones for a longer drill."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/cone-weave-in-in-out-out-video",
+        "thumbnail_url": "https://example.com/cone-weave-in-in-out-out-thumbnail.jpg"
+    },
+    {
+        "title": "Cone weave la croqueta",
+        "description": "A dribbling drill focusing on the la croqueta skill to change direction.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "feints and moves"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 10 cones in a straight line, spaced about 1 ½ feet apart.",
+            "Touch the ball across the cone using the inside of one foot.",
+            "Then take a forward touch with the inside of the opposite foot.",
+            "Continue this sequence through the line of cones until you reach the end."
+        ],
+        "tips": [
+            "Focus on precision with your touches for better control.",
+            "Keep your body balanced to maintain speed.",
+            "Practice the la croqueta movement to become more fluid."
+        ],
+        "common_mistakes": [
+            "Not executing the la croqueta smoothly.",
+            "Rushing through the drill without proper technique.",
+            "Allowing the ball to stray too far from the body."
+        ],
+        "progression_steps": [
+            "Start slow to focus on technique before increasing speed.",
+            "Add variations or fakes before each touch to enhance creativity.",
+            " gradually decrease the distance between cones for a greater challenge."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/cone-weave-la-croqueta-video",
+        "thumbnail_url": "https://example.com/cone-weave-la-croqueta-thumbnail.jpg"
+    },
+    {
+        "title": "Ronaldinho drill to cone turn",
+        "description": "A creative dribbling drill inspired by Ronaldinho, focusing on turns.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": null,
+        "reps": 3,
+        "equipment": ["cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "creativity"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up a cluster of 15+ cones with two cones at either end about 5 yards apart.",
+            "Dribble creatively through the cluster of cones using various parts of your feet.",
+            "Upon reaching one of the lonely cones, quickly dribble towards it and perform a turn of your choice.",
+            "Repeat this sequence for a total of 3 reps without rest."
+        ],
+        "tips": [
+            "Experiment with different dribbling techniques and moves.",
+            "Practice quick decision-making for turns.",
+            "Stay low and light on your feet during the drill."
+        ],
+        "common_mistakes": [
+            "Neglecting the movement variety while dribbling.",
+            "Underestimating the importance of balance during turns.",
+            "Rushing through without maintaining control of the ball."
+        ],
+        "progression_steps": [
+            "Increase the complexity of dribbling patterns as you improve.",
+            "Challenge yourself with more cones or varying distances.",
+            "Incorporate feints or tricks before the turn for added difficulty."
+        ],
+        "rest": "30 seconds between reps",
+        "video_url": "https://example.com/ronaldinho-drill-cone-turn-video",
+        "thumbnail_url": "https://example.com/ronaldinho-drill-cone-turn-thumbnail.jpg"
+    },
+    {
+        "title": "Zig zag dribble",
+        "description": "A fast dribbling drill focusing on sharp turns and control.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 7 cones in a zig-zag pattern, spaced 7 yards apart at about a 30-degree angle.",
+            "Dribble quickly through the zig-zag using only one foot for each set.",
+            "Be careful not to cut corners; keep the ball on the outside of the cones during turns."
+        ],
+        "tips": [
+            "Focus on maintaining control and speed while making sharp turns.",
+            "Keep your head up to stay aware of your surroundings.",
+            "Engage your whole foot for better ball control during the dribble."
+        ],
+        "common_mistakes": [
+            "Cutting corners, which can lead to losing control.",
+            "Not maintaining enough speed during the drill.",
+            "Using the wrong foot for turns, which can hamper movement."
+        ],
+        "progression_steps": [
+            "Increase the pace as you become more comfortable.",
+            "Combine zig-zag movements with feints or trick touches.",
+            "Reduce the distance between cones for a greater challenge."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/zig-zag-dribble-video",
+        "thumbnail_url": "https://example.com/zig-zag-dribble-thumbnail.jpg"
+    },
+    {
+        "title": "Plus dribbling",
+        "description": "A versatile dribbling drill focusing on speed and foot alternation.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": null,
+        "reps": 3,
+        "equipment": ["cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 5 cones in a '+' shape, with each outside cone about 6-7 yards from the center cone.",
+            "Starting at one outside cone, dribble quickly to the center cone.",
+            "Then, dribble to another outside cone and back to the center, using small touches.",
+            "Complete one full circuit around all outside cones for each set, alternating feet every one or two cones."
+        ],
+        "tips": [
+            "Use quick, short touches to maintain control while dribbling.",
+            "Focus on speed and quick footwork between cones.",
+            "Keep your body balanced to improve efficiency during turns."
+        ],
+        "common_mistakes": [
+            "Neglecting to alternate feet effectively.",
+            "Rushing through without maintaining ball control.",
+            "Using long touches instead of short, quick ones."
+        ],
+        "progression_steps": [
+            "Increase speed gradually as control improves.",
+            "Add more outside cones for a larger circuit.",
+            "Incorporate variations such as feints or directional changes."
+        ],
+        "rest": "30 seconds between reps",
+        "video_url": "https://example.com/plus-dribbling-video",
+        "thumbnail_url": "https://example.com/plus-dribbling-thumbnail.jpg"
+    },
+    {
+        "title": "Figure eight weave to drive",
+        "description": "A dribbling drill focusing on figure-eight weaving and driving with the ball.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "control"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 2 cones 2-3 steps apart.",
+            "Dribble around the cones in a figure-eight pattern using both feet, alternating at each cone.",
+            "After completing 2 figure 8s, drive forward about 10 yards with big touches and strides."
+        ],
+        "tips": [
+            "Keep your touches close while weaving to maintain control.",
+            "Use quick foot movements to transition smoothly between sides.",
+            "Focus on driving with the ball using larger touches once you move forward."
+        ],
+        "common_mistakes": [
+            "Failing to alternate feet effectively during the figure-eight.",
+            "Overly long touches when driving forward, losing control.",
+            "Not maintaining a good pace during the drill."
+        ],
+        "progression_steps": [
+            "Increase the speed as you get more comfortable.",
+            "Add another cone for a more complex weaving pattern.",
+            "Incorporate fakes or moves before driving forward."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/figure-eight-weave-video",
+        "thumbnail_url": "https://example.com/figure-eight-weave-thumbnail.jpg"
+    },
+    {
+        "title": "Box freestyle",
+        "description": "A freestyle skills drill to enhance creativity and ball control in a confined space.",
+        "type": "time_based",
+        "duration": 5,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball", "training_cones"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["beginner", "intermediate", "advanced"],
+        "difficulty": "variable",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "creativity"
+        },
+        "secondary_skills": [
+            {
+                "category": "footwork",
+                "sub_skill": "agility"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_control"
+            }
+        ],
+        "instructions": [
+            "Set up a 5-by-5 yard box.",
+            "Within the time duration, perform as many skills as you can.",
+            "Be creative with your skills, and constantly change directions."
+        ],
+        "tips": [
+            "Experiment with various dribbling moves and skills.",
+            "Stay light on your feet to react quickly and change directions.",
+            "Challenge yourself with new skills each round."
+        ],
+        "common_mistakes": [
+            "Staying in one spot too long, which reduces movement.",
+            "Not fully utilizing the space within the box effectively.",
+            "Repeating the same skills instead of being creative."
+        ],
+        "progression_steps": [
+            "Increase the duration of the drill for more practice.",
+            "Try to integrate new skills before each set.",
+            "Add a challenge by counting successful skills performed."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/box-freestyle-video",
+        "thumbnail_url": "https://example.com/box-freestyle-thumbnail.jpg"
+    },
+    {
+        "title": "Skills triangle",
+        "description": "A creative dribbling drill focusing on skills around a triangular setup of cones.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball", "training_cones"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "creativity"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_control"
+            }
+        ],
+        "instructions": [
+            "Place 3 cones 3 yards apart in a triangular shape.",
+            "Dribble from cone to cone in any direction and path.",
+            "Perform a skill before each turn around the cones.",
+            "Visualize the cones as defenders and use skills to maneuver around them.",
+            "Continue dribbling for the recommended time duration, switching feet occasionally."
+        ],
+        "tips": [
+            "Focus on performing a variety of skills to increase creativity.",
+            "Keep your head up to maintain awareness of your surroundings.",
+            "Try to switch your foot preference regularly to improve versatility."
+        ],
+        "common_mistakes": [
+            "Avoiding use of both feet.",
+            "Not executing skills effectively before turns.",
+            "Staying in a predictable pattern instead of varying movements."
+        ],
+        "progression_steps": [
+            "Increase the duration of the drill for added challenge.",
+            "Introduce more cones for complex navigation.",
+            "Incorporate a partner to add a defensive element."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/skills-triangle-video",
+        "thumbnail_url": "https://example.com/skills-triangle-thumbnail.jpg"
+    },
+    {
+        "title": "Box dribble with center cone",
+        "description": "A dribbling drill focusing on directional control and path changes around a box and a center cone.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": null,
+        "equipment": ["ball", "training_cones"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "control"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "directional_changes"
+            }
+        ],
+        "instructions": [
+            "Set up cones in a box shape, 6-8 yards apart from each other.",
+            "Place one cone in the center of the box.",
+            "Dribble clockwise around the square, navigating through the cones.",
+            "When dribbling through vertically aligned cones, ignore the center cone.",
+            "When dribbling through horizontally aligned cones, dribble around the center cone midway.",
+            "Continue until you have dribbled around the entire square."
+        ],
+        "tips": [
+            "Maintain close ball control while dribbling to enhance agility.",
+            "Focus on speed during the vertical dribble and precision when going around the center cone.",
+            "Keep your head up to monitor your position within the square."
+        ],
+        "common_mistakes": [
+            "Rushing through the drill without maintaining control.",
+            "Failing to adjust speed and technique based on the alignment of the cones.",
+            "Neglecting to switch focus between the center and outer cones."
+        ],
+        "progression_steps": [
+            "Increase the time you spend on the drill.",
+            "Introduce more cones for additional complexity.",
+            "Increase speed during the drill for a greater challenge."
+        ],
+        "rest": "30 seconds between sets",
+        "video_url": "https://example.com/box-dribble-with-center-cone-video",
+        "thumbnail_url": "https://example.com/box-dribble-with-center-cone-thumbnail.jpg"
+    }
+]

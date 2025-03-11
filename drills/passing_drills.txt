@@ -1,0 +1,1032 @@
+[
+    {
+        "title": "One-Touch Pass",
+        "description": "A passing drill that improves first-touch control and quick decision-making using the wall.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 30,
+        "equipment": ["ball", "wall"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "one_touch"
+        },
+        "secondary_skills": [
+            {
+                "category": "first_touch",
+                "sub_skill": "ground_control"
+            }
+        ],
+        "instructions": [
+            "Stand 5 yards away from a wall with the ball.",
+            "Pass the ball against the wall using the inside of your foot.",
+            "Receive the ball and immediately pass it back in one touch.",
+            "Continue the drill for the designated reps.",
+            "If alternating feet, switch feet after each pass to improve both sides."
+        ],
+        "tips": [
+            "Keep your ankle locked for better pass accuracy.",
+            "Stay on your toes to react quickly to the return pass.",
+            "Focus on passing at a controlled speed to maintain rhythm."
+        ],
+        "common_mistakes": [
+            "Leaning back and causing inaccurate passes.",
+            "Not positioning the body correctly before passing.",
+            "Passing too hard or too soft, breaking the flow of the drill."
+        ],
+        "progression_steps": [
+            "Start by passing slowly and focusing on accuracy.",
+            "Increase the passing speed while maintaining control.",
+            "Reduce the time between passes for a quicker tempo.",
+            "Perform the drill under time constraints for added challenge."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/one-touch-pass-video",
+        "thumbnail_url": "https://example.com/one-touch-pass-thumbnail.jpg"
+    },
+    {
+        "title": "Two-Touch Pass",
+        "description": "A passing drill that emphasizes control and precision by taking a touch before passing.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 30,
+        "equipment": ["ball", "wall"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "short_passing"
+        },
+        "secondary_skills": [
+            {
+                "category": "first_touch",
+                "sub_skill": "ground_control"
+            }
+        ],
+        "instructions": [
+            "Stand 5 yards away from a wall with the ball.",
+            "Pass the ball against the wall using the inside of your foot.",
+            "Control the return pass with the inside of the same foot.",
+            "Immediately pass the ball back to the wall using the same foot.",
+            "Continue for the designated reps.",
+            "If alternating feet, switch feet after each pass for balanced development."
+        ],
+        "tips": [
+            "Take a soft first touch to keep the ball close.",
+            "Keep your head up to anticipate the return pass.",
+            "Maintain a good rhythm by controlling the ball efficiently."
+        ],
+        "common_mistakes": [
+            "Taking a heavy first touch, making it hard to pass accurately.",
+            "Not positioning the body correctly before receiving the pass.",
+            "Breaking rhythm by waiting too long between touches."
+        ],
+        "progression_steps": [
+            "Start with slow, controlled passes and touches.",
+            "Increase speed while maintaining precision.",
+            "Reduce the time between touches for a quicker tempo.",
+            "Perform the drill under time constraints for added challenge."
+        ],
+        "variations": [
+            "Use only your weaker foot for the entire drill.",
+            "Increase the passing distance to improve control at longer ranges.",
+            "Perform the drill at a faster pace for quicker decision-making."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/two-touch-pass-video",
+        "thumbnail_url": "https://example.com/two-touch-pass-thumbnail.jpg"
+    },
+    {
+        "title": "V-Passes",
+        "description": "A passing drill focusing on quick directional changes and control while passing against a wall.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 20,
+        "equipment": ["ball", "wall", "training_cones"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "one_touch"
+        },
+        "secondary_skills": [
+            {
+                "category": "first_touch",
+                "sub_skill": "ground_control"
+            },
+            {
+                "category": "fitness",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Stand 5 yards away from a wall.",
+            "Set two cones 2 yards apart in a horizontal line.",
+            "Perform one-touch passes to the wall, aiming for the midpoint between the cones.",
+            "After each pass, move laterally to the opposite cone.",
+            "Try to receive the pass on the outside of each cone.",
+            "Each pass counts as one rep. Continue for the designated reps."
+        ],
+        "tips": [
+            "Keep a low stance for quick lateral movement.",
+            "Use the inside of your foot for more accurate passes.",
+            "Stay on your toes and be ready to shift direction after each pass."
+        ],
+        "common_mistakes": [
+            "Not moving quickly enough between passes.",
+            "Passing too hard or too soft, disrupting the rhythm.",
+            "Failing to aim at the midpoint of the cones."
+        ],
+        "progression_steps": [
+            "Start at a slow pace to develop accuracy.",
+            "Increase the speed of movement while maintaining control.",
+            "Reduce time between passes for a higher-intensity drill.",
+            "Perform the drill with a partner instead of a wall."
+        ],
+        "variations": [
+            "Use only your weaker foot for the entire drill.",
+            "Increase the distance between the cones for a greater challenge.",
+            "Perform the drill at a higher tempo for faster transitions."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/v-pass-video",
+        "thumbnail_url": "https://example.com/v-pass-thumbnail.jpg"
+    },
+    {
+        "title": "V-to-Straight Passes",
+        "description": "A drill that improves passing control and movement, combining straight passes with V-passes.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 12,
+        "equipment": ["ball", "wall", "training_cones"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "short_passing"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Stand 5 yards away from a wall with a soccer ball, starting on the left outside of the gate.",
+            "Pass the ball to the wall at an angle so that it returns through the middle of the gate.",
+            "Take a touch outside to the opposite side of the gate. That is one rep.",
+            "Continue this pattern until you complete all your reps."
+        ],
+        "tips": [
+            "Start with controlled V-passes before including the middle gate passes.",
+            "Maintain balance while shifting laterally between passes.",
+            "Keep your passes firm but controlled."
+        ],
+        "common_mistakes": [
+            "Failing to transition smoothly between straight passes and V-passes.",
+            "Not moving quickly enough between cones.",
+            "Losing control of the ball due to improper passing angles."
+        ],
+        "progression_steps": [
+            "Start at a slower pace to focus on technique.",
+            "Increase speed while maintaining accuracy.",
+            "Reduce time between passes for a quicker tempo.",
+            "Perform the drill under time constraints for added challenge."
+        ],
+        "variations": [
+            "Increase the pace for a higher-intensity workout.",
+            "Perform the drill with a partner instead of using a wall."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/v-to-straight-pass-video",
+        "thumbnail_url": "https://example.com/v-to-straight-pass-thumbnail.jpg"
+    },
+    {
+        "title": "Check and Backpedal Passes",
+        "description": "A passing drill that improves movement off the ball, positioning, and quick decision-making.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 8,
+        "equipment": ["ball", "wall", "training_cones"],
+        "suitable_locations": [
+            "full_field",
+            "medium_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "high",
+        "training_styles": ["advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "short_passing"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "agility"
+            },
+            {
+                "category": "first_touch",
+                "sub_skill": "ground_control"
+            }
+        ],
+        "instructions": [
+            "Stand 5 yards away from a wall with the ball.",
+            "Place one cone in front of you and another cone 5 yards behind it.",
+            "Start at the front cone and pass the ball to the wall once.",
+            "On the second pass, play a hard pass to the wall.",
+            "As the ball comes back, backpedal quickly to the cone behind you.",
+            "Once you reach the back cone, touch the ball across the cone and pass it back to the wall.",
+            "Immediately sprint back to the front cone to receive the next pass. That is one rep."
+        ],
+        "tips": [
+            "Backpedal quickly but stay balanced to maintain control.",
+            "Use short, sharp movements to simulate real game scenarios.",
+            "Keep your head up to track the ball and anticipate the pass."
+        ],
+        "common_mistakes": [
+            "Backpedaling too slowly, causing delayed touches.",
+            "Not keeping the body low and balanced while moving.",
+            "Playing weak passes that don't return with enough pace."
+        ],
+        "progression_steps": [
+            "Start with controlled backpedaling and focus on passing accuracy.",
+            "Increase the speed of movement while maintaining good control.",
+            "Reduce reaction time between the backpedal and the next pass.",
+            "Perform the drill with game-like intensity for real-world application."
+        ],
+        "variations": [
+            "Use only your weaker foot for extra development.",
+            "Increase the speed by reducing time between passes.",
+            "Perform the drill with a partner instead of a wall."
+        ],
+        "rest": 60,
+        "video_url": "https://example.com/check-and-backpedal-passes-video",
+        "thumbnail_url": "https://example.com/check-and-backpedal-passes-thumbnail.jpg"
+    },
+    {
+        "title": "Long Lace Pass on Ground",
+        "description": "A passing drill that develops long-range passing accuracy, power, and control using the laces.",
+        "type": "rep_based",
+        "duration": 15,
+        "reps": 20,
+        "equipment": ["Soccer ball", "Wall"],
+        "suitable_locations": [
+            "Full-Size 11v11 Field",
+            "Medium-Sized Grass/Turf Field"
+        ],
+        "intensity": "intermediate",
+        "training_styles": ["Intermediate"],
+        "difficulty": "Intermediate",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": ["ball_control", "first_touch"]
+        },
+        "instructions": [
+            "Stand 20 yards away from a wall with a soccer ball.",
+            "Strike a driven pass along the ground using your laces to hit the wall.",
+            "Receive the return pass and control it so the ball rests on the ground.",
+            "Repeat for the designated number of reps, ensuring each pass is strong and accurate."
+        ],
+        "tips": [
+            "Use the top of your foot (laces) to strike the ball with power and precision.",
+            "Lean slightly over the ball to keep the pass on the ground.",
+            "Follow through toward your target for a consistent pass."
+        ],
+        "common_mistakes": [
+            "Hitting the ball with too much lift, causing it to bounce instead of staying on the ground.",
+            "Not following through properly, leading to inaccurate passes.",
+            "Failing to control the ball cleanly before the next pass."
+        ],
+        "variations": [
+            "Use only your weaker foot for extra development.",
+            "Increase distance to 25-30 yards for a more challenging long pass.",
+            "Alternate between one-touch and two-touch passes."
+        ],
+        "progression_steps": [
+            "Start with controlled, accurate long passes.",
+            "Increase the power while maintaining accuracy.",
+            "Reduce the time between passes for a faster-paced drill.",
+            "Perform the drill under pressure with a defender closing in."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/long-lace-pass-video",
+        "thumbnail_url": "https://example.com/long-lace-pass-thumbnail.jpg"
+    },
+    {
+        "title": "Long Inside-Foot Pass on Ground",
+        "description": "A passing drill that enhances long-range passing accuracy and control using the inside of the foot.",
+        "type": "rep_based",
+        "duration": 15,
+        "reps": 20,
+        "equipment": ["Soccer ball", "Wall"],
+        "suitable_locations": [
+            "Full-Size 11v11 Field",
+            "Medium-Sized Grass/Turf Field"
+        ],
+        "intensity": "intermediate",
+        "training_styles": ["Intermediate"],
+        "difficulty": "Intermediate",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": ["ball_control", "first_touch"]
+        },
+        "instructions": [
+            "Stand 20 yards away from a wall with a soccer ball.",
+            "Strike a driven pass along the ground using the inside of your foot to hit the wall.",
+            "Receive the return pass and control it so the ball rests on the ground.",
+            "Repeat for the designated number of reps, focusing on accuracy and technique."
+        ],
+        "tips": [
+            "Use the inside of your foot to generate a smooth and accurate pass.",
+            "Point your standing foot toward the target to guide your pass properly.",
+            "Follow through with your passing foot in the direction of the target."
+        ],
+        "common_mistakes": [
+            "Not locking the ankle, leading to weak or inaccurate passes.",
+            "Failing to position the standing foot correctly, resulting in off-target passes.",
+            "Not keeping the pass on the ground due to improper contact with the ball."
+        ],
+        "variations": [
+            "Use only your weaker foot for extra development.",
+            "Increase distance to 25-30 yards for a greater challenge.",
+            "Alternate between inside-foot and laces-driven passes."
+        ],
+        "progression_steps": [
+            "Start with controlled, accurate long passes.",
+            "Increase the power while maintaining accuracy.",
+            "Reduce the time between passes for a faster-paced drill.",
+            "Perform the drill under pressure with a defender closing in."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/long-inside-foot-pass-video",
+        "thumbnail_url": "https://example.com/long-inside-foot-pass-thumbnail.jpg"
+    },
+    {
+        "title": "Pass to Inside Touch",
+        "description": "A passing drill to enhance passing accuracy and first touch control using the wall and cones.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "2 cones"],
+        "suitable_locations": [
+            "full_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "first_touch"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "passing_accuracy"
+            }
+        ],
+        "instructions": [
+            "Set two cones 3-5 yards apart from each other, parallel to a wall.",
+            "Start behind and on the outside of one of the cones.",
+            "Pass the ball against the wall using the foot that is farthest from the cones.",
+            "When the ball rebounds, take a touch with the instep of the same foot across the two cones.",
+            "Move to the outside of the other cone and repeat the process using the opposite foot."
+        ],
+        "tips": [
+            "Focus on passing accuracy and make sure your foot makes clean contact with the ball.",
+            "Use your instep for a softer touch to guide the ball through the cones.",
+            "Keep your head up to maintain spatial awareness as you perform the drill."
+        ],
+        "common_mistakes": [
+            "Striking the ball too hard, resulting in poor control after the rebound.",
+            "Using the wrong part of the foot to touch the ball.",
+            "Not positioning the body properly to receive the ball after it bounces."
+        ],
+        "progression_steps": [
+            "Start with slow, controlled passes and touches to build confidence.",
+            "Increase the speed of the passes and touches as you improve.",
+            "Add in a third cone for more complexity in the drill.",
+            "Incorporate movement by adding a sprint to and from the cones."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/pass-to-inside-touch-video",
+        "thumbnail_url": "https://example.com/pass-to-inside-touch-thumbnail.jpg"
+    },
+    {
+        "title": "Pass to Outside Touch",
+        "description": "A passing drill designed to improve outside foot control and passing accuracy using the wall and cones.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "2 cones"],
+        "suitable_locations": [
+            "full_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "first_touch"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "passing_accuracy"
+            }
+        ],
+        "instructions": [
+            "Set two cones 3-5 yards apart from each other, parallel to a wall.",
+            "Start behind and on the outside of one of the cones.",
+            "Pass the ball against the wall using the foot that is farthest from the cones.",
+            "When the ball rebounds, perform an outside foot touch with the opposite foot across the two cones.",
+            "Move to the outside of the other cone and repeat the process using the foot that made the previous touch."
+        ],
+        "tips": [
+            "Ensure your touch with the outside foot is controlled and directed towards the cones.",
+            "Keep an eye on the ball to anticipate its rebound.",
+            "Practice maintaining balance while performing the outside touch."
+        ],
+        "common_mistakes": [
+            "Using too much force in the outside touch, losing control.",
+            "Not positioning the body properly for the rebound.",
+            "Failing to maintain spatial awareness, leading to misalignment with the cones."
+        ],
+        "progression_steps": [
+            "Start with slow passes and touches for better control.",
+            "Increase the speed of passes as your confidence builds.",
+            "Introduce movement by sprinting to the cones after each touch.",
+            "Add a diagonal touch to challenge your coordination further."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/pass-to-outside-touch-video",
+        "thumbnail_url": "https://example.com/pass-to-outside-touch-thumbnail.jpg"
+    },
+    {
+        "title": "Pass to Cruyff Touch",
+        "description": "A passing drill focusing on the Cruyff touch to enhance deception and control skills with the wall and cones.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "2 cones"],
+        "suitable_locations": [
+            "full_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "deception"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "first_touch"
+            }
+        ],
+        "instructions": [
+            "Set two cones 3-5 yards apart from each other, parallel to a wall.",
+            "Start behind and on the outside of one of the cones.",
+            "Pass the ball against the wall using the foot that is farthest from the cones.",
+            "When the ball rebounds, perform a Cruyff touch with the same foot across the two cones.",
+            "Move to the outside of the other cone and repeat using the opposite foot for the pass."
+        ],
+        "tips": [
+            "Focus on foot placement and body positioning when executing the Cruyff touch.",
+            "Practice the touch slowly to ensure control and accuracy.",
+            "Use your arms for balance and direction during the drill."
+        ],
+        "common_mistakes": [
+            "Performing the Cruyff touch too hard, causing the ball to go off course.",
+            "Neglecting to follow through with foot movement, which can lead to poor touch.",
+            "Failing to prepare for the ball's rebound by not anticipating its return."
+        ],
+        "progression_steps": [
+            "Begin with slow, controlled passes and touches to build comfort.",
+            "Increase the pace of both passing and the Cruyff touch as you improve.",
+            "Introduce changes in direction to make the drill more dynamic.",
+            "Try incorporating a defender to simulate game-like conditions."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/pass-to-cruyff-touch-video",
+        "thumbnail_url": "https://example.com/pass-to-cruyff-touch-thumbnail.jpg"
+    },
+    {
+        "title": "Pass to Sole Roll",
+        "description": "A passing drill focused on using the sole of the foot for ball control and passing accuracy.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "2 cones"],
+        "suitable_locations": [
+            "full_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_control"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "passing_accuracy"
+            }
+        ],
+        "instructions": [
+            "Set two cones 3-5 yards apart from each other, parallel to a wall.",
+            "Start behind and on one side of the two cones.",
+            "Pass the ball against the wall using the foot that is farthest from the cones.",
+            "When the ball comes back, roll it across the two cones using the sole of the same foot you passed with.",
+            "Once on the opposite side of the cones, make a pass on the wall with your other foot and repeat."
+        ],
+        "tips": [
+            "Focus on using the sole of your foot gently to maintain control while rolling the ball.",
+            "Keep an eye on the ball's trajectory to prepare for the catch.",
+            "Practice staying balanced as you roll the ball to maintain accuracy."
+        ],
+        "common_mistakes": [
+            "Rolling the ball too hard, causing it to go off-course.",
+            "Not positioning the foot correctly for the sole roll.",
+            "Neglecting to keep your body aligned with the direction of the drill."
+        ],
+        "progression_steps": [
+            "Start with slow passes and rolls to build confidence.",
+            "Increase speed progressively as you get comfortable.",
+            "Add a second touch using the opposite foot after the roll.",
+            "Integrate movement by sprinting to the cones after each complete repetition."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/pass-to-sole-roll-video",
+        "thumbnail_url": "https://example.com/pass-to-sole-roll-thumbnail.jpg"
+    },
+    {
+        "title": "Double Pass to Open-Up Touch",
+        "description": "A passing drill aimed at improving quick passing and opening up space with a touch.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "2 cones"],
+        "suitable_locations": [
+            "full_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "one_touch"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "spatial_awareness"
+            }
+        ],
+        "instructions": [
+            "Set two cones 3 yards apart from each other, parallel to a wall.",
+            "Start behind and on one side of the two cones.",
+            "Make two one-touch passes on the wall with the foot that is farthest from the cones.",
+            "After the second pass, open up your body and take a touch across the cones with the back foot. That is one rep."
+        ],
+        "tips": [
+            "Focus on making quick and accurate passes against the wall.",
+            "Ensure your touch after the passes is soft but directed.",
+            "Maintain awareness of your positioning relative to the cones."
+        ],
+        "common_mistakes": [
+            "Not making clean, accurate passes against the wall.",
+            "Using too much force when taking the touch, leading to the ball going out of control.",
+            "Failing to maintain a proper stance for receiving and passing the ball."
+        ],
+        "progression_steps": [
+            "Start with slow, deliberate passes and touches to ensure control.",
+            "Gradually increase the pace of the exercise as you improve.",
+            "Incorporate movement by changing positions after each series of touches.",
+            "Add a third cone to increase complexity and challenge."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/double-pass-to-open-up-touch-video",
+        "thumbnail_url": "https://example.com/double-pass-to-open-up-touch-thumbnail.jpg"
+    },
+    {
+        "title": "Three-Wall Pass to Inside Touch",
+        "description": "A passing drill focused on executing multiple wall passes followed by an inside touch for better coordination.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "2 cones"],
+        "suitable_locations": [
+            "full_field",
+            "indoor_court",
+            "backyard"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "one_touch"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "spatial_awareness"
+            }
+        ],
+        "instructions": [
+            "Set two cones 3 yards apart from each other, parallel to a wall.",
+            "Start behind and on one side of the two cones.",
+            "Make three one-touch passes on the wall with the foot that is farthest from the cones.",
+            "After the third pass, take a touch with the instep of the same foot across the two cones.",
+            "Once on the opposite side of the cones, make three passes on the wall with your other foot."
+        ],
+        "tips": [
+            "Focus on accuracy and control for each pass against the wall.",
+            "Use a smooth touch to glide the ball across the cones.",
+            "Position your body adequately to facilitate effective passing."
+        ],
+        "common_mistakes": [
+            "Inaccurate passing leading to poor rebounds.",
+            "Accepting the ball too far from your body.",
+            "Not keeping an eye on the ball's direction after each pass."
+        ],
+        "progression_steps": [
+            "Begin with slow, controlled passes to enhance precision.",
+            "Gradually increase the tempo of your passes and touches.",
+            "Incorporate moving to different angles after completing the set.",
+            "Introduce a small defender to simulate game scenarios and improve decision-making."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/three-wall-pass-to-inside-touch-video",
+        "thumbnail_url": "https://example.com/three-wall-pass-to-inside-touch-thumbnail.jpg"
+    },
+    {
+        "title": "Fake to Long Pass",
+        "description": "A drill focusing on deception, ball control, and executing long passes with accuracy.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball"],
+        "suitable_locations": [
+            "field",
+            "open_space",
+            "practice_area"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "deception"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "long_passing"
+            }
+        ],
+        "instructions": [
+            "Stand 15-25 yards away from a wall or goal.",
+            "Take a touch in one direction to initiate the movement.",
+            "Perform a fakie to cut the ball back in the opposite direction (this can be a regular cut-back, a Cruyff turn, or a roll).",
+            "Once you complete the fakie, pick a spot on the wall or goal and execute a long pass to that spot."
+        ],
+        "tips": [
+            "Focus on your body language while faking to sell the move.",
+            "Ensure your touch is precise to maintain control during the fakie.",
+            "Aim with your non-kicking foot to increase accuracy when making the long pass."
+        ],
+        "common_mistakes": [
+            "Losing balance during the fakie, resulting in poor execution.",
+            "Failing to accurately aim the long pass.",
+            "Not committing to the fake, causing it to be ineffective."
+        ],
+        "progression_steps": [
+            "Begin with slower movements until comfortable with the technique.",
+            "Increase the speed of your touch and fakie once confident.",
+            "Change the target for the long pass each time to practice accuracy in different situations.",
+            "Add a defender to simulate game pressure while performing the drill."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/fake-to-long-pass-video",
+        "thumbnail_url": "https://example.com/fake-to-long-pass-thumbnail.jpg"
+    },
+    {
+        "title": "Pass to Dribble Around Cone",
+        "description": "A drill designed to enhance passing accuracy and dribbling skills around obstacles.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "2 cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "low",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "passing_accuracy"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
+            }
+        ],
+        "instructions": [
+            "Set up two cones perpendicular to a wall, with 1 yard distance from each other and 3-5 yards away from the wall.",
+            "Stand next to the front cone.",
+            "Pass the ball to the wall and immediately turn to dribble around the back cone.",
+            "Once you reach the opposite side of the front cone, repeat the process."
+        ],
+        "tips": [
+            "Ensure your passes are firm and accurate to return for easy control.",
+            "Focus on your dribbling technique when maneuvering around the cone.",
+            "Keep your head up to maintain awareness of the space around you."
+        ],
+        "common_mistakes": [
+            "Making weak passes that do not reach the wall.",
+            "Not turning fast enough to follow the ball's path after the pass.",
+            "Getting too close to the cone, leading to awkward dribbling."
+        ],
+        "progression_steps": [
+            "Start with slower passes and dribbles to focus on accuracy.",
+            "Gradually increase the intensity and speed as you improve.",
+            "Introduce more cones to increase complexity by creating different dribbling paths.",
+            "Add a timer to challenge your speed in completing the drill."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/pass-to-dribble-around-cone-video",
+        "thumbnail_url": "https://example.com/pass-to-dribble-around-cone-thumbnail.jpg"
+    },
+    {
+        "title": "Pass to Figure Eight",
+        "description": "A passing and dribbling drill aimed at improving ball control and agility through figure-eight movements.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "2 cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "passing_accuracy"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_control"
+            }
+        ],
+        "instructions": [
+            "Set up two cones perpendicular to a wall, with a distance of 1 yard between them and 3-5 yards away from the wall.",
+            "Stand next to the front cone.",
+            "Pass the ball to the wall and turn to receive it as it bounces back.",
+            "Dribble around the front and back cones in a figure-eight pattern."
+        ],
+        "tips": [
+            "Focus on making accurate passes to the wall for an effective return.",
+            "Keep your body low and balanced while dribbling around the cones.",
+            "Maintain close control of the ball as you navigate the figure eight."
+        ],
+        "common_mistakes": [
+            "Failing to position the body correctly to receive the ball.",
+            "Not maintaining speed while dribbling around the cones.",
+            "Losing control of the ball due to poor dribbling technique."
+        ],
+        "progression_steps": [
+            "Start slowly to master passing and dribbling coordination.",
+            "Increase your speed as you become comfortable with the drill.",
+            "Incorporate different types of passes, like a volley or a side-foot pass.",
+            "Add a defender to simulate pressure and enhance decision-making."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/pass-to-figure-eight-video",
+        "thumbnail_url": "https://example.com/pass-to-figure-eight-thumbnail.jpg"
+    },
+    {
+        "title": "Three Gated Inside-Foot Passes",
+        "description": "A passing drill focused on using the inside of the foot for accuracy and control while navigating through gates.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "4 cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "inside-foot"
+        },
+        "secondary_skills": [
+            {
+                "category": "touch",
+                "sub_skill": "trapping"
+            }
+        ],
+        "instructions": [
+            "Stand 4-6 yards away from a wall.",
+            "Set four cones in a line parallel to the wall, 1-3 yards apart.",
+            "Starting from the furthest left cone, pass straight to the wall with your right foot.",
+            "As the ball returns, take an inside touch with your left foot and pass through the first gate with your right foot.",
+            "Continue this process until you pass through the last gate, then return to the start."
+        ],
+        "tips": [
+            "Ensure your passes are precise to hit the target on the wall.",
+            "Use the inside of your foot for accurate passes through the gates.",
+            "Focus on your body positioning to set yourself up for each touch and pass."
+        ],
+        "common_mistakes": [
+            "Making weak or inaccurate passes that miss the wall.",
+            "Not controlling the ball after receiving, leading to missed gates.",
+            "Standing too far or too close to the cones when passing."
+        ],
+        "progression_steps": [
+            "Start with slower, more deliberate passes to build confidence.",
+            "Gradually increase the pace of your passes and touches.",
+            "Introduce additional gates or decrease the distance between cones to increase difficulty.",
+            "Add competition by timing each run or by having someone else watch for accuracy."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/three-gated-inside-foot-passes-video",
+        "thumbnail_url": "https://example.com/three-gated-inside-foot-passes-thumbnail.jpg"
+    },
+    {
+        "title": "Three Gated Pass to Outside Touch",
+        "description": "A drill focusing on passing accuracy and using the outside of the foot for control while navigating through gates.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "4 cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "outside_foot"
+        },
+        "secondary_skills": [
+            {
+                "category": "touch",
+                "sub_skill": "trapping"
+            }
+        ],
+        "instructions": [
+            "Stand 4-6 yards away from a wall.",
+            "Set four cones in a line parallel to the wall, spaced 1-3 yards apart.",
+            "Starting from the furthest left cone, pass the ball to the wall with your right foot.",
+            "As the ball returns, take a touch with the outside of your right foot, and pass through the first gate with your right foot.",
+            "Continue this process until you reach the last cone and then return to the beginning."
+        ],
+        "tips": [
+            "Focus on accurate passing to ensure the ball hits the wall cleanly.",
+            "Use the outside of your foot for a smooth touch and to maintain control.",
+            "Keep your posture balanced to facilitate quick movement between cones."
+        ],
+        "common_mistakes": [
+            "Failing to control the ball with the outside of the foot.",
+            "Making inaccurate passes that miss the wall.",
+            "Not moving quickly enough to follow the ball after each pass."
+        ],
+        "progression_steps": [
+            "Start at a slower pace to master controls and passing accuracy.",
+            "Increase the speed of your touches and passes as you improve.",
+            "Introduce additional gates or reduce spacing between the cones for a greater challenge.",
+            "Create a timed challenge to enhance speed and efficiency."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/three-gated-pass-outside-touch-video",
+        "thumbnail_url": "https://example.com/three-gated-pass-outside-touch-thumbnail.jpg"
+    },
+    {
+        "title": "Middle Across Touch to Touch on Side",
+        "description": "A passing drill focused on improving accuracy and control while changing direction with touches.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": null,
+        "reps": null,
+        "equipment": ["ball", "2 cones"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "passing_accuracy"
+        },
+        "secondary_skills": [
+            {
+                "category": "touch",
+                "sub_skill": "directional_control"
+            }
+        ],
+        "instructions": [
+            "Set up two cones parallel to a wall, spaced 3 yards apart and 3-5 yards away from the wall.",
+            "Stand on the far side of the left cone.",
+            "Pass the ball directly to the wall.",
+            "When the ball returns, pass it to the wall so it aligns with the center of the two cones.",
+            "Take a touch across to the right cone when the ball comes back, and repeat the process."
+        ],
+        "tips": [
+            "Aim for consistent passing to the wall to maintain rhythm.",
+            "Use a strong touch to control the ball and position yourself for the next pass.",
+            "Maintain awareness of your body position for quick transitions."
+        ],
+        "common_mistakes": [
+            "Inaccurate passes to the wall that lead to poor control.",
+            "Failing to align the second pass correctly with the center of the cones.",
+            "Not maintaining balance when taking touches between the cones."
+        ],
+        "progression_steps": [
+            "Start by practicing at a slower speed to focus on accuracy.",
+            "Gradually build up speed as you become more comfortable.",
+            "Incorporate cones or markers for different targets during the passing phase.",
+            "Introduce a time challenge or count how many successful repetitions you can perform in a set timeframe."
+        ],
+        "rest": null,
+        "video_url": "https://example.com/middle-across-touch-to-touch-on-side-video",
+        "thumbnail_url": "https://example.com/middle-across-touch-to-touch-on-side-thumbnail.jpg"
+    }
+] 

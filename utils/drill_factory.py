@@ -11,21 +11,24 @@ class DrillBuilder:
         self.drill = {
             "title": title,
             "description": "",
-            "drill_type": "TIME_BASED",
+            "type": "time_based",
             "duration": 0,
-            "default_sets": 3,
-            "default_reps": 5,
-            "default_duration": 120,
-            "rest_between_sets": 60,  # Default 60 seconds rest
-            "required_equipment": [],
+            "sets": None,
+            "reps": None,
+            "rest": None,
+            "equipment": [],
             "suitable_locations": [],
-            "intensity_level": "medium",
-            "suitable_training_styles": [],
+            "intensity": "medium",
+            "training_styles": [],
             "difficulty": "beginner",
             "skill_focus": [],  # List of {category: str, sub_skill: str, is_primary: bool}
             "instructions": [],
             "tips": [],
-            "variations": []
+            "common_mistakes": [],
+            "progression_steps": [],
+            "variations": [],
+            "video_url": None,
+            "thumbnail_url": None
         }
 
     def with_description(self, description: str):
@@ -33,39 +36,39 @@ class DrillBuilder:
         return self
 
     def with_type(self, drill_type: DrillType):
-        self.drill["drill_type"] = drill_type
+        self.drill["type"] = drill_type.lower()
         return self
 
-    def with_duration(self, duration: TrainingDuration):
+    def with_duration(self, duration: int):
         self.drill["duration"] = duration
         return self
 
     def with_sets(self, sets: int):
-        self.drill["default_sets"] = sets
+        self.drill["sets"] = sets
         return self
 
     def with_reps(self, reps: int):
-        self.drill["default_reps"] = reps
+        self.drill["reps"] = reps
         return self
 
     def with_equipment(self, *equipment: Equipment):
-        self.drill["required_equipment"] = list(equipment)
+        self.drill["equipment"] = [eq.lower() for eq in equipment]
         return self
 
     def with_suitable_locations(self, *locations: TrainingLocation):
-        self.drill["suitable_locations"] = list(locations)
+        self.drill["suitable_locations"] = [loc.lower() for loc in locations]
         return self
 
     def with_intensity(self, intensity: str):
-        self.drill["intensity_level"] = intensity
+        self.drill["intensity"] = intensity.lower()
         return self
 
     def with_training_styles(self, *styles: TrainingStyle):
-        self.drill["suitable_training_styles"] = list(styles)
+        self.drill["training_styles"] = [style.lower() for style in styles]
         return self
 
     def with_difficulty(self, difficulty: Difficulty):
-        self.drill["difficulty"] = difficulty
+        self.drill["difficulty"] = difficulty.lower()
         return self
 
     def with_primary_skill(self, category: SkillCategory, sub_skill: str):
@@ -73,8 +76,8 @@ class DrillBuilder:
         # Remove any existing primary skills first
         self.drill["skill_focus"] = [skill for skill in self.drill["skill_focus"] if not skill["is_primary"]]
         self.drill["skill_focus"].append({
-            "category": category.value,
-            "sub_skill": sub_skill,
+            "category": category.value.lower(),
+            "sub_skill": sub_skill.lower(),
             "is_primary": True
         })
         return self
@@ -82,26 +85,16 @@ class DrillBuilder:
     def with_secondary_skill(self, category: SkillCategory, sub_skill: str):
         """Add a secondary skill that is trained by this drill"""
         self.drill["skill_focus"].append({
-            "category": category.value,
-            "sub_skill": sub_skill,
+            "category": category.value.lower(),
+            "sub_skill": sub_skill.lower(),
             "is_primary": False
         })
         return self
 
     def with_secondary_skills(self, *skills: Tuple[SkillCategory, str]):
-        """Add multiple secondary skills at once
-        Usage: with_secondary_skills(
-            (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
-            (SkillCategory.FITNESS, FitnessSubSkill.AGILITY)
-        )
-        """
+        """Add multiple secondary skills at once"""
         for category, sub_skill in skills:
             self.with_secondary_skill(category, sub_skill)
-        return self
-
-    def clear_secondary_skills(self):
-        """Remove all secondary skills from the drill"""
-        self.drill["skill_focus"] = [skill for skill in self.drill["skill_focus"] if skill["is_primary"]]
         return self
 
     def with_instructions(self, *instructions: str):
@@ -112,12 +105,28 @@ class DrillBuilder:
         self.drill["tips"] = list(tips)
         return self
 
+    def with_common_mistakes(self, *mistakes: str):
+        self.drill["common_mistakes"] = list(mistakes)
+        return self
+
+    def with_progression_steps(self, *steps: str):
+        self.drill["progression_steps"] = list(steps)
+        return self
+
     def with_variations(self, *variations: str):
         self.drill["variations"] = list(variations)
         return self
 
     def with_rest(self, seconds: int):
-        self.drill["rest_between_sets"] = seconds
+        self.drill["rest"] = seconds
+        return self
+
+    def with_video_url(self, url: str):
+        self.drill["video_url"] = url
+        return self
+
+    def with_thumbnail_url(self, url: str):
+        self.drill["thumbnail_url"] = url
         return self
 
     def build(self):

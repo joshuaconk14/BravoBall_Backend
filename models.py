@@ -80,10 +80,10 @@ class TrainingLocation(str, Enum):
     SMALL_ROOM = "Small Indoor Room (Living Room/Hotel)"
 
 class Equipment(str, Enum):
-    BALL = "BALL"
-    CONES = "CONES"
-    WALL = "WALL"
-    GOALS = "GOALS"
+    BALL = "ball"
+    CONES = "cones"
+    WALL = "wall"
+    GOALS = "goals"
 
 class TrainingDuration(int, Enum):
     MINS_15 = 15
@@ -220,22 +220,18 @@ class Drill(Base):
     
     # Time and Intensity
     duration = Column(Integer)  # in minutes
-    intensity_level = Column(String)  # high, medium
-    suitable_training_styles = Column(JSON)  # List of TrainingStyle
+    intensity = Column(String)  # high, medium, low
+    training_styles = Column(JSON)  # List of TrainingStyle
     
     # Structure
-    drill_type = Column(String)  # DrillType enum
-    default_sets = Column(Integer, nullable=True)
-    default_reps = Column(Integer, nullable=True)
-    default_duration = Column(Integer, nullable=True)  # in seconds
-    rest_between_sets = Column(Integer, nullable=True)  # in seconds
+    type = Column(String)  # DrillType enum
+    sets = Column(Integer, nullable=True)
+    reps = Column(Integer, nullable=True)
+    rest = Column(Integer, nullable=True)  # in seconds
     
     # Requirements
-    required_equipment = Column(JSON)  # List of Equipment
-    recommended_equipment = Column(JSON)  # Optional equipment
+    equipment = Column(JSON)  # List of Equipment
     suitable_locations = Column(JSON)  # List of Location
-    min_players = Column(Integer, default=1)
-    max_players = Column(Integer, nullable=True)
     
     # Technical
     difficulty = Column(String)
@@ -245,8 +241,8 @@ class Drill(Base):
     instructions = Column(JSON)  # List of steps
     tips = Column(JSON)  # List of coaching tips
     common_mistakes = Column(JSON)  # Things to watch out for
-    variations = Column(JSON)  # Alternative versions
     progression_steps = Column(JSON)  # How to make it harder/easier
+    variations = Column(JSON)  # Alternative versions
     video_url = Column(String, nullable=True)
     thumbnail_url = Column(String, nullable=True)
 
