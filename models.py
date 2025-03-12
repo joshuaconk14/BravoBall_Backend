@@ -80,10 +80,10 @@ class TrainingLocation(str, Enum):
     SMALL_ROOM = "Small Indoor Room (Living Room/Hotel)"
 
 class Equipment(str, Enum):
-    BALL = "ball"
-    CONES = "cones"
-    WALL = "wall"
-    GOALS = "goals"
+    BALL = "BALL"
+    CONES = "CONES"
+    WALL = "WALL"
+    GOALS = "GOALS"
 
 class TrainingDuration(int, Enum):
     MINS_15 = 15

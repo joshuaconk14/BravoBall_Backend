@@ -46,7 +46,7 @@
             "Increase speed as you become more comfortable with the movement.",
             "Challenge yourself by adding lateral movement or incorporating obstacles."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/toe-taps-video",
         "thumbnail_url": "https://example.com/toe-taps-thumbnail.jpg"
     },
@@ -97,7 +97,7 @@
             "Increase speed as you build confidence and control.",
             "Incorporate directional changes or more complex footwork as you progress."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/shuffles-video",
         "thumbnail_url": "https://example.com/shuffles-thumbnail.jpg"
     },
@@ -148,7 +148,7 @@
             "Gradually increase speed as you build confidence.",
             "Introduce lateral movements or obstacles to vary the drill."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/sole-rolls-video",
         "thumbnail_url": "https://example.com/sole-rolls-thumbnail.jpg"
     },
@@ -199,7 +199,7 @@
             "Increase speed as you become comfortable with the movements.",
             "Challenge yourself by integrating additional footwork or obstacles."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/inside-outside-touches-video",
         "thumbnail_url": "https://example.com/inside-outside-touches-thumbnail.jpg"
     },
@@ -251,7 +251,7 @@
             "Add lateral movements to make it more challenging.",
             "Incorporate cones or obstacles to navigate around."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/l-drags-video",
         "thumbnail_url": "https://example.com/l-drags-thumbnail.jpg"
     },
@@ -302,7 +302,7 @@
             "Introduce additional cones for a more complex movement.",
             "Work on increasing the distance between touches to improve control."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/v-touches-video",
         "thumbnail_url": "https://example.com/v-touches-thumbnail.jpg"
     },
@@ -353,7 +353,7 @@
             "Introduce additional cones for a more complex movement.",
             "Work on increasing the distance between touches to improve control."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/v-touches-inside-video",
         "thumbnail_url": "https://example.com/v-touches-inside-thumbnail.jpg"
     },
@@ -404,7 +404,7 @@
             "Extend the distance of the square to increase difficulty.",
             "Incorporate obstacles for added challenge."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/sole-square-rolls-video",
         "thumbnail_url": "https://example.com/sole-square-rolls-thumbnail.jpg"
     },
@@ -455,7 +455,7 @@
             "Introduce changes in direction for added challenge.",
             "Set up additional cones to increase the length of the drill."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/cone-weave-same-foot-video",
         "thumbnail_url": "https://example.com/cone-weave-same-foot-thumbnail.jpg"
     },
@@ -505,7 +505,7 @@
             "Introduce deceptive moves between cones for added complexity.",
             "Increase the distance between cones to enhance challenge."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/cone-weave-inside-outside-video",
         "thumbnail_url": "https://example.com/cone-weave-inside-outside-thumbnail.jpg"
     },
@@ -556,7 +556,7 @@
             "Add slight feints or changes in direction between cones.",
             "Try to incorporate a small sprint after each touch to improve pace."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/cone-weave-roll-to-inside-video",
         "thumbnail_url": "https://example.com/cone-weave-roll-to-inside-thumbnail.jpg"
     },
@@ -606,7 +606,7 @@
             "Introduce deceptive movements or fakes between touches.",
             "Increase the number of cones for a longer drill."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/cone-weave-in-in-out-out-video",
         "thumbnail_url": "https://example.com/cone-weave-in-in-out-out-thumbnail.jpg"
     },
@@ -657,7 +657,7 @@
             "Add variations or fakes before each touch to enhance creativity.",
             " gradually decrease the distance between cones for a greater challenge."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/cone-weave-la-croqueta-video",
         "thumbnail_url": "https://example.com/cone-weave-la-croqueta-thumbnail.jpg"
     },
@@ -708,7 +708,7 @@
             "Challenge yourself with more cones or varying distances.",
             "Incorporate feints or tricks before the turn for added difficulty."
         ],
-        "rest": "30 seconds between reps",
+        "rest": 30,
         "video_url": "https://example.com/ronaldinho-drill-cone-turn-video",
         "thumbnail_url": "https://example.com/ronaldinho-drill-cone-turn-thumbnail.jpg"
     },
@@ -758,7 +758,7 @@
             "Combine zig-zag movements with feints or trick touches.",
             "Reduce the distance between cones for a greater challenge."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/zig-zag-dribble-video",
         "thumbnail_url": "https://example.com/zig-zag-dribble-thumbnail.jpg"
     },
@@ -809,7 +809,7 @@
             "Add more outside cones for a larger circuit.",
             "Incorporate variations such as feints or directional changes."
         ],
-        "rest": "30 seconds between reps",
+        "rest": 30,
         "video_url": "https://example.com/plus-dribbling-video",
         "thumbnail_url": "https://example.com/plus-dribbling-thumbnail.jpg"
     },
@@ -859,7 +859,7 @@
             "Add another cone for a more complex weaving pattern.",
             "Incorporate fakes or moves before driving forward."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/figure-eight-weave-video",
         "thumbnail_url": "https://example.com/figure-eight-weave-thumbnail.jpg"
     },
@@ -913,7 +913,7 @@
             "Try to integrate new skills before each set.",
             "Add a challenge by counting successful skills performed."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/box-freestyle-video",
         "thumbnail_url": "https://example.com/box-freestyle-thumbnail.jpg"
     },
@@ -965,7 +965,7 @@
             "Introduce more cones for complex navigation.",
             "Incorporate a partner to add a defensive element."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/skills-triangle-video",
         "thumbnail_url": "https://example.com/skills-triangle-thumbnail.jpg"
     },
@@ -1018,7 +1018,7 @@
             "Introduce more cones for additional complexity.",
             "Increase speed during the drill for a greater challenge."
         ],
-        "rest": "30 seconds between sets",
+        "rest": 30,
         "video_url": "https://example.com/box-dribble-with-center-cone-video",
         "thumbnail_url": "https://example.com/box-dribble-with-center-cone-thumbnail.jpg"
     }
