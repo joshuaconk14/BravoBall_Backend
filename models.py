@@ -146,7 +146,15 @@ class FitnessSubSkill(str, Enum):
     AGILITY = "agility"
     ENDURANCE = "endurance"
 
-# *** USER MODELS ***
+
+
+
+
+
+
+
+
+# *** USER AND USER DATA MODELS ***
 class User(Base):
     __tablename__ = "users"
 
@@ -172,8 +180,12 @@ class User(Base):
     weekly_training_days = Column(String)
     
     
-    # Relationship
+    # Relationships
     session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
+
+    preferences = relationship("UserPreferences", back_populates="user", uselist=False)
+    completed_sessions = relationship("CompletedSession", back_populates="user")
+    drill_groups = relationship("DrillGroup", back_populates="user")
 
     
 class OnboardingData(BaseModel):
@@ -195,6 +207,63 @@ class OnboardingData(BaseModel):
     password: str
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class UserPreferences(Base):
+    __tablename__ = "user_preferences"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    
+    # Session Generator Preferences
+    selected_time = Column(String, nullable=True)
+    selected_equipment = Column(JSON)  # Store as JSON array
+    selected_training_style = Column(String, nullable=True)
+    selected_location = Column(String, nullable=True)
+    selected_difficulty = Column(String, nullable=True)
+    
+    # Stats and Streaks
+    current_streak = Column(Integer, default=0)
+    highest_streak = Column(Integer, default=0)
+    completed_sessions_count = Column(Integer, default=0)
+    
+    # Relationship
+    user = relationship("User", back_populates="preferences")
+
+class CompletedSession(Base):
+    __tablename__ = "completed_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    date = Column(DateTime)
+    total_completed_drills = Column(Integer)
+    total_drills = Column(Integer)
+    
+    # Store the completed drills data as JSON
+    drills = Column(JSON)  # Will store array of EditableDrillModel data
+    
+    # Relationship
+    user = relationship("User", back_populates="completed_sessions")
+
+class DrillGroup(Base):
+    __tablename__ = "drill_groups"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    name = Column(String)
+    description = Column(String)
+    
+    # Store the drills as JSON
+    drills = Column(JSON)  # Will store array of DrillModel data
+    is_liked_group = Column(Boolean, default=False)  # To identify if this is the "Liked Drills" group
+    
+    # Relationship
+    user = relationship("User", back_populates="drill_groups")
+
+
+
+
+
 
 # *** DRILL MODELS ***
 
