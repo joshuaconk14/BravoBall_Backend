@@ -6,7 +6,9 @@
       "duration": 15,
       "sets": null,
       "reps": null,
-      "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
       "suitable_locations": [
         "full_field",
         "indoor_court",
@@ -14,7 +16,9 @@
         "small_field"
       ],
       "intensity": "medium",
-      "training_styles": ["beginner"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "beginner",
       "primary_skill": {
         "category": "first_touch",
@@ -60,16 +64,20 @@
       "duration": 15,
       "sets": null,
       "reps": null,
-      "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
         "indoor_court",
         "backyard",
-        "small_indoor_room"
+            "small_room"
       ],
       "intensity": "medium",
-      "training_styles": ["beginner"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "beginner",
       "primary_skill": {
         "category": "first_touch",
@@ -115,16 +123,20 @@
       "duration": 15,
       "sets": null,
       "reps": null,
-      "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
         "indoor_court",
         "backyard",
-        "small_indoor_room"
+            "small_room"
       ],
       "intensity": "medium",
-      "training_styles": ["beginner"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "beginner",
       "primary_skill": {
         "category": "first_touch",
@@ -170,7 +182,9 @@
       "duration": 15,
       "sets": null,
       "reps": null,
-      "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
       "suitable_locations": [
         "full_field",
         "indoor_court",
@@ -178,7 +192,9 @@
         "small_field"
       ],
       "intensity": "medium",
-      "training_styles": ["beginner"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "beginner",
       "primary_skill": {
         "category": "first_touch",
@@ -224,7 +240,9 @@
       "duration": 10,
       "sets": null,
       "reps": 200,
-      "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
       "suitable_locations": [
         "full_field",
         "indoor_court",
@@ -232,7 +250,9 @@
         "small_field"
       ],
       "intensity": "medium",
-      "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "beginner",
       "primary_skill": {
         "category": "first_touch",
@@ -278,7 +298,9 @@
       "duration": 10,
       "sets": null,
       "reps": 200,
-      "equipment": ["soccer ball"],
+        "equipment": [
+            "ball"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -287,7 +309,9 @@
         "small_room"
       ],
       "intensity": "medium",
-      "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "beginner",
       "primary_skill": {
         "category": "first_touch",
@@ -333,7 +357,9 @@
       "duration": 10,
       "sets": null,
       "reps": 200,
-      "equipment": ["soccer ball"],
+        "equipment": [
+            "ball"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -342,7 +368,9 @@
         "small_room"
       ],
       "intensity": "medium",
-      "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "beginner",
       "primary_skill": {
         "category": "first_touch",
@@ -388,7 +416,9 @@
       "duration": 15,
       "sets": null,
       "reps": null,
-      "equipment": ["soccer ball"],
+        "equipment": [
+            "ball"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -397,7 +427,9 @@
         "small_room"
       ],
       "intensity": "medium",
-      "training_styles": ["beginner"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
@@ -406,7 +438,7 @@
       "secondary_skills": [
         {
           "category": "balance",
-          "sub_skill": null
+                "sub_skill": "general"
         }
       ],
       "instructions": [
@@ -440,7 +472,10 @@
       "duration": 15,
       "sets": 3,
       "reps": 20,
-      "equipment": ["soccer ball", "wall"],
+        "equipment": [
+            "ball",
+            "wall"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -449,7 +484,9 @@
         "small_room"
       ],
       "intensity": "high",
-      "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
@@ -489,7 +526,10 @@
       "duration": 15,
       "sets": 3,
       "reps": 20,
-      "equipment": ["soccer ball", "wall"],
+        "equipment": [
+            "ball",
+            "wall"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -498,7 +538,9 @@
         "small_room"
       ],
       "intensity": "high",
-      "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
@@ -538,7 +580,10 @@
       "duration": 15,
       "sets": 3,
       "reps": 10,
-      "equipment": ["soccer ball", "wall"],
+        "equipment": [
+            "ball",
+            "wall"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -547,7 +592,9 @@
         "small_room"
       ],
       "intensity": "high",
-      "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
@@ -593,7 +640,10 @@
       "duration": 10,
       "sets": 3,
       "reps": null,
-      "equipment": ["soccer ball", "training cones"],
+        "equipment": [
+            "ball",
+            "training cones"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -601,7 +651,9 @@
         "backyard"
       ],
       "intensity": "medium",
-      "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
       "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
@@ -641,7 +693,10 @@
       "duration": 10,
       "sets": 3,
       "reps": null,
-      "equipment": ["soccer ball", "training cones"],
+        "equipment": [
+            "ball",
+            "training cones"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -649,7 +704,9 @@
         "backyard"
       ],
       "intensity": "medium",
-      "training_styles": ["advanced"],
+        "training_styles": [
+            "high_intensity"
+        ],
       "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
@@ -689,7 +746,10 @@
       "duration": 10,
       "sets": 3,
       "reps": null,
-      "equipment": ["soccer ball", "training cones"],
+        "equipment": [
+            "ball",
+            "training cones"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -697,7 +757,9 @@
         "backyard"
       ],
       "intensity": "medium",
-      "training_styles": ["advanced"],
+        "training_styles": [
+            "high_intensity"
+        ],
       "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
@@ -737,14 +799,19 @@
       "duration": 15,
       "sets": null,
       "reps": 20,
-      "equipment": ["ball", "training_cones"],
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
         "indoor_court"
       ],
       "intensity": "medium",
-      "training_styles": ["professional"],
+        "training_styles": [
+            "professional"
+        ],
       "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
@@ -791,7 +858,10 @@
       "duration": 20,
       "sets": 3,
       "reps": 15,
-      "equipment": ["ball", "wall"],
+        "equipment": [
+            "ball",
+            "wall"
+        ],
       "suitable_locations": [
         "wall_field",
         "indoor_court",
@@ -799,7 +869,9 @@
         "backyard"
       ],
       "intensity": "medium",
-      "training_styles": ["advanced"],
+        "training_styles": [
+            "high_intensity"
+        ],
       "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
@@ -846,18 +918,26 @@
       "duration": 15,
       "sets": 3,
       "reps": 14,
-      "equipment": ["Soccer ball", "Training cones"],
+        "equipment": [
+            "Soccer ball",
+            "Training cones"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
         "indoor_court"
       ],
       "intensity": "medium",
-      "training_styles": ["Advanced"],
-      "difficulty": "Advanced",
+        "training_styles": [
+            "Advanced"
+        ],
+        "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-        "sub_skill": ["aerial_control", "ground_control"]
+            "sub_skill": [
+                "aerial_control",
+                "ground_control"
+            ]
       },
       "instructions": [
         "Set up four cones in a box shape, with each cone 3 yards apart.",
@@ -894,19 +974,26 @@
       "duration": 20,
       "sets": 3,
       "reps": 20,
-      "equipment": ["Soccer ball", "Wall"],
+        "equipment": [
+            "Soccer ball",
+            "Wall"
+        ],
       "suitable_locations": [
         "Wall at a Field",
-        "Indoor Court (Futsal/Basketball)",
+            "indoor_court",
         "Garage Wall",
         "Backyard Fence"
       ],
       "intensity": "medium",
-      "training_styles": ["Advanced"],
-      "difficulty": "Advanced",
+        "training_styles": [
+            "Advanced"
+        ],
+        "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-        "sub_skill": ["aerial_control"]
+            "sub_skill": [
+                "aerial_control"
+            ]
       },
       "instructions": [
         "Stand about 2-4 yards away from a wall.",
@@ -950,19 +1037,27 @@
       "duration": 20,
       "sets": 3,
       "reps": 30,
-      "equipment": ["Soccer ball", "Wall"],
+        "equipment": [
+            "Soccer ball",
+            "Wall"
+        ],
       "suitable_locations": [
         "Wall at a Field",
-        "Indoor Court (Futsal/Basketball)",
+            "indoor_court",
         "Garage Wall",
         "Backyard Fence"
       ],
       "intensity": "medium",
-      "training_styles": ["Professional"],
-      "difficulty": "Professional",
+        "training_styles": [
+            "Professional"
+        ],
+        "difficulty": "professional",
       "primary_skill": {
         "category": "first_touch",
-        "sub_skill": ["aerial_control", "ball_control"]
+            "sub_skill": [
+                "aerial_control",
+                "ball_control"
+            ]
       },
       "instructions": [
         "Stand about 2 yards away from a wall.",
@@ -1006,18 +1101,28 @@
       "duration": 20,
       "sets": 3,
       "reps": 10,
-      "equipment": ["Soccer ball", "Wall", "Training cones"],
+        "equipment": [
+            "Soccer ball",
+            "Wall",
+            "Training cones"
+        ],
       "suitable_locations": [
         "Wall at a Field",
-        "Indoor Court (Futsal/Basketball)",
+            "indoor_court",
         "Backyard"
       ],
       "intensity": "hard",
-      "training_styles": ["Advanced"],
-      "difficulty": "Intermediate",
+        "training_styles": [
+            "Advanced"
+        ],
+        "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
-        "sub_skill": ["ball_control", "directional_control", "1v1_skills"]
+            "sub_skill": [
+                "ball_control",
+                "directional_control",
+                "1v1_skills"
+            ]
       },
       "instructions": [
         "Stand 2-3 yards away from a wall.",
@@ -1056,18 +1161,25 @@
       "sets": 4,
       "reps": null,
       "default_duration": 2,
-      "equipment": ["Soccer ball"],
+        "equipment": [
+            "Soccer ball"
+        ],
       "suitable_locations": [
         "Any open space",
-        "Indoor Court (Futsal/Basketball)",
+            "indoor_court",
         "Backyard"
       ],
       "intensity": "medium",
-      "training_styles": ["Advanced"],
-      "difficulty": "Advanced",
+        "training_styles": [
+            "Advanced"
+        ],
+        "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-        "sub_skill": ["ball_control", "foot-eye_coordination"]
+            "sub_skill": [
+                "ball_control",
+                "foot-eye_coordination"
+            ]
       },
       "instructions": [
         "Start juggling the ball using any part of your body except your hands.",
@@ -1104,7 +1216,11 @@
       "duration": 15,
       "sets": 4,
       "reps": 8,
-      "equipment": ["ball", "wall", "training_cones"],
+        "equipment": [
+            "ball",
+            "wall",
+            "training_cones"
+        ],
       "suitable_locations": [
         "full_field",
         "medium_field",
@@ -1112,7 +1228,9 @@
         "backyard"
       ],
       "intensity": "high",
-      "training_styles": ["advanced"],
+        "training_styles": [
+            "high_intensity"
+        ],
       "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",

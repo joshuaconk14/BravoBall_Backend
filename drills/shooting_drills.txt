@@ -1,4 +1,4 @@
- [  
+ [
     {
         "title": "Still ball shot on 6 yard box",
         "description": "A focused shooting drill aimed at developing driven shots from the 6 yard box.",
@@ -6,23 +6,28 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "goal"],
+        "equipment": [
+            "ball",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven shots"
+            "sub_skill": "driven_shots"
         },
         "secondary_skills": [
             {
-                "category": "technique",
-                "sub_skill": "ball striking"
+                "category": "shooting",
+                "sub_skill": "ball_striking"
             }
         ],
         "instructions": [
@@ -57,23 +62,28 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "goal"],
+        "equipment": [
+            "ball",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven shots"
+            "sub_skill": "driven_shots"
         },
         "secondary_skills": [
             {
-                "category": "technique",
-                "sub_skill": "ball striking"
+                "category": "shooting",
+                "sub_skill": "ball_striking"
             }
         ],
         "instructions": [
@@ -108,23 +118,28 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "goal"],
+        "equipment": [
+            "ball",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven shots"
+            "sub_skill": "driven_shots"
         },
         "secondary_skills": [
             {
-                "category": "technique",
-                "sub_skill": "ball striking"
+                "category": "shooting",
+                "sub_skill": "ball_striking"
             }
         ],
         "instructions": [
@@ -152,11 +167,6 @@
         "video_url": "https://example.com/still-ball-shot-18-yard-box-video",
         "thumbnail_url": "https://example.com/still-ball-shot-18-yard-box-thumbnail.jpg"
     },
-
-
-
-
-
     {
         "title": "Rolling ball shot on 18 yard box",
         "description": "A shooting drill that emphasizes technique by initiating a rolling ball shot from the 18 yard box.",
@@ -164,23 +174,28 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "goal"],
+        "equipment": [
+            "ball",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven shots"
+            "sub_skill": "driven_shots"
         },
         "secondary_skills": [
             {
-                "category": "technique",
-                "sub_skill": "ball striking"
+                "category": "shooting",
+                "sub_skill": "ball_striking"
             }
         ],
         "instructions": [
@@ -215,18 +230,25 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "cones", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "cut-in shots"
+            "sub_skill": "cut_in_shots"
         },
         "secondary_skills": [
             {
@@ -266,23 +288,30 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "cones", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "far post shots"
+            "sub_skill": "far_post_shots"
         },
         "secondary_skills": [
             {
-                "category": "running",
-                "sub_skill": "angle adjustment"
+                "category": "fitness",
+                "sub_skill": "agility"
             }
         ],
         "instructions": [
@@ -310,7 +339,6 @@
         "video_url": "https://example.com/open-up-body-run-to-shot-video",
         "thumbnail_url": "https://example.com/open-up-body-run-to-shot-thumbnail.jpg"
     },
-
     {
         "title": "One v one cone to shoot",
         "description": "A shooting drill that focuses on dribbling and executing a skill move before taking a shot on goal.",
@@ -318,23 +346,30 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "cone", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick shots"
+            "sub_skill": "quick_shots"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "skills"
+                "sub_skill": "ball_mastery"
             }
         ],
         "instructions": [
@@ -370,14 +405,21 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "coned area", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
@@ -385,8 +427,8 @@
         },
         "secondary_skills": [
             {
-                "category": "ball control",
-                "sub_skill": "juggling"
+                "category": "first_touch",
+                "sub_skill": "aerial_control"
             }
         ],
         "instructions": [
@@ -422,23 +464,30 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "cone", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "deceptive shots"
+            "sub_skill": "deceptive_shots"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "shoulder drops"
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -467,7 +516,6 @@
         "video_url": "https://example.com/shoulder-drop-to-shot-video",
         "thumbnail_url": "https://example.com/shoulder-drop-to-shot-thumbnail.jpg"
     },
-
     {
         "title": "Scissor to shot",
         "description": "A shooting drill that focuses on the scissor skill to create space before shooting on goal.",
@@ -475,23 +523,30 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "cone", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick shots"
+            "sub_skill": "quick_shots"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "scissor move"
+                "sub_skill": "1v1_moves"
             }
         ],
         "instructions": [
@@ -527,23 +582,30 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "cone", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "deceptive shots"
+            "sub_skill": "deceptive_shots"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "inside-out move"
+                "sub_skill": "inside-out_move"
             }
         ],
         "instructions": [
@@ -579,23 +641,30 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "cones", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "curl shots"
+            "sub_skill": "curl_shots"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "body feints"
+                "sub_skill": "body_feints"
             }
         ],
         "instructions": [
@@ -624,7 +693,6 @@
         "video_url": "https://example.com/one-v-one-cut-in-on-side-video",
         "thumbnail_url": "https://example.com/one-v-one-cut-in-on-side-thumbnail.jpg"
     },
-
     {
         "title": "One v one down line on side",
         "description": "A drill that focuses on dropping the shoulder, dribbling down the line, and taking a low shot on goal.",
@@ -632,23 +700,30 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "cones", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "low shots"
+            "sub_skill": "low_shots"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "shoulder drops"
+                "sub_skill": "shoulder_drops"
             }
         ],
         "instructions": [
@@ -684,18 +759,25 @@
         "duration": null,
         "sets": 5,
         "reps": 1,
-        "equipment": ["soccer ball", "cones", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick shots"
+            "sub_skill": "quick_shots"
         },
         "secondary_skills": [
             {
@@ -735,18 +817,25 @@
         "duration": 10,
         "sets": 5,
         "reps": 1,
-        "equipment": ["soccer ball", "cones", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick shots"
+            "sub_skill": "quick_shots"
         },
         "secondary_skills": [
             {
@@ -786,23 +875,30 @@
         "duration": null,
         "sets": 5,
         "reps": 5,
-        "equipment": ["soccer ball", "cones", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "turning to shoot"
+            "sub_skill": "turning_to_shoot"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "cone weaving"
+                "sub_skill": "cone_weaving"
             }
         ],
         "instructions": [
@@ -838,18 +934,25 @@
         "duration": null,
         "sets": 5,
         "reps": 1,
-        "equipment": ["soccer ball", "cones", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick shots"
+            "sub_skill": "quick_shots"
         },
         "secondary_skills": [
             {
@@ -889,14 +992,21 @@
         "duration": null,
         "sets": 5,
         "reps": 1,
-        "equipment": ["soccer ball", "cones", "goal"],
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
@@ -905,7 +1015,7 @@
         "secondary_skills": [
             {
                 "category": "movement",
-                "sub_skill": "checking runs"
+                "sub_skill": "checking_runs"
             }
         ],
         "instructions": [

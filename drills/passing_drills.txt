@@ -6,7 +6,10 @@
         "duration": 15,
         "sets": 3,
         "reps": 30,
-        "equipment": ["ball", "wall"],
+        "equipment": [
+            "ball",
+            "wall"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
@@ -14,7 +17,9 @@
             "backyard"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner"],
+        "training_styles": [
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
@@ -60,7 +65,10 @@
         "duration": 15,
         "sets": 3,
         "reps": 30,
-        "equipment": ["ball", "wall"],
+        "equipment": [
+            "ball",
+            "wall"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
@@ -68,7 +76,9 @@
             "backyard"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner"],
+        "training_styles": [
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
@@ -120,7 +130,11 @@
         "duration": 15,
         "sets": 3,
         "reps": 20,
-        "equipment": ["ball", "wall", "training_cones"],
+        "equipment": [
+            "ball",
+            "wall",
+            "training_cones"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
@@ -128,7 +142,9 @@
             "backyard"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
@@ -184,7 +200,11 @@
         "duration": 15,
         "sets": 3,
         "reps": 12,
-        "equipment": ["ball", "wall", "training_cones"],
+        "equipment": [
+            "ball",
+            "wall",
+            "training_cones"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
@@ -192,7 +212,9 @@
             "backyard"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate"],
+        "training_styles": [
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
@@ -241,7 +263,11 @@
         "duration": 15,
         "sets": 3,
         "reps": 8,
-        "equipment": ["ball", "wall", "training_cones"],
+        "equipment": [
+            "ball",
+            "wall",
+            "training_cones"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
@@ -249,7 +275,9 @@
             "backyard"
         ],
         "intensity": "high",
-        "training_styles": ["advanced"],
+        "training_styles": [
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
@@ -305,17 +333,25 @@
         "type": "rep_based",
         "duration": 15,
         "reps": 20,
-        "equipment": ["Soccer ball", "Wall"],
+        "equipment": [
+            "Soccer ball",
+            "Wall"
+        ],
         "suitable_locations": [
-            "Full-Size 11v11 Field",
-            "Medium-Sized Grass/Turf Field"
+            "full_field",
+            "small_field"
         ],
         "intensity": "intermediate",
-        "training_styles": ["Intermediate"],
-        "difficulty": "Intermediate",
+        "training_styles": [
+            "Intermediate"
+        ],
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": ["ball_control", "first_touch"]
+            "sub_skill": [
+                "ball_control",
+                "first_touch"
+            ]
         },
         "instructions": [
             "Stand 20 yards away from a wall with a soccer ball.",
@@ -354,17 +390,25 @@
         "type": "rep_based",
         "duration": 15,
         "reps": 20,
-        "equipment": ["Soccer ball", "Wall"],
+        "equipment": [
+            "Soccer ball",
+            "Wall"
+        ],
         "suitable_locations": [
-            "Full-Size 11v11 Field",
-            "Medium-Sized Grass/Turf Field"
+            "full_field",
+            "small_field"
         ],
         "intensity": "intermediate",
-        "training_styles": ["Intermediate"],
-        "difficulty": "Intermediate",
+        "training_styles": [
+            "Intermediate"
+        ],
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": ["ball_control", "first_touch"]
+            "sub_skill": [
+                "ball_control",
+                "first_touch"
+            ]
         },
         "instructions": [
             "Stand 20 yards away from a wall with a soccer ball.",
@@ -404,14 +448,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "2 cones"],
+        "equipment": [
+            "ball",
+            "2 cones"
+        ],
         "suitable_locations": [
             "full_field",
             "indoor_court",
             "backyard"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
@@ -457,14 +507,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "2 cones"],
+        "equipment": [
+            "ball",
+            "2 cones"
+        ],
         "suitable_locations": [
             "full_field",
             "indoor_court",
             "backyard"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
@@ -510,14 +566,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "2 cones"],
+        "equipment": [
+            "ball",
+            "2 cones"
+        ],
         "suitable_locations": [
             "full_field",
             "indoor_court",
             "backyard"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
@@ -563,14 +625,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "2 cones"],
+        "equipment": [
+            "ball",
+            "2 cones"
+        ],
         "suitable_locations": [
             "full_field",
             "indoor_court",
             "backyard"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
@@ -616,14 +684,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "2 cones"],
+        "equipment": [
+            "ball",
+            "2 cones"
+        ],
         "suitable_locations": [
             "full_field",
             "indoor_court",
             "backyard"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
@@ -668,14 +742,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "2 cones"],
+        "equipment": [
+            "ball",
+            "2 cones"
+        ],
         "suitable_locations": [
             "full_field",
             "indoor_court",
             "backyard"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
@@ -721,14 +801,19 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
         "suitable_locations": [
-            "field",
+            "full_field",
             "open_space",
-            "practice_area"
+            "small_field"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -773,14 +858,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "2 cones"],
+        "equipment": [
+            "ball",
+            "2 cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "low",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
@@ -825,14 +916,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "2 cones"],
+        "equipment": [
+            "ball",
+            "2 cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
@@ -877,14 +974,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "4 cones"],
+        "equipment": [
+            "ball",
+            "4 cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
@@ -930,14 +1033,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "4 cones"],
+        "equipment": [
+            "ball",
+            "4 cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
@@ -983,14 +1092,20 @@
         "duration": 15,
         "sets": null,
         "reps": null,
-        "equipment": ["ball", "2 cones"],
+        "equipment": [
+            "ball",
+            "2 cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
