@@ -20,46 +20,40 @@ class DrillScorer:
             "duration": 1.0,           # Duration fit
             "training_style": 2.0      # Training style match
         }
+        self.ADAPTABLE_EQUIPMENT = {"CONES", "WALL"}
+        self.CRITICAL_EQUIPMENT = {"GOALS", "BALL"}
 
     def score_drill(self, drill: Drill) -> Dict[str, float]:
         """
         Calculate a detailed score for a drill based on how well it matches preferences.
         Returns a dictionary with individual scores and total.
         """
-        scores = {}
+        scores = {
+            key: self._calculate_score(key, drill) * weight
+            for key, weight in self.weights.items()
+        }
         
-        # Score primary and secondary skills
-        skill_scores = self._score_skills(drill.skill_focus)
-        scores["primary_skill"] = skill_scores["primary"] * self.weights["primary_skill"]
-        scores["secondary_skill"] = skill_scores["secondary"] * self.weights["secondary_skill"]
-        
-        # Score equipment match - now with more flexible scoring
-        equipment_score = self._score_equipment(drill.required_equipment)
-        scores["equipment"] = equipment_score * self.weights["equipment"]
-        
-        # If equipment score is non-zero but less than 1, reduce the weight to be more lenient
+        # Special handling for equipment score
+        equipment_score = scores["equipment"] / self.weights["equipment"]
         if 0 < equipment_score < 1:
-            scores["equipment"] *= 0.8  # Reduce impact of equipment limitations
+            scores["equipment"] *= 0.8
         
-        # Score location suitability
-        scores["location"] = self._score_location(drill.suitable_locations) * self.weights["location"]
-        
-        # Score difficulty match
-        scores["difficulty"] = self._score_difficulty(drill.difficulty) * self.weights["difficulty"]
-        
-        # Score intensity match
-        scores["intensity"] = self._score_intensity(drill.intensity_level) * self.weights["intensity"]
-        
-        # Score duration fit
-        scores["duration"] = self._score_duration(drill.duration) * self.weights["duration"]
-        
-        # Score training style match
-        scores["training_style"] = self._score_training_style(drill.suitable_training_styles) * self.weights["training_style"]
-        
-        # Calculate total score
         scores["total"] = sum(scores.values())
-        
         return scores
+
+    def _calculate_score(self, score_type: str, drill: Drill) -> float:
+        """Calculate individual score components"""
+        score_methods = {
+            "primary_skill": lambda: self._score_skills(drill.skill_focus)["primary"],
+            "secondary_skill": lambda: self._score_skills(drill.skill_focus)["secondary"],
+            "equipment": lambda: self._score_equipment(drill.required_equipment),
+            "location": lambda: self._score_location(drill.suitable_locations),
+            "difficulty": lambda: self._score_difficulty(drill.difficulty),
+            "intensity": lambda: self._score_intensity(drill.intensity_level),
+            "duration": lambda: self._score_duration(drill.duration),
+            "training_style": lambda: self._score_training_style(drill.suitable_training_styles)
+        }
+        return score_methods[score_type]()
 
     def _score_skills(self, skill_focus: List[DrillSkillFocus]) -> Dict[str, float]:
         """Score based on skill matches"""
@@ -72,25 +66,15 @@ class DrillScorer:
             return {"primary": 0.0, "secondary": 0.0}
 
         # Score primary skill
-        primary_score = 0.0
-        for target in self.preferences.target_skills:
-            # Simple string match with category
-            if primary_skill.category == target:
-                primary_score = 1.0
-                break
+        primary_score = float(any(primary_skill.category == target for target in self.preferences.target_skills))
 
         # Score secondary skills
-        secondary_score = 0.0
         secondary_skills = [focus for focus in skill_focus if not focus.is_primary]
+        secondary_score = 0.0
         if secondary_skills:
-            matches = 0
-            for skill in secondary_skills:
-                for target in self.preferences.target_skills:
-                    # Simple string match with category
-                    if skill.category == target:
-                        matches += 1
-                        break
-        
+            matches = sum(1 for skill in secondary_skills 
+                        for target in self.preferences.target_skills 
+                        if skill.category == target)
             secondary_score = min(matches * 0.5, 0.5)  # Cap at 0.5
 
         return {"primary": primary_score, "secondary": secondary_score}
@@ -107,10 +91,6 @@ class DrillScorer:
         if not required_equipment:  # No equipment needed
             return 1.0
             
-        # Equipment that can be substituted with household items
-        adaptable_equipment = {"CONES", "WALL"}  # Cones can be bottles/shoes, wall can be any vertical surface
-        critical_equipment = {"GOALS", "BALL"}   # These are harder to substitute
-        
         # Check if only ball is required
         if set(required_equipment) == {"BALL"}:
             return 0.8 if "BALL" in self.preferences.available_equipment else 0.0
@@ -121,11 +101,11 @@ class DrillScorer:
             return 1.0
             
         # Check if missing equipment is adaptable
-        if missing_equipment & critical_equipment:  # Missing critical equipment
+        if missing_equipment & self.CRITICAL_EQUIPMENT:  # Missing critical equipment
             return 0.0
             
         # If only missing adaptable equipment, give partial score
-        if missing_equipment <= adaptable_equipment:
+        if missing_equipment <= self.ADAPTABLE_EQUIPMENT:
             return 0.6
             
         return 0.0
@@ -134,7 +114,7 @@ class DrillScorer:
         """Score based on location match"""
         if not suitable_locations:  # Handles both None and empty list
             return 0.0
-        return 1.0 if self.preferences.training_location in suitable_locations else 0.0
+        return float(self.preferences.training_location in suitable_locations)
 
     def _score_difficulty(self, difficulty: str) -> float:
         """Score based on difficulty match"""
@@ -144,8 +124,7 @@ class DrillScorer:
         try:
             drill_idx = difficulties.index(difficulty)
             pref_idx = difficulties.index(self.preferences.difficulty)
-            diff = abs(drill_idx - pref_idx)
-            return 1.0 if diff == 0 else 0.5
+            return 1.0 if drill_idx == pref_idx else 0.5
         except ValueError:
             raise KeyError(f"Invalid difficulty value: {difficulty}")
 
@@ -158,41 +137,38 @@ class DrillScorer:
             "medium": ["MEDIUM_INTENSITY"],
             "high": ["HIGH_INTENSITY", "GAME_PREP"]
         }
-        return 1.0 if self.preferences.training_style in intensities.get(intensity, []) else 0.0
+        return float(self.preferences.training_style in intensities.get(intensity, []))
 
     def _score_duration(self, duration: int) -> float:
         """Score how well the drill duration fits within session time"""
-        if duration <= self.preferences.duration:
-            # Prefer drills that use a reasonable portion of available time
-            portion = duration / self.preferences.duration
-            if portion < 0.1:  # Too short
-                return 0.5
-            elif portion > 0.5:  # Too long
-                return 0.7
-            else:  # Just right
-                return 1.0
-        return 0.0  # Drill is too long
+        if duration > self.preferences.duration:
+            return 0.0
+            
+        portion = duration / self.preferences.duration
+        if portion < 0.1:  # Too short
+            return 0.5
+        elif portion > 0.5:  # Too long
+            return 0.7
+        else:  # Just right
+            return 1.0
 
     def _score_training_style(self, training_styles: List[str]) -> float:
         """Score based on training style match"""
         if not training_styles:  # Handles both None and empty list
             return 0.0
-        return 1.0 if self.preferences.training_style in training_styles else 0.0
+        return float(self.preferences.training_style in training_styles)
 
     def rank_drills(self, drills: List[Drill]) -> List[Dict[str, Any]]:
         """
         Rank a list of drills based on their scores.
         Returns list of dicts with drill and score information, sorted by total score.
         """
-        scored_drills = []
-        for drill in drills:
-            scores = self.score_drill(drill)
-            scored_drills.append({
+        return sorted([
+            {
                 "drill": drill,
-                "scores": scores,
+                "scores": (scores := self.score_drill(drill)),
                 "total_score": scores["total"]
-            })
-        
-        # Sort by total score, highest first
-        return sorted(scored_drills, key=lambda x: x["total_score"], reverse=True) 
+            }
+            for drill in drills
+        ], key=lambda x: x["total_score"], reverse=True) 
     

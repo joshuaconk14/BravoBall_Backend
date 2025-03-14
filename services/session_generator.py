@@ -1,3 +1,18 @@
+"""
+Session Generator Module
+
+This module is responsible for generating personalized training sessions based on user preferences.
+It uses an intelligent scoring system to select and adapt drills that match the user's needs,
+equipment availability, and skill level.
+
+Key features:
+- Smart drill selection based on multiple criteria
+- Duration adjustment to fit session constraints
+- Equipment availability validation
+- Skill relevance scoring
+- Intensity modification based on player level
+"""
+
 from sqlalchemy.orm import Session
 from models import (
     Drill, 
@@ -11,98 +26,82 @@ from typing import List
 from utils.drill_scorer import DrillScorer
 
 class SessionGenerator:
+    """
+    Generates personalized training sessions based on user preferences and available drills.
+    
+    Attributes:
+        ADAPTABLE_EQUIPMENT: Equipment that can be substituted with household items
+        CRITICAL_EQUIPMENT: Essential equipment that cannot be easily substituted
+        BASIC_SKILLS: Fundamental skills that can be practiced with minimal equipment
+    """
+
     def __init__(self, db: Session):
+        """Initialize the session generator with a database connection."""
         self.db = db
+        self.ADAPTABLE_EQUIPMENT = {"CONES", "WALL"}  # Can use household items instead
+        self.CRITICAL_EQUIPMENT = {"GOALS", "BALL"}   # Essential equipment
+        self.BASIC_SKILLS = {"ball_mastery", "first_touch", "dribbling"}  # Core skills
 
     async def generate_session(self, preferences: SessionPreferences) -> TrainingSession:
-        """Generate a training session based on user preferences"""
-        # Get all drills from database
+        """
+        Generate a training session based on user preferences.
+        
+        Args:
+            preferences: User's session preferences including duration, equipment, etc.
+            
+        Returns:
+            A TrainingSession object containing selected and adjusted drills.
+            
+        The generation process involves:
+        1. Retrieving and scoring all available drills
+        2. Filtering suitable drills based on equipment and skills
+        3. Adjusting drill durations to fit session constraints
+        4. Normalizing the overall session duration
+        """
+        # Get and rank all available drills
         all_drills = self.db.query(Drill).all()
         print(f"\nFound {len(all_drills)} total drills")
 
-        # Create drill scorer that scores drills based on user preferences
         scorer = DrillScorer(preferences)
-        
-        # Score and rank all drills
         ranked_drills = scorer.rank_drills(all_drills)
         
-        # Filter suitable drills
         suitable_drills = []
         current_duration = 0
+        has_limited_equipment = len(preferences.available_equipment) <= 1
 
-        # Filter drills based on user preferences and scores
+        # Process drills in order of their score
         for ranked_drill in ranked_drills:
             drill = ranked_drill['drill']
             scores = ranked_drill['scores']
             
             print(f"\nChecking drill: {drill.title}")
-            print(f": {ranked_drill['total_score']}")
+            print(f"Score: {ranked_drill['total_score']:.2f}")
             print(f"Score breakdown: {scores}")
             
-            # For limited equipment scenarios, be more lenient with requirements
-            has_limited_equipment = len(preferences.available_equipment) <= 1
-            
-            # Skip drills only if they completely fail critical requirements
-            if scores['equipment'] == 0 or scores['location'] == 0:
-                if has_limited_equipment and scores['equipment'] == 0:
-                    # For limited equipment, only skip if it requires goals
-                    if not any(eq == "GOALS" for eq in drill.required_equipment):
-                        # Allow drill if it only needs adaptable equipment
-                        pass
-                    else:
-                        print("❌ Failed critical requirements check - requires goals")
-                        continue
-                else:
-                    print("❌ Failed critical requirements check")
-                    continue
-                
-            # More lenient skill relevance check for limited equipment
-            if scores['primary_skill'] == 0 and scores['secondary_skill'] == 0:
-                if has_limited_equipment:
-                    # For limited equipment, accept drills that at least work on basic skills
-                    if any(skill in ["ball_mastery", "first_touch", "dribbling"] for skill in preferences.target_skills):
-                        pass
-                    else:
-                        print("❌ Failed skill relevance check")
-                        continue
-                else:
-                    print("❌ Failed skill relevance check")
-                    continue
+            if not self._is_drill_suitable(drill, scores, preferences, has_limited_equipment):
+                continue
 
-            # Calculate intensity modifier based on player level vs drill difficulty
-            intensity_modifier = self._calculate_intensity_modifier(preferences.difficulty, drill.difficulty)
-            
-            # For limited equipment, allow shorter minimum durations to fit more drills
-            original_duration = drill.duration
-            min_duration = 3 if has_limited_equipment else 5
-            
-            # Adjust drill duration based on session time constraint
-            adjusted_duration = self._adjust_duration_for_session_fit(
-                original_duration, 
+            # Adjust drill duration based on session constraints
+            adjusted_duration = self._adjust_drill_duration(
+                drill, 
                 preferences.duration,
                 current_duration,
                 len(suitable_drills),
-                min_duration
+                has_limited_equipment
             )
 
-            print(f"Original duration: {original_duration} minutes")
+            print(f"Original duration: {drill.duration} minutes")
             print(f"Adjusted duration: {adjusted_duration} minutes")
 
-            # Store the adjustments with the drill
+            # Store drill adjustments
             drill.adjusted_duration = adjusted_duration
-            drill.intensity_modifier = intensity_modifier
-            drill.original_duration = original_duration
+            drill.intensity_modifier = self._calculate_intensity_modifier(preferences.difficulty, drill.difficulty)
+            drill.original_duration = drill.duration
 
-            # Add drill to suitable drills
             suitable_drills.append(drill)
             current_duration += adjusted_duration
 
-            # For limited equipment, try to get at least 3 drills if possible
-            if has_limited_equipment and len(suitable_drills) < 3:
-                continue
-
-            # If we've significantly exceeded the preferred duration, stop adding drills
-            if current_duration > preferences.duration * 1.2:  # Allow 20% overflow before stopping
+            if self._should_stop_adding_drills(has_limited_equipment, suitable_drills, current_duration, preferences.duration):
                 break
 
         print(f"\nFound {len(suitable_drills)} suitable drills")
@@ -119,7 +118,7 @@ class SessionGenerator:
         )
         session.drills = suitable_drills
 
-        # Add to database if user is provided
+        # Save session to database if user is provided
         if preferences.user_id:
             session.user_id = preferences.user_id
             self.db.add(session)
@@ -128,8 +127,98 @@ class SessionGenerator:
 
         return session
 
+    def _is_drill_suitable(self, drill: Drill, scores: dict, preferences: SessionPreferences, has_limited_equipment: bool) -> bool:
+        """
+        Check if a drill is suitable based on scores and equipment availability.
+        
+        Args:
+            drill: The drill to check
+            scores: Drill scores from the DrillScorer
+            preferences: User's session preferences
+            has_limited_equipment: Whether the user has limited equipment
+            
+        Returns:
+            True if the drill is suitable, False otherwise
+        """
+        # Check equipment and location requirements
+        if scores['equipment'] == 0 or scores['location'] == 0:
+            if has_limited_equipment and scores['equipment'] == 0:
+                if any(eq == "GOALS" for eq in drill.required_equipment):
+                    print("❌ Failed critical requirements check - requires goals")
+                    return False
+            else:
+                print("❌ Failed critical requirements check")
+                return False
+
+        # Check skill relevance
+        if scores['primary_skill'] == 0 and scores['secondary_skill'] == 0:
+            if has_limited_equipment:
+                if not any(skill in self.BASIC_SKILLS for skill in preferences.target_skills):
+                    print("❌ Failed skill relevance check")
+                    return False
+            else:
+                print("❌ Failed skill relevance check")
+                return False
+
+        return True
+
+    def _should_stop_adding_drills(self, has_limited_equipment: bool, suitable_drills: List[Drill], 
+                                 current_duration: int, target_duration: int) -> bool:
+        """
+        Determine if we should stop adding drills to the session.
+        
+        For limited equipment profiles, ensures at least 3 drills if possible.
+        Otherwise, stops when reaching 120% of target duration.
+        """
+        if has_limited_equipment and len(suitable_drills) < 3:
+            return False
+        return current_duration > target_duration * 1.2
+
+    def _adjust_drill_duration(self, drill: Drill, target_session_duration: int,
+                             current_session_duration: int, num_drills_so_far: int,
+                             has_limited_equipment: bool) -> int:
+        """
+        Adjust drill duration to fit session constraints.
+        
+        Args:
+            drill: The drill to adjust
+            target_session_duration: Desired total session duration
+            current_session_duration: Current accumulated session duration
+            num_drills_so_far: Number of drills already added
+            has_limited_equipment: Whether the user has limited equipment
+            
+        Returns:
+            Adjusted duration in minutes
+            
+        The adjustment considers:
+        - Minimum effective duration (3-5 minutes)
+        - First drill gets 30% of session time
+        - Remaining drills are scaled based on available time
+        """
+        min_duration = 3 if has_limited_equipment else 5
+        
+        if num_drills_so_far == 0:
+            target_first_drill = target_session_duration * 0.3
+            return max(int(min(drill.duration, target_first_drill)), min_duration)
+
+        remaining_time = target_session_duration - current_session_duration
+        if remaining_time > drill.duration * 1.5:
+            return drill.duration
+
+        min_effective_duration = max(min_duration, int(drill.duration * 0.6))
+        scaled_duration = min(drill.duration, int(remaining_time * 0.7))
+        
+        return max(min_effective_duration, scaled_duration)
+
     def _calculate_intensity_modifier(self, player_difficulty: str, drill_difficulty: str) -> float:
-        """Calculate intensity modifier based on player level vs drill difficulty"""
+        """
+        Calculate intensity modifier based on player level vs drill difficulty.
+        
+        Returns:
+            1.2: If player is more advanced than drill (increase intensity)
+            1.0: If player level matches drill level
+            0.8: If drill is more advanced than player (decrease intensity)
+        """
         difficulty_levels = {
             "beginner": 1,
             "intermediate": 2,
@@ -140,96 +229,73 @@ class SessionGenerator:
         drill_level = difficulty_levels[drill_difficulty.lower()]
         level_diff = player_level - drill_level
 
-        # If player is more advanced than drill, increase intensity
         if level_diff > 0:
-            return 1.2  # 20% more intense
-        # If player is at drill level, normal intensity
+            return 1.2  # Increase intensity for more advanced players
         elif level_diff == 0:
-            return 1.0
-        # If drill is more advanced than player, reduce intensity
+            return 1.0  # Keep original intensity
         else:
-            return 0.8  # 20% less intense
-
-    def _adjust_duration_for_session_fit(
-        self, 
-        original_duration: int, 
-        target_session_duration: int,
-        current_session_duration: int,
-        num_drills_so_far: int,
-        min_duration: int = 5
-    ) -> int:
-        """
-        Adjust drill duration to better fit within session constraints while maintaining effectiveness.
-        Uses a dynamic approach based on session progress and remaining time.
-        """
-        # If this is the first drill, aim for about 25-35% of session time
-        if num_drills_so_far == 0:
-            target_first_drill = target_session_duration * 0.3  # 30% of session time
-            return max(int(min(original_duration, target_first_drill)), min_duration)
-
-        # Calculate remaining session time
-        remaining_time = target_session_duration - current_session_duration
-
-        # If we have plenty of time, keep original duration
-        if remaining_time > original_duration * 1.5:
-            return original_duration
-
-        # If we're running short on time, scale duration down
-        # but maintain a minimum effective duration
-        min_effective_duration = max(min_duration, int(original_duration * 0.6))
-        scaled_duration = min(original_duration, int(remaining_time * 0.7))
-        
-        return max(min_effective_duration, scaled_duration)
+            return 0.8  # Decrease intensity for less experienced players
 
     def _normalize_session_duration(self, drills: List[Drill], target_duration: int) -> List[Drill]:
         """
-        Normalize drill durations to fit within target session duration by proportionally
-        reducing all drill durations while maintaining minimum effective durations.
-        For shorter sessions, allows more aggressive reduction to fit more drills.
+        Normalize drill durations to fit within target session duration.
+        
+        Uses a two-pass approach:
+        1. Proportionally reduce all drill durations
+        2. If still over target, reduce longer drills more aggressively
+        
+        Args:
+            drills: List of drills to normalize
+            target_duration: Target session duration in minutes
+            
+        Returns:
+            List of drills with adjusted durations
         """
         current_duration = sum(drill.adjusted_duration for drill in drills)
-        
         if current_duration <= target_duration:
             return drills
         
-        # Calculate base minimum duration based on session length
-        # For shorter sessions (30 mins or less), allow drills as short as 3 minutes
-        # For longer sessions (60+ mins), keep minimum of 5 minutes
         base_min_duration = max(3, min(5, target_duration // 10))
-        
-        # Calculate reduction ratio needed
         reduction_ratio = target_duration / current_duration
         
-        # First pass: Try to reduce all drills proportionally
+        # First pass: proportional reduction
         total_adjusted = 0
         for drill in drills:
-            # Calculate new duration with ratio, ensuring minimum duration
             new_duration = max(base_min_duration, int(drill.adjusted_duration * reduction_ratio))
             drill.adjusted_duration = new_duration
             total_adjusted += new_duration
         
-        # Second pass: If we're still over, reduce longer drills more aggressively
+        # Second pass: reduce longer drills if needed
         if total_adjusted > target_duration:
-            excess_time = total_adjusted - target_duration
-            drills_by_duration = sorted(drills, key=lambda x: x.adjusted_duration, reverse=True)
-            
-            # Calculate maximum reduction percentage based on session duration
-            # Shorter sessions allow up to 80% reduction, longer sessions up to 60%
-            max_reduction_pct = 0.8 if target_duration <= 30 else 0.7 if target_duration <= 45 else 0.6
-            
-            for drill in drills_by_duration:
-                if excess_time <= 0:
-                    break
-                
-                # Calculate how much we can reduce this drill
-                current_duration = drill.adjusted_duration
-                min_duration = max(base_min_duration, int(drill.original_duration * (1 - max_reduction_pct)))
-                potential_reduction = current_duration - min_duration
-                
-                if potential_reduction > 0:
-                    # Reduce by either the excess time or the potential reduction
-                    actual_reduction = min(excess_time, potential_reduction)
-                    drill.adjusted_duration = current_duration - actual_reduction
-                    excess_time -= actual_reduction
+            self._reduce_longer_drills(drills, total_adjusted - target_duration, base_min_duration, target_duration)
         
         return drills
+
+    def _reduce_longer_drills(self, drills: List[Drill], excess_time: int, base_min_duration: int, target_duration: int):
+        """
+        Helper method to reduce duration of longer drills.
+        
+        Longer sessions allow less aggressive reductions to maintain drill effectiveness.
+        
+        Args:
+            drills: List of drills to adjust
+            excess_time: Amount of time to reduce
+            base_min_duration: Minimum allowed duration
+            target_duration: Target session duration
+        """
+        drills_by_duration = sorted(drills, key=lambda x: x.adjusted_duration, reverse=True)
+        # Shorter sessions allow more aggressive reduction
+        max_reduction_pct = 0.8 if target_duration <= 30 else 0.7 if target_duration <= 45 else 0.6
+        
+        for drill in drills_by_duration:
+            if excess_time <= 0:
+                break
+                
+            current_duration = drill.adjusted_duration
+            min_duration = max(base_min_duration, int(drill.original_duration * (1 - max_reduction_pct)))
+            potential_reduction = current_duration - min_duration
+            
+            if potential_reduction > 0:
+                actual_reduction = min(excess_time, potential_reduction)
+                drill.adjusted_duration = current_duration - actual_reduction
+                excess_time -= actual_reduction

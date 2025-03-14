@@ -10,20 +10,20 @@ sample_drills = [
     # PASSING DRILLS
     DrillBuilder("Quick Short Pass Combinations")
         .with_description("Quick-fire passing between partners to improve short passing accuracy")
-        .with_type("TIME_BASED")
+        .with_type("time_based")
         .with_duration(15)
         .with_sets(4)
-        .with_reps(0)
-        .with_equipment(Equipment.BALL.value)
+        .with_reps(None)
+        .with_equipment("ball")
         .with_suitable_locations(
-            TrainingLocation.SMALL_FIELD.value,
-            TrainingLocation.INDOOR_COURT.value,
-            TrainingLocation.FULL_FIELD.value,
-            TrainingLocation.BACKYARD.value
+            "small_field",
+            "indoor_court",
+            "full_field",
+            "backyard"
         )
         .with_intensity("medium")
-        .with_training_styles(TrainingStyle.MEDIUM_INTENSITY.value)
-        .with_difficulty(Difficulty.BEGINNER.value)
+        .with_training_styles("beginner")
+        .with_difficulty("beginner")
         .with_primary_skill(SkillCategory.PASSING, PassingSubSkill.SHORT_PASSING)
         .with_secondary_skills(
             (SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.GROUND_CONTROL),
@@ -38,6 +38,17 @@ sample_drills = [
             "Keep passes on ground",
             "Use inside of foot",
             "Maintain good body position"
+        )
+        .with_common_mistakes(
+            "Passing too hard",
+            "Poor body position",
+            "Not looking up"
+        )
+        .with_progression_steps(
+            "Start with two-touch passing",
+            "Progress to one-touch passing",
+            "Add movement between passes",
+            "Increase passing distance"
         )
         .with_rest(30)
         .build(),

@@ -26,64 +26,64 @@ class UserInfoDisplay(BaseModel):
 
 # *** ONBOARDING ENUMS ***
 class PrimaryGoal(str, Enum):
-    IMPROVE_SKILL = "Improve my overall skill level"
-    BEST_ON_TEAM = "Be the best player on my team"
-    COLLEGE_SCOUTING = "Get scouted for college"
-    GO_PRO = "Become a professional footballer"
-    IMPROVE_FITNESS = "Improve fitness and conditioning"
-    HAVE_FUN = "Have fun and enjoy the game"
+    IMPROVE_SKILL = "improve_skill"
+    BEST_ON_TEAM = "best_on_team"
+    COLLEGE_SCOUTING = "college_scouting"
+    GO_PRO = "go_pro"
+    IMPROVE_FITNESS = "improve_fitness"
+    HAVE_FUN = "have_fun"
 
 class Challenge(str, Enum):
-    LACK_OF_TIME = "Lack of time"
-    LACK_OF_EQUIPMENT = "Lack of proper training equipment"
-    UNSURE_FOCUS = "Not knowing what to work on"
-    MOTIVATION = "Staying motivated"
-    INJURY = "Recovering from injury"
-    NO_TEAM = "No team or structured training"
+    LACK_OF_TIME = "lack_of_time"
+    LACK_OF_EQUIPMENT = "lack_of_equipment"
+    UNSURE_FOCUS = "unsure_focus"
+    MOTIVATION = "motivation"
+    INJURY = "injury"
+    NO_TEAM = "no_team"
 
 class ExperienceLevel(str, Enum):
-    BEGINNER = "Beginner"
-    INTERMEDIATE = "Intermediate"
-    ADVANCED = "Advanced"
-    PROFESSIONAL = "Professional"
+    BEGINNER = "beginner"
+    INTERMEDIATE = "intermediate"
+    ADVANCED = "advanced"
+    PROFESSIONAL = "professional"
 
 class Position(str, Enum):
-    GOALKEEPER = "Goalkeeper"
-    FULLBACK = "Fullback"
-    CENTER_BACK = "Center-back"
-    DEFENSIVE_MID = "Defensive Midfielder"
-    CENTER_MID = "Center Midfielder"
-    ATTACKING_MID = "Attacking Midfielder"
-    WINGER = "Winger"
-    STRIKER = "Striker"
+    GOALKEEPER = "goalkeeper"
+    FULLBACK = "fullback"
+    CENTER_BACK = "center_back"
+    DEFENSIVE_MID = "defensive_mid"
+    CENTER_MID = "center_mid"
+    ATTACKING_MID = "attacking_mid"
+    WINGER = "winger"
+    STRIKER = "striker"
 
 class AgeRange(str, Enum):
-    YOUTH = "Youth (Under 12)"
-    TEEN = "Teen (13-16)"
-    JUNIOR = "Junior (17-19)"
-    ADULT = "Adult (20-29)"
-    SENIOR = "Senior (30+)"
+    YOUTH = "youth"
+    TEEN = "teen"
+    JUNIOR = "junior"
+    ADULT = "adult"
+    SENIOR = "senior"
 
 class Skill(str, Enum):
-    PASSING = "Passing"
-    DRIBBLING = "Dribbling"
-    SHOOTING = "Shooting"
-    DEFENDING = "Defending"
-    FIRST_TOUCH = "First touch"
-    FITNESS = "Fitness"
+    PASSING = "passing"
+    DRIBBLING = "dribbling"
+    SHOOTING = "shooting"
+    DEFENDING = "defending"
+    FIRST_TOUCH = "first_touch"
+    FITNESS = "fitness"
 
 class TrainingLocation(str, Enum):
-    FULL_FIELD = "Full-Size 11v11 Field"
-    SMALL_FIELD = "Medium-Sized Grass/Turf Field"
-    INDOOR_COURT = "Indoor Court (Futsal/Basketball)"
-    BACKYARD = "Backyard/Small Outdoor Space"
-    SMALL_ROOM = "Small Indoor Room (Living Room/Hotel)"
+    FULL_FIELD = "full_field"
+    SMALL_FIELD = "small_field"
+    INDOOR_COURT = "indoor_court"
+    BACKYARD = "backyard"
+    SMALL_ROOM = "small_room"
 
 class Equipment(str, Enum):
-    BALL = "BALL"
-    CONES = "CONES"
-    WALL = "WALL"
-    GOALS = "GOALS"
+    BALL = "ball"
+    CONES = "cones"
+    WALL = "wall"
+    GOALS = "goals"
 
 class TrainingDuration(int, Enum):
     MINS_15 = 15
@@ -94,9 +94,9 @@ class TrainingDuration(int, Enum):
     MINS_120 = 120
 
 class TrainingFrequency(str, Enum):
-    LIGHT = "2-3 days (light schedule)"
-    MODERATE = "4-5 days (moderate schedule)"
-    INTENSE = "6-7 days (intense schedule)"
+    LIGHT = "light"
+    MODERATE = "moderate"
+    INTENSE = "intense"
 
 class TrainingStyle(str, Enum):
     MEDIUM_INTENSITY = "medium_intensity"
@@ -220,22 +220,18 @@ class Drill(Base):
     
     # Time and Intensity
     duration = Column(Integer)  # in minutes
-    intensity_level = Column(String)  # high, medium
-    suitable_training_styles = Column(JSON)  # List of TrainingStyle
+    intensity = Column(String)  # high, medium, low
+    training_styles = Column(JSON)  # List of TrainingStyle
     
     # Structure
-    drill_type = Column(String)  # DrillType enum
-    default_sets = Column(Integer, nullable=True)
-    default_reps = Column(Integer, nullable=True)
-    default_duration = Column(Integer, nullable=True)  # in seconds
-    rest_between_sets = Column(Integer, nullable=True)  # in seconds
+    type = Column(String)  # DrillType enum
+    sets = Column(Integer, nullable=True)
+    reps = Column(Integer, nullable=True)
+    rest = Column(Integer, nullable=True)  # in seconds
     
     # Requirements
-    required_equipment = Column(JSON)  # List of Equipment
-    recommended_equipment = Column(JSON)  # Optional equipment
+    equipment = Column(JSON)  # List of Equipment
     suitable_locations = Column(JSON)  # List of Location
-    min_players = Column(Integer, default=1)
-    max_players = Column(Integer, nullable=True)
     
     # Technical
     difficulty = Column(String)
@@ -245,8 +241,8 @@ class Drill(Base):
     instructions = Column(JSON)  # List of steps
     tips = Column(JSON)  # List of coaching tips
     common_mistakes = Column(JSON)  # Things to watch out for
-    variations = Column(JSON)  # Alternative versions
     progression_steps = Column(JSON)  # How to make it harder/easier
+    variations = Column(JSON)  # Alternative versions
     video_url = Column(String, nullable=True)
     thumbnail_url = Column(String, nullable=True)
 
