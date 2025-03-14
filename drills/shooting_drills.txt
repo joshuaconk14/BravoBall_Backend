@@ -1,0 +1,937 @@
+ [  
+    {
+        "title": "Still ball shot on 6 yard box",
+        "description": "A focused shooting drill aimed at developing driven shots from the 6 yard box.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "driven shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "technique",
+                "sub_skill": "ball striking"
+            }
+        ],
+        "instructions": [
+            "Place the ball at the center of the 6 yard line.",
+            "Step back a few steps at an angle from the ball.",
+            "Strike the ball down the middle of the goal using your laces.",
+            "Focus on technique to ensure consistent driven shots."
+        ],
+        "tips": [
+            "Keep your non-kicking foot beside the ball for balance.",
+            "Follow through with your kicking leg for better accuracy.",
+            "Experiment with slight adjustments in your angle and distance."
+        ],
+        "common_mistakes": [
+            "Striking the ball with the wrong part of the foot.",
+            "Lack of follow-through in the shot.",
+            "Poor body positioning leading to inconsistent strikes."
+        ],
+        "progression_steps": [
+            "Increase the distance from the ball for added challenge.",
+            "Introduce movement before striking the ball.",
+            "Vary shot angles and placements within the goal."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/still-ball-shot-6-yard-box-video",
+        "thumbnail_url": "https://example.com/still-ball-shot-6-yard-box-thumbnail.jpg"
+    },
+    {
+        "title": "Roll ball shot on 6 yard box",
+        "description": "A shooting drill that emphasizes technique by initiating a rolling ball shot from the 6 yard box.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "driven shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "technique",
+                "sub_skill": "ball striking"
+            }
+        ],
+        "instructions": [
+            "Place the ball near the center of the 6 yard line.",
+            "Use your sole to roll the ball a few yards in front of you.",
+            "Strike the rolling ball down the middle of the goal using your laces.",
+            "Focus on maintaining proper technique for consistent driven shots."
+        ],
+        "tips": [
+            "Ensure your striking foot connects cleanly with the ball.",
+            "Keep your eyes on the ball during both the roll and the shot.",
+            "Check your body positioning for optimal shooting technique."
+        ],
+        "common_mistakes": [
+            "Rolling the ball too far or too close before the shot.",
+            "Incorrect striking technique leading to poor accuracy.",
+            "Not following through after the shot."
+        ],
+        "progression_steps": [
+            "Increase the distance from which you roll the ball.",
+            "Add movement after rolling the ball before taking the shot.",
+            "Adjust the angle and position of the target within the goal."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/roll-ball-shot-6-yard-box-video",
+        "thumbnail_url": "https://example.com/roll-ball-shot-6-yard-box-thumbnail.jpg"
+    },
+    {
+        "title": "Still ball shot on 18 yard box",
+        "description": "A focused shooting drill aimed at developing driven shots from the 18 yard box.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["beginner", "intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "driven shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "technique",
+                "sub_skill": "ball striking"
+            }
+        ],
+        "instructions": [
+            "Place the ball at the center of the 18 yard line.",
+            "Step back a few steps at an angle from the ball.",
+            "Strike the ball down the middle of the goal using your laces.",
+            "Focus on technique to ensure consistent driven shots."
+        ],
+        "tips": [
+            "Use your non-kicking foot effectively for balance.",
+            "Ensure a strong follow-through to achieve accuracy.",
+            "Work on your shot placement within the goal."
+        ],
+        "common_mistakes": [
+            "Using the incorrect part of the foot for striking.",
+            "Failing to follow through properly.",
+            "Inconsistent body position leading to erratic shooting."
+        ],
+        "progression_steps": [
+            "Increase the distance for added challenge.",
+            "Introduce running starts before the shot.",
+            "Vary the shot angles and placements."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/still-ball-shot-18-yard-box-video",
+        "thumbnail_url": "https://example.com/still-ball-shot-18-yard-box-thumbnail.jpg"
+    },
+
+
+
+
+
+    {
+        "title": "Rolling ball shot on 18 yard box",
+        "description": "A shooting drill that emphasizes technique by initiating a rolling ball shot from the 18 yard box.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "driven shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "technique",
+                "sub_skill": "ball striking"
+            }
+        ],
+        "instructions": [
+            "Place the ball near the center of the 18 yard line.",
+            "Use your sole to roll the ball a few yards in front of you.",
+            "Strike the rolling ball down the middle of the goal using your laces.",
+            "Focus on maintaining proper technique for consistent driven shots."
+        ],
+        "tips": [
+            "Ensure your striking foot connects cleanly with the moving ball.",
+            "Keep your eyes on the ball during both the roll and the shot.",
+            "Check your body positioning for optimal shooting technique."
+        ],
+        "common_mistakes": [
+            "Rolling the ball too far or too close before the shot.",
+            "Incorrect striking technique leading to poor accuracy.",
+            "Not following through after the shot."
+        ],
+        "progression_steps": [
+            "Increase the distance from which you roll the ball.",
+            "Add movement after rolling the ball before taking the shot.",
+            "Adjust the angle and position of target within the goal."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/rolling-ball-shot-18-yard-box-video",
+        "thumbnail_url": "https://example.com/rolling-ball-shot-18-yard-box-thumbnail.jpg"
+    },
+    {
+        "title": "Turn to cut-in shot",
+        "description": "A dynamic shooting drill that focuses on dribble turns and shooting accuracy from the edge of the box.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "cones", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "cut-in shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "turns"
+            }
+        ],
+        "instructions": [
+            "Place a cone between the edge of the 18 yard box and the edge of the 6 yard box, with another cone 6-8 yards diagonally behind it.",
+            "Starting at the cone closest to the goal, dribble towards the opposite cone.",
+            "Perform a turn of your choice once you reach that cone, then quickly dribble back to the starting cone.",
+            "When you reach the starting cone, drop your shoulder, cut inside, and curl the ball into the back post."
+        ],
+        "tips": [
+            "Use quick, controlled touches while dribbling to maintain speed.",
+            "Keep your head up to observe the goal and defender positions.",
+            "Practice different turns to choose the one that best fits the situation."
+        ],
+        "common_mistakes": [
+            "Not executing the turn quickly enough.",
+            "Poor angle of the shot leading to missed targets.",
+            "Lack of confidence when cutting inside."
+        ],
+        "progression_steps": [
+            "Incorporate defenders to simulate game scenarios.",
+            "Vary the speed and size of the dribble path.",
+            "Add passing options before the cut-in shot."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/turn-to-cut-in-shot-video",
+        "thumbnail_url": "https://example.com/turn-to-cut-in-shot-thumbnail.jpg"
+    },
+    {
+        "title": "Open-up-body run to shot",
+        "description": "A shooting drill that simulates opening up the body to shoot at the far post after a dynamic run.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "cones", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "far post shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "running",
+                "sub_skill": "angle adjustment"
+            }
+        ],
+        "instructions": [
+            "Place 4 cones in a half-circle shape.",
+            "Starting at the cone furthest from the goal, pass the ball to the cone closest to the goal.",
+            "Run around all the cones to simulate opening up your body.",
+            "Once you reach the ball, shoot it towards the far post."
+        ],
+        "tips": [
+            "Make sure to take a sharp, wide turn around the cones.",
+            "Maintain focus on keeping your body open during the run.",
+            "Use proper footwork to ensure a clean shot at the far post."
+        ],
+        "common_mistakes": [
+            "Poorly timed runs that result in losing momentum.",
+            "Shooting with an improper body angle.",
+            "Not following through with your shot."
+        ],
+        "progression_steps": [
+            "Increase the distance between the cones.",
+            "Add a defender to create pressure while shooting.",
+            "Vary the positioning of the cones to alter shooting angles."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/open-up-body-run-to-shot-video",
+        "thumbnail_url": "https://example.com/open-up-body-run-to-shot-thumbnail.jpg"
+    },
+
+    {
+        "title": "One v one cone to shoot",
+        "description": "A shooting drill that focuses on dribbling and executing a skill move before taking a shot on goal.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "cone", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "quick shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "skills"
+            }
+        ],
+        "instructions": [
+            "Place a cone in the center of the 18 yard line.",
+            "Start 5 yards behind the cone and dribble towards it with speed.",
+            "Perform a skill move of your choice at the cone.",
+            "Shoot for the far post using either your instep or laces.",
+            "Minimize the number of steps between the skill and the shot."
+        ],
+        "tips": [
+            "Keep your head up to assess the goal and defensive positions.",
+            "Use quick and decisive movements when executing skill moves.",
+            "Concentrate on clean ball contact to improve shot accuracy."
+        ],
+        "common_mistakes": [
+            "Taking too many touch steps after executing the skill.",
+            "Losing speed while executing the skill move.",
+            "Poor shot technique leading to missed targets."
+        ],
+        "progression_steps": [
+            "Add a defender to make the drill more game-realistic.",
+            "Vary the distance from which you dribble.",
+            "Incorporate different skill moves to enhance creativity."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/one-v-one-cone-to-shoot-video",
+        "thumbnail_url": "https://example.com/one-v-one-cone-to-shoot-thumbnail.jpg"
+    },
+    {
+        "title": "Juggle with touch to volley",
+        "description": "A technique-focused drill that combines juggling and shooting from a lofted ball.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "coned area", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "volleys"
+        },
+        "secondary_skills": [
+            {
+                "category": "ball control",
+                "sub_skill": "juggling"
+            }
+        ],
+        "instructions": [
+            "Stand in a 3-by-3 yard box near the center of the 18 yard line.",
+            "Juggle the ball within the box for about 5 touches.",
+            "Loft the ball into the air to set up a volley.",
+            "Strike the ball with your laces or the outer portion of your foot aiming for the corners of the goal.",
+            "Focus on technique and follow-through during the volley."
+        ],
+        "tips": [
+            "Use your arms for balance while juggling.",
+            "Ensure your body is positioned correctly for the volley.",
+            "Practice different angles and foot placements for variety."
+        ],
+        "common_mistakes": [
+            "Not following through on the volley.",
+            "Inconsistent juggling leading to poor setup.",
+            "Lack of focus during the volley resulting in missed shots."
+        ],
+        "progression_steps": [
+            "Increase the number of juggles before the volley.",
+            "Add pressure by having a defender present during the volleys.",
+            "Vary the distance from where the volley is taken."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/juggle-with-touch-to-volley-video",
+        "thumbnail_url": "https://example.com/juggle-with-touch-to-volley-thumbnail.jpg"
+    },
+    {
+        "title": "Shoulder drop to shot",
+        "description": "A shooting drill that uses a shoulder drop technique to create space and take a shot on goal.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "cone", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "deceptive shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "shoulder drops"
+            }
+        ],
+        "instructions": [
+            "Place a cone in the center of the 18 yard box.",
+            "Start 5 yards behind the cone and dribble towards it with speed.",
+            "As you approach the cone, drop your shoulder and take a touch away from the defender.",
+            "Shoot for the far post using either your instep or laces.",
+            "Minimize the number of steps between the shoulder drop and the shot."
+        ],
+        "tips": [
+            "Use your shoulder drop to sell the fake effectively.",
+            "Stay balanced while executing the skill to maintain momentum.",
+            "Focus on making clean contact for accurate shooting."
+        ],
+        "common_mistakes": [
+            "Taking too long to execute the shoulder drop.",
+            "Not creating enough space for the shot.",
+            "Inconsistent shooting technique resulting in lost accuracy."
+        ],
+        "progression_steps": [
+            "Add a defender to simulate game pressure.",
+            "Vary the speed of approach based on different situations.",
+            "Experiment with different shooting angles."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/shoulder-drop-to-shot-video",
+        "thumbnail_url": "https://example.com/shoulder-drop-to-shot-thumbnail.jpg"
+    },
+
+    {
+        "title": "Scissor to shot",
+        "description": "A shooting drill that focuses on the scissor skill to create space before shooting on goal.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "cone", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "quick shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "scissor move"
+            }
+        ],
+        "instructions": [
+            "Place a cone in the center of the 18 yard box.",
+            "Start 5 yards behind the cone and dribble towards it with speed.",
+            "Execute a scissor move at the cone to fake out the defender.",
+            "Take a touch away from the defender and shoot for the far post using either your instep or laces.",
+            "Minimize the number of steps taken between the scissor and the shot."
+        ],
+        "tips": [
+            "Focus on a quick and decisive scissor move.",
+            "Keeping your head up will help you assess the angle for your shot.",
+            "Make sure to position your body correctly for an effective shot."
+        ],
+        "common_mistakes": [
+            "Not executing the scissor move with enough speed.",
+            "Taking excessive steps between the scissor and shot.",
+            "Poor shot technique leading to missed targets."
+        ],
+        "progression_steps": [
+            "Add a defender to increase the difficulty level.",
+            "Practice multiple skill moves before shooting.",
+            "Increase the distance from which you start dribbling."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/scissor-to-shot-video",
+        "thumbnail_url": "https://example.com/scissor-to-shot-thumbnail.jpg"
+    },
+    {
+        "title": "Inside-out to shot",
+        "description": "A drill focused on using the inside and outside of the foot to deceive defenders before shooting.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "cone", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "deceptive shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "inside-out move"
+            }
+        ],
+        "instructions": [
+            "Place a cone in the center of the 18 yard box.",
+            "Start 5 yards behind the cone and dribble towards it with speed.",
+            "As you approach the defender, take a touch with the inside of your foot to fake going one way.",
+            "Immediately after, take a touch with the outside of your foot to go the other way, away from the defender.",
+            "Shoot for the far post using either your instep or laces, minimizing steps between the skill and the shot."
+        ],
+        "tips": [
+            "Practice the inside-out touch to ensure quick acceleration away from the defender.",
+            "Maintain good balance to execute the move effectively.",
+            "Keep your eyes on the goal to aim accurately."
+        ],
+        "common_mistakes": [
+            "Executing the touches too slowly, allowing the defender to react.",
+            "Poor angle on the shot resulting in a miss.",
+            "Not committing to the initial fake, which can telegraph intentions."
+        ],
+        "progression_steps": [
+            "Add a defender for increased pressure when performing the skill.",
+            "Vary the distance you start dribbling.",
+            "Incorporate other skill moves leading up to the inside-out touch."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/inside-out-to-shot-video",
+        "thumbnail_url": "https://example.com/inside-out-to-shot-thumbnail.jpg"
+    },
+    {
+        "title": "One v one cut in on side",
+        "description": "A practical drill that emphasizes dribbling, body feinting, and curling shots into the net after cutting inside.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "cones", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "curl shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "body feints"
+            }
+        ],
+        "instructions": [
+            "Place a cone between the edge of the 18 yard box and the edge of the 6 yard box, with another cone 6-8 yards diagonally behind it.",
+            "Start at the cone farthest from the goal and dribble towards the opposite cone.",
+            "Drop your shoulder to simulate a move and cut inside quickly.",
+            "Curl the ball into the back post netting.",
+            "You can incorporate any skill move you like, but focus on mastering the shoulder drop first."
+        ],
+        "tips": [
+            "Quick decision-making is crucial when dropping your shoulder.",
+            "Observe the goalkeeper's position to find the best angle for your shot.",
+            "Maintain control of the ball while cutting inside."
+        ],
+        "common_mistakes": [
+            "Not committing to the shoulder drop, making it less effective.",
+            "Failing to curl the ball properly, resulting in lost accuracy.",
+            "Overcomplicating the move with too many skills."
+        ],
+        "progression_steps": [
+            "Add a defender for increased challenge.",
+            "Vary the distance between cones for different angles.",
+            "Practice different skill moves to find what works best for you during the approach."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/one-v-one-cut-in-on-side-video",
+        "thumbnail_url": "https://example.com/one-v-one-cut-in-on-side-thumbnail.jpg"
+    },
+
+    {
+        "title": "One v one down line on side",
+        "description": "A drill that focuses on dropping the shoulder, dribbling down the line, and taking a low shot on goal.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "cones", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "low shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "shoulder drops"
+            }
+        ],
+        "instructions": [
+            "Place a cone between the edge of the 18 yard box and the edge of the 6 yard box, with another cone 6-8 yards diagonally behind it.",
+            "Start at the cone farthest from the goal and dribble towards the opposite cone.",
+            "Drop your shoulder to simulate a move and go down the line.",
+            "Shoot the ball far post and low on the ground.",
+            "Feel free to perform a skill move of your choice, but focus on mastering the shoulder drop first."
+        ],
+        "tips": [
+            "Use a quick shoulder drop to sell the fake to the defender.",
+            "Keep the ball close as you dribble down the line.",
+            "Aim for accuracy with your shot, targeting the far post."
+        ],
+        "common_mistakes": [
+            "Not committing enough to the shoulder drop.",
+            "Dribbling too far away from the body.",
+            "Poor shot placement that goes off-target."
+        ],
+        "progression_steps": [
+            "Add a defender for increased challenge.",
+            "Practice various skill moves leading up to the shot.",
+            "Change the angles from which you start dribbling."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/one-v-one-down-line-on-side-video",
+        "thumbnail_url": "https://example.com/one-v-one-down-line-on-side-thumbnail.jpg"
+    },
+    {
+        "title": "Box agility to shoot",
+        "description": "An agility drill that combines footwork and shooting from a dynamic position.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 1,
+        "equipment": ["soccer ball", "cones", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "quick shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "agility",
+                "sub_skill": "footwork"
+            }
+        ],
+        "instructions": [
+            "Set up a 5-by-5 yard box at the top of the 18 yard box and stand in the middle.",
+            "Position the ball 7 yards away from the center of the box towards the goal.",
+            "Shuffle your feet to touch each cone around the box and return to the middle (in any order).",
+            "After completing all the cones, run to the ball and take a shot aiming for the far or near post."
+        ],
+        "tips": [
+            "Stay light on your feet while shuffling to maintain agility.",
+            "Be quick but controlled to enhance your decision-making.",
+            "Focus on striking the ball cleanly for accuracy."
+        ],
+        "common_mistakes": [
+            "Shuffling too slowly or without urgency.",
+            "Poor positioning when preparing to shoot.",
+            "Not following through with the shot, which affects power."
+        ],
+        "progression_steps": [
+            "Increase the speed of your shuffles as you improve.",
+            "Practice shooting with both feet.",
+            "Adjust the distance from which you shoot for variety."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/box-agility-to-shoot-video",
+        "thumbnail_url": "https://example.com/box-agility-to-shoot-thumbnail.jpg"
+    },
+    {
+        "title": "Triangle weave to shot",
+        "description": "A drill that emphasizes quick footwork and sharp touches while dribbling before shooting.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 5,
+        "reps": 1,
+        "equipment": ["soccer ball", "cones", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "quick shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up a triangle with each side measuring 4 yards between cones placed on the edge of the 18 yard box.",
+            "Start dribbling quickly from cone to cone continuously for 10 seconds.",
+            "After 10 seconds, take a touch toward the goal and shoot for the far post.",
+            "Repeat the exercise for the recommended sets with each foot."
+        ],
+        "tips": [
+            "Keep your touches close to your body while dribbling.",
+            "Vary your footwork pattern to keep the drill dynamic.",
+            "Focus on your shooting technique as you transition from dribbling to shot."
+        ],
+        "common_mistakes": [
+            "Taking too wide a touch while dribbling.",
+            "Not following through properly during the shot.",
+            "Inconsistent drill speeds leading to ineffective practice."
+        ],
+        "progression_steps": [
+            "Alter the distance between cones for different challenges.",
+            "Incorporate skill moves in between the cones.",
+            "Practice shooting from different angles after completing the weave."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/triangle-weave-to-shot-video",
+        "thumbnail_url": "https://example.com/triangle-weave-to-shot-thumbnail.jpg"
+    },
+    {
+        "title": "Cone weave to turn and finish",
+        "description": "A precision drill that builds turning skills and shooting accuracy in tight spaces.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 5,
+        "equipment": ["soccer ball", "cones", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "turning to shoot"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "cone weaving"
+            }
+        ],
+        "instructions": [
+            "On the penalty spot, set up 5 cones about 1 to 1.5 feet apart from each other in a line.",
+            "Place another cone a few yards away from the line of cones, going away from the goal.",
+            "Starting at the cone closest to the goal, dribble through the line of cones.",
+            "Upon reaching the far cone, turn right or left based on your direction.",
+            "If you turn left, shoot with your left foot aiming for the near post. If you turn right, shoot with your right foot aiming for the near post."
+        ],
+        "tips": [
+            "Focus on smooth and controlled touches while weaving through the cones.",
+            "Make sure to plant your foot correctly before turning to maintain balance.",
+            "Maintain a clear sightline to the goal when preparing to shoot."
+        ],
+        "common_mistakes": [
+            "Taking too wide a turn, losing control of the ball.",
+            "Not following through on the shot, which affects accuracy.",
+            "Rushing the dribbles and losing touch on the ball."
+        ],
+        "progression_steps": [
+            "Increase the distance between cones for a greater challenge.",
+            "Incorporate different turns or skill moves upon reaching the final cone.",
+            "Add a defender to increase pressure when shooting."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/cone-weave-to-turn-and-finish-video",
+        "thumbnail_url": "https://example.com/cone-weave-to-turn-and-finish-thumbnail.jpg"
+    },
+    {
+        "title": "Mini zig zag dribble to shot",
+        "description": "An agility drill focusing on tight ball control while dribbling and shooting dynamics.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 1,
+        "equipment": ["soccer ball", "cones", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "quick shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones spaced 4-6 yards apart from each other in a zigzag pattern.",
+            "Place a fifth cone at the edge of the 18-yard box.",
+            "Starting at one end, dribble around the cones in the zigzag path, taking quick and tight touches.",
+            "Once you reach the fifth cone, perform a 1v1 move and shoot on goal, aiming for the far or near post."
+        ],
+        "tips": [
+            "Maintain close control of the ball when dribbling around cones.",
+            "Focus on quick transitions between the cones to improve your agility.",
+            "Observe the goalkeeper's position before making your shot."
+        ],
+        "common_mistakes": [
+            "Dribbling too far away from the cones, leading to loss of control.",
+            "Slow or awkward movements while changing directions.",
+            "Not centering yourself properly before taking the shot."
+        ],
+        "progression_steps": [
+            "Increase the speed of your dribble as you get more comfortable.",
+            "Add a defender for increased challenge during the 1v1.",
+            "Experiment with different skill moves when approaching the goal."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/mini-zig-zag-dribble-to-shot-video",
+        "thumbnail_url": "https://example.com/mini-zig-zag-dribble-to-shot-thumbnail.jpg"
+    },
+    {
+        "title": "Check to dribble to shot",
+        "description": "A drill that combines movement off the ball with dribbling and finishing skills.",
+        "type": "reps_based",
+        "duration": null,
+        "sets": 5,
+        "reps": 1,
+        "equipment": ["soccer ball", "cones", "goal"],
+        "suitable_locations": [
+            "field",
+            "practice_area",
+            "indoor_court"
+        ],
+        "intensity": "medium",
+        "training_styles": ["intermediate", "advanced"],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "finishing"
+        },
+        "secondary_skills": [
+            {
+                "category": "movement",
+                "sub_skill": "checking runs"
+            }
+        ],
+        "instructions": [
+            "Set up 3 cones in a triangle shape.",
+            "Place the ball in between the first two cones.",
+            "Starting at the cone closest to the goal, check in and out.",
+            "Take the ball and dribble around the furthest cone.",
+            "After dribbling around that cone, perform a 1v1 move to finish against the cone off to the side."
+        ],
+        "tips": [
+            "Ensure your checking runs are sharp to create space.",
+            "Be dynamic with your dribbling and maintain control.",
+            "Finish strong and accurately towards the goal."
+        ],
+        "common_mistakes": [
+            "Failing to check hard enough to create separation.",
+            "Dribbling too slowly around the cone.",
+            "Not taking a quality shot at the end of the drill."
+        ],
+        "progression_steps": [
+            "Increase the distance between the cones for a greater challenge.",
+            "Add a defender for increased pressure before the shot.",
+            "Vary the types of finishing techniques (e.g., volleys, placed shots)."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/check-to-dribble-to-shot-video",
+        "thumbnail_url": "https://example.com/check-to-dribble-to-shot-thumbnail.jpg"
+    }
+]
