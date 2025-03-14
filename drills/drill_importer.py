@@ -48,11 +48,13 @@ def import_drills_from_file(file_path: str) -> List[Dict[str, Any]]:
             return drills_data
     except Exception as e:
         print(f"Error reading file {file_path}: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return []
 
 def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
     """
-    Upload parsed drills to the database, checking for existing drills first.
+    Upload parsed drills to the database, updating existing drills if they already exist.
     
     Args:
         drills_data: List of drill dictionaries
@@ -60,16 +62,10 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
     """
     try:
         drills_added = 0
+        drills_updated = 0
         drills_skipped = 0
         
         for drill_data in drills_data:
-            # Check if drill already exists
-            existing_drill = db.query(Drill).filter_by(title=drill_data["title"]).first()
-            if existing_drill:
-                print(f"Skipping drill '{drill_data['title']}': Already exists in database")
-                drills_skipped += 1
-                continue
-
             # Get or create category
             primary_skill = drill_data.get("primary_skill", {})
             category_name = primary_skill.get("category")
@@ -89,74 +85,142 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                 db.flush()
                 print(f"Created new category: {category_name}")
 
-            # Create drill
-            drill = Drill(
-                category_id=category.id,
-                title=drill_data["title"],
-                description=drill_data["description"],
-                duration=drill_data["duration"],
-                intensity=drill_data["intensity"],
-                training_styles=drill_data["training_styles"],
-                type=drill_data["type"],
-                sets=drill_data.get("sets"),
-                reps=drill_data.get("reps"),
-                rest=drill_data.get("rest"),
-                equipment=drill_data["equipment"],
-                suitable_locations=drill_data["suitable_locations"],
-                difficulty=drill_data["difficulty"].lower(),
-                instructions=drill_data["instructions"],
-                tips=drill_data["tips"],
-                common_mistakes=drill_data.get("common_mistakes", []),
-                progression_steps=drill_data.get("progression_steps", []),
-                variations=drill_data.get("variations", []),
-                video_url=drill_data.get("video_url"),
-                thumbnail_url=drill_data.get("thumbnail_url")
-            )
-            db.add(drill)
-            db.flush()
-            print(f"Added new drill: {drill_data['title']}")
-            drills_added += 1
-
-            # Add primary skill focus
-            primary_skill_focus = DrillSkillFocus(
-                drill_id=drill.id,
-                category=primary_skill["category"],
-                sub_skill=primary_skill["sub_skill"],
-                is_primary=True
-            )
-            db.add(primary_skill_focus)
-
-            # Add secondary skills
-            for skill in drill_data.get("secondary_skills", []):
-                if isinstance(skill["sub_skill"], list):
-                    # Handle multiple sub-skills
-                    for sub_skill in skill["sub_skill"]:
+            # Check if drill already exists
+            existing_drill = db.query(Drill).filter_by(title=drill_data["title"]).first()
+            
+            if existing_drill:
+                # Update existing drill
+                existing_drill.description = drill_data["description"]
+                existing_drill.duration = drill_data["duration"]
+                existing_drill.intensity = drill_data["intensity"]
+                existing_drill.training_styles = drill_data["training_styles"]
+                existing_drill.type = drill_data["type"]
+                existing_drill.sets = drill_data.get("sets")
+                existing_drill.reps = drill_data.get("reps")
+                existing_drill.rest = drill_data.get("rest")
+                existing_drill.equipment = drill_data["equipment"]
+                existing_drill.suitable_locations = drill_data["suitable_locations"]
+                existing_drill.difficulty = drill_data["difficulty"]
+                existing_drill.instructions = drill_data["instructions"]
+                existing_drill.tips = drill_data["tips"]
+                existing_drill.common_mistakes = drill_data.get("common_mistakes", [])
+                existing_drill.progression_steps = drill_data.get("progression_steps", [])
+                existing_drill.variations = drill_data.get("variations", [])
+                existing_drill.video_url = drill_data.get("video_url")
+                existing_drill.thumbnail_url = drill_data.get("thumbnail_url")
+                
+                # Update category if needed
+                if existing_drill.category_id != category.id:
+                    existing_drill.category_id = category.id
+                
+                # Delete existing skill focus entries
+                db.query(DrillSkillFocus).filter_by(drill_id=existing_drill.id).delete()
+                
+                # Add primary skill focus
+                primary_skill_focus = DrillSkillFocus(
+                    drill_id=existing_drill.id,
+                    category=primary_skill["category"],
+                    sub_skill=primary_skill["sub_skill"],
+                    is_primary=True
+                )
+                db.add(primary_skill_focus)
+                
+                # Add secondary skills
+                for skill in drill_data.get("secondary_skills", []):
+                    if isinstance(skill["sub_skill"], list):
+                        # Handle multiple sub-skills
+                        for sub_skill in skill["sub_skill"]:
+                            secondary_skill_focus = DrillSkillFocus(
+                                drill_id=existing_drill.id,
+                                category=skill["category"],
+                                sub_skill=sub_skill,
+                                is_primary=False
+                            )
+                            db.add(secondary_skill_focus)
+                    else:
+                        # Handle single sub-skill
                         secondary_skill_focus = DrillSkillFocus(
-                            drill_id=drill.id,
+                            drill_id=existing_drill.id,
                             category=skill["category"],
-                            sub_skill=sub_skill,
+                            sub_skill=skill["sub_skill"],
                             is_primary=False
                         )
                         db.add(secondary_skill_focus)
-                else:
-                    # Handle single sub-skill
-                    secondary_skill_focus = DrillSkillFocus(
-                        drill_id=drill.id,
-                        category=skill["category"],
-                        sub_skill=skill["sub_skill"],
-                        is_primary=False
-                    )
-                    db.add(secondary_skill_focus)
+                
+                print(f"Updated existing drill: '{drill_data['title']}'")
+                drills_updated += 1
+            else:
+                # Create new drill
+                drill = Drill(
+                    category_id=category.id,
+                    title=drill_data["title"],
+                    description=drill_data["description"],
+                    duration=drill_data["duration"],
+                    intensity=drill_data["intensity"],
+                    training_styles=drill_data["training_styles"],
+                    type=drill_data["type"],
+                    sets=drill_data.get("sets"),
+                    reps=drill_data.get("reps"),
+                    rest=drill_data.get("rest"),
+                    equipment=drill_data["equipment"],
+                    suitable_locations=drill_data["suitable_locations"],
+                    difficulty=drill_data["difficulty"],
+                    instructions=drill_data["instructions"],
+                    tips=drill_data["tips"],
+                    common_mistakes=drill_data.get("common_mistakes", []),
+                    progression_steps=drill_data.get("progression_steps", []),
+                    variations=drill_data.get("variations", []),
+                    video_url=drill_data.get("video_url"),
+                    thumbnail_url=drill_data.get("thumbnail_url")
+                )
+                db.add(drill)
+                db.flush()
+                print(f"Added new drill: '{drill_data['title']}'")
+                drills_added += 1
+
+                # Add primary skill focus
+                primary_skill_focus = DrillSkillFocus(
+                    drill_id=drill.id,
+                    category=primary_skill["category"],
+                    sub_skill=primary_skill["sub_skill"],
+                    is_primary=True
+                )
+                db.add(primary_skill_focus)
+
+                # Add secondary skills
+                for skill in drill_data.get("secondary_skills", []):
+                    if isinstance(skill["sub_skill"], list):
+                        # Handle multiple sub-skills
+                        for sub_skill in skill["sub_skill"]:
+                            secondary_skill_focus = DrillSkillFocus(
+                                drill_id=drill.id,
+                                category=skill["category"],
+                                sub_skill=sub_skill,
+                                is_primary=False
+                            )
+                            db.add(secondary_skill_focus)
+                    else:
+                        # Handle single sub-skill
+                        secondary_skill_focus = DrillSkillFocus(
+                            drill_id=drill.id,
+                            category=skill["category"],
+                            sub_skill=skill["sub_skill"],
+                            is_primary=False
+                        )
+                        db.add(secondary_skill_focus)
 
         db.commit()
         print(f"\nImport Summary:")
         print(f"- Drills added: {drills_added}")
-        print(f"- Drills skipped (already exist): {drills_skipped}")
-        print(f"- Total drills processed: {drills_added + drills_skipped}")
+        print(f"- Drills updated: {drills_updated}")
+        print(f"- Drills skipped: {drills_skipped}")
+        print(f"- Total drills processed: {drills_added + drills_updated + drills_skipped}")
         
     except Exception as e:
         db.rollback()
         print(f"Error uploading drills to database: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise
 
 def main():

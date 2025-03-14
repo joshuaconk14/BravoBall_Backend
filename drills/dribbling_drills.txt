@@ -6,14 +6,19 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
@@ -57,14 +62,19 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -108,14 +118,19 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
@@ -159,14 +174,19 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -210,14 +230,19 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball"],
+        "equipment": [
+            "ball"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
@@ -262,14 +287,20 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball", "training_cone"],
+        "equipment": [
+            "ball",
+            "training_cone"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
@@ -313,14 +344,20 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball", "training_cone"],
+        "equipment": [
+            "ball",
+            "training_cone"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
@@ -364,14 +401,20 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball", "cone"],
+        "equipment": [
+            "ball",
+            "cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["beginner", "intermediate"],
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -415,14 +458,20 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball", "training_cones"],
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -435,7 +484,7 @@
             }
         ],
         "instructions": [
-            "Set up 10 cones in a straight line, spaced about 1 ½ feet apart.",
+            "Set up 10 cones in a straight line, spaced about 1 \u00bd feet apart.",
             "Perform a zigzag movement using the same foot, alternating between inside and outside touches.",
             "Continue through the line of cones until you reach the end.",
             "Halfway through your sets, switch to the opposite foot."
@@ -466,14 +515,20 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball", "training_cones"],
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -486,7 +541,7 @@
             }
         ],
         "instructions": [
-            "Set up 10 cones in a straight line, spaced about 1 ½ feet apart.",
+            "Set up 10 cones in a straight line, spaced about 1 \u00bd feet apart.",
             "Take an inside touch with one foot, then an outside touch with the other foot.",
             "Continue alternating touches between every cone until you reach the end."
         ],
@@ -516,14 +571,20 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball", "training_cones"],
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -536,7 +597,7 @@
             }
         ],
         "instructions": [
-            "Set up 10 cones in a straight line, spaced about 1 ½ feet apart.",
+            "Set up 10 cones in a straight line, spaced about 1 \u00bd feet apart.",
             "Roll the ball with the sole of one foot across the cone.",
             "Take a forward touch with the inside of your other foot after each roll.",
             "Continue this sequence through the line of cones until you reach the end."
@@ -567,14 +628,19 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["cones"],
+        "equipment": [
+            "cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -587,7 +653,7 @@
             }
         ],
         "instructions": [
-            "Set up 10 cones in a straight line, spaced about 1 to 1 ½ feet apart.",
+            "Set up 10 cones in a straight line, spaced about 1 to 1 \u00bd feet apart.",
             "Dribble with one foot, performing two inside touches followed by two outside touches.",
             "Continue this zigzag sequence until you reach the end."
         ],
@@ -617,18 +683,23 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["cones"],
+        "equipment": [
+            "cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "feints and moves"
+            "sub_skill": "feints_and_moves"
         },
         "secondary_skills": [
             {
@@ -637,7 +708,7 @@
             }
         ],
         "instructions": [
-            "Set up 10 cones in a straight line, spaced about 1 ½ feet apart.",
+            "Set up 10 cones in a straight line, spaced about 1 \u00bd feet apart.",
             "Touch the ball across the cone using the inside of one foot.",
             "Then take a forward touch with the inside of the opposite foot.",
             "Continue this sequence through the line of cones until you reach the end."
@@ -668,14 +739,19 @@
         "duration": null,
         "sets": null,
         "reps": 3,
-        "equipment": ["cones"],
+        "equipment": [
+            "cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "advanced",
         "primary_skill": {
             "category": "dribbling",
@@ -719,14 +795,19 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["cones"],
+        "equipment": [
+            "cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -769,14 +850,19 @@
         "duration": null,
         "sets": null,
         "reps": 3,
-        "equipment": ["cones"],
+        "equipment": [
+            "cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -820,14 +906,19 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["cones"],
+        "equipment": [
+            "cones"
+        ],
         "suitable_locations": [
-            "field",
-            "practice_area",
+            "full_field",
+            "small_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -870,15 +961,22 @@
         "duration": 5,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball", "training_cones"],
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "high",
-        "training_styles": ["beginner", "intermediate", "advanced"],
-        "difficulty": "variable",
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity",
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "dribbling",
             "sub_skill": "creativity"
@@ -924,14 +1022,20 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball", "training_cones"],
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
@@ -976,14 +1080,20 @@
         "duration": 10,
         "sets": 3,
         "reps": null,
-        "equipment": ["ball", "training_cones"],
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
         "suitable_locations": [
             "full_field",
             "medium_field",
             "indoor_court"
         ],
         "intensity": "medium",
-        "training_styles": ["intermediate", "advanced"],
+        "training_styles": [
+            "medium_intensity",
+            "high_intensity"
+        ],
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
