@@ -146,45 +146,148 @@ class FitnessSubSkill(str, Enum):
     AGILITY = "agility"
     ENDURANCE = "endurance"
 
-# *** USER MODELS ***
+
+
+
+
+
+
+
+
+# *** USER AND USER DATA MODELS ***
 class User(Base):
     __tablename__ = "users"
 
+    # Registration / User ID
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
+    email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    age = Column(String)
-    level = Column(String)
-    position = Column(String)
-    # player_details = Column(JSON)
-    playstyle_representatives = Column(JSON)
-    strengths = Column(JSON)
-    weaknesses = Column(JSON)
-    has_team = Column(Boolean, default=False)
+
+    # Onboarding 
     primary_goal = Column(String)
-    timeline = Column(String)
-    skill_level = Column(String)
-    training_days = Column(JSON)
+    biggest_challenge = Column(String)
+    training_experience = Column(String)
+    position = Column(String)
+    playstyle = Column(String)
+    age_range = Column(String)
+    strengths = Column(JSON)
+    areas_to_improve = Column(JSON)
+    training_location = Column(JSON)
     available_equipment = Column(JSON)
+    daily_training_time = Column(String)
+    weekly_training_days = Column(String)
+    
+    
+    # Relationships
     session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
+
+    preferences = relationship("UserPreferences", back_populates="user", uselist=False)
+    completed_sessions = relationship("CompletedSession", back_populates="user")
+    drill_groups = relationship("DrillGroup", back_populates="user")
+
     
 class OnboardingData(BaseModel):
-    primary_goal: PrimaryGoal
-    main_challenge: Challenge
-    experience_level: ExperienceLevel
-    position: Position
-    playstyle_representative: str
-    age_range: AgeRange
-    strengths: List[Skill]
-    areas_to_improve: List[Skill]
-    training_location: TrainingLocation
-    available_equipment: List[Equipment]
-    daily_training_time: TrainingDuration
-    weekly_training_days: TrainingFrequency
+    # Optional values in onboarding with camelCase field names to match frontend
+    primaryGoal: Optional[str] = None
+    biggestChallenge: Optional[str] = None
+    trainingExperience: Optional[str] = None
+    position: Optional[str] = None
+    playstyle: Optional[str] = None
+    ageRange: Optional[str] = None
+    strengths: Optional[List[str]] = []
+    areasToImprove: Optional[List[str]] = []
+    trainingLocation: Optional[List[str]] = []
+    availableEquipment: Optional[List[str]] = []
+    dailyTrainingTime: Optional[str] = None
+    weeklyTrainingDays: Optional[str] = None
 
-    model_config = ConfigDict(from_attributes=True)
+    # These should be required for registration
+    firstName: str
+    lastName: str 
+    email: str
+    password: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
+
+
+class UserPreferences(Base):
+    __tablename__ = "user_preferences"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    
+    # Session Generator Preferences
+    selected_time = Column(String, nullable=True)
+    selected_equipment = Column(JSON)  # Store as JSON array
+    selected_training_style = Column(String, nullable=True)
+    selected_location = Column(String, nullable=True)
+    selected_difficulty = Column(String, nullable=True)
+    
+    # Stats and Streaks
+    current_streak = Column(Integer, default=0)
+    highest_streak = Column(Integer, default=0)
+    completed_sessions_count = Column(Integer, default=0)
+    
+    # Relationship
+    user = relationship("User", back_populates="preferences")
+
+
+
+    # Pydantic model for request validation
+class UserPreferencesUpdate(BaseModel):
+    selected_time: Optional[str] = None
+    selected_equipment: list[str] = []
+    selected_training_style: Optional[str] = None
+    selected_location: Optional[str] = None
+    selected_difficulty: Optional[str] = None
+    current_streak: int = 0
+    highest_streak: int = 0
+    completed_sessions_count: int = 0
+
+    class Config:
+        from_attributes = True
+
+
+
+class CompletedSession(Base):
+    __tablename__ = "completed_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    date = Column(DateTime)
+    total_completed_drills = Column(Integer)
+    total_drills = Column(Integer)
+    
+    # Store the completed drills data as JSON
+    drills = Column(JSON)  # Will store array of EditableDrillModel data
+    
+    # Relationship
+    user = relationship("User", back_populates="completed_sessions")
+
+class DrillGroup(Base):
+    __tablename__ = "drill_groups"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    name = Column(String)
+    description = Column(String)
+    
+    # Store the drills as JSON
+    drills = Column(JSON)  # Will store array of DrillModel data
+    is_liked_group = Column(Boolean, default=False)  # To identify if this is the "Liked Drills" group
+    
+    # Relationship
+    user = relationship("User", back_populates="drill_groups")
+
+
+
+
+
 
 # *** DRILL MODELS ***
 
