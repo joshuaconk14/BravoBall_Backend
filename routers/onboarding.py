@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from datetime import datetime
 from db import get_db
-from models import OnboardingData, User, UserProgram
+from models import OnboardingData, User
 from auth import create_access_token
 from config import UserAuth
 
@@ -27,21 +27,27 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
     try:
         # connects pydantic onboarding data model to the User table
         user = User(
+
+            # Registration / User ID
             first_name=player_info.firstName,
             last_name=player_info.lastName,
             email=player_info.email,
             hashed_password=hashed_password,
-            age = player_info.ageRange,
-            position=player_info.position,
-            playstyle_representatives=player_info.playstyleRepresentatives,
-            strengths=player_info.strengths,
-            weaknesses=player_info.weaknesses,
-            has_team=player_info.hasTeam,
+
+            # Onboarding
             primary_goal=player_info.primaryGoal,
-            timeline=player_info.timeline,
-            skill_level=player_info.skillLevel,
-            training_days=player_info.trainingDays,
-            available_equipment=player_info.availableEquipment
+            biggest_challenge=player_info.biggestChallenge,
+            training_experience=player_info.trainingExperience,
+            position=player_info.position,
+            playstyle=player_info.playstyle,
+            age_range=player_info.ageRange,
+            strengths=player_info.strengths,
+            areas_to_improve=player_info.areasToImprove,
+            training_location=player_info.trainingLocation,
+            available_equipment=player_info.availableEquipment,
+            daily_training_time=player_info.dailyTrainingTime,
+            weekly_training_days=player_info.weeklyTrainingDays,
+            
         )
         db.add(user)
         db.commit()
