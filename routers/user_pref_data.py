@@ -29,21 +29,29 @@ def get_user_preferences(current_user: User = Depends(get_current_user), db: Ses
         db.refresh(preferences)
     return preferences
 
-@router.put("/api/preferences/", response_model=UserPreferencesSchema)
-def update_user_preferences(preferences: UserPreferencesUpdate, 
-                          current_user: User = Depends(get_current_user), 
-                          db: Session = Depends(get_db)):
-    db_preferences = db.query(UserPreferences).filter(UserPreferences.user_id == current_user.id).first()
-    if not db_preferences:
-        db_preferences = UserPreferences(user_id=current_user.id)
-        db.add(db_preferences)
+# FastAPI endpoint
+@router.put("/api/preferences/")
+async def update_user_preferences(
+    preferences: UserPreferencesUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    # Get or create user preferences
+    user_prefs = db.query(UserPreferences).filter(UserPreferences.user_id == current_user.id).first()
+    if not user_prefs:
+        user_prefs = UserPreferences(user_id=current_user.id)
+        db.add(user_prefs)
     
-    for field, value in preferences.dict(exclude_unset=True).items():
-        setattr(db_preferences, field, value)
+    # Update preferences
+    for key, value in preferences.model_dump().items():
+        setattr(user_prefs, key, value)
     
-    db.commit()
-    db.refresh(db_preferences)
-    return db_preferences
+    try:
+        db.commit()
+        return {"status": "success", "message": "Preferences updated successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Completed Sessions Endpoints
 @router.post("/api/sessions/completed/", response_model=CompletedSessionSchema)

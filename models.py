@@ -230,6 +230,24 @@ class UserPreferences(Base):
     # Relationship
     user = relationship("User", back_populates="preferences")
 
+
+
+    # Pydantic model for request validation
+class UserPreferencesUpdate(BaseModel):
+    selected_time: Optional[str] = None
+    selected_equipment: list[str] = []
+    selected_training_style: Optional[str] = None
+    selected_location: Optional[str] = None
+    selected_difficulty: Optional[str] = None
+    current_streak: int = 0
+    highest_streak: int = 0
+    completed_sessions_count: int = 0
+
+    class Config:
+        from_attributes = True
+
+
+
 class CompletedSession(Base):
     __tablename__ = "completed_sessions"
 
