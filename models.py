@@ -24,6 +24,372 @@ class UserInfoDisplay(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
+# *** USER AND USER DATA MODELS ***
+
+class User(Base):
+    __tablename__ = "users"
+
+    # Registration / User ID
+    id = Column(Integer, primary_key=True, index=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    email = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+
+    # Onboarding 
+    primary_goal = Column(String)
+    biggest_challenge = Column(String)
+    training_experience = Column(String)
+    position = Column(String)
+    playstyle = Column(String)
+    age_range = Column(String)
+    strengths = Column(JSON)
+    areas_to_improve = Column(JSON)
+    training_location = Column(JSON)
+    available_equipment = Column(JSON)
+    daily_training_time = Column(String)
+    weekly_training_days = Column(String)
+    
+    
+    # Relationships
+    session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
+    preferences = relationship("UserPreferences", back_populates="user", uselist=False)
+    completed_sessions = relationship("CompletedSession", back_populates="user")
+    drill_groups = relationship("DrillGroup", back_populates="user")
+
+
+class SessionPreferences(Base):
+    __tablename__ = "session_preferences"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    duration = Column(Integer)  # in minutes
+    available_equipment = Column(ARRAY(String))
+    training_style = Column(String)
+    training_location = Column(String)
+    difficulty = Column(String)
+    target_skills = Column(JSON)  # List of {category: str, sub_skills: List[str]}
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+
+    user = relationship("User", back_populates="session_preferences")
+
+
+class UserPreferences(Base):
+    __tablename__ = "user_preferences"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    
+    # Session Generator Preferences
+    selected_time = Column(String, nullable=True)
+    selected_equipment = Column(JSON)  # Store as JSON array
+    selected_training_style = Column(String, nullable=True)
+    selected_location = Column(String, nullable=True)
+    selected_difficulty = Column(String, nullable=True)
+    
+    # Stats and Streaks
+    current_streak = Column(Integer, default=0)
+    highest_streak = Column(Integer, default=0)
+    completed_sessions_count = Column(Integer, default=0)
+    
+    # Relationship
+    user = relationship("User", back_populates="preferences")
+
+
+class CompletedSession(Base):
+    __tablename__ = "completed_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    date = Column(DateTime)
+    total_completed_drills = Column(Integer)
+    total_drills = Column(Integer)
+    
+    # Store the completed drills data as JSON
+    drills = Column(JSON)  # Will store array of DrillResponse data
+    
+    # Relationship
+    user = relationship("User", back_populates="completed_sessions")
+
+
+class DrillGroup(Base):
+    __tablename__ = "drill_groups"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    name = Column(String)
+    description = Column(String)
+    
+    # Store the drills as JSON
+    drills = Column(JSON)  # Will store array of DrillResponse data
+    is_liked_group = Column(Boolean, default=False)  # To identify if this is the "Liked Drills" group
+    
+    # Relationship
+    user = relationship("User", back_populates="drill_groups")
+
+
+# *** DRILL AND SESSION MODELS ***
+
+class DrillCategory(Base):
+    __tablename__ = "drill_categories"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True)
+    description = Column(String)
+
+
+class DrillSkillFocus(Base):
+    __tablename__ = "drill_skill_focus"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    drill_id = Column(Integer, ForeignKey("drills.id"))
+    category = Column(String)  # SkillCategory enum value
+    sub_skill = Column(String)  # Corresponding SubSkill enum value
+    is_primary = Column(Boolean, default=True)  # Whether this is a primary or secondary skill focus
+
+
+class Drill(Base):
+    __tablename__ = "drills"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    description = Column(String)
+    category_id = Column(Integer, ForeignKey("drill_categories.id"))
+    
+    # Time and Intensity
+    duration = Column(Integer, nullable=True)  # in minutes, can be null for rep-based drills
+    intensity = Column(String)  # high, medium, low
+    training_styles = Column(JSON)  # List of TrainingStyle
+    
+    # Structure
+    type = Column(String)  # DrillType enum
+    sets = Column(Integer, nullable=True)
+    reps = Column(Integer, nullable=True)
+    rest = Column(Integer, nullable=True)  # in seconds
+    
+    # Requirements
+    equipment = Column(JSON)  # List of Equipment
+    suitable_locations = Column(JSON)  # List of Location
+    
+    # Technical
+    difficulty = Column(String)
+    
+    # Content
+    instructions = Column(JSON)  # List of steps
+    tips = Column(JSON)  # List of coaching tips
+    common_mistakes = Column(JSON)  # Things to watch out for
+    progression_steps = Column(JSON)  # How to make it harder/easier
+    variations = Column(JSON)  # Alternative versions
+    video_url = Column(String, nullable=True)
+    thumbnail_url = Column(String, nullable=True)
+
+    # Relationships
+    category = relationship("DrillCategory", backref="drills")
+    skill_focus = relationship("DrillSkillFocus", backref="drill")  # Relationship to skill focus
+
+
+class TrainingSession(Base):
+    """Represents a complete training session"""
+    __tablename__ = "training_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    total_duration = Column(Integer)  # in minutes
+    focus_areas = Column(JSON)  # List of skill areas
+    created_at = Column(DateTime, server_default=func.now())
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Optional user association
+
+    # Many-to-many relationship with drills
+    drills = relationship(
+        "Drill",
+        secondary="session_drills",
+        backref="training_sessions"
+    )
+
+    user = relationship("User", backref="training_sessions")
+
+
+# Association table for many-to-many relationship between sessions and drills
+session_drills = Table(
+    "session_drills",
+    Base.metadata,
+    Column("session_id", Integer, ForeignKey("training_sessions.id")),
+    Column("drill_id", Integer, ForeignKey("drills.id")),
+)
+
+
+# *** PYDANTIC MODELS FOR API REQUESTS/RESPONSES ***
+
+class OnboardingData(BaseModel):
+    # Optional values in onboarding with camelCase field names to match frontend
+    primaryGoal: Optional[str] = None
+    biggestChallenge: Optional[str] = None
+    trainingExperience: Optional[str] = None
+    position: Optional[str] = None
+    playstyle: Optional[str] = None
+    ageRange: Optional[str] = None
+    strengths: Optional[List[str]] = []
+    areasToImprove: Optional[List[str]] = []
+    trainingLocation: Optional[List[str]] = []
+    availableEquipment: Optional[List[str]] = []
+    dailyTrainingTime: Optional[str] = None
+    weeklyTrainingDays: Optional[str] = None
+
+    # These should be required for registration
+    firstName: str
+    lastName: str
+    email: str
+    password: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
+
+
+class UserPreferencesUpdate(BaseModel):
+    selected_time: Optional[str] = None
+    selected_equipment: List[str] = []
+    selected_training_style: Optional[str] = None
+    selected_location: Optional[str] = None
+    selected_difficulty: Optional[str] = None
+    current_streak: int = 0
+    highest_streak: int = 0
+    completed_sessions_count: int = 0
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class SkillFocusModel(BaseModel):
+    category: str
+    sub_skill: str
+    is_primary: bool = False
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class DrillRequest(BaseModel):
+    title: str
+    description: str
+    type: str  # DrillType enum value
+    duration: Optional[int] = None
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    rest: Optional[int] = None
+    equipment: List[str]
+    suitable_locations: List[str]
+    intensity: str
+    training_styles: List[str]
+    difficulty: str
+    primary_skill: Dict[str, str]  # {"category": "...", "sub_skill": "..."}
+    secondary_skills: List[Dict[str, str]] = []  # [{"category": "...", "sub_skill": "..."}]
+    instructions: List[str]
+    tips: List[str]
+    common_mistakes: List[str] = []
+    progression_steps: List[str] = []
+    variations: List[str] = []
+    video_url: Optional[str] = None
+    thumbnail_url: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class DrillResponse(BaseModel):
+    id: int
+    title: str
+    description: str
+    type: str
+    duration: Optional[int] = None
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    rest: Optional[int] = None
+    equipment: List[str]
+    suitable_locations: List[str]
+    intensity: str
+    training_styles: List[str]
+    difficulty: str
+    primary_skill: Dict[str, str]
+    secondary_skills: List[Dict[str, str]] = []
+    instructions: List[str]
+    tips: List[str]
+    common_mistakes: List[str] = []
+    progression_steps: List[str] = []
+    variations: List[str] = []
+    video_url: Optional[str] = None
+    thumbnail_url: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class DrillListResponse(BaseModel):
+    drills: List[DrillResponse]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class SessionResponse(BaseModel):
+    session_id: Optional[int] = None
+    total_duration: int
+    focus_areas: List[str]
+    drills: List[DrillResponse]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class SessionPreferencesRequest(BaseModel):
+    duration: int
+    available_equipment: List[str]
+    training_style: str
+    training_location: str
+    difficulty: str
+    target_skills: List[Dict[str, Union[str, List[str]]]]  # [{category: str, sub_skills: List[str]}]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CompletedSessionRequest(BaseModel):
+    date: str  # ISO format date string
+    total_completed_drills: int
+    total_drills: int
+    drills: List[DrillResponse]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CompletedSessionResponse(BaseModel):
+    id: int
+    date: str  # ISO format date string
+    total_completed_drills: int
+    total_drills: int
+    drills: List[DrillResponse]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class DrillGroupRequest(BaseModel):
+    name: str
+    description: str
+    drills: List[DrillResponse]
+    is_liked_group: bool = False
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class DrillGroupResponse(BaseModel):
+    id: int
+    name: str
+    description: str
+    drills: List[DrillResponse]
+    is_liked_group: bool
+
+    model_config = ConfigDict(from_attributes=True)
+    
+
 # *** ONBOARDING ENUMS ***
 class PrimaryGoal(str, Enum):
     IMPROVE_SKILL = "improve_skill"
@@ -153,370 +519,3 @@ class DrillType(str, Enum):
     REPS_BASED = "reps_based"  # e.g., "Do 10 shots"
     SET_BASED = "set_based"    # e.g., "3 sets of 5 reps"
     CONTINUOUS = "continuous"  # e.g., "Until successful completion"
-
-# *** USER AND USER DATA MODELS ***
-class User(Base):
-    __tablename__ = "users"
-
-    # Registration / User ID
-    id = Column(Integer, primary_key=True, index=True)
-    first_name = Column(String)
-    last_name = Column(String)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-
-    # Onboarding 
-    primary_goal = Column(String)
-    biggest_challenge = Column(String)
-    training_experience = Column(String)
-    position = Column(String)
-    playstyle = Column(String)
-    age_range = Column(String)
-    strengths = Column(JSON)
-    areas_to_improve = Column(JSON)
-    training_location = Column(JSON)
-    available_equipment = Column(JSON)
-    daily_training_time = Column(String)
-    weekly_training_days = Column(String)
-    
-    
-    # Relationships
-    session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
-    preferences = relationship("UserPreferences", back_populates="user", uselist=False)
-    completed_sessions = relationship("CompletedSession", back_populates="user")
-    drill_groups = relationship("DrillGroup", back_populates="user")
-
-    
-class OnboardingData(BaseModel):
-    # Optional values in onboarding with camelCase field names to match frontend
-    primaryGoal: Optional[str] = None
-    biggestChallenge: Optional[str] = None
-    trainingExperience: Optional[str] = None
-    position: Optional[str] = None
-    playstyle: Optional[str] = None
-    ageRange: Optional[str] = None
-    strengths: Optional[List[str]] = []
-    areasToImprove: Optional[List[str]] = []
-    trainingLocation: Optional[List[str]] = []
-    availableEquipment: Optional[List[str]] = []
-    dailyTrainingTime: Optional[str] = None
-    weeklyTrainingDays: Optional[str] = None
-
-    # These should be required for registration
-    firstName: str
-    lastName: str
-    email: str
-    password: str
-
-    model_config = ConfigDict(
-        from_attributes=True,
-        populate_by_name=True
-    )
-
-
-class UserPreferences(Base):
-    __tablename__ = "user_preferences"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    
-    # Session Generator Preferences
-    selected_time = Column(String, nullable=True)
-    selected_equipment = Column(JSON)  # Store as JSON array
-    selected_training_style = Column(String, nullable=True)
-    selected_location = Column(String, nullable=True)
-    selected_difficulty = Column(String, nullable=True)
-    
-    # Stats and Streaks
-    current_streak = Column(Integer, default=0)
-    highest_streak = Column(Integer, default=0)
-    completed_sessions_count = Column(Integer, default=0)
-    
-    # Relationship
-    user = relationship("User", back_populates="preferences")
-
-
-# Pydantic model for request validation
-class UserPreferencesUpdate(BaseModel):
-    selected_time: Optional[str] = None
-    selected_equipment: List[str] = []
-    selected_training_style: Optional[str] = None
-    selected_location: Optional[str] = None
-    selected_difficulty: Optional[str] = None
-    current_streak: int = 0
-    highest_streak: int = 0
-    completed_sessions_count: int = 0
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class CompletedSession(Base):
-    __tablename__ = "completed_sessions"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    date = Column(DateTime)
-    total_completed_drills = Column(Integer)
-    total_drills = Column(Integer)
-    
-    # Store the completed drills data as JSON
-    drills = Column(JSON)  # Will store array of DrillResponse data
-    
-    # Relationship
-    user = relationship("User", back_populates="completed_sessions")
-
-
-class DrillGroup(Base):
-    __tablename__ = "drill_groups"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    name = Column(String)
-    description = Column(String)
-    
-    # Store the drills as JSON
-    drills = Column(JSON)  # Will store array of DrillResponse data
-    is_liked_group = Column(Boolean, default=False)  # To identify if this is the "Liked Drills" group
-    
-    # Relationship
-    user = relationship("User", back_populates="drill_groups")
-
-
-# *** DRILL MODELS ***
-
-class DrillCategory(Base):
-    __tablename__ = "drill_categories"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True)
-    description = Column(String)
-
-
-class DrillSkillFocus(Base):
-    __tablename__ = "drill_skill_focus"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    drill_id = Column(Integer, ForeignKey("drills.id"))
-    category = Column(String)  # SkillCategory enum value
-    sub_skill = Column(String)  # Corresponding SubSkill enum value
-    is_primary = Column(Boolean, default=True)  # Whether this is a primary or secondary skill focus
-
-
-class Drill(Base):
-    __tablename__ = "drills"
-
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
-    description = Column(String)
-    category_id = Column(Integer, ForeignKey("drill_categories.id"))
-    
-    # Time and Intensity
-    duration = Column(Integer, nullable=True)  # in minutes, can be null for rep-based drills
-    intensity = Column(String)  # high, medium, low
-    training_styles = Column(JSON)  # List of TrainingStyle
-    
-    # Structure
-    type = Column(String)  # DrillType enum
-    sets = Column(Integer, nullable=True)
-    reps = Column(Integer, nullable=True)
-    rest = Column(Integer, nullable=True)  # in seconds
-    
-    # Requirements
-    equipment = Column(JSON)  # List of Equipment
-    suitable_locations = Column(JSON)  # List of Location
-    
-    # Technical
-    difficulty = Column(String)
-    
-    # Content
-    instructions = Column(JSON)  # List of steps
-    tips = Column(JSON)  # List of coaching tips
-    common_mistakes = Column(JSON)  # Things to watch out for
-    progression_steps = Column(JSON)  # How to make it harder/easier
-    variations = Column(JSON)  # Alternative versions
-    video_url = Column(String, nullable=True)
-    thumbnail_url = Column(String, nullable=True)
-
-    # Relationships
-    category = relationship("DrillCategory", backref="drills")
-    skill_focus = relationship("DrillSkillFocus", backref="drill")  # Relationship to skill focus
-
-
-# *** PYDANTIC MODELS FOR API REQUESTS/RESPONSES ***
-
-class SkillFocusModel(BaseModel):
-    category: str
-    sub_skill: str
-    is_primary: bool = False
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class DrillRequest(BaseModel):
-    title: str
-    description: str
-    type: str  # DrillType enum value
-    duration: Optional[int] = None
-    sets: Optional[int] = None
-    reps: Optional[int] = None
-    rest: Optional[int] = None
-    equipment: List[str]
-    suitable_locations: List[str]
-    intensity: str
-    training_styles: List[str]
-    difficulty: str
-    primary_skill: Dict[str, str]  # {"category": "...", "sub_skill": "..."}
-    secondary_skills: List[Dict[str, str]] = []  # [{"category": "...", "sub_skill": "..."}]
-    instructions: List[str]
-    tips: List[str]
-    common_mistakes: List[str] = []
-    progression_steps: List[str] = []
-    variations: List[str] = []
-    video_url: Optional[str] = None
-    thumbnail_url: Optional[str] = None
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class DrillResponse(BaseModel):
-    id: int
-    title: str
-    description: str
-    type: str
-    duration: Optional[int] = None
-    sets: Optional[int] = None
-    reps: Optional[int] = None
-    rest: Optional[int] = None
-    equipment: List[str]
-    suitable_locations: List[str]
-    intensity: str
-    training_styles: List[str]
-    difficulty: str
-    primary_skill: Dict[str, str]
-    secondary_skills: List[Dict[str, str]] = []
-    instructions: List[str]
-    tips: List[str]
-    common_mistakes: List[str] = []
-    progression_steps: List[str] = []
-    variations: List[str] = []
-    video_url: Optional[str] = None
-    thumbnail_url: Optional[str] = None
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class DrillListResponse(BaseModel):
-    drills: List[DrillResponse]
-    total: int
-    page: int
-    page_size: int
-    total_pages: int
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-# *** SESSION MODELS ***
-
-class SessionPreferences(Base):
-    __tablename__ = "session_preferences"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    duration = Column(Integer)  # in minutes
-    available_equipment = Column(ARRAY(String))
-    training_style = Column(String)
-    training_location = Column(String)
-    difficulty = Column(String)
-    target_skills = Column(JSON)  # List of {category: str, sub_skills: List[str]}
-    created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, onupdate=func.now())
-
-    user = relationship("User", back_populates="session_preferences")
-
-
-class SessionPreferencesRequest(BaseModel):
-    duration: int
-    available_equipment: List[str]
-    training_style: str
-    training_location: str
-    difficulty: str
-    target_skills: List[Dict[str, Union[str, List[str]]]]  # [{category: str, sub_skills: List[str]}]
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class TrainingSession(Base):
-    """Represents a complete training session"""
-    __tablename__ = "training_sessions"
-
-    id = Column(Integer, primary_key=True, index=True)
-    total_duration = Column(Integer)  # in minutes
-    focus_areas = Column(JSON)  # List of skill areas
-    created_at = Column(DateTime, server_default=func.now())
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Optional user association
-
-    # Many-to-many relationship with drills
-    drills = relationship(
-        "Drill",
-        secondary="session_drills",
-        backref="training_sessions"
-    )
-
-    user = relationship("User", backref="training_sessions")
-
-
-# Association table for many-to-many relationship between sessions and drills
-session_drills = Table(
-    "session_drills",
-    Base.metadata,
-    Column("session_id", Integer, ForeignKey("training_sessions.id")),
-    Column("drill_id", Integer, ForeignKey("drills.id")),
-)
-
-
-class SessionResponse(BaseModel):
-    session_id: Optional[int] = None
-    total_duration: int
-    focus_areas: List[str]
-    drills: List[DrillResponse]
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class CompletedSessionRequest(BaseModel):
-    date: str  # ISO format date string
-    total_completed_drills: int
-    total_drills: int
-    drills: List[DrillResponse]
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class CompletedSessionResponse(BaseModel):
-    id: int
-    date: str  # ISO format date string
-    total_completed_drills: int
-    total_drills: int
-    drills: List[DrillResponse]
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class DrillGroupRequest(BaseModel):
-    name: str
-    description: str
-    drills: List[DrillResponse]
-    is_liked_group: bool = False
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class DrillGroupResponse(BaseModel):
-    id: int
-    name: str
-    description: str
-    drills: List[DrillResponse]
-    is_liked_group: bool
-
-    model_config = ConfigDict(from_attributes=True)
-    
