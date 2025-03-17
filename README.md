@@ -131,7 +131,7 @@ python reset_db.py
 ./scripts/manage_drills.sh --all
 
 # Or update a specific drill category if changes to some drills were made
-./scripts/manage_drills.sh --category dribbling
+./scripts/manage_drills.sh --category category_name
 ```
 
 ## Development
@@ -146,7 +146,7 @@ The project includes a drill management script for importing and updating drills
 ./scripts/manage_drills.sh --all
 
 # Update drills for a specific category
-./scripts/manage_drills.sh --category dribbling
+./scripts/manage_drills.sh --category category_name
 
 # Display help
 ./scripts/manage_drills.sh --help
