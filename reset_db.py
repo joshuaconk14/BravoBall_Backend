@@ -4,7 +4,6 @@ Reset database: Drop all tables, recreate them, and seed with initial data
 from sqlalchemy import create_engine, text
 from models import Base
 from db import SQLALCHEMY_DATABASE_URL
-from seed_drills import seed_drills
 
 def reset_database():
     # Create engine

@@ -4,7 +4,7 @@ Main entry point of application that initializes the FastAPI app and includes al
 """
 
 from fastapi import FastAPI
-from routers import login, delete_account, onboarding, get_program, drills, training, user_pref_data
+from routers import login, delete_account, onboarding, drills, session, user_pref_data
 
 # Initialize FastAPI app and router for endpoints
 app = FastAPI()
@@ -15,7 +15,7 @@ app.include_router(onboarding.router)
 app.include_router(delete_account.router)
 app.include_router(drills.router)
 app.include_router(user_pref_data.router)
-app.include_router(training.router)
+app.include_router(session.router)
 
 
 # Run FastAPI on local host
