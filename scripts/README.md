@@ -17,7 +17,7 @@ A CI/CD automation script that handles git operations for deploying changes:
 
 If in the root directory, run:
 ```bash
-./tools/deploy.sh
+./scripts/deploy.sh
 ```
 
 The script will guide you through the process with interactive prompts.
