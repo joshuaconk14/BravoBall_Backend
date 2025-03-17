@@ -1,6 +1,6 @@
 # BravoBall - Personalized Soccer Training App
 
-BravoBall is an intelligent soccer training application that generates personalized training sessions based on player profiles, equipment availability, and skill development goals.
+BravoBall is an intelligent soccer training app that generates personalized training sessions based on player profiles, equipment availability, and skill development goals.
 
 ## Features
 
