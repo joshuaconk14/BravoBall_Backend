@@ -127,10 +127,30 @@ python reset_db.py
 
 5. Import drill data:
 ```bash
-python drills/drill_importer.py
+# Import all drills
+./scripts/manage_drills.sh --all
+
+# Or update a specific drill category if changes to some drills were made
+./scripts/manage_drills.sh --category dribbling
 ```
 
 ## Development
+
+### Data Management
+
+#### Drill Management Script
+The project includes a drill management script for importing and updating drills:
+
+```bash
+# Import all drill categories
+./scripts/manage_drills.sh --all
+
+# Update drills for a specific category
+./scripts/manage_drills.sh --category dribbling
+
+# Display help
+./scripts/manage_drills.sh --help
+```
 
 ### Running Tests
 ```bash
@@ -158,6 +178,8 @@ bravoball/
 ├── services/              # Business logic services
 ├── drills/                # Drill data and import scripts
 ├── scripts/               # Utility scripts for development and deployment
+│   ├── deploy.sh          # Git-based deployment script
+│   └── manage_drills.sh   # Drill import and management script
 ├── unit_tests/            # Test suite
 └── SCHEMA_GUIDE.md        # API schema documentation
 ```
