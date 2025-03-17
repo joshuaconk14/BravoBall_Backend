@@ -35,7 +35,7 @@ def get_drills(
     if equipment:
         # Use PostgreSQL JSONB containment operator
         query = query.filter(
-            func.cast(Drill.required_equipment, JSONB).contained_by(
+            func.cast(Drill.equipment, JSONB).contained_by(
                 func.cast(equipment, JSONB)
             )
         )
@@ -52,12 +52,12 @@ def get_drills(
                 "id": drill.id,
                 "title": drill.title,
                 "description": drill.description,
-                "category": drill.category.name,
-                "duration": drill.duration,
-                "difficulty": drill.difficulty,
-                "equipment": drill.required_equipment,
-                "instructions": drill.instructions,
-                "tips": drill.tips
+                "category": drill.category.name if drill.category else "",
+                "duration": drill.duration if drill.duration is not None else 10,  # Default to 10 minutes
+                "difficulty": drill.difficulty if drill.difficulty else "beginner",
+                "equipment": drill.equipment if drill.equipment else [],
+                "instructions": drill.instructions if drill.instructions else [],
+                "tips": drill.tips if drill.tips else []
             } for drill in drills
         ],
         "metadata": {
