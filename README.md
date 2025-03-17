@@ -1,6 +1,6 @@
-# Tekk - Personalized Soccer Training App
+# BravoBall - Personalized Soccer Training App
 
-Tekk is an intelligent soccer training application that generates personalized training sessions based on player profiles, equipment availability, and skill development goals.
+BravoBall is an intelligent soccer training application that generates personalized training sessions based on player profiles, equipment availability, and skill development goals.
 
 ## Features
 
@@ -42,6 +42,8 @@ Tekk is an intelligent soccer training application that generates personalized t
   - Finishing
   - Volleys
   - Long shots
+  - Driven shots
+  - Ball striking
 - Dribbling
   - Ball mastery
   - Close control
@@ -68,11 +70,17 @@ Tekk is an intelligent soccer training application that generates personalized t
   - Session Preferences
   - Drill Categories
   - Skill Focus Areas
+  - Completed Sessions
+  - Drill Groups
 
 ### API Endpoints
-- `/api/session/generate`: Generate personalized training sessions
-- `/drills/`: Query and filter available drills
-- `/drill-categories/`: Get all drill categories
+- `/api/onboarding`: Register and onboard new users
+- `/api/login`: User authentication
+- `/api/sessions/generate`: Generate personalized training sessions
+- `/api/drills`: Query and filter available drills
+- `/api/drill-groups`: Manage user-created drill collections
+- `/api/preferences`: Manage user preferences
+- `/api/sessions/completed`: Record completed training sessions
 
 ### Core Components
 1. **Session Generator**
@@ -87,17 +95,18 @@ Tekk is an intelligent soccer training application that generates personalized t
    - Adaptable equipment handling
    - Location compatibility checking
 
-3. **Preference Service**
-   - User preference management
-   - Profile-based session customization
-   - Equipment and location tracking
+3. **User Management**
+   - Authentication and authorization
+   - User profile management
+   - Training history tracking
+   - Custom drill collections
 
 ## Setup and Installation
 
 1. Clone the repository:
 ```bash
 git clone [repository-url]
-cd tekk-app
+cd bravoball
 ```
 
 2. Set up Python virtual environment:
@@ -116,6 +125,11 @@ pip install -r requirements.txt
 python reset_db.py
 ```
 
+5. Import drill data:
+```bash
+python drills/drill_importer.py
+```
+
 ## Development
 
 ### Running Tests
@@ -125,7 +139,27 @@ pytest unit_tests/session_generator.py -v -s
 
 ### Starting the Server
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
+python main.py
+```
+
+### Deployment
+The project uses a Git-based deployment workflow:
+```bash
+./scripts/deploy.sh
+```
+
+## Project Structure
+```
+bravoball/
+├── main.py                # FastAPI application entry point
+├── db.py                  # Database connection and session management
+├── models.py              # SQLAlchemy and Pydantic models
+├── routers/               # API route handlers
+├── services/              # Business logic services
+├── drills/                # Drill data and import scripts
+├── scripts/               # Utility scripts for development and deployment
+├── unit_tests/            # Test suite
+└── SCHEMA_GUIDE.md        # API schema documentation
 ```
 
 ## Contributing
