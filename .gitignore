@@ -1,6 +1,10 @@
 /venv
 .env
 
-test*
+# Test files
+.coverage
+drill_groups_response.json
+test.db
 __pycache__/
 .pytest_cache/
+

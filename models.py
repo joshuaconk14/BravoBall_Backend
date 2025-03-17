@@ -121,13 +121,26 @@ class DrillGroup(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     name = Column(String)
     description = Column(String)
-    
-    # Store the drills as JSON
-    drills = Column(JSON)  # Will store array of DrillResponse data
     is_liked_group = Column(Boolean, default=False)  # To identify if this is the "Liked Drills" group
     
-    # Relationship
+    # Relationships
     user = relationship("User", back_populates="drill_groups")
+    drills = relationship(
+        "Drill",
+        secondary="drill_group_items",
+        backref="drill_groups"
+    )
+
+
+# New junction table for many-to-many relationship between drill groups and drills
+class DrillGroupItem(Base):
+    __tablename__ = "drill_group_items"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    drill_group_id = Column(Integer, ForeignKey("drill_groups.id", ondelete="CASCADE"))
+    drill_id = Column(Integer, ForeignKey("drills.id", ondelete="CASCADE"))
+    position = Column(Integer)  # To maintain order of drills in a group
+    created_at = Column(DateTime, server_default=func.now())
 
 
 # *** DRILL AND SESSION MODELS ***
@@ -374,7 +387,7 @@ class CompletedSessionResponse(BaseModel):
 class DrillGroupRequest(BaseModel):
     name: str
     description: str
-    drills: List[DrillResponse]
+    drill_ids: List[int] = []
     is_liked_group: bool = False
 
     model_config = ConfigDict(from_attributes=True)
