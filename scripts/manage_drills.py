@@ -13,6 +13,10 @@ def update_drills(category: str = None, reset: bool = False) -> None:
     Args:
         category: Specific category to update (e.g., 'dribbling', 'passing')
         reset: Whether to reset the database before importing
+
+    Ex:
+    python scripts/manage_drills.py --category dribbling --reset
+    => will update the database for dril
     """
     drills_dir = Path("drills")
     

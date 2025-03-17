@@ -90,10 +90,10 @@ def print_session_details(profile_name, session, profile):
     print("\n📚 Selected Drills:")
     for i, drill in enumerate(session.drills, 1):
         print(f"\n{i}. {drill.title}")
-        print(f"   {'Duration':12} │ Original: {drill.original_duration:2d} min │ Adjusted: {drill.adjusted_duration:2d} min")
-        print(f"   {'Equipment':12} │ {', '.join(drill.required_equipment)}")
-        print(f"   {'Difficulty':12} │ {drill.difficulty.title()}")
-        print(f"   {'Intensity':12} │ {drill.intensity_modifier:.1f}x")
+        print(f"   {'Duration':12} │ Original: {getattr(drill, 'original_duration', drill.duration):2d} min │ Adjusted: {getattr(drill, 'adjusted_duration', drill.duration):2d} min")
+        print(f"   {'Equipment':12} │ {', '.join(drill.equipment) if drill.equipment else 'None'}")
+        print(f"   {'Difficulty':12} │ {drill.difficulty.title() if drill.difficulty else 'Unknown'}")
+        print(f"   {'Intensity':12} │ {getattr(drill, 'intensity_modifier', 1.0):.1f}x")
     
     # Print Session Summary
     print("\n📊 Session Summary:")
@@ -102,7 +102,7 @@ def print_session_details(profile_name, session, profile):
     
     equipment_used = set()
     for drill in session.drills:
-        equipment_used.update(drill.required_equipment)
+        equipment_used.update(drill.equipment)
     print(f"✓ Equipment Types Used: {', '.join(sorted(equipment_used))}")
     print("="*80 + "\n")
 
@@ -134,7 +134,7 @@ async def test_session_generation():
             
             # Equipment assertions
             for drill in session.drills:
-                missing_equipment = set(drill.required_equipment) - set(preferences.available_equipment)
+                missing_equipment = set(drill.equipment) - set(preferences.available_equipment)
                 if missing_equipment:
                     assert missing_equipment <= generator.ADAPTABLE_EQUIPMENT, \
                         f"Drill {drill.title} requires unavailable equipment: {missing_equipment}"
