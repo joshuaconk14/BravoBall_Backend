@@ -44,7 +44,7 @@ A utility script for managing drill data in the BravoBall database:
 ./manage_drills.sh --all
 
 # Update drills for a specific category
-./manage_drills.sh --category category_name
+./manage_drills.sh --category dribbling
 
 # Display help
 ./manage_drills.sh --help
@@ -64,6 +64,42 @@ A utility script for managing drill data in the BravoBall database:
 - Continues processing other categories if one fails
 - Interactive prompts for confirmation before reimporting
 - Detailed error reporting
+
+### 3. run_tests.sh
+
+A test runner script for running the API tests with various options:
+
+- Run all tests in the project
+- Run specific test modules
+- Generate coverage reports
+- Control verbosity of test output
+
+#### Usage
+
+```bash
+# Run all tests
+./run_tests.sh --all
+
+# Run only drill groups tests
+./run_tests.sh --drill-groups
+
+# Run with verbose output
+./run_tests.sh --all --verbose
+
+# Run with coverage report
+./run_tests.sh --all --coverage
+
+# Display help
+./run_tests.sh --help
+```
+
+#### Features
+
+- Colorful and clear test output
+- Simple command-line interface
+- Coverage reporting
+- Focused test runs for specific features
+- Validates that required dependencies are installed
 
 ## Adding New Scripts
 
