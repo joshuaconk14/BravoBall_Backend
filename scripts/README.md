@@ -1,10 +1,10 @@
-# Bash Scripts for Soccer Training App
+# BravoBall Scripts
 
-This directory contains utility shell scripts for development and deployment workflows.
+This directory contains utility scripts for development, deployment, and data management workflows.
 
 ## Available Scripts
 
-### deploy.sh
+### 1. deploy.sh
 
 A CI/CD automation script that handles git operations for deploying changes:
 
@@ -15,9 +15,8 @@ A CI/CD automation script that handles git operations for deploying changes:
 
 #### Usage
 
-If in the root directory, run:
 ```bash
-./scripts/deploy.sh
+./deploy.sh
 ```
 
 The script will guide you through the process with interactive prompts.
@@ -30,6 +29,42 @@ The script will guide you through the process with interactive prompts.
 - Maintains Git best practices with proper commit messages
 - Returns to the original branch after completion
 
+### 2. manage_drills.sh
+
+A utility script for managing drill data in the BravoBall database:
+
+- Imports all drill categories at once
+- Updates and manages drills for specific categories
+- Handles error reporting and logging
+
+#### Usage
+
+```bash
+# Import all drill categories
+./manage_drills.sh --all
+
+# Update drills for a specific category
+./manage_drills.sh --category category_name
+
+# Display help
+./manage_drills.sh --help
+```
+
+#### Valid Categories
+
+- `passing`
+- `shooting`
+- `dribbling`
+- `first_touch`
+
+#### Features
+
+- Color-coded output for better readability
+- Validates category inputs
+- Continues processing other categories if one fails
+- Interactive prompts for confirmation before reimporting
+- Detailed error reporting
+
 ## Adding New Scripts
 
 When adding new scripts to this directory:
@@ -37,4 +72,19 @@ When adding new scripts to this directory:
 1. Create the script file with a descriptive name
 2. Add a shebang line (`#!/bin/bash`) at the top
 3. Make it executable with `chmod +x script_name.sh`
-4. Document the script in this README 
+4. Document the script in this README
+5. Add color coding for consistent user experience
+6. Include a help function for usage instructions
+
+## Best Practices
+
+- Use color coding consistently:
+  - `GREEN` for success messages
+  - `YELLOW` for warnings and information
+  - `RED` for errors
+- Provide detailed error messages
+- Include help documentation
+- Add descriptive comments
+- Check return codes after command execution
+- Use functions to organize code
+- Validate user inputs 
