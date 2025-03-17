@@ -69,11 +69,11 @@ def seed_drills():
                         default_reps=drill_data.get("default_reps"),
                         default_duration=drill_data.get("default_duration"),
                         rest_between_sets=drill_data.get("rest_between_sets"),
-                        required_equipment=drill_data["required_equipment"],
-                        suitable_locations=drill_data["suitable_locations"],
-                        difficulty=drill_data["difficulty"],
-                        instructions=drill_data["instructions"],
-                        tips=drill_data["tips"],
+                        equipment=drill_data.get("required_equipment", []),
+                        suitable_locations=drill_data.get("suitable_locations", []),
+                        difficulty=drill_data.get("difficulty", "beginner"),
+                        instructions=drill_data.get("instructions", []),
+                        tips=drill_data.get("tips", []),
                         variations=drill_data.get("variations", [])
                     )
                     db.add(drill)

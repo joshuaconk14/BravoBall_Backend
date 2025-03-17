@@ -96,7 +96,7 @@ class SessionGenerator:
             # Store drill adjustments
             drill.adjusted_duration = adjusted_duration
             drill.intensity_modifier = self._calculate_intensity_modifier(preferences.difficulty, drill.difficulty)
-            drill.original_duration = drill.duration
+            drill.original_duration = drill.duration if drill.duration is not None else adjusted_duration
 
             suitable_drills.append(drill)
             current_duration += adjusted_duration
@@ -143,7 +143,9 @@ class SessionGenerator:
         # Check equipment and location requirements
         if scores['equipment'] == 0 or scores['location'] == 0:
             if has_limited_equipment and scores['equipment'] == 0:
-                if any(eq == "GOALS" for eq in drill.required_equipment):
+                # Handle null equipment
+                equipment = drill.equipment or []
+                if any(eq == "GOALS" for eq in equipment):
                     print("❌ Failed critical requirements check - requires goals")
                     return False
             else:
@@ -197,16 +199,19 @@ class SessionGenerator:
         """
         min_duration = 3 if has_limited_equipment else 5
         
+        # Handle null duration with a default value
+        drill_duration = drill.duration if drill.duration is not None else 10  # Default to 10 minutes if None
+        
         if num_drills_so_far == 0:
             target_first_drill = target_session_duration * 0.3
-            return max(int(min(drill.duration, target_first_drill)), min_duration)
+            return max(int(min(drill_duration, target_first_drill)), min_duration)
 
         remaining_time = target_session_duration - current_session_duration
-        if remaining_time > drill.duration * 1.5:
-            return drill.duration
+        if remaining_time > drill_duration * 1.5:
+            return drill_duration
 
-        min_effective_duration = max(min_duration, int(drill.duration * 0.6))
-        scaled_duration = min(drill.duration, int(remaining_time * 0.7))
+        min_effective_duration = max(min_duration, int(drill_duration * 0.6))
+        scaled_duration = min(drill_duration, int(remaining_time * 0.7))
         
         return max(min_effective_duration, scaled_duration)
 
@@ -225,8 +230,14 @@ class SessionGenerator:
             "advanced": 3
         }
         
-        player_level = difficulty_levels[player_difficulty.lower()]
-        drill_level = difficulty_levels[drill_difficulty.lower()]
+        # Handle null values with defaults
+        player_difficulty = player_difficulty.lower() if player_difficulty else "beginner"
+        drill_difficulty = drill_difficulty.lower() if drill_difficulty else "beginner"
+        
+        # Use get() with default to handle unknown difficulty values
+        player_level = difficulty_levels.get(player_difficulty, 1)  # Default to beginner
+        drill_level = difficulty_levels.get(drill_difficulty, 1)    # Default to beginner
+        
         level_diff = player_level - drill_level
 
         if level_diff > 0:
@@ -251,6 +262,12 @@ class SessionGenerator:
         Returns:
             List of drills with adjusted durations
         """
+        # Ensure all drills have an adjusted_duration attribute
+        for drill in drills:
+            if not hasattr(drill, 'adjusted_duration') or drill.adjusted_duration is None:
+                # Default to original duration or 10 minutes if None
+                drill.adjusted_duration = drill.duration if drill.duration is not None else 10
+                
         current_duration = sum(drill.adjusted_duration for drill in drills)
         if current_duration <= target_duration:
             return drills
@@ -292,7 +309,12 @@ class SessionGenerator:
                 break
                 
             current_duration = drill.adjusted_duration
-            min_duration = max(base_min_duration, int(drill.original_duration * (1 - max_reduction_pct)))
+            # Handle null original_duration
+            original_duration = getattr(drill, 'original_duration', drill.duration)
+            if original_duration is None:
+                original_duration = current_duration  # Use current if original is None
+                
+            min_duration = max(base_min_duration, int(original_duration * (1 - max_reduction_pct)))
             potential_reduction = current_duration - min_duration
             
             if potential_reduction > 0:

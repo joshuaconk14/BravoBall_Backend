@@ -15,6 +15,7 @@ app.include_router(onboarding.router)
 app.include_router(delete_account.router)
 app.include_router(drills.router)
 app.include_router(user_pref_data.router)
+app.include_router(training.router)
 
 
 # Run FastAPI on local host
