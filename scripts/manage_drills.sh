@@ -6,6 +6,18 @@ YELLOW='\033[0;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+# Activate virtual environment if it exists
+if [ -f "venv/bin/activate" ]; then
+    source venv/bin/activate
+elif [ -f ".venv/bin/activate" ]; then
+    source .venv/bin/activate
+else
+    echo -e "${RED}Virtual environment not found. Please create one first:${NC}"
+    echo -e "${YELLOW}python3 -m venv venv${NC}"
+    echo -e "${YELLOW}source venv/bin/activate${NC}"
+    exit 1
+fi
+
 # Function to display help message
 display_help() {
     echo "BravoBall Drill Management Script"
