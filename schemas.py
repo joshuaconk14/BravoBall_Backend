@@ -2,29 +2,6 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 
-# User Preferences Schemas
-class UserPreferencesBase(BaseModel):
-    selected_time: Optional[str] = None
-    selected_equipment: List[str] = []
-    selected_training_style: Optional[str] = None
-    selected_location: Optional[str] = None
-    selected_difficulty: Optional[str] = None
-
-class UserPreferencesCreate(UserPreferencesBase):
-    pass
-
-class UserPreferencesUpdate(UserPreferencesBase):
-    pass
-
-class UserPreferences(UserPreferencesBase):
-    id: int
-    user_id: int
-    current_streak: int
-    highest_streak: int
-    completed_sessions_count: int
-
-    class Config:
-        from_attributes = True
 
 # Completed Session Schemas
 class CompletedSessionBase(BaseModel):
@@ -42,6 +19,8 @@ class CompletedSession(CompletedSessionBase):
 
     class Config:
         from_attributes = True
+
+
 
 # Drill Group Schemas
 class DrillGroupBase(BaseModel):
@@ -62,6 +41,46 @@ class DrillGroupUpdate(DrillGroupBase):
 class DrillGroup(DrillGroupBase):
     id: int
     user_id: int
+
+    class Config:
+        from_attributes = True
+
+
+
+# Ordered Session Schemas
+class DrillResponse(BaseModel):
+    id: int
+    title: str
+    description: str
+    type: str
+    duration: Optional[int] = None
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    equipment: List[str]
+    suitable_locations: List[str]
+    intensity: str
+    difficulty: str
+    instructions: List[str]
+    tips: List[str]
+    rest: Optional[int] = None
+
+    class Config:
+        from_attributes = True
+
+
+class OrderedDrillBase(BaseModel):
+    drill: DrillResponse
+    sets_done: int = 0
+    total_sets: int
+    total_reps: int
+    total_duration: int
+    is_completed: bool = False
+
+    class Config:
+        from_attributes = True
+
+class OrderedSessionDrillUpdate(BaseModel):
+    ordered_drills: List[OrderedDrillBase]
 
     class Config:
         from_attributes = True 

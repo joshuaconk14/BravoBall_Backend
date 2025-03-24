@@ -2,56 +2,20 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import datetime
-from models import User, UserPreferences, CompletedSession, DrillGroup
+from models import User, CompletedSession, DrillGroup, OrderedSessionDrill
 from schemas import (
-    UserPreferences as UserPreferencesSchema,
-    UserPreferencesUpdate,
     CompletedSession as CompletedSessionSchema,
     CompletedSessionCreate,
     DrillGroup as DrillGroupSchema,
     DrillGroupCreate,
-    DrillGroupUpdate
+    DrillGroupUpdate,
+    OrderedSessionDrillUpdate
 )
 from db import get_db
 from auth import get_current_user
 
 router = APIRouter()
 
-# User Preferences Endpoints
-@router.get("/api/preferences/", response_model=UserPreferencesSchema)
-def get_user_preferences(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    preferences = db.query(UserPreferences).filter(UserPreferences.user_id == current_user.id).first()
-    if not preferences:
-        # Create default preferences if none exist
-        preferences = UserPreferences(user_id=current_user.id)
-        db.add(preferences)
-        db.commit()
-        db.refresh(preferences)
-    return preferences
-
-# FastAPI endpoint
-@router.put("/api/preferences/")
-async def update_user_preferences(
-    preferences: UserPreferencesUpdate,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    # Get or create user preferences
-    user_prefs = db.query(UserPreferences).filter(UserPreferences.user_id == current_user.id).first()
-    if not user_prefs:
-        user_prefs = UserPreferences(user_id=current_user.id)
-        db.add(user_prefs)
-    
-    # Update preferences
-    for key, value in preferences.model_dump().items():
-        setattr(user_prefs, key, value)
-    
-    try:
-        db.commit()
-        return {"status": "success", "message": "Preferences updated successfully"}
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
 
 # Completed Sessions Endpoints
 @router.post("/api/sessions/completed/", response_model=CompletedSessionSchema)
@@ -62,7 +26,7 @@ def create_completed_session(session: CompletedSessionCreate,
     db.add(db_session)
     
     # Update user stats
-    preferences = db.query(UserPreferences).filter(UserPreferences.user_id == current_user.id).first()
+    preferences = db.query(CompletedSession).filter(CompletedSession.user_id == current_user.id).first()
     if preferences:
         preferences.completed_sessions_count += 1
         # Update streak logic here
@@ -76,6 +40,73 @@ def create_completed_session(session: CompletedSessionCreate,
 def get_completed_sessions(current_user: User = Depends(get_current_user),
                          db: Session = Depends(get_db)):
     return db.query(CompletedSession).filter(CompletedSession.user_id == current_user.id).all()
+
+@router.put("/api/sessions/ordered_drills/")
+async def sync_ordered_session_drills(
+    ordered_drills: OrderedSessionDrillUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Sync the ordered drills for a session with their completion status and progress.
+    """
+    try:
+        # Get or create a session for the user
+        session = db.query(CompletedSession).filter(
+            CompletedSession.user_id == current_user.id,
+            CompletedSession.date == datetime.now().date()
+        ).first()
+
+        if not session:
+            session = CompletedSession(
+                user_id=current_user.id,
+                date=datetime.now(),
+                total_completed_drills=0,
+                total_drills=len(ordered_drills.ordered_drills),
+                drills=[]
+            )
+            db.add(session)
+            db.commit()
+            db.refresh(session)
+
+        # Delete existing ordered drills for this session
+        db.query(OrderedSessionDrill).filter(
+            OrderedSessionDrill.session_id == session.id
+        ).delete()
+        
+        # Add new ordered drills
+        for position, drill_data in enumerate(ordered_drills.ordered_drills):
+            ordered_drill = OrderedSessionDrill(
+                session_id=session.id,
+                drill_id=drill_data.drill.id,
+                position=position,
+                sets_done=drill_data.sets_done,
+                total_sets=drill_data.total_sets,
+                total_reps=drill_data.total_reps,
+                total_duration=drill_data.total_duration,
+                is_completed=drill_data.is_completed
+            )
+            db.add(ordered_drill)
+
+        # Update completion counts
+        completed_count = sum(1 for drill in ordered_drills.ordered_drills if drill.is_completed)
+        session.total_completed_drills = completed_count
+        session.total_drills = len(ordered_drills.ordered_drills)
+        
+        db.commit()
+        
+        return {
+            "message": "Session drills synced successfully",
+            "total_drills": len(ordered_drills.ordered_drills),
+            "completed_drills": completed_count
+        }
+        
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to sync ordered session drills: {str(e)}"
+        )
 
 # Drill Groups Endpoints
 @router.post("/api/drills/groups/", response_model=DrillGroupSchema)

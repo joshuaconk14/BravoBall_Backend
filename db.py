@@ -16,7 +16,7 @@ env_path = Path('.') / '.env'
 # Load environment variables from .env file, override existing
 load_dotenv(dotenv_path=env_path, override=True)
 
-password = os.getenv("POSTGRES_PASSWORD")
+password = quote(os.getenv("POSTGRES_PASSWORD"))
 username = os.getenv("POSTGRES_USER")
 host = os.getenv("POSTGRES_HOST")
 db = os.getenv("POSTGRES_DB")

@@ -53,49 +53,8 @@ class User(Base):
     
     
     # Relationships
-    session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
-    preferences = relationship("UserPreferences", back_populates="user", uselist=False)
     completed_sessions = relationship("CompletedSession", back_populates="user")
     drill_groups = relationship("DrillGroup", back_populates="user")
-
-
-class SessionPreferences(Base):
-    __tablename__ = "session_preferences"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    duration = Column(Integer)  # in minutes
-    available_equipment = Column(ARRAY(String))
-    training_style = Column(String)
-    training_location = Column(String)
-    difficulty = Column(String)
-    target_skills = Column(JSON)  # List of {category: str, sub_skills: List[str]}
-    created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, onupdate=func.now())
-
-    user = relationship("User", back_populates="session_preferences")
-
-
-class UserPreferences(Base):
-    __tablename__ = "user_preferences"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    
-    # Session Generator Preferences
-    selected_time = Column(String, nullable=True)
-    selected_equipment = Column(JSON)  # Store as JSON array
-    selected_training_style = Column(String, nullable=True)
-    selected_location = Column(String, nullable=True)
-    selected_difficulty = Column(String, nullable=True)
-    
-    # Stats and Streaks
-    current_streak = Column(Integer, default=0)
-    highest_streak = Column(Integer, default=0)
-    completed_sessions_count = Column(Integer, default=0)
-    
-    # Relationship
-    user = relationship("User", back_populates="preferences")
 
 
 class CompletedSession(Base):
@@ -112,6 +71,25 @@ class CompletedSession(Base):
     
     # Relationship
     user = relationship("User", back_populates="completed_sessions")
+    ordered_drills = relationship("OrderedSessionDrill", back_populates="session")
+
+
+class OrderedSessionDrill(Base):
+    __tablename__ = "ordered_session_drills"
+
+    id = Column(Integer, primary_key=True, index=True)
+    session_id = Column(Integer, ForeignKey("completed_sessions.id"))
+    drill_id = Column(Integer, ForeignKey("drills.id"))
+    position = Column(Integer)  # Order in the session
+    sets_done = Column(Integer, default=0)
+    total_sets = Column(Integer)
+    total_reps = Column(Integer)
+    total_duration = Column(Integer)
+    is_completed = Column(Boolean, default=False)
+    
+    # Relationships
+    session = relationship("CompletedSession", back_populates="ordered_drills")
+    drill = relationship("Drill")
 
 
 class DrillGroup(Base):
@@ -261,18 +239,6 @@ class OnboardingData(BaseModel):
     )
 
 
-class UserPreferencesUpdate(BaseModel):
-    selected_time: Optional[str] = None
-    selected_equipment: List[str] = []
-    selected_training_style: Optional[str] = None
-    selected_location: Optional[str] = None
-    selected_difficulty: Optional[str] = None
-    current_streak: int = 0
-    highest_streak: int = 0
-    completed_sessions_count: int = 0
-
-    model_config = ConfigDict(from_attributes=True)
-
 
 class SkillFocusModel(BaseModel):
     category: str
@@ -350,17 +316,6 @@ class SessionResponse(BaseModel):
     total_duration: int
     focus_areas: List[str]
     drills: List[DrillResponse]
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class SessionPreferencesRequest(BaseModel):
-    duration: int
-    available_equipment: List[str]
-    training_style: str
-    training_location: str
-    difficulty: str
-    target_skills: List[Dict[str, Union[str, List[str]]]]  # [{category: str, sub_skills: List[str]}]
 
     model_config = ConfigDict(from_attributes=True)
 
