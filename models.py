@@ -55,6 +55,8 @@ class User(Base):
     # Relationships
     completed_sessions = relationship("CompletedSession", back_populates="user")
     drill_groups = relationship("DrillGroup", back_populates="user")
+    session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
+    progress_history = relationship("ProgressHistory", back_populates="user", uselist=False)
 
 
 class CompletedSession(Base):
@@ -90,6 +92,23 @@ class OrderedSessionDrill(Base):
     # Relationships
     session = relationship("CompletedSession", back_populates="ordered_drills")
     drill = relationship("Drill")
+
+class SessionPreferences(Base):
+    __tablename__ = "session_preferences"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    duration = Column(Integer)  # in minutes
+    available_equipment = Column(ARRAY(String))
+    training_style = Column(String)
+    training_location = Column(String)
+    difficulty = Column(String)
+    target_skills = Column(JSON)  # List of {category: str, sub_skills: List[str]}
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+
+    user = relationship("User", back_populates="session_preferences")
+
 
 
 class DrillGroup(Base):
@@ -244,6 +263,17 @@ class SkillFocusModel(BaseModel):
     category: str
     sub_skill: str
     is_primary: bool = False
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class SessionPreferencesRequest(BaseModel):
+    duration: int
+    available_equipment: List[str]
+    training_style: str
+    training_location: str
+    difficulty: str
+    target_skills: List[Dict[str, Union[str, List[str]]]]  # [{category: str, sub_skills: List[str]}]
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -487,3 +517,16 @@ class DrillType(str, Enum):
     REPS_BASED = "reps_based"  # e.g., "Do 10 shots"
     SET_BASED = "set_based"    # e.g., "3 sets of 5 reps"
     CONTINUOUS = "continuous"  # e.g., "Until successful completion"
+
+class ProgressHistory(Base):
+    __tablename__ = "progress_history"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True)
+    current_streak = Column(Integer, default=0)
+    highest_streak = Column(Integer, default=0)
+    completed_sessions_count = Column(Integer, default=0)
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationship
+    user = relationship("User", back_populates="progress_history")
