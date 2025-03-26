@@ -11,6 +11,7 @@ from sqlalchemy.orm import relationship
 from db import Base
 from enum import Enum
 from sqlalchemy.sql import func
+from datetime import datetime
 
 # *** AUTH MODELS ***
 class LoginRequest(BaseModel):
@@ -53,11 +54,47 @@ class User(Base):
     
     
     # Relationships
-    session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
-    preferences = relationship("UserPreferences", back_populates="user", uselist=False)
+    ordered_session_drills = relationship("OrderedSessionDrill", back_populates="user", uselist=False)
     completed_sessions = relationship("CompletedSession", back_populates="user")
     drill_groups = relationship("DrillGroup", back_populates="user")
+    session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
+    progress_history = relationship("ProgressHistory", back_populates="user", uselist=False)
+    saved_filters = relationship("SavedFilter", back_populates="user")
 
+
+class CompletedSession(Base):
+    __tablename__ = "completed_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    date = Column(DateTime)
+    total_completed_drills = Column(Integer)
+    total_drills = Column(Integer)
+    
+    # Store the completed drills data as JSON
+    drills = Column(JSON)  # Will store array of DrillResponse data
+    
+    # Relationship
+    user = relationship("User", back_populates="completed_sessions")
+
+
+
+class OrderedSessionDrill(Base):
+    __tablename__ = "ordered_session_drills"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    drill_id = Column(Integer, ForeignKey("drills.id"))
+    position = Column(Integer)  # Order in the session
+    sets_done = Column(Integer, default=0)
+    total_sets = Column(Integer)
+    total_reps = Column(Integer)
+    total_duration = Column(Integer)
+    is_completed = Column(Boolean, default=False)
+    
+    # Relationships
+    user = relationship("User", back_populates="ordered_session_drills")
+    drill = relationship("Drill")
 
 class SessionPreferences(Base):
     __tablename__ = "session_preferences"
@@ -75,43 +112,6 @@ class SessionPreferences(Base):
 
     user = relationship("User", back_populates="session_preferences")
 
-
-class UserPreferences(Base):
-    __tablename__ = "user_preferences"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    
-    # Session Generator Preferences
-    selected_time = Column(String, nullable=True)
-    selected_equipment = Column(JSON)  # Store as JSON array
-    selected_training_style = Column(String, nullable=True)
-    selected_location = Column(String, nullable=True)
-    selected_difficulty = Column(String, nullable=True)
-    
-    # Stats and Streaks
-    current_streak = Column(Integer, default=0)
-    highest_streak = Column(Integer, default=0)
-    completed_sessions_count = Column(Integer, default=0)
-    
-    # Relationship
-    user = relationship("User", back_populates="preferences")
-
-
-class CompletedSession(Base):
-    __tablename__ = "completed_sessions"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    date = Column(DateTime)
-    total_completed_drills = Column(Integer)
-    total_drills = Column(Integer)
-    
-    # Store the completed drills data as JSON
-    drills = Column(JSON)  # Will store array of DrillResponse data
-    
-    # Relationship
-    user = relationship("User", back_populates="completed_sessions")
 
 
 class DrillGroup(Base):
@@ -261,23 +261,22 @@ class OnboardingData(BaseModel):
     )
 
 
-class UserPreferencesUpdate(BaseModel):
-    selected_time: Optional[str] = None
-    selected_equipment: List[str] = []
-    selected_training_style: Optional[str] = None
-    selected_location: Optional[str] = None
-    selected_difficulty: Optional[str] = None
-    current_streak: int = 0
-    highest_streak: int = 0
-    completed_sessions_count: int = 0
-
-    model_config = ConfigDict(from_attributes=True)
-
 
 class SkillFocusModel(BaseModel):
     category: str
     sub_skill: str
     is_primary: bool = False
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class SessionPreferencesRequest(BaseModel):
+    duration: int
+    available_equipment: List[str]
+    training_style: str
+    training_location: str
+    difficulty: str
+    target_skills: List[Dict[str, Union[str, List[str]]]]  # [{category: str, sub_skills: List[str]}]
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -350,17 +349,6 @@ class SessionResponse(BaseModel):
     total_duration: int
     focus_areas: List[str]
     drills: List[DrillResponse]
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class SessionPreferencesRequest(BaseModel):
-    duration: int
-    available_equipment: List[str]
-    training_style: str
-    training_location: str
-    difficulty: str
-    target_skills: List[Dict[str, Union[str, List[str]]]]  # [{category: str, sub_skills: List[str]}]
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -532,3 +520,58 @@ class DrillType(str, Enum):
     REPS_BASED = "reps_based"  # e.g., "Do 10 shots"
     SET_BASED = "set_based"    # e.g., "3 sets of 5 reps"
     CONTINUOUS = "continuous"  # e.g., "Until successful completion"
+
+class ProgressHistory(Base):
+    __tablename__ = "progress_history"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True)
+    current_streak = Column(Integer, default=0)
+    highest_streak = Column(Integer, default=0)
+    completed_sessions_count = Column(Integer, default=0)
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationship
+    user = relationship("User", back_populates="progress_history")
+
+class SavedFilter(Base):
+    __tablename__ = "saved_filters"
+
+    id = Column(String, primary_key=True, index=True)  # Changed to String to handle UUID
+    user_id = Column(Integer, ForeignKey("users.id"))
+    name = Column(String)
+    saved_time = Column(DateTime, server_default=func.now())
+    saved_equipment = Column(ARRAY(String))
+    saved_training_style = Column(String)
+    saved_location = Column(String)
+    saved_difficulty = Column(String)
+    
+    # Relationship - using back_populates to match User model
+    user = relationship("User", back_populates="saved_filters")
+
+# Pydantic models for SavedFilter
+class SavedFilterBase(BaseModel):
+    id: str  # Added to handle incoming UUID
+    name: str
+    saved_equipment: List[str]
+    saved_training_style: Optional[str] = None
+    saved_location: Optional[str] = None
+    saved_difficulty: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+class SavedFilterCreate(SavedFilterBase):
+    pass
+
+class SavedFilterUpdate(SavedFilterBase):
+    id: Optional[str] = None
+    name: Optional[str] = None
+    saved_equipment: Optional[List[str]] = None
+    saved_training_style: Optional[str] = None
+    saved_location: Optional[str] = None
+    saved_difficulty: Optional[str] = None
+
+class SavedFilterResponse(SavedFilterBase):
+    saved_time: datetime
+
+    model_config = ConfigDict(from_attributes=True)

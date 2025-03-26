@@ -1,30 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 from datetime import datetime
 
-# User Preferences Schemas
-class UserPreferencesBase(BaseModel):
-    selected_time: Optional[str] = None
-    selected_equipment: List[str] = []
-    selected_training_style: Optional[str] = None
-    selected_location: Optional[str] = None
-    selected_difficulty: Optional[str] = None
-
-class UserPreferencesCreate(UserPreferencesBase):
-    pass
-
-class UserPreferencesUpdate(UserPreferencesBase):
-    pass
-
-class UserPreferences(UserPreferencesBase):
-    id: int
-    user_id: int
-    current_streak: int
-    highest_streak: int
-    completed_sessions_count: int
-
-    class Config:
-        from_attributes = True
 
 # Completed Session Schemas
 class CompletedSessionBase(BaseModel):
@@ -42,6 +19,8 @@ class CompletedSession(CompletedSessionBase):
 
     class Config:
         from_attributes = True
+
+
 
 # Drill Group Schemas
 class DrillGroupBase(BaseModel):
@@ -64,4 +43,81 @@ class DrillGroup(DrillGroupBase):
     user_id: int
 
     class Config:
-        from_attributes = True 
+        from_attributes = True
+
+
+
+# Ordered Session Schemas
+class DrillResponse(BaseModel):
+    id: int
+    title: str
+    description: str
+    type: str
+    duration: Optional[int] = None
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    equipment: List[str]
+    suitable_locations: List[str]
+    intensity: str
+    difficulty: str
+    instructions: List[str]
+    tips: List[str]
+    rest: Optional[int] = None
+
+    class Config:
+        from_attributes = True
+
+
+
+class DrillSyncRequest(BaseModel):
+    id: str  # UUID string from iOS
+    backend_id: Optional[int] = None
+    title: str
+    skill: str
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    duration: Optional[int] = None
+    description: str
+    tips: List[str]
+    equipment: List[str]
+    training_style: str
+    difficulty: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+class OrderedDrillSyncRequest(BaseModel):
+    drill: DrillSyncRequest
+    sets_done: int = 0
+    total_sets: int
+    total_reps: int
+    total_duration: int
+    is_completed: bool = False
+
+    model_config = ConfigDict(from_attributes=True)
+
+class OrderedSessionDrillUpdate(BaseModel):
+    ordered_drills: List[OrderedDrillSyncRequest]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+
+# Progress History Schemas
+class ProgressHistoryBase(BaseModel):
+    current_streak: int = 0
+    highest_streak: int = 0
+    completed_sessions_count: int = 0
+
+    model_config = ConfigDict(from_attributes=True)
+
+class ProgressHistoryUpdate(ProgressHistoryBase):
+    pass
+
+class ProgressHistoryResponse(ProgressHistoryBase):
+    id: int
+    user_id: int
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True) 
+
+# Saved Filters Schemas

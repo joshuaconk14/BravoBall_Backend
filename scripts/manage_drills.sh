@@ -29,7 +29,7 @@ import_all_drills() {
     echo -e "${YELLOW}Importing all drill categories...${NC}"
     
     echo -e "${YELLOW}Importing passing drills...${NC}"
-    python drills/drill_importer.py drills/passing_drills.txt
+    python3 drills/drill_importer.py drills/passing_drills.txt
     if [ $? -ne 0 ]; then
         echo -e "${RED}Failed to import passing drills. Continuing with other categories...${NC}"
     else
@@ -37,7 +37,7 @@ import_all_drills() {
     fi
     
     echo -e "${YELLOW}Importing shooting drills...${NC}"
-    python drills/drill_importer.py drills/shooting_drills.txt
+    python3 drills/drill_importer.py drills/shooting_drills.txt
     if [ $? -ne 0 ]; then
         echo -e "${RED}Failed to import shooting drills. Continuing with other categories...${NC}"
     else
@@ -45,7 +45,7 @@ import_all_drills() {
     fi
     
     echo -e "${YELLOW}Importing first touch drills...${NC}"
-    python drills/drill_importer.py drills/first_touch_drills.txt
+    python3 drills/drill_importer.py drills/first_touch_drills.txt
     if [ $? -ne 0 ]; then
         echo -e "${RED}Failed to import first touch drills. Continuing with other categories...${NC}"
     else
@@ -53,7 +53,7 @@ import_all_drills() {
     fi
     
     echo -e "${YELLOW}Importing dribbling drills...${NC}"
-    python drills/drill_importer.py drills/dribbling_drills.txt
+    python3 drills/drill_importer.py drills/dribbling_drills.txt
     if [ $? -ne 0 ]; then
         echo -e "${RED}Failed to import dribbling drills.${NC}"
     else
@@ -75,7 +75,7 @@ update_category_drills() {
     fi
     
     echo -e "${YELLOW}Updating drills for category: $category${NC}"
-    python scripts/manage_drills.py --category $category
+    python3 scripts/manage_drills.py --category $category
     
     if [ $? -ne 0 ]; then
         echo -e "${RED}Failed to update drills for category: $category${NC}"
@@ -89,7 +89,7 @@ update_category_drills() {
         
         if [[ $REIMPORT == "y" || $REIMPORT == "Y" ]]; then
             echo -e "${YELLOW}Re-importing drills for category: $category${NC}"
-            python drills/drill_importer.py drills/${category}_drills.txt
+            python3 drills/drill_importer.py drills/${category}_drills.txt
             
             if [ $? -ne 0 ]; then
                 echo -e "${RED}Failed to re-import drills for category: $category${NC}"
