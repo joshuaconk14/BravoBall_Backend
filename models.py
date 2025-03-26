@@ -53,6 +53,7 @@ class User(Base):
     
     
     # Relationships
+    ordered_session_drills = relationship("OrderedSessionDrill", back_populates="user", uselist=False)
     completed_sessions = relationship("CompletedSession", back_populates="user")
     drill_groups = relationship("DrillGroup", back_populates="user")
     session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
@@ -73,14 +74,14 @@ class CompletedSession(Base):
     
     # Relationship
     user = relationship("User", back_populates="completed_sessions")
-    ordered_drills = relationship("OrderedSessionDrill", back_populates="session")
+
 
 
 class OrderedSessionDrill(Base):
     __tablename__ = "ordered_session_drills"
 
     id = Column(Integer, primary_key=True, index=True)
-    session_id = Column(Integer, ForeignKey("completed_sessions.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
     drill_id = Column(Integer, ForeignKey("drills.id"))
     position = Column(Integer)  # Order in the session
     sets_done = Column(Integer, default=0)
@@ -90,7 +91,7 @@ class OrderedSessionDrill(Base):
     is_completed = Column(Boolean, default=False)
     
     # Relationships
-    session = relationship("CompletedSession", back_populates="ordered_drills")
+    user = relationship("User", back_populates="ordered_session_drills")
     drill = relationship("Drill")
 
 class SessionPreferences(Base):
