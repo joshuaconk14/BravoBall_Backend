@@ -510,4 +510,190 @@ async def check_drill_liked(
         return {"is_liked": is_liked}
     except Exception as e:
         logging.error(f"Error checking if drill is liked: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to check if drill is liked: {str(e)}") 
+        raise HTTPException(status_code=500, detail=f"Failed to check if drill is liked: {str(e)}")
+
+# Add multiple drills to a group at once
+@router.post("/api/drill-groups/{group_id}/drills")
+async def add_multiple_drills_to_group(
+    group_id: int,
+    drill_ids: List[int],
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Add multiple drills to a drill group at once.
+    This is useful when users select multiple drills from search results.
+    """
+    try:
+        # Get the drill group
+        group = db.query(DrillGroup).filter(
+            DrillGroup.id == group_id,
+            DrillGroup.user_id == current_user.id
+        ).first()
+        
+        if not group:
+            raise HTTPException(status_code=404, detail="Drill group not found")
+        
+        # Get highest position to start adding at the end
+        max_position = db.query(DrillGroupItem).filter(
+            DrillGroupItem.drill_group_id == group_id
+        ).count()
+        
+        position = max_position
+        added_drills = 0
+        
+        for drill_id in drill_ids:
+            # Verify drill exists
+            drill = db.query(Drill).filter(Drill.id == drill_id).first()
+            if not drill:
+                continue  # Skip if drill doesn't exist
+            
+            # Check if drill already in group
+            existing_item = db.query(DrillGroupItem).filter(
+                DrillGroupItem.drill_group_id == group_id,
+                DrillGroupItem.drill_id == drill_id
+            ).first()
+            
+            if existing_item:
+                continue  # Skip if already in group
+            
+            # Add drill to group
+            drill_item = DrillGroupItem(
+                drill_group_id=group_id,
+                drill_id=drill_id,
+                position=position
+            )
+            db.add(drill_item)
+            position += 1
+            added_drills += 1
+        
+        db.commit()
+        
+        return {
+            "message": f"{added_drills} drills added to group successfully",
+            "added_count": added_drills,
+            "group_id": group_id
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        logging.error(f"Error adding drills to group: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to add drills to group: {str(e)}")
+
+# Also add a public endpoint to get all drill groups (without authentication)
+@router.get("/public/drill-groups")
+async def get_public_drill_groups(
+    user_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Get all drill groups for a specific user without requiring authentication.
+    This is useful for testing and debugging.
+    """
+    try:
+        drill_groups = db.query(DrillGroup).filter(DrillGroup.user_id == user_id).all()
+        
+        # Convert to response format with drills array
+        result = []
+        for group in drill_groups:
+            # Convert SQLAlchemy objects to DrillResponse format
+            drills_data = [drill_to_response(drill, db) for drill in group.drills]
+            
+            # Create a copy of the group with drills added
+            group_dict = {
+                "id": group.id,
+                "name": group.name,
+                "description": group.description,
+                "is_liked_group": group.is_liked_group,
+                "drills": drills_data
+            }
+            result.append(group_dict)
+            
+        return result
+    except Exception as e:
+        logging.error(f"Error retrieving drill groups: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve drill groups: {str(e)}")
+
+# Add multiple drills to the liked drills group
+@router.post("/api/liked-drills/add")
+async def add_multiple_drills_to_liked(
+    drill_ids: List[int],
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Add multiple drills to the user's Liked Drills collection at once.
+    This is useful when selecting multiple drills from search results.
+    
+    Request body should be a JSON object with drill_ids field:
+    {
+        "drill_ids": [1, 2, 3]
+    }
+    
+    To send a raw JSON array instead, use the /api/liked-drills/add/batch endpoint.
+    """
+    try:
+        # Get or create the Liked Drills group
+        liked_group = db.query(DrillGroup).filter(
+            DrillGroup.user_id == current_user.id,
+            DrillGroup.is_liked_group == True
+        ).first()
+        
+        if not liked_group:
+            liked_group = DrillGroup(
+                user_id=current_user.id,
+                name="Liked Drills",
+                description="Your collection of favorite drills",
+                is_liked_group=True
+            )
+            db.add(liked_group)
+            db.commit()
+            db.refresh(liked_group)
+        
+        # Get highest position to start adding at the end
+        max_position = db.query(DrillGroupItem).filter(
+            DrillGroupItem.drill_group_id == liked_group.id
+        ).count()
+        
+        position = max_position
+        added_drills = 0
+        
+        for drill_id in drill_ids:
+            # Verify drill exists
+            drill = db.query(Drill).filter(Drill.id == drill_id).first()
+            if not drill:
+                continue  # Skip if drill doesn't exist
+            
+            # Check if drill already in liked group
+            existing_item = db.query(DrillGroupItem).filter(
+                DrillGroupItem.drill_group_id == liked_group.id,
+                DrillGroupItem.drill_id == drill_id
+            ).first()
+            
+            if existing_item:
+                continue  # Skip if already in liked group
+            
+            # Add drill to liked group
+            drill_item = DrillGroupItem(
+                drill_group_id=liked_group.id,
+                drill_id=drill_id,
+                position=position
+            )
+            db.add(drill_item)
+            position += 1
+            added_drills += 1
+        
+        db.commit()
+        
+        return {
+            "message": f"{added_drills} drills added to liked drills successfully",
+            "added_count": added_drills,
+            "group_id": liked_group.id
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        logging.error(f"Error adding drills to liked group: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to add drills to liked group: {str(e)}") 
