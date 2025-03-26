@@ -4,6 +4,7 @@ Tests for the drill groups router - testing one endpoint at a time
 import pytest
 from fastapi import status
 import json
+from models import Drill, DrillGroup, DrillGroupItem
 
 def test_get_user_drill_groups(client, auth_headers, test_user, test_drill_group):
     """Test getting all drill groups for a user"""
@@ -108,4 +109,128 @@ def test_like_drill(client, auth_headers, test_drill):
     liked_drills = liked_drills_response.json()["drills"]
     
     assert len(liked_drills) == 1
-    assert liked_drills[0]["id"] == test_drill.id 
+    assert liked_drills[0]["id"] == test_drill.id
+
+def test_add_multiple_drills_to_group(client, auth_headers, db, test_user, test_drill_category):
+    """Test adding multiple drills to a drill group at once"""
+    # Create a drill group
+    response = client.post(
+        "/api/drill-groups",
+        json={"name": "Test Group", "description": "Test Description"},
+        headers=auth_headers
+    )
+    assert response.status_code == 200
+    group_id = response.json()["id"]
+    
+    # Create test drills
+    drill_ids = []
+    for i in range(3):
+        drill = Drill(
+            title=f"Test Drill {i}",
+            description=f"Test Description {i}",
+            category_id=test_drill_category.id,
+            difficulty="beginner",
+            video_url=f"https://example.com/video{i}.mp4",
+            training_styles=["medium_intensity"],
+            type="time_based",
+            duration=10,
+            intensity="medium",
+            equipment=["ball", "cones"],
+            suitable_locations=["small_field"],
+            instructions=["Step 1", "Step 2"],
+            tips=["Tip 1", "Tip 2"],
+            common_mistakes=["Mistake 1"],
+            progression_steps=["Progress 1"],
+            variations=["Variation 1"]
+        )
+        db.add(drill)
+        db.commit()
+        db.refresh(drill)
+        drill_ids.append(drill.id)
+    
+    # Add multiple drills to the group
+    response = client.post(
+        f"/api/drill-groups/{group_id}/drills",
+        json=drill_ids,
+        headers=auth_headers
+    )
+    assert response.status_code == 200
+    assert response.json()["added_count"] == 3
+    assert response.json()["group_id"] == group_id
+    
+    # Get the group to verify drills were added
+    response = client.get(
+        f"/api/drill-groups/{group_id}",
+        headers=auth_headers
+    )
+    assert response.status_code == 200
+    assert len(response.json()["drills"]) == 3
+    
+    # Test adding the same drills again (should skip existing)
+    response = client.post(
+        f"/api/drill-groups/{group_id}/drills",
+        json=drill_ids,
+        headers=auth_headers
+    )
+    assert response.status_code == 200
+    assert response.json()["added_count"] == 0  # No new drills added
+
+def test_get_public_drill_groups(client, db, test_user, test_drill_category):
+    """Test getting drill groups without authentication"""
+    # Create a drill group for the test user
+    group = DrillGroup(
+        name="Public Test Group",
+        description="Public Test Description",
+        user_id=test_user.id
+    )
+    db.add(group)
+    db.commit()
+    db.refresh(group)
+    
+    # Create a test drill and add it to the group
+    drill = Drill(
+        title="Public Test Drill",
+        description="Public Test Description",
+        category_id=test_drill_category.id,
+        difficulty="beginner",
+        video_url="https://example.com/video.mp4",
+        training_styles=["medium_intensity"],
+        type="time_based",
+        duration=10,
+        intensity="medium",
+        equipment=["ball", "cones"],
+        suitable_locations=["small_field"],
+        instructions=["Step 1", "Step 2"],
+        tips=["Tip 1"],
+        common_mistakes=["Mistake 1"],
+        progression_steps=["Progress 1"],
+        variations=["Variation 1"]
+    )
+    db.add(drill)
+    db.commit()
+    db.refresh(drill)
+    
+    # Add drill to group
+    drill_item = DrillGroupItem(
+        drill_group_id=group.id,
+        drill_id=drill.id,
+        position=0
+    )
+    db.add(drill_item)
+    db.commit()
+    
+    # Get the public drill groups
+    response = client.get(f"/public/drill-groups?user_id={test_user.id}")
+    assert response.status_code == 200
+    assert len(response.json()) > 0
+    
+    # Verify the group we created is in the response
+    found = False
+    for g in response.json():
+        if g["id"] == group.id:
+            found = True
+            assert g["name"] == "Public Test Group"
+            assert len(g["drills"]) == 1
+            assert g["drills"][0]["title"] == "Public Test Drill"
+    
+    assert found, "Created drill group not found in response" 

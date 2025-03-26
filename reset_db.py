@@ -10,8 +10,11 @@ def reset_database():
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
     
     try:
-        # Drop all tables
-        Base.metadata.drop_all(bind=engine)
+        # Drop all tables with CASCADE
+        with engine.connect() as connection:
+            connection.execute(text("DROP SCHEMA public CASCADE"))
+            connection.execute(text("CREATE SCHEMA public"))
+            connection.commit()
         print("✅ Successfully dropped all tables")
         
         # Create all tables
