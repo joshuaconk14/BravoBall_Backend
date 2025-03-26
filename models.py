@@ -11,6 +11,7 @@ from sqlalchemy.orm import relationship
 from db import Base
 from enum import Enum
 from sqlalchemy.sql import func
+from datetime import datetime
 
 # *** AUTH MODELS ***
 class LoginRequest(BaseModel):
@@ -58,6 +59,7 @@ class User(Base):
     drill_groups = relationship("DrillGroup", back_populates="user")
     session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
     progress_history = relationship("ProgressHistory", back_populates="user", uselist=False)
+    saved_filters = relationship("SavedFilter", back_populates="user")
 
 
 class CompletedSession(Base):
@@ -531,3 +533,45 @@ class ProgressHistory(Base):
 
     # Relationship
     user = relationship("User", back_populates="progress_history")
+
+class SavedFilter(Base):
+    __tablename__ = "saved_filters"
+
+    id = Column(String, primary_key=True, index=True)  # Changed to String to handle UUID
+    user_id = Column(Integer, ForeignKey("users.id"))
+    name = Column(String)
+    saved_time = Column(DateTime, server_default=func.now())
+    saved_equipment = Column(ARRAY(String))
+    saved_training_style = Column(String)
+    saved_location = Column(String)
+    saved_difficulty = Column(String)
+    
+    # Relationship - using back_populates to match User model
+    user = relationship("User", back_populates="saved_filters")
+
+# Pydantic models for SavedFilter
+class SavedFilterBase(BaseModel):
+    id: str  # Added to handle incoming UUID
+    name: str
+    saved_equipment: List[str]
+    saved_training_style: Optional[str] = None
+    saved_location: Optional[str] = None
+    saved_difficulty: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+class SavedFilterCreate(SavedFilterBase):
+    pass
+
+class SavedFilterUpdate(SavedFilterBase):
+    id: Optional[str] = None
+    name: Optional[str] = None
+    saved_equipment: Optional[List[str]] = None
+    saved_training_style: Optional[str] = None
+    saved_location: Optional[str] = None
+    saved_difficulty: Optional[str] = None
+
+class SavedFilterResponse(SavedFilterBase):
+    saved_time: datetime
+
+    model_config = ConfigDict(from_attributes=True)

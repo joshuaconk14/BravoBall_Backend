@@ -30,28 +30,54 @@ async def sync_ordered_session_drills(
     is marked as complete.
     """
     try:
-        # Delete all existing ordered drills for this user
-        db.query(OrderedSessionDrill).filter(
-            OrderedSessionDrill.user_id == current_user.id
-        ).delete()
+        # Get existing ordered drills for this user
+        existing_drills = {
+            drill.drill_id: drill 
+            for drill in db.query(OrderedSessionDrill).filter(
+                OrderedSessionDrill.user_id == current_user.id
+            ).all()
+        }
         
-        # Add new ordered drills
+        # Track which drills we've processed to identify deleted ones
+        processed_drill_ids = set()
+        
+        # Add or update ordered drills
         for position, drill_data in enumerate(ordered_drills.ordered_drills):
+            # Get or verify the drill exists
             drill = db.query(Drill).filter(Drill.id == drill_data.drill.backend_id).first()
             if not drill and drill_data.drill.backend_id:
                 raise HTTPException(status_code=404, detail=f"Drill with id {drill_data.drill.backend_id} not found")
             
-            ordered_drill = OrderedSessionDrill(
-                user_id=current_user.id,
-                drill_id=drill.id if drill else None,
-                position=position,
-                sets_done=drill_data.sets_done,
-                total_sets=drill_data.total_sets,
-                total_reps=drill_data.total_reps,
-                total_duration=drill_data.total_duration,
-                is_completed=drill_data.is_completed
-            )
-            db.add(ordered_drill)
+            drill_id = drill.id if drill else None
+            processed_drill_ids.add(drill_id)
+            
+            if drill_id in existing_drills:
+                # Update existing drill
+                existing_drill = existing_drills[drill_id]
+                existing_drill.position = position
+                existing_drill.sets_done = drill_data.sets_done
+                existing_drill.total_sets = drill_data.total_sets
+                existing_drill.total_reps = drill_data.total_reps
+                existing_drill.total_duration = drill_data.total_duration
+                existing_drill.is_completed = drill_data.is_completed
+            else:
+                # Add new drill
+                ordered_drill = OrderedSessionDrill(
+                    user_id=current_user.id,
+                    drill_id=drill_id,
+                    position=position,
+                    sets_done=drill_data.sets_done,
+                    total_sets=drill_data.total_sets,
+                    total_reps=drill_data.total_reps,
+                    total_duration=drill_data.total_duration,
+                    is_completed=drill_data.is_completed
+                )
+                db.add(ordered_drill)
+
+        # Delete drills that were removed
+        for drill_id, drill in existing_drills.items():
+            if drill_id not in processed_drill_ids:
+                db.delete(drill)
 
         db.commit()
         
@@ -185,93 +211,3 @@ async def sync_progress_history(
             status_code=500,
             detail=f"Failed to sync progress history: {str(e)}"
         )
-
-# @router.post("/api/sessions/complete")
-# async def complete_current_session(
-#     current_user: User = Depends(get_current_user),
-#     db: Session = Depends(get_db)
-# ):
-#     """
-#     Complete the current session by moving ordered drills to completed_sessions
-#     and clearing the ordered_drills table for this user.
-#     """
-#     try:
-#         # Get current ordered drills
-#         current_drills = db.query(OrderedSessionDrill).filter(
-#             OrderedSessionDrill.user_id == current_user.id
-#         ).order_by(OrderedSessionDrill.position).all()
-        
-#         if not current_drills:
-#             raise HTTPException(status_code=404, detail="No current session found")
-        
-#         # Create completed session
-#         completed_session = CompletedSession(
-#             user_id=current_user.id,
-#             date=datetime.now(),
-#             total_completed_drills=sum(1 for drill in current_drills if drill.is_completed),
-#             total_drills=len(current_drills),
-#             drills=[{
-#                 "drill": {
-#                     "id": drill.drill.id,
-#                     "title": drill.drill.title,
-#                     "description": drill.drill.description,
-#                     "skill": drill.drill.category.name if drill.drill.category else None,
-#                     "equipment": drill.drill.equipment,
-#                     "training_style": drill.drill.training_styles,
-#                     "difficulty": drill.drill.difficulty,
-#                     "tips": drill.drill.tips
-#                 },
-#                 "position": drill.position,
-#                 "sets_done": drill.sets_done,
-#                 "total_sets": drill.total_sets,
-#                 "total_reps": drill.total_reps,
-#                 "total_duration": drill.total_duration,
-#                 "is_completed": drill.is_completed
-#             } for drill in current_drills]
-#         )
-        
-#         db.add(completed_session)
-        
-#         # Clear ordered drills for this user
-#         db.query(OrderedSessionDrill).filter(
-#             OrderedSessionDrill.user_id == current_user.id
-#         ).delete()
-        
-#         # Update progress history
-#         progress = db.query(ProgressHistory).filter(
-#             ProgressHistory.user_id == current_user.id
-#         ).first()
-        
-#         if progress:
-#             progress.completed_sessions_count += 1
-#             # Update streak
-#             if progress.current_streak + 1 > progress.highest_streak:
-#                 progress.highest_streak = progress.current_streak + 1
-#             progress.current_streak += 1
-#         else:
-#             progress = ProgressHistory(
-#                 user_id=current_user.id,
-#                 current_streak=1,
-#                 highest_streak=1,
-#                 completed_sessions_count=1
-#             )
-#             db.add(progress)
-        
-#         db.commit()
-        
-#         return {
-#             "message": "Session completed successfully",
-#             "session_id": completed_session.id,
-#             "total_drills": len(current_drills),
-#             "completed_drills": sum(1 for drill in current_drills if drill.is_completed),
-#             "current_streak": progress.current_streak,
-#             "highest_streak": progress.highest_streak,
-#             "total_completed_sessions": progress.completed_sessions_count
-#         }
-        
-#     except Exception as e:
-#         db.rollback()
-#         raise HTTPException(
-#             status_code=500,
-#             detail=f"Failed to complete session: {str(e)}"
-#         )

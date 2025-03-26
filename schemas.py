@@ -119,3 +119,5 @@ class ProgressHistoryResponse(ProgressHistoryBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True) 
+
+# Saved Filters Schemas
