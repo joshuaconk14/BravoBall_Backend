@@ -12,6 +12,7 @@ from db import Base
 from enum import Enum
 from sqlalchemy.sql import func
 from datetime import datetime
+from uuid import UUID
 
 # *** AUTH MODELS ***
 class LoginRequest(BaseModel):
@@ -537,41 +538,54 @@ class ProgressHistory(Base):
 class SavedFilter(Base):
     __tablename__ = "saved_filters"
 
-    id = Column(String, primary_key=True, index=True)  # Changed to String to handle UUID
+    id = Column(Integer, primary_key=True, index=True)  # This is the backend_id
+    client_id = Column(String, unique=True, index=True)  # This stores the client's UUID
     user_id = Column(Integer, ForeignKey("users.id"))
     name = Column(String)
-    saved_time = Column(DateTime, server_default=func.now())
+    saved_time = Column(String, nullable=True)
     saved_equipment = Column(ARRAY(String))
-    saved_training_style = Column(String)
-    saved_location = Column(String)
-    saved_difficulty = Column(String)
+    saved_training_style = Column(String, nullable=True)
+    saved_location = Column(String, nullable=True)
+    saved_difficulty = Column(String, nullable=True)
     
     # Relationship - using back_populates to match User model
     user = relationship("User", back_populates="saved_filters")
 
 # Pydantic models for SavedFilter
 class SavedFilterBase(BaseModel):
-    id: str  # Added to handle incoming UUID
+    id: str  # Client UUID
+    backend_id: Optional[int] = None  # Backend ID if available
     name: str
+    saved_time: Optional[str] = None
     saved_equipment: List[str]
     saved_training_style: Optional[str] = None
     saved_location: Optional[str] = None
     saved_difficulty: Optional[str] = None
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        from_attributes=True,
+        extra='ignore'  # Ignore any extra fields
+    )
 
-class SavedFilterCreate(SavedFilterBase):
-    pass
+class SavedFilterCreate(BaseModel):
+    saved_filters: List[SavedFilterBase]  # Match the frontend array structure
 
-class SavedFilterUpdate(SavedFilterBase):
-    id: Optional[str] = None
+class SavedFilterUpdate(BaseModel):
     name: Optional[str] = None
     saved_equipment: Optional[List[str]] = None
     saved_training_style: Optional[str] = None
     saved_location: Optional[str] = None
     saved_difficulty: Optional[str] = None
 
-class SavedFilterResponse(SavedFilterBase):
-    saved_time: datetime
+class SavedFilterResponse(BaseModel):
+    id: str  # Client UUID
+    backend_id: int  # Backend ID
+    name: str
+    saved_time: Optional[str] = None
+    saved_equipment: List[str]
+    saved_training_style: Optional[str] = None
+    saved_location: Optional[str] = None
+    saved_difficulty: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
+    pass
