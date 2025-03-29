@@ -588,4 +588,13 @@ class SavedFilterResponse(BaseModel):
     saved_difficulty: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
-    pass
+
+class UserUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[str] = None
+
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
