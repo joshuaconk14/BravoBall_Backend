@@ -8,10 +8,36 @@ class CompletedSessionBase(BaseModel):
     date: datetime
     total_completed_drills: int
     total_drills: int
-    drills: dict  # JSON data for drills
+    drills: List[dict]  # List of drill data
 
-class CompletedSessionCreate(CompletedSessionBase):
-    pass
+class DrillData(BaseModel):
+    id: str
+    title: str
+    skill: str
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    duration: Optional[int] = None
+    description: str
+    tips: List[str]
+    equipment: List[str]
+    trainingStyle: str
+    difficulty: str
+
+class CompletedDrillData(BaseModel):
+    drill: DrillData
+    setsDone: int
+    totalSets: int
+    totalReps: int
+    totalDuration: int
+    isCompleted: bool
+
+class CompletedSessionCreate(BaseModel):
+    date: str  # ISO8601 formatted string
+    drills: List[CompletedDrillData]
+    total_completed_drills: int
+    total_drills: int
+
+    model_config = ConfigDict(from_attributes=True)
 
 class CompletedSession(CompletedSessionBase):
     id: int

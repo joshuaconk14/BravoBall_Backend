@@ -18,6 +18,7 @@ from auth import get_current_user
 
 router = APIRouter()
 
+# ordered drills endpoint
 @router.put("/api/sessions/ordered_drills/")
 async def sync_ordered_session_drills(
     ordered_drills: OrderedSessionDrillUpdate,
@@ -30,7 +31,7 @@ async def sync_ordered_session_drills(
     is marked as complete.
     """
     try:
-        # Get existing ordered drills for this user
+        # Get existing ordered drills for this user by filtering for id
         existing_drills = {
             drill.drill_id: drill 
             for drill in db.query(OrderedSessionDrill).filter(
@@ -49,6 +50,7 @@ async def sync_ordered_session_drills(
                 raise HTTPException(status_code=404, detail=f"Drill with id {drill_data.drill.backend_id} not found")
             
             drill_id = drill.id if drill else None
+            # adding non-deleted drill id's to processed_drill_id set
             processed_drill_ids.add(drill_id)
             
             if drill_id in existing_drills:
@@ -100,19 +102,64 @@ async def sync_ordered_session_drills(
 def create_completed_session(session: CompletedSessionCreate,
                            current_user: User = Depends(get_current_user),
                            db: Session = Depends(get_db)):
-    db_session = CompletedSession(**session.dict(), user_id=current_user.id)
-    db.add(db_session)
-    
-    # Update user stats
-    preferences = db.query(CompletedSession).filter(CompletedSession.user_id == current_user.id).first()
-    if preferences:
-        preferences.completed_sessions_count += 1
-        # Update streak logic here
-        # TODO: Implement proper streak calculation based on consecutive days
-    
-    db.commit()
-    db.refresh(db_session)
-    return db_session
+    try:
+        # Parse the ISO8601 date string to datetime
+        session_date = datetime.fromisoformat(session.date.replace('Z', '+00:00'))
+        
+        # Create the completed session
+        db_session = CompletedSession(
+            user_id=current_user.id,
+            date=session_date,
+            total_completed_drills=session.total_completed_drills,
+            total_drills=session.total_drills,
+            drills=[{
+                "drill": {
+                    "id": drill.drill.id,
+                    "title": drill.drill.title,
+                    "skill": drill.drill.skill,
+                    "sets": drill.drill.sets,
+                    "reps": drill.drill.reps,
+                    "duration": drill.drill.duration,
+                    "description": drill.drill.description,
+                    "tips": drill.drill.tips,
+                    "equipment": drill.drill.equipment,
+                    "trainingStyle": drill.drill.trainingStyle,
+                    "difficulty": drill.drill.difficulty
+                },
+                "setsDone": drill.setsDone,
+                "totalSets": drill.totalSets,
+                "totalReps": drill.totalReps,
+                "totalDuration": drill.totalDuration,
+                "isCompleted": drill.isCompleted
+            } for drill in session.drills]
+        )
+        db.add(db_session)
+        
+        # # Update progress history
+        # progress_history = db.query(ProgressHistory).filter(
+        #     ProgressHistory.user_id == current_user.id
+        # ).first()
+        
+        # if progress_history:
+        #     progress_history.completed_sessions_count += 1
+        #     # TODO: Implement proper streak calculation based on consecutive days
+        # else:
+        #     progress_history = ProgressHistory(
+        #         user_id=current_user.id,
+        #         completed_sessions_count=1
+        #     )
+        #     db.add(progress_history)
+        
+        db.commit()
+        db.refresh(db_session)
+        return db_session
+        
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create completed session: {str(e)}"
+        )
 
 @router.get("/api/sessions/completed/", response_model=List[CompletedSessionSchema])
 def get_completed_sessions(current_user: User = Depends(get_current_user),
