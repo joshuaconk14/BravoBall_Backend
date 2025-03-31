@@ -577,15 +577,6 @@ class SavedFilterUpdate(BaseModel):
     saved_location: Optional[str] = None
     saved_difficulty: Optional[str] = None
 
-class SavedFilterResponse(BaseModel):
-    id: str  # Client UUID
-    backend_id: int  # Backend ID
-    name: str
-    saved_time: Optional[str] = None
-    saved_equipment: List[str]
-    saved_training_style: Optional[str] = None
-    saved_location: Optional[str] = None
-    saved_difficulty: Optional[str] = None
-
+    # FIGURE OUT WHAT THIS DOES
     model_config = ConfigDict(from_attributes=True)
-    pass
+

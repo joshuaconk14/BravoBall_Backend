@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from models import User, SavedFilter, SavedFilterCreate, SavedFilterUpdate, SavedFilterResponse
+from models import User, SavedFilter, SavedFilterCreate, SavedFilterUpdate, SavedFilterBase
 from db import get_db
 from auth import get_current_user
 
 router = APIRouter()
 
 # Create new filters
-@router.post("/api/filters/", response_model=List[SavedFilterResponse])
+@router.post("/api/filters/", response_model=List[SavedFilterBase])
 async def create_saved_filter(
     filters: SavedFilterCreate,
     current_user: User = Depends(get_current_user),
@@ -38,10 +38,9 @@ async def create_saved_filter(
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to create saved filters: {str(e)}")
 
-# Update existing filters
-@router.put("/api/filters/{filter_id}", response_model=SavedFilterResponse)
+@router.put("/api/filters/{filter_id}", response_model=SavedFilterBase)
 async def update_saved_filter(
-    filter_id: str,  # Using string for client_id
+    filter_id: str,
     filter: SavedFilterUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -57,10 +56,10 @@ async def update_saved_filter(
         if not existing_filter:
             raise HTTPException(status_code=404, detail="Saved filter not found")
         
-        # Update fields
-        for field, value in filter.dict(exclude_unset=True).items():
-            if value is not None:
-                setattr(existing_filter, field, value)
+        # Update fields that are present in the request
+        update_data = filter.dict(exclude_unset=True)
+        for field, value in update_data.items():
+            setattr(existing_filter, field, value)
         
         db.commit()
         db.refresh(existing_filter)
@@ -68,27 +67,30 @@ async def update_saved_filter(
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to update filter: {str(e)}")
+    
 
-# Helper function for consistent response formatting
-def format_filter_response(filter: SavedFilter) -> dict:
-    return {
-        "id": filter.client_id,  # Client UUID
-        "backend_id": filter.id,  # Backend ID
-        "name": filter.name,
-        "saved_time": filter.saved_time,
-        "saved_equipment": filter.saved_equipment,
-        "saved_training_style": filter.saved_training_style,
-        "saved_location": filter.saved_location,
-        "saved_difficulty": filter.saved_difficulty
-    }
 
-@router.get("/api/filters/", response_model=List[SavedFilterResponse])
+def format_filter_response(filter: SavedFilter) -> SavedFilterBase:
+    return SavedFilterBase(
+        id=str(filter.client_id),  # Ensure it's a string
+        backend_id=filter.id,  # This is the integer backend ID
+        name=filter.name,
+        saved_time=filter.saved_time,
+        saved_equipment=filter.saved_equipment,
+        saved_training_style=filter.saved_training_style,
+        saved_location=filter.saved_location,
+        saved_difficulty=filter.saved_difficulty
+    )
+
+@router.get("/api/filters/", response_model=List[SavedFilterBase])
 async def get_saved_filters(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Get all saved filters for the current user"""
-    return db.query(SavedFilter).filter(SavedFilter.user_id == current_user.id).all()
+    filters = db.query(SavedFilter).filter(SavedFilter.user_id == current_user.id).all()
+    return [format_filter_response(filter) for filter in filters]
+
 
 @router.delete("/api/filters/{filter_id}")
 async def delete_saved_filter(
