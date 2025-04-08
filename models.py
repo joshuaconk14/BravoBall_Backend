@@ -570,13 +570,3 @@ class SavedFilterBase(BaseModel):
 class SavedFilterCreate(BaseModel):
     saved_filters: List[SavedFilterBase]  # Match the frontend array structure
 
-class SavedFilterUpdate(BaseModel):
-    name: Optional[str] = None
-    saved_equipment: Optional[List[str]] = None
-    saved_training_style: Optional[str] = None
-    saved_location: Optional[str] = None
-    saved_difficulty: Optional[str] = None
-
-    # FIGURE OUT WHAT THIS DOES
-    model_config = ConfigDict(from_attributes=True)
-

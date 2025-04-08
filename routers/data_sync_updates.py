@@ -19,6 +19,56 @@ from auth import get_current_user
 router = APIRouter()
 
 # ordered drills endpoint
+@router.get("/api/sessions/ordered_drills/")
+async def get_ordered_session_drills(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Get the user's current ordered drills and their progress.
+    """
+    try:
+        ordered_drills = db.query(OrderedSessionDrill).filter(
+            OrderedSessionDrill.user_id == current_user.id
+        ).order_by(OrderedSessionDrill.position).all()
+
+        # Include the associated drill data for each ordered drill
+        result = []
+        for ordered_drill in ordered_drills:
+            drill = db.query(Drill).filter(Drill.id == ordered_drill.drill_id).first()
+            if drill:
+                result.append({
+                    "drill": {
+                        "backend_id": drill.id,
+                        "title": drill.title,
+                        "skill": drill.skill,
+                        "sets": drill.sets,
+                        "reps": drill.reps,
+                        "duration": drill.duration,
+                        "description": drill.description,
+                        "tips": drill.tips,
+                        "equipment": drill.equipment,
+                        "trainingStyle": drill.trainingStyle,
+                        "difficulty": drill.difficulty
+                    },
+                    "sets_done": ordered_drill.sets_done,
+                    "total_sets": ordered_drill.total_sets,
+                    "total_reps": ordered_drill.total_reps,
+                    "total_duration": ordered_drill.total_duration,
+                    "is_completed": ordered_drill.is_completed,
+                    "position": ordered_drill.position
+                })
+
+        return {
+            "ordered_drills": result
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get ordered session drills: {str(e)}"
+        )
+
 @router.put("/api/sessions/ordered_drills/")
 async def sync_ordered_session_drills(
     ordered_drills: OrderedSessionDrillUpdate,
@@ -218,6 +268,39 @@ def delete_drill_group(group_id: int,
     return {"message": "Drill group deleted"}
 
 # Progress History Endpoints
+@router.get("/api/progress_history/", response_model=ProgressHistoryResponse)
+async def get_progress_history(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Get the user's progress history (streaks and completed sessions count)
+    """
+    try:
+        progress_history = db.query(ProgressHistory).filter(
+            ProgressHistory.user_id == current_user.id
+        ).first()
+
+        if not progress_history:
+            # If no progress history exists, return default values
+            progress_history = ProgressHistory(
+                user_id=current_user.id,
+                current_streak=0,
+                highest_streak=0,
+                completed_sessions_count=0
+            )
+            db.add(progress_history)
+            db.commit()
+            db.refresh(progress_history)
+
+        return progress_history
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get progress history: {str(e)}"
+        )
+
 @router.put("/api/progress_history/", response_model=ProgressHistoryResponse)
 async def sync_progress_history(
     progress: ProgressHistoryUpdate,

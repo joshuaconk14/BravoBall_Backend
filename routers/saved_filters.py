@@ -38,38 +38,9 @@ async def create_saved_filter(
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to create saved filters: {str(e)}")
 
-@router.put("/api/filters/{filter_id}", response_model=SavedFilterBase)
-async def update_saved_filter(
-    filter_id: str,
-    filter: SavedFilterUpdate,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """Update an existing saved filter"""
-    try:
-        # Find filter by client_id
-        existing_filter = db.query(SavedFilter).filter(
-            SavedFilter.client_id == filter_id,
-            SavedFilter.user_id == current_user.id
-        ).first()
-        
-        if not existing_filter:
-            raise HTTPException(status_code=404, detail="Saved filter not found")
-        
-        # Update fields that are present in the request
-        update_data = filter.dict(exclude_unset=True)
-        for field, value in update_data.items():
-            setattr(existing_filter, field, value)
-        
-        db.commit()
-        db.refresh(existing_filter)
-        return format_filter_response(existing_filter)
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=f"Failed to update filter: {str(e)}")
-    
 
 
+# format response definition
 def format_filter_response(filter: SavedFilter) -> SavedFilterBase:
     return SavedFilterBase(
         id=str(filter.client_id),  # Ensure it's a string
