@@ -27,7 +27,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -86,7 +86,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -145,7 +145,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -203,7 +203,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -253,7 +253,7 @@
         "training_styles": [
             "medium_intensity"
         ],
-      "difficulty": "beginner",
+      "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -261,7 +261,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -320,7 +320,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -379,7 +379,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -437,8 +437,8 @@
       },
       "secondary_skills": [
         {
-          "category": "balance",
-                "sub_skill": "general"
+          "category": "first_touch",
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -492,6 +492,16 @@
         "category": "first_touch",
         "sub_skill": "ground_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "turn_with_ball"
+        },
+        {
+          "category": "first_touch",
+          "sub_skill": "touch_and_move"
+        }
+      ],
       "instructions": [
         "Stand at a comfortable distance from the wall.",
         "Pass the ball against the wall with the inside of your foot.",
@@ -546,6 +556,16 @@
         "category": "first_touch",
         "sub_skill": "ground_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "turn_with_ball"
+        },
+        {
+          "category": "first_touch",
+          "sub_skill": "touch_and_move"
+        }
+      ],
       "instructions": [
         "Pass the ball against the wall using the inside of your foot.",
         "As the ball returns, use the outside of your foot to control it in a new direction.",
@@ -603,7 +623,11 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "turn_with_ball"
+        },
+        {
+          "category": "first_touch",
+          "sub_skill": "touch_and_move"
         }
       ],
       "instructions": [
@@ -659,6 +683,12 @@
         "category": "first_touch",
         "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Set two cones 10 yards apart.",
         "Start at one cone and begin juggling below knee height.",
@@ -712,6 +742,12 @@
         "category": "first_touch",
         "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Set two cones 10 yards apart.",
         "Start at one cone and begin juggling at waist height.",
@@ -765,6 +801,12 @@
         "category": "first_touch",
         "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Set two cones 10 yards apart.",
         "Start at one cone and begin juggling the ball at head height.",
@@ -820,7 +862,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "ball_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -880,7 +922,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "ball_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -934,11 +976,18 @@
         "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "aerial_control",
-                "ground_control"
-            ]
+        "sub_skill": "turn_with_ball"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "aerial_control"
+        },
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Set up four cones in a box shape, with each cone 3 yards apart.",
         "Start juggling the ball inside the box.",
@@ -991,10 +1040,14 @@
         "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "aerial_control"
-            ]
+        "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Stand about 2-4 yards away from a wall.",
         "Start juggling the ball using any surface of your foot.",
@@ -1054,11 +1107,14 @@
         "difficulty": "professional",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "aerial_control",
-                "ball_control"
-            ]
+        "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Stand about 2 yards away from a wall.",
         "Start juggling the ball using any surface of your foot.",
@@ -1118,12 +1174,18 @@
         "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "ball_control",
-                "directional_control",
-                "1v1_skills"
-            ]
+        "sub_skill": "turn_with_ball"
       },
+      "secondary_skills": [
+        {
+          "category": "balance",
+          "sub_skill": "ground_control"
+        },
+        {
+          "category": "balance",
+          "sub_skill": "touch_and_move"
+        }
+      ],
       "instructions": [
         "Stand 2-3 yards away from a wall.",
         "Set up two cones, one on each side, 3 yards from your starting position.",
@@ -1176,11 +1238,14 @@
         "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "ball_control",
-                "foot-eye_coordination"
-            ]
+        "sub_skill": "juggling"
       },
+      "secondary_skills": [
+        {
+          "category": "balance",
+          "sub_skill": "aerial_control"
+        }
+      ],
       "instructions": [
         "Start juggling the ball using any part of your body except your hands.",
         "Keep the ball in the air as long as possible without letting it drop.",
@@ -1234,12 +1299,16 @@
       "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-        "sub_skill": "directional_control"
+        "sub_skill": "turn_with_ball"
       },
       "secondary_skills": [
         {
-          "category": "first_touch",
-          "sub_skill": "spatial_awareness"
+          "category": "balance",
+          "sub_skill": "ground_control"
+        },
+        {
+          "category": "balance",
+          "sub_skill": "touch_and_move"
         }
       ],
       "instructions": [

@@ -185,21 +185,6 @@ def create_completed_session(session: CompletedSessionCreate,
         )
         db.add(db_session)
         
-        # # Update progress history
-        # progress_history = db.query(ProgressHistory).filter(
-        #     ProgressHistory.user_id == current_user.id
-        # ).first()
-        
-        # if progress_history:
-        #     progress_history.completed_sessions_count += 1
-        #     # TODO: Implement proper streak calculation based on consecutive days
-        # else:
-        #     progress_history = ProgressHistory(
-        #         user_id=current_user.id,
-        #         completed_sessions_count=1
-        #     )
-        #     db.add(progress_history)
-        
         db.commit()
         db.refresh(db_session)
         return db_session

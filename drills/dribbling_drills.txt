@@ -1,7 +1,7 @@
 [
     {
         "title": "Toe-Taps",
-        "description": "A footwork drill focused on improving ball control and quick touches using the sole of your feet.",
+        "description": "A footwork drill focused on improving close control and quick touches using the sole of your feet.",
         "type": "time_based",
         "duration": 10,
         "sets": 3,
@@ -22,12 +22,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -78,12 +78,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -134,12 +134,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -190,12 +190,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -246,12 +246,16 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
             }
         ],
         "instructions": [
@@ -304,12 +308,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -361,12 +365,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -418,12 +422,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_touch"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "balance"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -475,12 +479,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
             }
         ],
         "instructions": [
@@ -532,12 +536,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
             }
         ],
         "instructions": [
@@ -588,12 +596,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
             }
         ],
         "instructions": [
@@ -644,12 +656,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
             }
         ],
         "instructions": [
@@ -699,12 +715,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "feints_and_moves"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
             }
         ],
         "instructions": [
@@ -755,12 +775,16 @@
         "difficulty": "advanced",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "creativity"
+            "sub_skill": "close_control"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
             }
         ],
         "instructions": [
@@ -811,12 +835,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
                 "category": "footwork",
-                "sub_skill": "agility"
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "footwork",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -866,13 +894,18 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "speed_dribbling"
         },
         "secondary_skills": [
             {
                 "category": "footwork",
-                "sub_skill": "agility"
+                "sub_skill": "close_control"
+            },
+            {
+                "category": "footwork",
+                "sub_skill": "change_of_direction"
             }
+
         ],
         "instructions": [
             "Set up 5 cones in a '+' shape, with each outside cone about 6-7 yards from the center cone.",
@@ -922,12 +955,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "close_control"
         },
         "secondary_skills": [
             {
                 "category": "footwork",
-                "sub_skill": "agility"
+                "sub_skill": "1v1_moves"
+            },
+            {
+                "category": "footwork",
+                "sub_skill": "change_of_direction"
             }
         ],
         "instructions": [
@@ -979,16 +1016,16 @@
         "difficulty": "advanced",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "creativity"
+            "sub_skill": "1v1_moves"
         },
         "secondary_skills": [
             {
                 "category": "footwork",
-                "sub_skill": "agility"
+                "sub_skill": "ball_mastery"
             },
             {
                 "category": "dribbling",
-                "sub_skill": "ball_control"
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -1039,12 +1076,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "creativity"
+            "sub_skill": "1v1_moves"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "ball_control"
+                "sub_skill": "change_of_direction"
             }
         ],
         "instructions": [
@@ -1097,12 +1134,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "directional_changes"
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
