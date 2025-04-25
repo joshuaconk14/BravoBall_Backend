@@ -23,12 +23,16 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "one_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
-                "category": "first_touch",
-                "sub_skill": "ground_control"
+                "category": "passing",
+                "sub_skill": "one_touch_passing"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -86,8 +90,8 @@
         },
         "secondary_skills": [
             {
-                "category": "first_touch",
-                "sub_skill": "ground_control"
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -148,16 +152,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "one_touch"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "first_touch",
-                "sub_skill": "ground_control"
-            },
-            {
-                "category": "fitness",
-                "sub_skill": "agility"
+                "category": "passing",
+                "sub_skill": "short_passing"
             }
         ],
         "instructions": [
@@ -222,8 +222,8 @@
         },
         "secondary_skills": [
             {
-                "category": "fitness",
-                "sub_skill": "agility"
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -281,16 +281,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "short_passing"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "fitness",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "first_touch",
-                "sub_skill": "ground_control"
+                "category": "passing",
+                "sub_skill": "short_passing"
             }
         ],
         "instructions": [
@@ -348,11 +344,14 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": [
-                "ball_control",
-                "first_touch"
-            ]
+            "sub_skill": "long_passing"
         },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "technique"
+            }
+        ],
         "instructions": [
             "Stand 20 yards away from a wall with a soccer ball.",
             "Strike a driven pass along the ground using your laces to hit the wall.",
@@ -405,11 +404,14 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": [
-                "ball_control",
-                "first_touch"
-            ]
+            "sub_skill": "long_passing"
         },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "technique"
+            }
+        ],
         "instructions": [
             "Stand 20 yards away from a wall with a soccer ball.",
             "Strike a driven pass along the ground using the inside of your foot to hit the wall.",
@@ -465,12 +467,16 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "first_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "passing_accuracy"
+                "sub_skill": "technique"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -524,12 +530,16 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "first_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "passing_accuracy"
+                "sub_skill": "technique"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -582,13 +592,17 @@
         ],
         "difficulty": "beginner",
         "primary_skill": {
-            "category": "dribbling",
-            "sub_skill": "deception"
+            "category": "passing",
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "first_touch"
+                "sub_skill": "technique"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -641,13 +655,17 @@
         ],
         "difficulty": "beginner",
         "primary_skill": {
-            "category": "dribbling",
-            "sub_skill": "ball_control"
+            "category": "passing",
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "passing_accuracy"
+                "sub_skill": "technique"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -701,12 +719,16 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "one_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "spatial_awareness"
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "one_touch_passing"
             }
         ],
         "instructions": [
@@ -759,12 +781,16 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "one_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "spatial_awareness"
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "one_touch_passing"
             }
         ],
         "instructions": [
@@ -816,13 +842,13 @@
         ],
         "difficulty": "intermediate",
         "primary_skill": {
-            "category": "dribbling",
-            "sub_skill": "deception"
+            "category": "passing",
+            "sub_skill": "long_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "long_passing"
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -875,12 +901,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "passing_accuracy"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "change_of_direction"
+                "category": "passing",
+                "sub_skill": "short_passing"
             }
         ],
         "instructions": [
@@ -933,12 +959,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "passing_accuracy"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "ball_control"
+                "category": "passing",
+                "sub_skill": "short_passing"
             }
         ],
         "instructions": [
@@ -991,12 +1017,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "inside-foot"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "touch",
-                "sub_skill": "trapping"
+                "category": "passing",
+                "sub_skill": "short_passing"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -1050,12 +1080,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "outside_foot"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "touch",
-                "sub_skill": "trapping"
+                "category": "passing",
+                "sub_skill": "short_passing"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -1109,12 +1143,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "passing_accuracy"
+            "sub_skill": "one_touch_passing"
         },
         "secondary_skills": [
             {
-                "category": "touch",
-                "sub_skill": "directional_control"
+                "category": "passing",
+                "sub_skill": "short_passing"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [

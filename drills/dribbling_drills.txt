@@ -10,9 +10,8 @@
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -66,9 +65,8 @@
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -122,9 +120,8 @@
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -178,9 +175,8 @@
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -234,9 +230,8 @@
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -296,9 +291,8 @@
             "training_cone"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -353,9 +347,8 @@
             "training_cone"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -410,9 +403,8 @@
             "cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -468,8 +460,7 @@
         ],
         "suitable_locations": [
             "full_field",
-            "medium_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -525,8 +516,7 @@
         ],
         "suitable_locations": [
             "full_field",
-            "medium_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -585,8 +575,7 @@
         ],
         "suitable_locations": [
             "full_field",
-            "medium_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -645,8 +634,7 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -704,8 +692,7 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -764,8 +751,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space"
         ],
         "intensity": "high",
         "training_styles": [
@@ -824,8 +811,7 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -882,9 +868,8 @@
             "cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "full_field"
+            "medium_field"
         ],
         "intensity": "high",
         "training_styles": [
@@ -944,8 +929,7 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -1003,9 +987,8 @@
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "high",
         "training_styles": [
@@ -1064,9 +1047,8 @@
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -1123,8 +1105,7 @@
         ],
         "suitable_locations": [
             "full_field",
-            "medium_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [

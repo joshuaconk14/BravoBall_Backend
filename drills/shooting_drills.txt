@@ -22,12 +22,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven_shots"
+            "sub_skill": "power_shots"
         },
         "secondary_skills": [
             {
                 "category": "shooting",
-                "sub_skill": "ball_striking"
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -78,12 +78,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven_shots"
+            "sub_skill": "power_shots"
         },
         "secondary_skills": [
             {
                 "category": "shooting",
-                "sub_skill": "ball_striking"
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -134,12 +134,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven_shots"
+            "sub_skill": "power_shots"
         },
         "secondary_skills": [
             {
                 "category": "shooting",
-                "sub_skill": "ball_striking"
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -190,12 +190,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven_shots"
+            "sub_skill": "power_shots"
         },
         "secondary_skills": [
             {
                 "category": "shooting",
-                "sub_skill": "ball_striking"
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -248,12 +248,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "cut_in_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "turns"
+                "category": "shooting",
+                "sub_skill": "finesse_shots"
             }
         ],
         "instructions": [
@@ -306,12 +306,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "far_post_shots"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "fitness",
-                "sub_skill": "agility"
+                "category": "shooting",
+                "sub_skill": "finesse_shots"
             }
         ],
         "instructions": [
@@ -364,12 +364,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "ball_mastery"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [
@@ -423,12 +423,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "volleys"
+            "sub_skill": "volleying"
         },
         "secondary_skills": [
             {
-                "category": "first_touch",
-                "sub_skill": "aerial_control"
+                "category": "shooting",
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -482,12 +482,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "deceptive_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "close_control"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [
@@ -541,12 +541,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "1v1_moves"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [
@@ -600,12 +600,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "deceptive_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "inside-out_move"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [
@@ -659,12 +659,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "curl_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "body_feints"
+                "category": "shooting",
+                "sub_skill": "finesse_shots"
             }
         ],
         "instructions": [
@@ -718,13 +718,18 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "low_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "shoulder_drops"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
+            },
+            {
+                "category": "shooting",
+                "sub_skill": "power_shots"
             }
+
         ],
         "instructions": [
             "Place a cone between the edge of the 18 yard box and the edge of the 6 yard box, with another cone 6-8 yards diagonally behind it.",
@@ -777,12 +782,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "agility",
-                "sub_skill": "footwork"
+                "category": "shooting",
+                "sub_skill": "first_time_shots"
+            },
+            {
+                "category": "shooting",
+                "sub_skill": "finesse_shots"
             }
         ],
         "instructions": [
@@ -835,12 +844,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "agility"
+                "category": "shooting",
+                "sub_skill": "1v1_to_shoot"
             }
         ],
         "instructions": [
@@ -893,12 +902,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "turning_to_shoot"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "cone_weaving"
+                "category": "shooting",
+                "sub_skill": "1v1_to_shoot"
             }
         ],
         "instructions": [
@@ -952,12 +961,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "agility"
+                "category": "shooting",
+                "sub_skill": "1v1_to_shoot"
             }
         ],
         "instructions": [
@@ -1010,12 +1019,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "finishing"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "movement",
-                "sub_skill": "checking_runs"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [

@@ -10,11 +10,9 @@
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "indoor_court",
-        "backyard",
-        "small_field"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -68,12 +66,9 @@
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-            "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -127,12 +122,9 @@
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-            "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -186,11 +178,9 @@
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "indoor_court",
-        "backyard",
-        "small_field"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -244,11 +234,9 @@
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "indoor_court",
-        "backyard",
-        "small_field"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -302,12 +290,9 @@
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -361,12 +346,9 @@
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -420,12 +402,9 @@
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -477,12 +456,10 @@
             "wall"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "high",
         "training_styles": [
             "medium_intensity"
@@ -541,12 +518,10 @@
             "wall"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "high",
         "training_styles": [
             "medium_intensity"
@@ -605,12 +580,10 @@
             "wall"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "high",
         "training_styles": [
             "medium_intensity"
@@ -669,11 +642,9 @@
             "training cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -690,7 +661,7 @@
         }
       ],
       "instructions": [
-        "Set two cones 10 yards apart.",
+        "Set two cones 10-20 yards apart.",
         "Start at one cone and begin juggling below knee height.",
         "Move forward at a walking pace while keeping the ball in the air.",
         "Continue juggling until you reach the other cone.",
@@ -728,11 +699,9 @@
             "training cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "high_intensity"
@@ -787,11 +756,9 @@
             "training cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "high_intensity"
@@ -846,10 +813,9 @@
             "training_cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "professional"
@@ -905,11 +871,10 @@
             "wall"
         ],
       "suitable_locations": [
-        "wall_field",
-        "indoor_court",
-        "garage_wall",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "medium",
         "training_styles": [
             "high_intensity"
@@ -965,10 +930,9 @@
             "Training cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "Advanced"
@@ -1028,11 +992,10 @@
             "Wall"
         ],
       "suitable_locations": [
-        "Wall at a Field",
-            "indoor_court",
-        "Garage Wall",
-        "Backyard Fence"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "medium",
         "training_styles": [
             "Advanced"
@@ -1095,11 +1058,10 @@
             "Wall"
         ],
       "suitable_locations": [
-        "Wall at a Field",
-            "indoor_court",
-        "Garage Wall",
-        "Backyard Fence"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "medium",
         "training_styles": [
             "Professional"
@@ -1163,10 +1125,10 @@
             "Training cones"
         ],
       "suitable_locations": [
-        "Wall at a Field",
-            "indoor_court",
-        "Backyard"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "hard",
         "training_styles": [
             "Advanced"
@@ -1227,10 +1189,9 @@
             "Soccer ball"
         ],
       "suitable_locations": [
-        "Any open space",
-            "indoor_court",
-        "Backyard"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "Advanced"
@@ -1287,11 +1248,10 @@
             "training_cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space"
+            "location_with_wall"
+        ],
       "intensity": "high",
         "training_styles": [
             "high_intensity"
