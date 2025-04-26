@@ -241,7 +241,7 @@
         "training_styles": [
             "medium_intensity"
         ],
-      "difficulty": "intermediate",
+      "difficulty": "beginner",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -297,7 +297,7 @@
         "training_styles": [
             "medium_intensity"
         ],
-      "difficulty": "beginner",
+      "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -353,7 +353,7 @@
         "training_styles": [
             "medium_intensity"
         ],
-      "difficulty": "beginner",
+      "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -409,7 +409,7 @@
         "training_styles": [
             "medium_intensity"
         ],
-      "difficulty": "intermediate",
+      "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -763,7 +763,7 @@
         "training_styles": [
             "high_intensity"
         ],
-      "difficulty": "intermediate",
+      "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -820,7 +820,7 @@
         "training_styles": [
             "professional"
         ],
-      "difficulty": "intermediate",
+      "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -1066,7 +1066,7 @@
         "training_styles": [
             "Professional"
         ],
-        "difficulty": "professional",
+        "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -1249,14 +1249,14 @@
         ],
       "suitable_locations": [
             "medium_field",
-            "small_space"
+            "small_space",
             "location_with_wall"
         ],
       "intensity": "high",
         "training_styles": [
             "high_intensity"
         ],
-      "difficulty": "advanced",
+      "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "turn_with_ball"

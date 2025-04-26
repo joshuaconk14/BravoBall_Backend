@@ -11,10 +11,9 @@
             "wall"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -74,10 +73,9 @@
             "wall"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -140,10 +138,9 @@
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "high",
         "training_styles": [
@@ -206,10 +203,9 @@
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -269,10 +265,9 @@
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "high",
         "training_styles": [
@@ -335,7 +330,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field"
+            "medium_field",
+            "location_with_wall"
         ],
         "intensity": "intermediate",
         "training_styles": [
@@ -395,7 +391,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field"
+            "medium_field",
+            "location_with_wall"
         ],
         "intensity": "intermediate",
         "training_styles": [
@@ -455,9 +452,9 @@
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -518,16 +515,16 @@
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "short_passing"
@@ -581,16 +578,16 @@
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "short_passing"
@@ -644,16 +641,16 @@
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "short_passing"
@@ -707,16 +704,16 @@
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "short_passing"
@@ -769,16 +766,16 @@
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "short_passing"
@@ -832,8 +829,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "open_space",
-            "small_field"
+            "medium_field",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -889,16 +886,16 @@
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "low",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "passing_with_movement"
@@ -947,16 +944,16 @@
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "passing_with_movement"
@@ -1005,16 +1002,16 @@
             "4 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "passing_with_movement"
@@ -1068,16 +1065,16 @@
             "4 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "passing_with_movement"
@@ -1131,16 +1128,16 @@
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "passing",
             "sub_skill": "one_touch_passing"

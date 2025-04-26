@@ -11,9 +11,8 @@
             "goals"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -67,9 +66,8 @@
             "goals"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -124,14 +122,14 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
             "sub_skill": "power_shots"
@@ -180,14 +178,14 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
             "sub_skill": "power_shots"
@@ -237,8 +235,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -295,8 +293,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -353,8 +351,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -412,15 +410,15 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "shooting",
             "sub_skill": "volleying"
@@ -471,8 +469,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -530,8 +528,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -589,8 +587,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -648,8 +646,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -707,8 +705,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -771,8 +769,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -833,15 +831,15 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "shooting",
             "sub_skill": "shooting_on_the_run"
@@ -891,15 +889,15 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "shooting",
             "sub_skill": "shooting_on_the_run"
@@ -950,8 +948,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -1008,15 +1006,15 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "shooting",
             "sub_skill": "1v1_to_shoot"

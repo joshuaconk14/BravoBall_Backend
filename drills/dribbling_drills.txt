@@ -73,7 +73,7 @@
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
             "sub_skill": "ball_mastery"
@@ -183,7 +183,7 @@
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
             "sub_skill": "ball_mastery"
@@ -523,7 +523,7 @@
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
             "sub_skill": "change_of_direction"
@@ -868,7 +868,7 @@
             "cones"
         ],
         "suitable_locations": [
-            "full_field"
+            "full_field",
             "medium_field"
         ],
         "intensity": "high",
@@ -876,7 +876,7 @@
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "dribbling",
             "sub_skill": "speed_dribbling"
@@ -996,7 +996,7 @@
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "advanced",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
             "sub_skill": "1v1_moves"
@@ -1055,7 +1055,7 @@
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "dribbling",
             "sub_skill": "1v1_moves"
