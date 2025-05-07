@@ -40,6 +40,11 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
         if duration is None:
             duration = drill.duration if drill.duration is not None else 10  # Default to 10 minutes
             
+        # Get primary skill
+        primary_skill = None
+        if hasattr(drill, 'skill_focus'):
+            primary_skill = next((skill for skill in drill.skill_focus if skill.is_primary), None)
+            
         drill_data = {
             "id": drill.id,
             "title": drill.title,
@@ -54,7 +59,12 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
             "type": drill.type,
             "sets": drill.sets,
             "reps": drill.reps,
-            "rest": drill.rest
+            "rest": drill.rest,
+            "training_styles": drill.training_styles or [],
+            "primary_skill": {
+                "category": primary_skill.category if primary_skill else "general",
+                "sub_skill": primary_skill.sub_skill if primary_skill else "general"
+            }
         }
         drills.append(drill_data)
     
