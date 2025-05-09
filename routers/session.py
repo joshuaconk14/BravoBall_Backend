@@ -75,7 +75,7 @@ async def update_session_preferences(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Update the user's session preferences"""
+    """Update the user's session preferences and generate a new session"""
     try:
         # Check if user has session preferences
         existing_prefs = db.query(SessionPreferences).filter(SessionPreferences.user_id == current_user.id).first()
@@ -94,26 +94,42 @@ async def update_session_preferences(
             db.add(new_prefs)
             db.commit()
             db.refresh(new_prefs)
-            return {
-                "status": "success",
-                "message": "Session preferences created successfully"
-            }
+            preferences_to_use = new_prefs
+            message = "Session preferences created successfully"
+        else:
+            # Update existing preferences
+            existing_prefs.duration = preferences.get("duration", existing_prefs.duration)
+            existing_prefs.available_equipment = preferences.get("available_equipment", existing_prefs.available_equipment)
+            existing_prefs.training_style = preferences.get("training_style", existing_prefs.training_style)
+            existing_prefs.training_location = preferences.get("training_location", existing_prefs.training_location)
+            existing_prefs.difficulty = preferences.get("difficulty", existing_prefs.difficulty)
+            existing_prefs.target_skills = preferences.get("target_skills", existing_prefs.target_skills)
+            
+            db.commit()
+            db.refresh(existing_prefs)
+            preferences_to_use = existing_prefs
+            message = "Session preferences updated successfully"
         
-        # Update existing preferences
-        existing_prefs.duration = preferences.get("duration", existing_prefs.duration)
-        existing_prefs.available_equipment = preferences.get("available_equipment", existing_prefs.available_equipment)
-        existing_prefs.training_style = preferences.get("training_style", existing_prefs.training_style)
-        existing_prefs.training_location = preferences.get("training_location", existing_prefs.training_location)
-        existing_prefs.difficulty = preferences.get("difficulty", existing_prefs.difficulty)
-        existing_prefs.target_skills = preferences.get("target_skills", existing_prefs.target_skills)
+        # Generate new session with updated preferences
+        session_generator = SessionGenerator(db)
+        session = await session_generator.generate_session(preferences_to_use)
         
-        db.commit()
-        db.refresh(existing_prefs)
+        if not session:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to generate session with updated preferences"
+            )
         
+        # Format the session
+        formatted_session = format_session_for_frontend(session)
+        
+        # Return response with status, message, and session data
         return {
             "status": "success",
-            "message": "Session preferences updated successfully"
+            "message": message,
+            "data": formatted_session
         }
+        
     except Exception as e:
         logger.error(f"Error updating session preferences: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
