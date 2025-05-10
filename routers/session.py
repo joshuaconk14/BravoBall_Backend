@@ -97,7 +97,7 @@ async def update_session_preferences(
             preferences_to_use = new_prefs
             message = "Session preferences created successfully"
         else:
-            # Update existing preferences
+        # Update existing preferences
             existing_prefs.duration = preferences.get("duration", existing_prefs.duration)
             existing_prefs.available_equipment = preferences.get("available_equipment", existing_prefs.available_equipment)
             existing_prefs.training_style = preferences.get("training_style", existing_prefs.training_style)
@@ -105,10 +105,10 @@ async def update_session_preferences(
             existing_prefs.difficulty = preferences.get("difficulty", existing_prefs.difficulty)
             existing_prefs.target_skills = preferences.get("target_skills", existing_prefs.target_skills)
             
-            db.commit()
-            db.refresh(existing_prefs)
-            preferences_to_use = existing_prefs
-            message = "Session preferences updated successfully"
+        db.commit()
+        db.refresh(existing_prefs)
+        preferences_to_use = existing_prefs
+        message = "Session preferences updated successfully"
         
         # Generate new session with updated preferences
         session_generator = SessionGenerator(db)
