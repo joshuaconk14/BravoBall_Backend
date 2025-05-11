@@ -323,7 +323,7 @@
         "description": "A passing drill that develops long-range passing accuracy, power, and control using the laces.",
         "type": "rep_based",
         "duration": 8,
-        "sets: 1,
+        "sets": 1,
         "reps": 50,
         "equipment": [
             "Soccer ball",
