@@ -97,13 +97,27 @@ async def update_session_preferences(
             preferences_to_use = new_prefs
             message = "Session preferences created successfully"
         else:
-        # Update existing preferences
-            existing_prefs.duration = preferences.get("duration", existing_prefs.duration)
-            existing_prefs.available_equipment = preferences.get("available_equipment", existing_prefs.available_equipment)
-            existing_prefs.training_style = preferences.get("training_style", existing_prefs.training_style)
-            existing_prefs.training_location = preferences.get("training_location", existing_prefs.training_location)
-            existing_prefs.difficulty = preferences.get("difficulty", existing_prefs.difficulty)
-            existing_prefs.target_skills = preferences.get("target_skills", existing_prefs.target_skills)
+            # Update existing preferences - use None for empty values
+            existing_prefs.duration = preferences.get("duration")
+            existing_prefs.available_equipment = preferences.get("available_equipment")
+            existing_prefs.training_style = preferences.get("training_style")
+            existing_prefs.training_location = preferences.get("training_location")
+            existing_prefs.difficulty = preferences.get("difficulty")
+            
+            # Handle target_skills update
+            target_skills = preferences.get("target_skills")
+            if target_skills is not None:  # Only update if target_skills is provided
+                # Ensure target_skills is a list of dictionaries with the correct structure
+                formatted_skills = []
+                for skill in target_skills:
+                    if isinstance(skill, dict) and "category" in skill and "sub_skills" in skill:
+                        formatted_skills.append({
+                            "category": skill["category"],
+                            "sub_skills": skill["sub_skills"] if isinstance(skill["sub_skills"], list) else [skill["sub_skills"]]
+                        })
+                existing_prefs.target_skills = formatted_skills
+            else:
+                existing_prefs.target_skills = []  # Set to empty list if None is provided
             
         db.commit()
         db.refresh(existing_prefs)
@@ -270,10 +284,19 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
             }
         }
         drills.append(drill_data)
+
+    # Add this new code here, just before the return statement
+    focus_areas = []
+    if hasattr(session, "focus_areas") and session.focus_areas:
+        for area in session.focus_areas:
+            if isinstance(area, dict) and "sub_skills" in area:
+                focus_areas.extend(area["sub_skills"])
+            elif isinstance(area, str):
+                focus_areas.append(area)
     
     return {
         "session_id": session.id if hasattr(session, "id") else None,
         "total_duration": session.total_duration if hasattr(session, "total_duration") else sum(d["duration"] for d in drills),
-        "focus_areas": session.focus_areas or [],
+        "focus_areas": focus_areas,
         "drills": drills
     }
