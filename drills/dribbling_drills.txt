@@ -1,18 +1,17 @@
 [
     {
         "title": "Toe-Taps",
-        "description": "A footwork drill focused on improving ball control and quick touches using the sole of your feet.",
+        "description": "A footwork drill focused on improving close control and quick touches using the sole of your feet.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 5,
+        "sets": 4,
+        "reps": 30,
         "equipment": [
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -22,12 +21,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -59,31 +58,30 @@
         "title": "Shuffles",
         "description": "A fast footwork drill dedicated to improving agility and control using the inside of your feet.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 5,
+        "sets": 4,
+        "reps": 30,
         "equipment": [
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -115,16 +113,15 @@
         "title": "Sole Rolls",
         "description": "A footwork drill focused on improving ball control and quick touches using the sole of your feet.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 5,
+        "sets": 4,
+        "reps": 30,
         "equipment": [
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -134,12 +131,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -171,31 +168,30 @@
         "title": "Inside-Outside Touches",
         "description": "A stationary dribbling drill focusing on using the inside and outside surfaces of the foot.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 5,
+        "sets": 4,
+        "reps": 20,
         "equipment": [
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -227,16 +223,15 @@
         "title": "L-drags",
         "description": "A stationary dribbling drill focusing on using multiple surfaces of the foot.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 5,
+        "sets": 4,
+        "reps": 20,
         "equipment": [
             "ball"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -246,12 +241,16 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
             }
         ],
         "instructions": [
@@ -284,17 +283,16 @@
         "title": "V-touches sole-to-outside-foot",
         "description": "A stationary dribbling drill focusing on using multiple surfaces of the foot and change of direction.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 5,
+        "sets": 4,
+        "reps": 20,
         "equipment": [
             "ball",
             "training_cone"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -304,12 +302,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -341,17 +339,16 @@
         "title": "V-touches sole-to-inside-foot",
         "description": "A footwork drill involving dragging and pushing the ball around a cone.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 5,
+        "sets": 4,
+        "reps": 20,
         "equipment": [
             "ball",
             "training_cone"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -361,12 +358,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_control"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -398,17 +395,16 @@
         "title": "Sole square rolls",
         "description": "A footwork drill using the sole to roll the ball around a cone in a square pattern.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 8,
+        "sets": 6,
+        "reps": 10,
         "equipment": [
             "ball",
             "cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -418,12 +414,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "ball_touch"
+            "sub_skill": "ball_mastery"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "balance"
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -452,20 +448,19 @@
         "thumbnail_url": "https://example.com/sole-square-rolls-thumbnail.jpg"
     },
     {
-        "title": "Cone weave same foot",
+        "title": "Cone weave",
         "description": "A dribbling drill focusing on zigzag movements using the same foot.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 6,
+        "sets": 4,
+        "reps": 3,
         "equipment": [
             "ball",
             "training_cones"
         ],
         "suitable_locations": [
             "full_field",
-            "medium_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -475,12 +470,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
             }
         ],
         "instructions": [
@@ -512,32 +507,35 @@
         "title": "Cone weave inside-outside",
         "description": "A dribbling drill emphasizing alternating touches with each foot.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 6,
+        "sets": 4,
+        "reps": 3,
         "equipment": [
             "ball",
             "training_cones"
         ],
         "suitable_locations": [
             "full_field",
-            "medium_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
             }
         ],
         "instructions": [
@@ -568,17 +566,16 @@
         "title": "Cone weave roll-to-inside",
         "description": "A dribbling drill focusing on rolling the ball and then taking an inside touch.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 7,
+        "sets": 4,
+        "reps": 3,
         "equipment": [
             "ball",
             "training_cones"
         ],
         "suitable_locations": [
             "full_field",
-            "medium_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -588,12 +585,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
             }
         ],
         "instructions": [
@@ -625,16 +626,15 @@
         "title": "Cone weave in-in out-out",
         "description": "A dribbling drill emphasizing zigzag movements with inside and outside touches.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 7,
+        "sets": 4,
+        "reps": 3,
         "equipment": [
             "cones"
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -644,12 +644,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
             }
         ],
         "instructions": [
@@ -680,16 +684,15 @@
         "title": "Cone weave la croqueta",
         "description": "A dribbling drill focusing on the la croqueta skill to change direction.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 7,
+        "sets": 4,
+        "reps": 3,
         "equipment": [
             "cones"
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -699,12 +702,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "feints_and_moves"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
             }
         ],
         "instructions": [
@@ -736,16 +743,16 @@
         "title": "Ronaldinho drill to cone turn",
         "description": "A creative dribbling drill inspired by Ronaldinho, focusing on turns.",
         "type": "reps_based",
-        "duration": null,
-        "sets": null,
+        "duration": 7,
+        "sets": 4,
         "reps": 3,
         "equipment": [
             "cones"
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space"
         ],
         "intensity": "high",
         "training_styles": [
@@ -755,12 +762,16 @@
         "difficulty": "advanced",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "creativity"
+            "sub_skill": "close_control"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
             }
         ],
         "instructions": [
@@ -792,16 +803,15 @@
         "title": "Zig zag dribble",
         "description": "A fast dribbling drill focusing on sharp turns and control.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 8,
+        "sets": 6,
+        "reps": 1,
         "equipment": [
             "cones"
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -811,12 +821,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -847,32 +861,36 @@
         "title": "Plus dribbling",
         "description": "A versatile dribbling drill focusing on speed and foot alternation.",
         "type": "reps_based",
-        "duration": null,
-        "sets": null,
-        "reps": 3,
+        "duration": 8,
+        "sets": 6,
+        "reps": 1,
         "equipment": [
             "cones"
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "high",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "speed_dribbling"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
             }
+
         ],
         "instructions": [
             "Set up 5 cones in a '+' shape, with each outside cone about 6-7 yards from the center cone.",
@@ -903,16 +921,15 @@
         "title": "Figure eight weave to drive",
         "description": "A dribbling drill focusing on figure-eight weaving and driving with the ball.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 8,
+        "sets": 6,
+        "reps": 1,
         "equipment": [
             "cones"
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -922,12 +939,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "close_control"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "1v1_moves"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
             }
         ],
         "instructions": [
@@ -958,17 +979,16 @@
         "title": "Box freestyle",
         "description": "A freestyle skills drill to enhance creativity and ball control in a confined space.",
         "type": "time_based",
-        "duration": 5,
-        "sets": 3,
-        "reps": null,
+        "duration": 7,
+        "sets": 5,
+        "reps": 1,
         "equipment": [
             "ball",
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "high",
         "training_styles": [
@@ -976,19 +996,19 @@
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "advanced",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "creativity"
+            "sub_skill": "1v1_moves"
         },
         "secondary_skills": [
             {
-                "category": "footwork",
-                "sub_skill": "agility"
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
             },
             {
                 "category": "dribbling",
-                "sub_skill": "ball_control"
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [
@@ -1019,32 +1039,31 @@
         "title": "Skills triangle",
         "description": "A creative dribbling drill focusing on skills around a triangular setup of cones.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 8,
+        "sets": 4,
+        "reps": 6,
         "equipment": [
             "ball",
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court"
+            "small_space"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "creativity"
+            "sub_skill": "1v1_moves"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "ball_control"
+                "sub_skill": "change_of_direction"
             }
         ],
         "instructions": [
@@ -1077,17 +1096,16 @@
         "title": "Box dribble with center cone",
         "description": "A dribbling drill focusing on directional control and path changes around a box and a center cone.",
         "type": "time_based",
-        "duration": 10,
-        "sets": 3,
-        "reps": null,
+        "duration": 8,
+        "sets": 5,
+        "reps": 1,
         "equipment": [
             "ball",
             "training_cones"
         ],
         "suitable_locations": [
             "full_field",
-            "medium_field",
-            "indoor_court"
+            "medium_field"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -1097,12 +1115,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "dribbling",
-            "sub_skill": "control"
+            "sub_skill": "change_of_direction"
         },
         "secondary_skills": [
             {
                 "category": "dribbling",
-                "sub_skill": "directional_changes"
+                "sub_skill": "speed_dribbling"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
             }
         ],
         "instructions": [

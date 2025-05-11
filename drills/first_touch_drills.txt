@@ -3,18 +3,16 @@
       "title": "Inside-Foot Juggle with Catch",
       "description": "A simple beginner-friendly juggling exercise to improve first touch and ball control.",
       "type": "time_based",
-      "duration": 15,
-      "sets": null,
-      "reps": null,
+      "duration": 10,
+      "sets": 6,
+      "reps": 15,
         "equipment": [
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "indoor_court",
-        "backyard",
-        "small_field"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -27,7 +25,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -61,19 +59,16 @@
       "title": "Lace Juggle with Catch",
       "description": "A beginner-friendly juggling drill that helps improve aerial control and first touch using the laces.",
       "type": "time_based",
-      "duration": 15,
-      "sets": null,
-      "reps": null,
+      "duration": 10,
+      "sets": 6,
+      "reps": 15,
         "equipment": [
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-            "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -86,7 +81,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -120,19 +115,16 @@
       "title": "Inside-Foot Juggle with Bounce",
       "description": "A beginner juggling drill that allows a bounce between touches to help improve foot-eye coordination and ball control.",
       "type": "time_based",
-      "duration": 15,
-      "sets": null,
-      "reps": null,
+      "duration": 8,
+      "sets": 6,
+      "reps": 15,
         "equipment": [
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-            "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -145,7 +137,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -179,18 +171,16 @@
       "title": "Lace Juggle with Bounce",
       "description": "A beginner juggling drill using the laces, allowing a bounce between touches to improve control and coordination.",
       "type": "time_based",
-      "duration": 15,
-      "sets": null,
-      "reps": null,
+      "duration": 8,
+      "sets": 6,
+      "reps": 15,
         "equipment": [
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "indoor_court",
-        "backyard",
-        "small_field"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -203,7 +193,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -237,18 +227,16 @@
       "title": "Juggle Knee-Height",
       "description": "A juggling drill that focuses on controlling the ball at knee height to improve aerial touch and consistency.",
       "type": "rep_based",
-      "duration": 10,
-      "sets": null,
+      "duration": 5,
+      "sets": 1,
       "reps": 200,
         "equipment": [
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "indoor_court",
-        "backyard",
-        "small_field"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -261,7 +249,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -295,24 +283,21 @@
       "title": "Juggle Waist-Height",
       "description": "A juggling drill that helps players improve their touch and control by keeping the ball at waist height.",
       "type": "rep_based",
-      "duration": 10,
-      "sets": null,
+      "duration": 7,
+      "sets": 1,
       "reps": 200,
         "equipment": [
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
         ],
-      "difficulty": "beginner",
+      "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -320,7 +305,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -355,23 +340,20 @@
       "description": "A juggling drill focused on keeping the ball at head height, helping players develop control and touch precision.",
       "type": "rep_based",
       "duration": 10,
-      "sets": null,
+      "sets": 1,
       "reps": 200,
         "equipment": [
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
         ],
-      "difficulty": "beginner",
+      "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -379,7 +361,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -413,32 +395,29 @@
       "title": "Knee Juggles",
       "description": "A juggling drill using the knees to improve ball control and balance.",
       "type": "time_based",
-      "duration": 15,
-      "sets": null,
-      "reps": null,
+      "duration": 5,
+      "sets": 1,
+      "reps": 50,
         "equipment": [
             "ball"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
         ],
-      "difficulty": "intermediate",
+      "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
       },
       "secondary_skills": [
         {
-          "category": "balance",
-                "sub_skill": "general"
+          "category": "first_touch",
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -469,7 +448,7 @@
       "title": "Wall Pass to Open-Body Touch",
       "description": "A passing drill that helps players develop first touch control and body positioning when receiving a pass from the wall.",
       "type": "set_based",
-      "duration": 15,
+      "duration": 8,
       "sets": 3,
       "reps": 20,
         "equipment": [
@@ -477,12 +456,10 @@
             "wall"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "high",
         "training_styles": [
             "medium_intensity"
@@ -492,6 +469,16 @@
         "category": "first_touch",
         "sub_skill": "ground_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "turn_with_ball"
+        },
+        {
+          "category": "first_touch",
+          "sub_skill": "touch_and_move"
+        }
+      ],
       "instructions": [
         "Stand at a comfortable distance from the wall.",
         "Pass the ball against the wall with the inside of your foot.",
@@ -523,7 +510,7 @@
       "title": "Wall Pass to Outside-Foot Touch",
       "description": "A first-touch drill that focuses on using the outside of the foot to control and redirect passes off the wall.",
       "type": "set_based",
-      "duration": 15,
+      "duration": 8,
       "sets": 3,
       "reps": 20,
         "equipment": [
@@ -531,12 +518,10 @@
             "wall"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "high",
         "training_styles": [
             "medium_intensity"
@@ -546,6 +531,16 @@
         "category": "first_touch",
         "sub_skill": "ground_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "turn_with_ball"
+        },
+        {
+          "category": "first_touch",
+          "sub_skill": "touch_and_move"
+        }
+      ],
       "instructions": [
         "Pass the ball against the wall using the inside of your foot.",
         "As the ball returns, use the outside of your foot to control it in a new direction.",
@@ -577,20 +572,18 @@
       "title": "Wall Pass to Open-Body Turn",
       "description": "A drill focusing on using the first touch to turn and face forward after receiving a pass from the wall.",
       "type": "set_based",
-      "duration": 15,
+      "duration": 8,
       "sets": 3,
-      "reps": 10,
+      "reps": 20,
         "equipment": [
             "ball",
             "wall"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard",
-        "small_room"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "high",
         "training_styles": [
             "medium_intensity"
@@ -603,7 +596,11 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "one_touch_control"
+          "sub_skill": "turn_with_ball"
+        },
+        {
+          "category": "first_touch",
+          "sub_skill": "touch_and_move"
         }
       ],
       "instructions": [
@@ -639,17 +636,15 @@
       "type": "set_based",
       "duration": 10,
       "sets": 3,
-      "reps": null,
+      "reps": 3,
         "equipment": [
             "ball",
             "training cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "medium_intensity"
@@ -659,8 +654,14 @@
         "category": "first_touch",
         "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
-        "Set two cones 10 yards apart.",
+        "Set two cones 10-20 yards apart.",
         "Start at one cone and begin juggling below knee height.",
         "Move forward at a walking pace while keeping the ball in the air.",
         "Continue juggling until you reach the other cone.",
@@ -692,17 +693,15 @@
       "type": "set_based",
       "duration": 10,
       "sets": 3,
-      "reps": null,
+      "reps": 2,
         "equipment": [
             "ball",
             "training cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "high_intensity"
@@ -712,6 +711,12 @@
         "category": "first_touch",
         "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Set two cones 10 yards apart.",
         "Start at one cone and begin juggling at waist height.",
@@ -745,26 +750,30 @@
       "type": "set_based",
       "duration": 10,
       "sets": 3,
-      "reps": null,
+      "reps": 2,
         "equipment": [
             "ball",
             "training cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "high_intensity"
         ],
-      "difficulty": "intermediate",
+      "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Set two cones 10 yards apart.",
         "Start at one cone and begin juggling the ball at head height.",
@@ -796,23 +805,22 @@
       "title": "High Ball Juggles",
       "description": "A juggling drill focused on controlling high balls within a designated space.",
       "type": "rep_based",
-      "duration": 15,
-      "sets": null,
+      "duration": 10,
+      "sets": 1,
       "reps": 20,
         "equipment": [
             "ball",
             "training_cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "professional"
         ],
-      "difficulty": "intermediate",
+      "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
         "sub_skill": "aerial_control"
@@ -820,7 +828,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "ball_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -855,7 +863,7 @@
       "title": "Wall Juggles",
       "description": "A juggling drill that improves first touch and ball control using a wall for consistent returns.",
       "type": "set_based",
-      "duration": 20,
+      "duration": 10,
       "sets": 3,
       "reps": 15,
         "equipment": [
@@ -863,11 +871,10 @@
             "wall"
         ],
       "suitable_locations": [
-        "wall_field",
-        "indoor_court",
-        "garage_wall",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "medium",
         "training_styles": [
             "high_intensity"
@@ -880,7 +887,7 @@
       "secondary_skills": [
         {
           "category": "first_touch",
-          "sub_skill": "ball_control"
+          "sub_skill": "juggling"
         }
       ],
       "instructions": [
@@ -915,18 +922,17 @@
       "title": "High Ball to Touch Across Gate",
       "description": "A ball control drill that focuses on first touch and directional movement using high ball control.",
       "type": "set_based",
-      "duration": 15,
-      "sets": 3,
-      "reps": 14,
+      "duration": 12,
+      "sets": 4,
+      "reps": 8,
         "equipment": [
             "Soccer ball",
             "Training cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "Advanced"
@@ -934,11 +940,18 @@
         "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "aerial_control",
-                "ground_control"
-            ]
+        "sub_skill": "turn_with_ball"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "aerial_control"
+        },
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Set up four cones in a box shape, with each cone 3 yards apart.",
         "Start juggling the ball inside the box.",
@@ -971,19 +984,18 @@
       "title": "Two-Touch Wall Juggles",
       "description": "A juggling drill that improves first touch and ball control using a wall for consistent returns.",
       "type": "set_based",
-      "duration": 20,
+      "duration": 12,
       "sets": 3,
-      "reps": 20,
+      "reps": 30,
         "equipment": [
             "Soccer ball",
             "Wall"
         ],
       "suitable_locations": [
-        "Wall at a Field",
-            "indoor_court",
-        "Garage Wall",
-        "Backyard Fence"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "medium",
         "training_styles": [
             "Advanced"
@@ -991,10 +1003,14 @@
         "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "aerial_control"
-            ]
+        "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Stand about 2-4 yards away from a wall.",
         "Start juggling the ball using any surface of your foot.",
@@ -1034,7 +1050,7 @@
       "title": "One-Touch Wall Juggles",
       "description": "A juggling drill that improves first touch and ball control by continuously passing the ball against a wall with one-touch.",
       "type": "set_based",
-      "duration": 20,
+      "duration": 10,
       "sets": 3,
       "reps": 30,
         "equipment": [
@@ -1042,23 +1058,25 @@
             "Wall"
         ],
       "suitable_locations": [
-        "Wall at a Field",
-            "indoor_court",
-        "Garage Wall",
-        "Backyard Fence"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "medium",
         "training_styles": [
             "Professional"
         ],
-        "difficulty": "professional",
+        "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "aerial_control",
-                "ball_control"
-            ]
+        "sub_skill": "aerial_control"
       },
+      "secondary_skills": [
+        {
+          "category": "first_touch",
+          "sub_skill": "juggling"
+        }
+      ],
       "instructions": [
         "Stand about 2 yards away from a wall.",
         "Start juggling the ball using any surface of your foot.",
@@ -1098,7 +1116,7 @@
       "title": "Touch from Wall to Skill",
       "description": "A ball control and dribbling drill that improves first touch and directional movement towards a skill move.",
       "type": "set_based",
-      "duration": 20,
+      "duration": 12,
       "sets": 3,
       "reps": 10,
         "equipment": [
@@ -1107,10 +1125,10 @@
             "Training cones"
         ],
       "suitable_locations": [
-        "Wall at a Field",
-            "indoor_court",
-        "Backyard"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "hard",
         "training_styles": [
             "Advanced"
@@ -1118,12 +1136,18 @@
         "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "ball_control",
-                "directional_control",
-                "1v1_skills"
-            ]
+        "sub_skill": "turn_with_ball"
       },
+      "secondary_skills": [
+        {
+          "category": "balance",
+          "sub_skill": "ground_control"
+        },
+        {
+          "category": "balance",
+          "sub_skill": "touch_and_move"
+        }
+      ],
       "instructions": [
         "Stand 2-3 yards away from a wall.",
         "Set up two cones, one on each side, 3 yards from your starting position.",
@@ -1158,17 +1182,16 @@
       "description": "A creative juggling drill that improves ball control and touch by allowing free-style movement and skill integration.",
       "type": "time_based",
       "duration": 10,
-      "sets": 4,
-      "reps": null,
+      "sets": 3,
+      "reps": 1,
       "default_duration": 2,
         "equipment": [
             "Soccer ball"
         ],
       "suitable_locations": [
-        "Any open space",
-            "indoor_court",
-        "Backyard"
-      ],
+            "medium_field",
+            "small_space"
+        ],
       "intensity": "medium",
         "training_styles": [
             "Advanced"
@@ -1176,11 +1199,14 @@
         "difficulty": "advanced",
       "primary_skill": {
         "category": "first_touch",
-            "sub_skill": [
-                "ball_control",
-                "foot-eye_coordination"
-            ]
+        "sub_skill": "juggling"
       },
+      "secondary_skills": [
+        {
+          "category": "balance",
+          "sub_skill": "aerial_control"
+        }
+      ],
       "instructions": [
         "Start juggling the ball using any part of your body except your hands.",
         "Keep the ball in the air as long as possible without letting it drop.",
@@ -1213,7 +1239,7 @@
       "title": "Wall Pass to Clockwise Square Touches",
       "description": "A first-touch drill focusing on ball control and directional movement using a wall pass and controlled touches around a square of cones.",
       "type": "set_based",
-      "duration": 15,
+      "duration": 10,
       "sets": 4,
       "reps": 8,
         "equipment": [
@@ -1222,24 +1248,27 @@
             "training_cones"
         ],
       "suitable_locations": [
-        "full_field",
-        "medium_field",
-        "indoor_court",
-        "backyard"
-      ],
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
       "intensity": "high",
         "training_styles": [
             "high_intensity"
         ],
-      "difficulty": "advanced",
+      "difficulty": "intermediate",
       "primary_skill": {
         "category": "first_touch",
-        "sub_skill": "directional_control"
+        "sub_skill": "turn_with_ball"
       },
       "secondary_skills": [
         {
-          "category": "first_touch",
-          "sub_skill": "spatial_awareness"
+          "category": "balance",
+          "sub_skill": "ground_control"
+        },
+        {
+          "category": "balance",
+          "sub_skill": "touch_and_move"
         }
       ],
       "instructions": [
