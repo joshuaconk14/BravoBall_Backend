@@ -107,7 +107,7 @@ class SessionPreferences(Base):
     training_style = Column(String)
     training_location = Column(String)
     difficulty = Column(String)
-    target_skills = Column(JSON)  # List of {category: str, sub_skills: List[str]}
+    target_skills = Column(JSONB, default=list)  # List of {category: str, sub_skills: List[str]}
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
 

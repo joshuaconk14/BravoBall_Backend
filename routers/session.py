@@ -80,6 +80,20 @@ async def update_session_preferences(
         # Check if user has session preferences
         existing_prefs = db.query(SessionPreferences).filter(SessionPreferences.user_id == current_user.id).first()
         
+        # Format target_skills before creating/updating preferences
+        target_skills = preferences.get("target_skills", [])
+        if target_skills is not None:
+            formatted_skills = []
+            for skill in target_skills:
+                if isinstance(skill, dict) and "category" in skill and "sub_skills" in skill:
+                    formatted_skills.append({
+                        "category": skill["category"],
+                        "sub_skills": skill["sub_skills"] if isinstance(skill["sub_skills"], list) else [skill["sub_skills"]]
+                    })
+            preferences["target_skills"] = formatted_skills
+        else:
+            preferences["target_skills"] = []
+        
         if not existing_prefs:
             # Create new preferences
             new_prefs = SessionPreferences(
@@ -89,7 +103,7 @@ async def update_session_preferences(
                 training_style=preferences.get("training_style", "medium_intensity"),
                 training_location=preferences.get("training_location", "full_field"),
                 difficulty=preferences.get("difficulty", "beginner"),
-                target_skills=preferences.get("target_skills", [])
+                target_skills=preferences["target_skills"]
             )
             db.add(new_prefs)
             db.commit()
@@ -97,28 +111,14 @@ async def update_session_preferences(
             preferences_to_use = new_prefs
             message = "Session preferences created successfully"
         else:
-            # Update existing preferences - use None for empty values
+            # Update existing preferences
             existing_prefs.duration = preferences.get("duration")
             existing_prefs.available_equipment = preferences.get("available_equipment")
             existing_prefs.training_style = preferences.get("training_style")
             existing_prefs.training_location = preferences.get("training_location")
             existing_prefs.difficulty = preferences.get("difficulty")
-            
-            # Handle target_skills update
-            target_skills = preferences.get("target_skills")
-            if target_skills is not None:  # Only update if target_skills is provided
-                # Ensure target_skills is a list of dictionaries with the correct structure
-                formatted_skills = []
-                for skill in target_skills:
-                    if isinstance(skill, dict) and "category" in skill and "sub_skills" in skill:
-                        formatted_skills.append({
-                            "category": skill["category"],
-                            "sub_skills": skill["sub_skills"] if isinstance(skill["sub_skills"], list) else [skill["sub_skills"]]
-                        })
-                existing_prefs.target_skills = formatted_skills
-            else:
-                existing_prefs.target_skills = []  # Set to empty list if None is provided
-            
+            existing_prefs.target_skills = preferences["target_skills"]
+        
         db.commit()
         db.refresh(existing_prefs)
         preferences_to_use = existing_prefs
@@ -134,16 +134,11 @@ async def update_session_preferences(
                 detail="Failed to generate session with updated preferences"
             )
         
-        # Format the session
-        formatted_session = format_session_for_frontend(session)
-        
-        # Return response with status, message, and session data
         return {
             "status": "success",
             "message": message,
-            "data": formatted_session
+            "data": format_session_for_frontend(session)
         }
-        
     except Exception as e:
         logger.error(f"Error updating session preferences: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
