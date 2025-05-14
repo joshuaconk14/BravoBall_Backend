@@ -3,17 +3,16 @@
         "title": "Still ball shot on 6 yard box",
         "description": "A focused shooting drill aimed at developing driven shots from the 6 yard box.",
         "type": "reps_based",
-        "duration": null,
-        "sets": 5,
+        "duration": 8,
+        "sets": 4,
         "reps": 5,
         "equipment": [
             "ball",
             "goals"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -22,12 +21,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven_shots"
+            "sub_skill": "power_shots"
         },
         "secondary_skills": [
             {
                 "category": "shooting",
-                "sub_skill": "ball_striking"
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -59,17 +58,16 @@
         "title": "Roll ball shot on 6 yard box",
         "description": "A shooting drill that emphasizes technique by initiating a rolling ball shot from the 6 yard box.",
         "type": "reps_based",
-        "duration": null,
-        "sets": 5,
+        "duration": 8,
+        "sets": 4,
         "reps": 5,
         "equipment": [
             "ball",
             "goals"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -78,12 +76,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven_shots"
+            "sub_skill": "power_shots"
         },
         "secondary_skills": [
             {
                 "category": "shooting",
-                "sub_skill": "ball_striking"
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -115,8 +113,8 @@
         "title": "Still ball shot on 18 yard box",
         "description": "A focused shooting drill aimed at developing driven shots from the 18 yard box.",
         "type": "reps_based",
-        "duration": null,
-        "sets": 5,
+        "duration": 8,
+        "sets": 4,
         "reps": 5,
         "equipment": [
             "ball",
@@ -124,22 +122,22 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven_shots"
+            "sub_skill": "power_shots"
         },
         "secondary_skills": [
             {
                 "category": "shooting",
-                "sub_skill": "ball_striking"
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -171,8 +169,8 @@
         "title": "Rolling ball shot on 18 yard box",
         "description": "A shooting drill that emphasizes technique by initiating a rolling ball shot from the 18 yard box.",
         "type": "reps_based",
-        "duration": null,
-        "sets": 5,
+        "duration": 8,
+        "sets": 4,
         "reps": 5,
         "equipment": [
             "ball",
@@ -180,22 +178,22 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "driven_shots"
+            "sub_skill": "power_shots"
         },
         "secondary_skills": [
             {
                 "category": "shooting",
-                "sub_skill": "ball_striking"
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -227,9 +225,9 @@
         "title": "Turn to cut-in shot",
         "description": "A dynamic shooting drill that focuses on dribble turns and shooting accuracy from the edge of the box.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 10,
         "sets": 5,
-        "reps": 5,
+        "reps": 4,
         "equipment": [
             "ball",
             "cones",
@@ -237,8 +235,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -248,12 +246,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "cut_in_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "turns"
+                "category": "shooting",
+                "sub_skill": "finesse_shots"
             }
         ],
         "instructions": [
@@ -285,9 +283,9 @@
         "title": "Open-up-body run to shot",
         "description": "A shooting drill that simulates opening up the body to shoot at the far post after a dynamic run.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 10,
         "sets": 5,
-        "reps": 5,
+        "reps": 4,
         "equipment": [
             "ball",
             "cones",
@@ -295,8 +293,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -306,12 +304,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "far_post_shots"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "fitness",
-                "sub_skill": "agility"
+                "category": "shooting",
+                "sub_skill": "finesse_shots"
             }
         ],
         "instructions": [
@@ -343,7 +341,7 @@
         "title": "One v one cone to shoot",
         "description": "A shooting drill that focuses on dribbling and executing a skill move before taking a shot on goal.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 10,
         "sets": 5,
         "reps": 5,
         "equipment": [
@@ -353,8 +351,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -364,12 +362,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "ball_mastery"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [
@@ -402,7 +400,7 @@
         "title": "Juggle with touch to volley",
         "description": "A technique-focused drill that combines juggling and shooting from a lofted ball.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 10,
         "sets": 5,
         "reps": 5,
         "equipment": [
@@ -412,23 +410,23 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "volleys"
+            "sub_skill": "volleying"
         },
         "secondary_skills": [
             {
-                "category": "first_touch",
-                "sub_skill": "aerial_control"
+                "category": "shooting",
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
@@ -461,7 +459,7 @@
         "title": "Shoulder drop to shot",
         "description": "A shooting drill that uses a shoulder drop technique to create space and take a shot on goal.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 8,
         "sets": 5,
         "reps": 5,
         "equipment": [
@@ -471,8 +469,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -482,12 +480,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "deceptive_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "close_control"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [
@@ -520,9 +518,9 @@
         "title": "Scissor to shot",
         "description": "A shooting drill that focuses on the scissor skill to create space before shooting on goal.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 8,
         "sets": 5,
-        "reps": 5,
+        "reps": 4,
         "equipment": [
             "ball",
             "cones",
@@ -530,8 +528,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -541,12 +539,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "1v1_moves"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [
@@ -579,9 +577,9 @@
         "title": "Inside-out to shot",
         "description": "A drill focused on using the inside and outside of the foot to deceive defenders before shooting.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 8,
         "sets": 5,
-        "reps": 5,
+        "reps": 4,
         "equipment": [
             "ball",
             "cones",
@@ -589,8 +587,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -600,12 +598,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "deceptive_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "inside-out_move"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [
@@ -638,9 +636,9 @@
         "title": "One v one cut in on side",
         "description": "A practical drill that emphasizes dribbling, body feinting, and curling shots into the net after cutting inside.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 8,
         "sets": 5,
-        "reps": 5,
+        "reps": 4,
         "equipment": [
             "ball",
             "cones",
@@ -648,8 +646,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -659,12 +657,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "curl_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "body_feints"
+                "category": "shooting",
+                "sub_skill": "finesse_shots"
             }
         ],
         "instructions": [
@@ -697,9 +695,9 @@
         "title": "One v one down line on side",
         "description": "A drill that focuses on dropping the shoulder, dribbling down the line, and taking a low shot on goal.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 8,
         "sets": 5,
-        "reps": 5,
+        "reps": 4,
         "equipment": [
             "ball",
             "cones",
@@ -707,8 +705,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -718,13 +716,18 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "low_shots"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "shoulder_drops"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
+            },
+            {
+                "category": "shooting",
+                "sub_skill": "power_shots"
             }
+
         ],
         "instructions": [
             "Place a cone between the edge of the 18 yard box and the edge of the 6 yard box, with another cone 6-8 yards diagonally behind it.",
@@ -756,7 +759,7 @@
         "title": "Box agility to shoot",
         "description": "An agility drill that combines footwork and shooting from a dynamic position.",
         "type": "reps_based",
-        "duration": null,
+        "duration": 7,
         "sets": 5,
         "reps": 1,
         "equipment": [
@@ -766,8 +769,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -777,12 +780,16 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "agility",
-                "sub_skill": "footwork"
+                "category": "shooting",
+                "sub_skill": "first_time_shots"
+            },
+            {
+                "category": "shooting",
+                "sub_skill": "finesse_shots"
             }
         ],
         "instructions": [
@@ -815,7 +822,7 @@
         "description": "A drill that emphasizes quick footwork and sharp touches while dribbling before shooting.",
         "type": "time_based",
         "duration": 10,
-        "sets": 5,
+        "sets": 7,
         "reps": 1,
         "equipment": [
             "ball",
@@ -824,23 +831,23 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "agility"
+                "category": "shooting",
+                "sub_skill": "1v1_to_shoot"
             }
         ],
         "instructions": [
@@ -872,9 +879,9 @@
         "title": "Cone weave to turn and finish",
         "description": "A precision drill that builds turning skills and shooting accuracy in tight spaces.",
         "type": "reps_based",
-        "duration": null,
-        "sets": 5,
-        "reps": 5,
+        "duration": 10,
+        "sets": 4,
+        "reps": 3,
         "equipment": [
             "ball",
             "cones",
@@ -882,23 +889,23 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "turning_to_shoot"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "cone_weaving"
+                "category": "shooting",
+                "sub_skill": "1v1_to_shoot"
             }
         ],
         "instructions": [
@@ -931,8 +938,8 @@
         "title": "Mini zig zag dribble to shot",
         "description": "An agility drill focusing on tight ball control while dribbling and shooting dynamics.",
         "type": "reps_based",
-        "duration": null,
-        "sets": 5,
+        "duration": 12,
+        "sets": 8,
         "reps": 1,
         "equipment": [
             "ball",
@@ -941,8 +948,8 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "high",
         "training_styles": [
@@ -952,12 +959,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "quick_shots"
+            "sub_skill": "shooting_on_the_run"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "agility"
+                "category": "shooting",
+                "sub_skill": "1v1_to_shoot"
             }
         ],
         "instructions": [
@@ -989,8 +996,8 @@
         "title": "Check to dribble to shot",
         "description": "A drill that combines movement off the ball with dribbling and finishing skills.",
         "type": "reps_based",
-        "duration": null,
-        "sets": 5,
+        "duration": 12,
+        "sets": 8,
         "reps": 1,
         "equipment": [
             "ball",
@@ -999,23 +1006,23 @@
         ],
         "suitable_locations": [
             "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "location_with_goals"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "high_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "shooting",
-            "sub_skill": "finishing"
+            "sub_skill": "1v1_to_shoot"
         },
         "secondary_skills": [
             {
-                "category": "movement",
-                "sub_skill": "checking_runs"
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
             }
         ],
         "instructions": [

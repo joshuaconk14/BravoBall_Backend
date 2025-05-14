@@ -3,18 +3,17 @@
         "title": "One-Touch Pass",
         "description": "A passing drill that improves first-touch control and quick decision-making using the wall.",
         "type": "set_based",
-        "duration": 15,
-        "sets": 3,
+        "duration": 10,
+        "sets": 5,
         "reps": 30,
         "equipment": [
             "ball",
             "wall"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -23,12 +22,16 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "one_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
-                "category": "first_touch",
-                "sub_skill": "ground_control"
+                "category": "passing",
+                "sub_skill": "one_touch_passing"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -62,18 +65,17 @@
         "title": "Two-Touch Pass",
         "description": "A passing drill that emphasizes control and precision by taking a touch before passing.",
         "type": "set_based",
-        "duration": 15,
-        "sets": 3,
+        "duration": 12,
+        "sets": 5,
         "reps": 30,
         "equipment": [
             "ball",
             "wall"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -86,8 +88,8 @@
         },
         "secondary_skills": [
             {
-                "category": "first_touch",
-                "sub_skill": "ground_control"
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -127,7 +129,7 @@
         "title": "V-Passes",
         "description": "A passing drill focusing on quick directional changes and control while passing against a wall.",
         "type": "set_based",
-        "duration": 15,
+        "duration": 10,
         "sets": 3,
         "reps": 20,
         "equipment": [
@@ -136,10 +138,9 @@
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "high",
         "training_styles": [
@@ -148,16 +149,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "one_touch"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "first_touch",
-                "sub_skill": "ground_control"
-            },
-            {
-                "category": "fitness",
-                "sub_skill": "agility"
+                "category": "passing",
+                "sub_skill": "short_passing"
             }
         ],
         "instructions": [
@@ -197,19 +194,18 @@
         "title": "V-to-Straight Passes",
         "description": "A drill that improves passing control and movement, combining straight passes with V-passes.",
         "type": "set_based",
-        "duration": 15,
+        "duration": 10,
         "sets": 3,
-        "reps": 12,
+        "reps": 15,
         "equipment": [
             "ball",
             "wall",
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -222,8 +218,8 @@
         },
         "secondary_skills": [
             {
-                "category": "fitness",
-                "sub_skill": "agility"
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -260,19 +256,18 @@
         "title": "Check and Backpedal Passes",
         "description": "A passing drill that improves movement off the ball, positioning, and quick decision-making.",
         "type": "set_based",
-        "duration": 15,
-        "sets": 3,
-        "reps": 8,
+        "duration": 10,
+        "sets": 4,
+        "reps": 10,
         "equipment": [
             "ball",
             "wall",
             "training_cones"
         ],
         "suitable_locations": [
-            "full_field",
             "medium_field",
-            "indoor_court",
-            "backyard"
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "high",
         "training_styles": [
@@ -281,16 +276,12 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "short_passing"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "fitness",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "first_touch",
-                "sub_skill": "ground_control"
+                "category": "passing",
+                "sub_skill": "short_passing"
             }
         ],
         "instructions": [
@@ -331,15 +322,17 @@
         "title": "Long Lace Pass on Ground",
         "description": "A passing drill that develops long-range passing accuracy, power, and control using the laces.",
         "type": "rep_based",
-        "duration": 15,
-        "reps": 20,
+        "duration": 8,
+        "sets": 1,
+        "reps": 50,
         "equipment": [
             "Soccer ball",
             "Wall"
         ],
         "suitable_locations": [
             "full_field",
-            "small_field"
+            "medium_field",
+            "location_with_wall"
         ],
         "intensity": "intermediate",
         "training_styles": [
@@ -348,11 +341,14 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": [
-                "ball_control",
-                "first_touch"
-            ]
+            "sub_skill": "long_passing"
         },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "technique"
+            }
+        ],
         "instructions": [
             "Stand 20 yards away from a wall with a soccer ball.",
             "Strike a driven pass along the ground using your laces to hit the wall.",
@@ -388,15 +384,17 @@
         "title": "Long Inside-Foot Pass on Ground",
         "description": "A passing drill that enhances long-range passing accuracy and control using the inside of the foot.",
         "type": "rep_based",
-        "duration": 15,
-        "reps": 20,
+        "duration": 8,
+        "sets": 1,
+        "reps": 50,
         "equipment": [
             "Soccer ball",
             "Wall"
         ],
         "suitable_locations": [
             "full_field",
-            "small_field"
+            "medium_field",
+            "location_with_wall"
         ],
         "intensity": "intermediate",
         "training_styles": [
@@ -405,11 +403,14 @@
         "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": [
-                "ball_control",
-                "first_touch"
-            ]
+            "sub_skill": "long_passing"
         },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "technique"
+            }
+        ],
         "instructions": [
             "Stand 20 yards away from a wall with a soccer ball.",
             "Strike a driven pass along the ground using the inside of your foot to hit the wall.",
@@ -445,17 +446,17 @@
         "title": "Pass to Inside Touch",
         "description": "A passing drill to enhance passing accuracy and first touch control using the wall and cones.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 10,
+        "sets": 4,
+        "reps": 30,
         "equipment": [
             "ball",
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -465,12 +466,16 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "first_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "passing_accuracy"
+                "sub_skill": "technique"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -504,32 +509,36 @@
         "title": "Pass to Outside Touch",
         "description": "A passing drill designed to improve outside foot control and passing accuracy using the wall and cones.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 10,
+        "sets": 4,
+        "reps": 30,
         "equipment": [
             "ball",
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "first_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "passing_accuracy"
+                "sub_skill": "technique"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -563,32 +572,36 @@
         "title": "Pass to Cruyff Touch",
         "description": "A passing drill focusing on the Cruyff touch to enhance deception and control skills with the wall and cones.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 10,
+        "sets": 4,
+        "reps": 25,
         "equipment": [
             "ball",
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
-            "category": "dribbling",
-            "sub_skill": "deception"
+            "category": "passing",
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "first_touch"
+                "sub_skill": "technique"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -622,32 +635,36 @@
         "title": "Pass to Sole Roll",
         "description": "A passing drill focused on using the sole of the foot for ball control and passing accuracy.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 10,
+        "sets": 4,
+        "reps": 25,
         "equipment": [
             "ball",
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
-            "category": "dribbling",
-            "sub_skill": "ball_control"
+            "category": "passing",
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "passing_accuracy"
+                "sub_skill": "technique"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
             }
         ],
         "instructions": [
@@ -681,32 +698,36 @@
         "title": "Double Pass to Open-Up Touch",
         "description": "A passing drill aimed at improving quick passing and opening up space with a touch.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 10,
+        "sets": 3,
+        "reps": 10,
         "equipment": [
             "ball",
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "one_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "spatial_awareness"
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "one_touch_passing"
             }
         ],
         "instructions": [
@@ -739,32 +760,36 @@
         "title": "Three-Wall Pass to Inside Touch",
         "description": "A passing drill focused on executing multiple wall passes followed by an inside touch for better coordination.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 10,
+        "sets": 3,
+        "reps": 8,
         "equipment": [
             "ball",
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "indoor_court",
-            "backyard"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "one_touch"
+            "sub_skill": "short_passing"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "spatial_awareness"
+                "category": "passing",
+                "sub_skill": "passing_with_movement"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "one_touch_passing"
             }
         ],
         "instructions": [
@@ -798,16 +823,16 @@
         "title": "Fake to Long Pass",
         "description": "A drill focusing on deception, ball control, and executing long passes with accuracy.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 8,
+        "sets": 1,
+        "reps": 30,
         "equipment": [
             "ball"
         ],
         "suitable_locations": [
             "full_field",
-            "open_space",
-            "small_field"
+            "medium_field",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
@@ -816,13 +841,13 @@
         ],
         "difficulty": "intermediate",
         "primary_skill": {
-            "category": "dribbling",
-            "sub_skill": "deception"
+            "category": "passing",
+            "sub_skill": "long_passing"
         },
         "secondary_skills": [
             {
                 "category": "passing",
-                "sub_skill": "long_passing"
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -855,32 +880,32 @@
         "title": "Pass to Dribble Around Cone",
         "description": "A drill designed to enhance passing accuracy and dribbling skills around obstacles.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 10,
+        "sets": 4,
+        "reps": 10,
         "equipment": [
             "ball",
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "low",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "passing_accuracy"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "change_of_direction"
+                "category": "passing",
+                "sub_skill": "short_passing"
             }
         ],
         "instructions": [
@@ -913,32 +938,32 @@
         "title": "Pass to Figure Eight",
         "description": "A passing and dribbling drill aimed at improving ball control and agility through figure-eight movements.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 10,
+        "sets": 4,
+        "reps": 8,
         "equipment": [
             "ball",
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "beginner",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "passing_accuracy"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "dribbling",
-                "sub_skill": "ball_control"
+                "category": "passing",
+                "sub_skill": "short_passing"
             }
         ],
         "instructions": [
@@ -968,35 +993,39 @@
         "thumbnail_url": "https://example.com/pass-to-figure-eight-thumbnail.jpg"
     },
     {
-        "title": "Three Gated Inside-Foot Passes",
+        "title": "Three Gated Pass to Inside Touch",
         "description": "A passing drill focused on using the inside of the foot for accuracy and control while navigating through gates.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 8,
+        "sets": 4,
+        "reps": 4,
         "equipment": [
             "ball",
             "4 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "inside-foot"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "touch",
-                "sub_skill": "trapping"
+                "category": "passing",
+                "sub_skill": "short_passing"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -1030,32 +1059,36 @@
         "title": "Three Gated Pass to Outside Touch",
         "description": "A drill focusing on passing accuracy and using the outside of the foot for control while navigating through gates.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 8,
+        "sets": 4,
+        "reps": 4,
         "equipment": [
             "ball",
             "4 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "outside_foot"
+            "sub_skill": "passing_with_movement"
         },
         "secondary_skills": [
             {
-                "category": "touch",
-                "sub_skill": "trapping"
+                "category": "passing",
+                "sub_skill": "short_passing"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [
@@ -1089,32 +1122,36 @@
         "title": "Middle Across Touch to Touch on Side",
         "description": "A passing drill focused on improving accuracy and control while changing direction with touches.",
         "type": "time_based",
-        "duration": 15,
-        "sets": null,
-        "reps": null,
+        "duration": 8,
+        "sets": 4,
+        "reps": 4,
         "equipment": [
             "ball",
             "2 cones"
         ],
         "suitable_locations": [
-            "full_field",
-            "small_field",
-            "indoor_court"
+            "medium_field",
+            "small_space",
+            "location_with_wall"
         ],
         "intensity": "medium",
         "training_styles": [
             "medium_intensity",
             "medium_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "advanced",
         "primary_skill": {
             "category": "passing",
-            "sub_skill": "passing_accuracy"
+            "sub_skill": "one_touch_passing"
         },
         "secondary_skills": [
             {
-                "category": "touch",
-                "sub_skill": "directional_control"
+                "category": "passing",
+                "sub_skill": "short_passing"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "technique"
             }
         ],
         "instructions": [

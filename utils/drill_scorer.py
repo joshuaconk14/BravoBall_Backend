@@ -59,52 +59,64 @@ class DrillScorer:
     def _score_skills(self, skill_focus: List[DrillSkillFocus]) -> Dict[str, float]:
         """Score based on skill matches"""
         if not skill_focus:  # Handles both None and empty list
-            return {"primary": 0.5, "secondary": 0.0}  # Default primary score for drills with no skill focus
+            return {"primary": 0.0, "secondary": 0.0}  # No score for drills with no skill focus
 
         try:
             # Find primary skill
             primary_skill = next((focus for focus in skill_focus if focus.is_primary), None)
             if not primary_skill:
-                return {"primary": 0.5, "secondary": 0.0}  # Default primary score if no primary skill found
+                return {"primary": 0.0, "secondary": 0.0}  # No score if no primary skill found
             
             # Handle case where target_skills might be None
             if not self.preferences.target_skills:
-                return {"primary": 0.5, "secondary": 0.0}  # Default scores if no target skills
+                return {"primary": 0.0, "secondary": 0.0}  # No score if no target skills
             
             # Score primary skill - normalize to lowercase for comparison
             primary_category = primary_skill.category.lower() if primary_skill.category else ""
-            target_skills_lower = [target.lower() if target else "" for target in self.preferences.target_skills]
+            primary_sub_skill = primary_skill.sub_skill.lower() if primary_skill.sub_skill else ""
             
-            # Check if any target skills exist in the database
-            # If not, give a partial score to all drills to ensure some are returned
-            db = SessionLocal()
-            try:
-                matching_drills_count = db.query(Drill).join(Drill.skill_focus).filter(
-                    Drill.skill_focus.any(category=self.preferences.target_skills[0])
-                ).count()
-                
-                # If we have very few or no matching drills, be more lenient
-                if matching_drills_count < 3:
-                    primary_score = 0.5  # Give a partial score to ensure some drills are returned
-                else:
-                    primary_score = float(any(primary_category == target for target in target_skills_lower))
-            finally:
-                db.close()
+            # Check if the drill's primary skill matches any target skill
+            primary_score = 0.0
+            for target in self.preferences.target_skills:
+                if isinstance(target, dict) and "category" in target and "sub_skills" in target:
+                    target_category = target["category"].lower()
+                    target_sub_skills = [sub.lower() for sub in target["sub_skills"]] if isinstance(target["sub_skills"], list) else [target["sub_skills"].lower()]
+                    
+                    # Exact match gets highest score
+                    if primary_category == target_category and primary_sub_skill in target_sub_skills:
+                        primary_score = 1.0
+                        break
+                    # Category match but no sub-skill match gets lower score
+                    elif primary_category == target_category:
+                        primary_score = 0.3
             
             # Score secondary skills
             secondary_skills = [focus for focus in skill_focus if not focus.is_primary]
             secondary_score = 0.0
             if secondary_skills:
-                matches = sum(1 for skill in secondary_skills 
-                            for target in target_skills_lower 
-                            if skill.category and skill.category.lower() == target)
+                matches = 0
+                for skill in secondary_skills:
+                    for target in self.preferences.target_skills:
+                        if isinstance(target, dict) and "category" in target and "sub_skills" in target:
+                            target_category = target["category"].lower()
+                            target_sub_skills = [sub.lower() for sub in target["sub_skills"]] if isinstance(target["sub_skills"], list) else [target["sub_skills"].lower()]
+                            
+                            # Exact match gets higher score
+                            if (skill.category and skill.category.lower() == target_category and 
+                                skill.sub_skill and skill.sub_skill.lower() in target_sub_skills):
+                                matches += 1
+                                break
+                            # Category match but no sub-skill match gets lower score
+                            elif skill.category and skill.category.lower() == target_category:
+                                matches += 0.3
+                                break
                 secondary_score = min(matches * 0.5, 0.5)  # Cap at 0.5
 
             return {"primary": primary_score, "secondary": secondary_score}
         except (AttributeError, TypeError, IndexError) as e:
             # Handle any unexpected errors in skill matching
             print(f"Error in skill scoring: {str(e)}")
-            return {"primary": 0.5, "secondary": 0.0}
+            return {"primary": 0.0, "secondary": 0.0}
 
     def _score_equipment(self, required_equipment: List[str]) -> float:
         """
