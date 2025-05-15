@@ -111,19 +111,46 @@ class SessionGenerator:
             suitable_drills = self._normalize_session_duration(suitable_drills, preferences.duration)
             current_duration = sum(drill.adjusted_duration for drill in suitable_drills)
 
-        # Create and return the training session
-        session = TrainingSession(
-            total_duration=current_duration,
-            focus_areas=preferences.target_skills
-        )
-        session.drills = suitable_drills
-
-        # Save session to database if user is provided
+         # Check if user already has a session, and update it instead of creating a new one
+        session = None
         if preferences.user_id:
-            session.user_id = preferences.user_id
-            self.db.add(session)
-            self.db.commit()
-            self.db.refresh(session)
+            # Try to find existing session for this user
+            session = self.db.query(TrainingSession).filter(TrainingSession.user_id == preferences.user_id).first()
+            
+            if session:
+                # Update existing session
+                print(f"Updating existing session for user: {preferences.user_id}")
+                session.total_duration = current_duration
+                session.focus_areas = preferences.target_skills
+                
+                # Clear existing drills and add new ones
+                # This requires clearing the many-to-many relationship
+                session.drills = []
+                self.db.commit()  # Commit to clear the relationship
+                
+                # Now add the new drills
+                session.drills = suitable_drills
+                self.db.commit()
+                self.db.refresh(session)
+            else:
+                # Create a new session as before
+                print(f"Creating new session for user: {preferences.user_id}")
+                session = TrainingSession(
+                    total_duration=current_duration,
+                    focus_areas=preferences.target_skills,
+                    user_id=preferences.user_id
+                )
+                session.drills = suitable_drills
+                self.db.add(session)
+                self.db.commit()
+                self.db.refresh(session)
+        else:
+            # No user ID, just create a session object without saving it
+            session = TrainingSession(
+                total_duration=current_duration,
+                focus_areas=preferences.target_skills
+            )
+            session.drills = suitable_drills
 
         return session
 

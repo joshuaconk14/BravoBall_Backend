@@ -43,30 +43,44 @@ async def get_session_preferences(
 ):
     """Get the user's current session preferences"""
     try:
-        # Check if user has session preferences
+        # Get user's preferences
         preferences = db.query(SessionPreferences).filter(SessionPreferences.user_id == current_user.id).first()
         
         if not preferences:
-            # Return default preferences
-            return {
-                "duration": 30,
-                "available_equipment": current_user.available_equipment or [],
-                "training_style": "medium_intensity",
-                "training_location": current_user.training_location[0] if current_user.training_location else "full_field",
-                "difficulty": current_user.training_experience or "beginner",
-                "target_skills": current_user.areas_to_improve or []
-            }
+            raise HTTPException(
+                status_code=404,
+                detail="No preferences found for this user"
+            )
         
-        return {
-            "duration": preferences.duration,
-            "available_equipment": preferences.available_equipment,
-            "training_style": preferences.training_style,
-            "training_location": preferences.training_location,
-            "difficulty": preferences.difficulty,
-            "target_skills": preferences.target_skills
+        # Log raw preferences from database
+        logger.info(f"Raw preferences from database: {preferences.__dict__}")
+        logger.info(f"Duration: {preferences.duration}")
+        logger.info(f"Available equipment: {preferences.available_equipment}")
+        logger.info(f"Training style: {preferences.training_style}")
+        logger.info(f"Training location: {preferences.training_location}")
+        logger.info(f"Difficulty: {preferences.difficulty}")
+        logger.info(f"Target skills: {preferences.target_skills}")
+        
+        # Format response to match frontend expectations
+        response = {
+            "status": "success",
+            "message": "Preferences retrieved successfully",
+            "data": {
+                "duration": preferences.duration,
+                "available_equipment": preferences.available_equipment,
+                "training_style": preferences.training_style,
+                "training_location": preferences.training_location,
+                "difficulty": preferences.difficulty,
+                "target_skills": preferences.target_skills
+            }
         }
+        
+        # Log the formatted response
+        logger.info(f"Formatted response: {response}")
+        
+        return response
     except Exception as e:
-        logger.error(f"Error getting session preferences: {str(e)}")
+        logger.error(f"Error fetching session preferences: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.put("/api/session/preferences")
