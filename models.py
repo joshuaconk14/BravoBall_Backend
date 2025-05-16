@@ -271,15 +271,6 @@ class SkillFocusModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class SessionPreferencesRequest(BaseModel):
-    duration: int
-    available_equipment: List[str]
-    training_style: str
-    training_location: str
-    difficulty: str
-    target_skills: List[Dict[str, Union[str, List[str]]]]  # [{category: str, sub_skills: List[str]}]
-
-    model_config = ConfigDict(from_attributes=True)
 
 
 class DrillRequest(BaseModel):

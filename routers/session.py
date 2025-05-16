@@ -5,6 +5,7 @@ from models import User, SessionPreferences, OnboardingData, SessionResponse, Dr
 from db import get_db
 from auth import get_current_user
 from services.session_generator import SessionGenerator
+from utils.skill_mapper import map_display_to_backend_skills, map_backend_to_display_skills
 import logging
 
 # Configure logging
@@ -52,14 +53,8 @@ async def get_session_preferences(
                 detail="No preferences found for this user"
             )
         
-        # Log raw preferences from database
-        logger.info(f"Raw preferences from database: {preferences.__dict__}")
-        logger.info(f"Duration: {preferences.duration}")
-        logger.info(f"Available equipment: {preferences.available_equipment}")
-        logger.info(f"Training style: {preferences.training_style}")
-        logger.info(f"Training location: {preferences.training_location}")
-        logger.info(f"Difficulty: {preferences.difficulty}")
-        logger.info(f"Target skills: {preferences.target_skills}")
+        # Convert backend skills to display skills
+        display_skills = map_backend_to_display_skills(preferences.target_skills)
         
         # Format response to match frontend expectations
         response = {
@@ -71,12 +66,9 @@ async def get_session_preferences(
                 "training_style": preferences.training_style,
                 "training_location": preferences.training_location,
                 "difficulty": preferences.difficulty,
-                "target_skills": preferences.target_skills
+                "target_skills": display_skills
             }
         }
-        
-        # Log the formatted response
-        logger.info(f"Formatted response: {response}")
         
         return response
     except Exception as e:
@@ -94,19 +86,10 @@ async def update_session_preferences(
         # Check if user has session preferences
         existing_prefs = db.query(SessionPreferences).filter(SessionPreferences.user_id == current_user.id).first()
         
-        # Format target_skills before creating/updating preferences
-        target_skills = preferences.get("target_skills", [])
-        if target_skills is not None:
-            formatted_skills = []
-            for skill in target_skills:
-                if isinstance(skill, dict) and "category" in skill and "sub_skills" in skill:
-                    formatted_skills.append({
-                        "category": skill["category"],
-                        "sub_skills": skill["sub_skills"] if isinstance(skill["sub_skills"], list) else [skill["sub_skills"]]
-                    })
-            preferences["target_skills"] = formatted_skills
-        else:
-            preferences["target_skills"] = []
+        # Format target_skills using the new mapping function
+        display_skills = preferences.get("target_skills", [])
+        formatted_skills = map_display_to_backend_skills(display_skills)
+        preferences["target_skills"] = formatted_skills
         
         if not existing_prefs:
             # Create new preferences
