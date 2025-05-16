@@ -5,6 +5,7 @@ from models import User, SessionPreferences, OnboardingData, SessionResponse, Dr
 from db import get_db
 from auth import get_current_user
 from services.session_generator import SessionGenerator
+from utils.skill_mapper import map_frontend_to_backend, format_skills_for_session, REVERSE_SKILL_MAP
 import logging
 
 # Configure logging
@@ -51,15 +52,21 @@ async def get_session_preferences(
                 status_code=404,
                 detail="No preferences found for this user"
             )
+
         
-        # Log raw preferences from database
-        logger.info(f"Raw preferences from database: {preferences.__dict__}")
-        logger.info(f"Duration: {preferences.duration}")
-        logger.info(f"Available equipment: {preferences.available_equipment}")
-        logger.info(f"Training style: {preferences.training_style}")
-        logger.info(f"Training location: {preferences.training_location}")
-        logger.info(f"Difficulty: {preferences.difficulty}")
-        logger.info(f"Target skills: {preferences.target_skills}")
+        # Format target_skills as a list of frontend display names
+        target_skills = []
+        if preferences.target_skills:
+            for skill in preferences.target_skills:
+                if isinstance(skill, dict) and "category" in skill and "sub_skills" in skill:
+                    for sub_skill in skill["sub_skills"]:
+                        # Convert backend skill identifier to frontend display name
+                        skill_id = f"{skill['category']}-{sub_skill}"
+                        if skill_id in REVERSE_SKILL_MAP:
+                            target_skills.append(REVERSE_SKILL_MAP[skill_id])
+                elif isinstance(skill, str):
+                    if skill in REVERSE_SKILL_MAP:
+                        target_skills.append(REVERSE_SKILL_MAP[skill])
         
         # Format response to match frontend expectations
         response = {
@@ -71,7 +78,7 @@ async def get_session_preferences(
                 "training_style": preferences.training_style,
                 "training_location": preferences.training_location,
                 "difficulty": preferences.difficulty,
-                "target_skills": preferences.target_skills
+                "target_skills": target_skills
             }
         }
         
@@ -97,13 +104,10 @@ async def update_session_preferences(
         # Format target_skills before creating/updating preferences
         target_skills = preferences.get("target_skills", [])
         if target_skills is not None:
-            formatted_skills = []
-            for skill in target_skills:
-                if isinstance(skill, dict) and "category" in skill and "sub_skills" in skill:
-                    formatted_skills.append({
-                        "category": skill["category"],
-                        "sub_skills": skill["sub_skills"] if isinstance(skill["sub_skills"], list) else [skill["sub_skills"]]
-                    })
+            # Convert frontend skills to backend format
+            backend_skills = map_frontend_to_backend(set(target_skills))
+            # Format skills for session preferences
+            formatted_skills = format_skills_for_session(backend_skills)
             preferences["target_skills"] = formatted_skills
         else:
             preferences["target_skills"] = []
@@ -256,7 +260,7 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
         return {
             "session_id": session.id if hasattr(session, "id") else None,
             "total_duration": 0,
-            "focus_areas": session.focus_areas if hasattr(session, "focus_areas") and session.focus_areas else [],
+            "focus_areas": [],  # Return empty list if no drills
             "drills": []
         }
     
@@ -294,11 +298,12 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
         }
         drills.append(drill_data)
 
-    # Add this new code here, just before the return statement
+    # Format focus areas as a list of sub-skills
     focus_areas = []
     if hasattr(session, "focus_areas") and session.focus_areas:
         for area in session.focus_areas:
-            if isinstance(area, dict) and "sub_skills" in area:
+            if isinstance(area, dict) and "category" in area and "sub_skills" in area:
+                # Just add the sub-skills
                 focus_areas.extend(area["sub_skills"])
             elif isinstance(area, str):
                 focus_areas.append(area)
