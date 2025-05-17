@@ -12,8 +12,8 @@ class DrillScorer:
         self.preferences = preferences
         # Weights for different scoring factors (can be adjusted)
         self.weights = {
-            "primary_skill": 5.0,      # Primary skill match is most important
-            "secondary_skill": 2.0,    # Secondary skills provide additional value
+            "primary_skill": 8.0,     # Primary skill match is most important
+            "secondary_skill": 6.0,    # Secondary skills provide additional value
             "equipment": 4.0,          # Equipment availability is crucial
             "location": 4.0,           # Location match is crucial
             "difficulty": 3.0,         # Difficulty appropriateness
