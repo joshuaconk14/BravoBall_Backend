@@ -252,36 +252,26 @@ def create_default_preferences(db: Session, user: User) -> SessionPreferences:
         raise
 
 def format_session_for_frontend(session) -> Dict[str, Any]:
-    """Format training session for frontend consumption"""
+    """Format training session for frontend consumption using OrderedSessionDrill."""
     drills = []
-    
-    # Handle case where session has no drills
-    if not hasattr(session, 'drills') or not session.drills:
+
+    # Handle case where session has no ordered drills
+    if not hasattr(session, 'ordered_drills') or not session.ordered_drills:
         return {
             "session_id": session.id if hasattr(session, "id") else None,
             "total_duration": 0,
             "focus_areas": [],  # Return empty list if no drills
             "drills": []
         }
-    
-    for drill in session.drills:
-        # Get adjusted_duration or fall back to duration or default
-        duration = getattr(drill, "adjusted_duration", None)
-        if duration is None:
-            duration = drill.duration if drill.duration is not None else 10  # Default to 10 minutes
-            
-        # Get primary skill
-        primary_skill = None
-        if hasattr(drill, 'skill_focus'):
-            primary_skill = next((skill for skill in drill.skill_focus if skill.is_primary), None)
-            
-        print(f"Drill: {drill.title}, adjusted_duration: {getattr(drill, 'adjusted_duration', None)}, duration: {drill.duration}")
-        
+
+    for osd in sorted(session.ordered_drills, key=lambda x: x.position):
+        drill = osd.drill
+        # Merge per-session and static fields
         drill_data = {
             "id": drill.id,
             "title": drill.title,
             "description": drill.description,
-            "duration": duration,
+            "duration": osd.duration if osd.duration is not None else drill.duration,
             "intensity": drill.intensity,
             "difficulty": drill.difficulty,
             "equipment": drill.equipment,
@@ -289,13 +279,13 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
             "instructions": drill.instructions,
             "tips": drill.tips,
             "type": drill.type,
-            "sets": drill.sets,
-            "reps": drill.reps,
-            "rest": drill.rest,
+            "sets": osd.sets if osd.sets is not None else drill.sets,
+            "reps": osd.reps if osd.reps is not None else drill.reps,
+            "rest": osd.rest if osd.rest is not None else drill.rest,
             "training_styles": drill.training_styles or [],
             "primary_skill": {
-                "category": primary_skill.category if primary_skill else "general",
-                "sub_skill": primary_skill.sub_skill if primary_skill else "general"
+                "category": drill.skill_focus[0].category if drill.skill_focus else "general",
+                "sub_skill": drill.skill_focus[0].sub_skill if drill.skill_focus else "general"
             }
         }
         drills.append(drill_data)
@@ -309,7 +299,7 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
                 focus_areas.extend(area["sub_skills"])
             elif isinstance(area, str):
                 focus_areas.append(area)
-    
+
     return {
         "session_id": session.id if hasattr(session, "id") else None,
         "total_duration": session.total_duration if hasattr(session, "total_duration") else sum(d["duration"] for d in drills),

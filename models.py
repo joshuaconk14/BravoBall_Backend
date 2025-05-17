@@ -55,7 +55,6 @@ class User(Base):
     
     
     # Relationships
-    ordered_session_drills = relationship("OrderedSessionDrill", back_populates="user", uselist=False)
     completed_sessions = relationship("CompletedSession", back_populates="user")
     drill_groups = relationship("DrillGroup", back_populates="user")
     session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
@@ -84,18 +83,22 @@ class OrderedSessionDrill(Base):
     __tablename__ = "ordered_session_drills"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    session_id = Column(Integer, ForeignKey("training_sessions.id"))  # Link to session
     drill_id = Column(Integer, ForeignKey("drills.id"))
     position = Column(Integer)  # Order in the session
-    sets_done = Column(Integer, default=0)
-    total_sets = Column(Integer)
-    total_reps = Column(Integer)
-    total_duration = Column(Integer)
+    sets = Column(Integer, nullable=True)
+    reps = Column(Integer, nullable=True)
+    rest = Column(Integer, nullable=True)  # Per-session rest
+    duration = Column(Integer, nullable=True)  # Per-session duration (if needed)
     is_completed = Column(Boolean, default=False)
-    
+
     # Relationships
-    user = relationship("User", back_populates="ordered_session_drills")
     drill = relationship("Drill")
+    session = relationship("TrainingSession", back_populates="ordered_drills")
+
+# Remove direct relationship from User to OrderedSessionDrill
+User.ordered_session_drills = None
+
 
 class SessionPreferences(Base):
     __tablename__ = "session_preferences"
@@ -222,6 +225,9 @@ class TrainingSession(Base):
     )
 
     user = relationship("User", backref="training_sessions")
+
+    # Add ordered_drills relationship
+    ordered_drills = relationship("OrderedSessionDrill", back_populates="session")
 
 
 # Association table for many-to-many relationship between sessions and drills

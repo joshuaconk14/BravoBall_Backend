@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List
 from datetime import datetime
-from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory
+from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory, TrainingSession
 from schemas import (
     CompletedSession as CompletedSessionSchema,
     CompletedSessionCreate,
@@ -28,33 +28,34 @@ async def get_ordered_session_drills(
     Get the user's current ordered drills and their progress.
     """
     try:
-        ordered_drills = db.query(OrderedSessionDrill).filter(
-            OrderedSessionDrill.user_id == current_user.id
-        ).order_by(OrderedSessionDrill.position).all()
+        # Join OrderedSessionDrill with TrainingSession to filter by user
+        ordered_drills = db.query(OrderedSessionDrill).join(OrderedSessionDrill.session).filter(
+            TrainingSession.user_id == current_user.id
+        ).options(joinedload(OrderedSessionDrill.drill)).order_by(OrderedSessionDrill.position).all()
 
         # Include the associated drill data for each ordered drill
         result = []
         for ordered_drill in ordered_drills:
-            drill = db.query(Drill).filter(Drill.id == ordered_drill.drill_id).first()
+            drill = ordered_drill.drill
             if drill:
                 result.append({
                     "drill": {
                         "backend_id": drill.id,
                         "title": drill.title,
-                        "skill": drill.skill,
+                        "skill": getattr(drill, 'skill', None),
                         "sets": drill.sets,
                         "reps": drill.reps,
                         "duration": drill.duration,
                         "description": drill.description,
                         "tips": drill.tips,
                         "equipment": drill.equipment,
-                        "trainingStyle": drill.trainingStyle,
+                        "trainingStyle": getattr(drill, 'trainingStyle', None),
                         "difficulty": drill.difficulty
                     },
-                    "sets_done": ordered_drill.sets_done,
-                    "total_sets": ordered_drill.total_sets,
-                    "total_reps": ordered_drill.total_reps,
-                    "total_duration": ordered_drill.total_duration,
+                    # Add per-session fields as needed
+                    "sets": ordered_drill.sets,
+                    "reps": ordered_drill.reps,
+                    "duration": ordered_drill.duration,
                     "is_completed": ordered_drill.is_completed,
                     "position": ordered_drill.position
                 })
@@ -81,64 +82,56 @@ async def sync_ordered_session_drills(
     is marked as complete.
     """
     try:
-        # Get existing ordered drills for this user by filtering for id
+        # Get all sessions for this user
+        user_sessions = db.query(TrainingSession).filter(TrainingSession.user_id == current_user.id).all()
+        session_ids = [s.id for s in user_sessions]
+        # Get existing ordered drills for this user's sessions
         existing_drills = {
-            drill.drill_id: drill 
+            (drill.session_id, drill.drill_id): drill
             for drill in db.query(OrderedSessionDrill).filter(
-                OrderedSessionDrill.user_id == current_user.id
+                OrderedSessionDrill.session_id.in_(session_ids)
             ).all()
         }
-        
-        # Track which drills we've processed to identify deleted ones
-        processed_drill_ids = set()
-        
+        processed_keys = set()
         # Add or update ordered drills
         for position, drill_data in enumerate(ordered_drills.ordered_drills):
-            # Get or verify the drill exists
             drill = db.query(Drill).filter(Drill.id == drill_data.drill.backend_id).first()
             if not drill and drill_data.drill.backend_id:
                 raise HTTPException(status_code=404, detail=f"Drill with id {drill_data.drill.backend_id} not found")
-            
             drill_id = drill.id if drill else None
-            # adding non-deleted drill id's to processed_drill_id set
-            processed_drill_ids.add(drill_id)
-            
-            if drill_id in existing_drills:
+            session_id = drill_data.session_id  # Must be provided by frontend
+            key = (session_id, drill_id)
+            processed_keys.add(key)
+            if key in existing_drills:
                 # Update existing drill
-                existing_drill = existing_drills[drill_id]
+                existing_drill = existing_drills[key]
                 existing_drill.position = position
-                existing_drill.sets_done = drill_data.sets_done
-                existing_drill.total_sets = drill_data.total_sets
-                existing_drill.total_reps = drill_data.total_reps
-                existing_drill.total_duration = drill_data.total_duration
+                existing_drill.sets = drill_data.sets
+                existing_drill.reps = drill_data.reps
+                existing_drill.duration = drill_data.duration
                 existing_drill.is_completed = drill_data.is_completed
             else:
                 # Add new drill
                 ordered_drill = OrderedSessionDrill(
-                    user_id=current_user.id,
+                    session_id=session_id,
                     drill_id=drill_id,
                     position=position,
-                    sets_done=drill_data.sets_done,
-                    total_sets=drill_data.total_sets,
-                    total_reps=drill_data.total_reps,
-                    total_duration=drill_data.total_duration,
+                    sets=drill_data.sets,
+                    reps=drill_data.reps,
+                    duration=drill_data.duration,
                     is_completed=drill_data.is_completed
                 )
                 db.add(ordered_drill)
-
         # Delete drills that were removed
-        for drill_id, drill in existing_drills.items():
-            if drill_id not in processed_drill_ids:
+        for key, drill in existing_drills.items():
+            if key not in processed_keys:
                 db.delete(drill)
-
         db.commit()
-        
         return {
             "message": "Current drill progress synced successfully",
             "total_drills": len(ordered_drills.ordered_drills),
             "completed_drills": sum(1 for drill in ordered_drills.ordered_drills if drill.is_completed)
         }
-        
     except Exception as e:
         db.rollback()
         raise HTTPException(
