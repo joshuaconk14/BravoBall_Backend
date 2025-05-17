@@ -275,6 +275,8 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
         if hasattr(drill, 'skill_focus'):
             primary_skill = next((skill for skill in drill.skill_focus if skill.is_primary), None)
             
+        print(f"Drill: {drill.title}, adjusted_duration: {getattr(drill, 'adjusted_duration', None)}, duration: {drill.duration}")
+        
         drill_data = {
             "id": drill.id,
             "title": drill.title,

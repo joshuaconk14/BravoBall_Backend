@@ -77,9 +77,6 @@ class SessionGenerator:
             print(f"\nChecking drill: {drill.title}")
             print(f"Score: {ranked_drill['total_score']:.2f}")
             print(f"Score breakdown: {scores}")
-            
-            if not self._is_drill_suitable(drill, scores, preferences, has_limited_equipment):
-                continue
 
             # Adjust drill duration based on session constraints
             adjusted_duration = self._adjust_drill_duration(
@@ -153,43 +150,6 @@ class SessionGenerator:
             session.drills = suitable_drills
 
         return session
-
-    def _is_drill_suitable(self, drill: Drill, scores: dict, preferences: SessionPreferences, has_limited_equipment: bool) -> bool:
-        """
-        Check if a drill is suitable based on scores and equipment availability.
-        
-        Args:
-            drill: The drill to check
-            scores: Drill scores from the DrillScorer
-            preferences: User's session preferences
-            has_limited_equipment: Whether the user has limited equipment
-            
-        Returns:
-            True if the drill is suitable, False otherwise
-        """
-        # Check equipment and location requirements
-        if scores['equipment'] == 0 or scores['location'] == 0:
-            if has_limited_equipment and scores['equipment'] == 0:
-                # Handle null equipment
-                equipment = drill.equipment or []
-                if any(eq == "GOALS" for eq in equipment):
-                    print("❌ Failed critical requirements check - requires goals")
-                    return False
-            else:
-                print("❌ Failed critical requirements check")
-                return False
-
-        # Check skill relevance
-        if scores['primary_skill'] == 0 and scores['secondary_skill'] == 0:
-            if has_limited_equipment:
-                if not any(skill in self.BASIC_SKILLS for skill in preferences.target_skills):
-                    print("❌ Failed skill relevance check")
-                    return False
-            else:
-                print("❌ Failed skill relevance check")
-                return False
-
-        return True
 
     def _should_stop_adding_drills(self, has_limited_equipment: bool, suitable_drills: List[Drill], 
                                  current_duration: int, target_duration: int) -> bool:
