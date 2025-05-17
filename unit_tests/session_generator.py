@@ -82,27 +82,32 @@ def print_session_details(profile_name, session, profile):
     print(f"⚽  Equipment: {', '.join(prefs['available_equipment'])}")
     print(f"🔄  Target Skills: {', '.join(prefs['target_skills'])}")
     
-    if not session.drills:
+    if not session.ordered_drills:
         print("\n❌ No suitable drills found for this profile")
         return
 
     # Print Selected Drills
     print("\n📚 Selected Drills:")
-    for i, drill in enumerate(session.drills, 1):
+    for i, osd in enumerate(sorted(session.ordered_drills, key=lambda x: x.position), 1):
+        drill = osd.drill
         print(f"\n{i}. {drill.title}")
-        print(f"   {'Duration':12} │ Original: {getattr(drill, 'original_duration', drill.duration):2d} min │ Adjusted: {getattr(drill, 'adjusted_duration', drill.duration):2d} min")
+        print(f"   {'Duration':12} │ {getattr(drill, 'duration', 0):2d} min │ Adjusted: {osd.duration or drill.duration:2d} min")
         print(f"   {'Equipment':12} │ {', '.join(drill.equipment) if drill.equipment else 'None'}")
         print(f"   {'Difficulty':12} │ {drill.difficulty.title() if drill.difficulty else 'Unknown'}")
-        print(f"   {'Intensity':12} │ {getattr(drill, 'intensity_modifier', 1.0):.1f}x")
+        print(f"   {'Sets':12} │ {osd.sets if osd.sets is not None else drill.sets}")
+        print(f"   {'Reps':12} │ {osd.reps if osd.reps is not None else drill.reps}")
+        print(f"   {'Rest':12} │ {osd.rest if osd.rest is not None else drill.rest}")
     
     # Print Session Summary
     print("\n📊 Session Summary:")
     print(f"✓ Total Duration: {session.total_duration}/{prefs['duration']} minutes")
-    print(f"✓ Number of Drills: {len(session.drills)}")
+    print(f"✓ Number of Drills: {len(session.ordered_drills)}")
     
     equipment_used = set()
-    for drill in session.drills:
-        equipment_used.update(drill.equipment)
+    for osd in session.ordered_drills:
+        drill = osd.drill
+        if drill.equipment:
+            equipment_used.update(drill.equipment)
     print(f"✓ Equipment Types Used: {', '.join(sorted(equipment_used))}")
     print("="*80 + "\n")
 
@@ -128,17 +133,18 @@ async def test_session_generation():
             
             # Basic assertions
             assert session is not None, f"Session should be generated for {profile_name}"
-            assert len(session.drills) > 0, f"Session should contain drills for {profile_name}"
+            assert len(session.ordered_drills) > 0, f"Session should contain drills for {profile_name}"
             assert session.total_duration <= preferences.duration * 1.2, \
                 f"Session duration ({session.total_duration}) should not exceed preferred duration ({preferences.duration}) by more than 20%"
             
             # Equipment assertions
-            for drill in session.drills:
-                missing_equipment = set(drill.equipment) - set(preferences.available_equipment)
+            for osd in session.ordered_drills:
+                drill = osd.drill
+                missing_equipment = set(drill.equipment or []) - set(preferences.available_equipment)
                 if missing_equipment:
                     assert missing_equipment <= generator.ADAPTABLE_EQUIPMENT, \
                         f"Drill {drill.title} requires unavailable equipment: {missing_equipment}"
-            
+        
     finally:
         db.close()
 

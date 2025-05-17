@@ -114,10 +114,11 @@ class DrillSyncRequest(BaseModel):
 class OrderedDrillSyncRequest(BaseModel):
     drill: DrillSyncRequest
     sets_done: int = 0
-    total_sets: int
-    total_reps: int
-    total_duration: int
+    sets: int
+    reps: int
+    duration: int
     is_completed: bool = False
+    session_id: int
 
     model_config = ConfigDict(from_attributes=True)
 

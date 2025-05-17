@@ -20,7 +20,8 @@ from models import (
     SessionPreferences,
     TrainingLocation,
     TrainingStyle,
-    Difficulty
+    Difficulty,
+    OrderedSessionDrill
 )
 from typing import List
 from utils.drill_scorer import DrillScorer
@@ -108,47 +109,64 @@ class SessionGenerator:
             suitable_drills = self._normalize_session_duration(suitable_drills, preferences.duration)
             current_duration = sum(drill.adjusted_duration for drill in suitable_drills)
 
-         # Check if user already has a session, and update it instead of creating a new one
+        # --- SESSION CREATION/UPDATE LOGIC ---
+        # At this point, we have a list of suitable drills with per-session adjustments (duration, etc.)
+        # We now create or update a TrainingSession and persist the per-session drill data in OrderedSessionDrill
         session = None
         if preferences.user_id:
-            # Try to find existing session for this user
+            # Try to find an existing session for this user
             session = self.db.query(TrainingSession).filter(TrainingSession.user_id == preferences.user_id).first()
-            
             if session:
-                # Update existing session
                 print(f"Updating existing session for user: {preferences.user_id}")
                 session.total_duration = current_duration
                 session.focus_areas = preferences.target_skills
-                
-                # Clear existing drills and add new ones
-                # This requires clearing the many-to-many relationship
-                session.drills = []
-                self.db.commit()  # Commit to clear the relationship
-                
-                # Now add the new drills
-                session.drills = suitable_drills
+                # Remove old OrderedSessionDrills for this session (so we can add the new ones)
+                self.db.query(OrderedSessionDrill).filter(OrderedSessionDrill.session_id == session.id).delete()
                 self.db.commit()
-                self.db.refresh(session)
             else:
-                # Create a new session as before
                 print(f"Creating new session for user: {preferences.user_id}")
                 session = TrainingSession(
                     total_duration=current_duration,
                     focus_areas=preferences.target_skills,
                     user_id=preferences.user_id
                 )
-                session.drills = suitable_drills
                 self.db.add(session)
                 self.db.commit()
                 self.db.refresh(session)
         else:
-            # No user ID, just create a session object without saving it
+            # If no user_id, just create a session object (not persisted to a user)
             session = TrainingSession(
                 total_duration=current_duration,
                 focus_areas=preferences.target_skills
             )
-            session.drills = suitable_drills
+            self.db.add(session)
+            self.db.commit()
+            self.db.refresh(session)
 
+        # --- CREATE ORDEREDSESSIONDRILL RECORDS ---
+        # For each drill in the generated session, create an OrderedSessionDrill record
+        # This stores the per-session, per-drill customizations (sets, reps, rest, duration, etc.)
+        # and links to the static Drill for default info
+        ordered_drills = []
+        for idx, drill in enumerate(suitable_drills):
+            osd = OrderedSessionDrill(
+                session_id=session.id,  # Link to the session
+                drill_id=drill.id,      # Link to the static drill
+                position=idx,           # Order in the session
+                sets=getattr(drill, 'sets', None),
+                reps=getattr(drill, 'reps', None),
+                rest=getattr(drill, 'rest', None),
+                duration=getattr(drill, 'adjusted_duration', drill.duration),
+                is_completed=False
+            )
+            self.db.add(osd)
+            ordered_drills.append(osd)
+        self.db.commit()
+        # Attach the ordered drills to the session
+        session.ordered_drills = ordered_drills
+        self.db.commit()
+        self.db.refresh(session)
+        # Return the session with all per-session drill data attached
         return session
 
     def _should_stop_adding_drills(self, has_limited_equipment: bool, suitable_drills: List[Drill], 

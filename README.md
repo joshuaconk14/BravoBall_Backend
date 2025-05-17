@@ -120,9 +120,10 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Initialize the database:
+4. Initialize the database and create all tables:
 ```bash
 python reset_db.py
+python create_tables.py
 ```
 
 5. Import drill data:
