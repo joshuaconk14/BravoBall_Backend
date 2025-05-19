@@ -4,7 +4,6 @@ Skill Mapper Utility
 This module provides functions to map between frontend display skills and backend skill identifiers.
 It maintains consistency between the frontend and backend skill representations.
 """
-
 from typing import Set, Dict, List
 
 # Frontend to backend skill mapping
