@@ -131,7 +131,7 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
             
             # Map training style
             style_map = {
-                "beginner": "medium_intensity",
+                "beginner": "low_intensity",
                 "intermediate": "medium_intensity",
                 "advanced": "high_intensity",
                 "professional": "high_intensity"
