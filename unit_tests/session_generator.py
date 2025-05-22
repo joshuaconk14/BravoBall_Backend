@@ -45,6 +45,19 @@ USER_PROFILES = {
             "difficulty": Difficulty.INTERMEDIATE.value,
             "target_skills": ["ball_mastery", "first_touch"]
         }
+    },
+    # New test profile for 90-minute session
+    "ninety_minute_player": {
+        "name": "90-Minute Session Player",
+        "description": "Player with a 90-minute session, full equipment",
+        "preferences": {
+            "duration": 90,
+            "available_equipment": [Equipment.BALL.value, Equipment.CONES.value, Equipment.GOALS.value, Equipment.WALL.value],
+            "training_style": TrainingStyle.HIGH_INTENSITY.value,
+            "training_location": TrainingLocation.FULL_FIELD.value,
+            "difficulty": Difficulty.ADVANCED.value,
+            "target_skills": ["shooting", "dribbling", "first_touch"]
+        }
     }
 }
 
@@ -144,7 +157,12 @@ async def test_session_generation():
                 if missing_equipment:
                     assert missing_equipment <= generator.ADAPTABLE_EQUIPMENT, \
                         f"Drill {drill.title} requires unavailable equipment: {missing_equipment}"
-        
+            
+            # New assertion for 90-minute session: max 6 drills
+            if preferences.duration == 90:
+                assert len(session.ordered_drills) <= 6, (
+                    f"90-minute session should have at most 6 drills, got {len(session.ordered_drills)}"
+                )
     finally:
         db.close()
 
