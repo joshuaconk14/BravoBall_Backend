@@ -1,6 +1,7 @@
 from typing import List, Dict, Any
 from models import Drill, SessionPreferences, DrillSkillFocus
 from db import SessionLocal
+import random
 
 class DrillScorer:
     """
@@ -23,6 +24,8 @@ class DrillScorer:
         }
         self.ADAPTABLE_EQUIPMENT = {"CONES", "WALL"}
         self.CRITICAL_EQUIPMENT = {"GOALS", "BALL"}
+        # Jitter factor (0.15 = ±15% variation) in drill score. Use this in MVP to avoid repeating session orders.
+        self.jitter_factor = 0.15
 
     def score_drill(self, drill: Drill) -> Dict[str, float]:
         """
@@ -39,7 +42,13 @@ class DrillScorer:
         if 0 < equipment_score < 1:
             scores["equipment"] *= 0.8
         
-        scores["total"] = sum(scores.values())
+        # Calculate total score
+        total_score = sum(scores.values())
+        
+        # Apply jitter to total score
+        jitter = random.uniform(1 - self.jitter_factor, 1 + self.jitter_factor)
+        scores["total"] = total_score * jitter
+        
         return scores
 
     def _calculate_score(self, score_type: str, drill: Drill) -> float:
@@ -231,12 +240,16 @@ class DrillScorer:
         Rank a list of drills based on their scores.
         Returns list of dicts with drill and score information, sorted by total score.
         """
-        return sorted([
+        # Score all drills first
+        scored_drills = [
             {
                 "drill": drill,
                 "scores": (scores := self.score_drill(drill)),
                 "total_score": scores["total"]
             }
             for drill in drills
-        ], key=lambda x: x["total_score"], reverse=True) 
+        ]
+        
+        # Sort by total score
+        return sorted(scored_drills, key=lambda x: x["total_score"], reverse=True) 
     
