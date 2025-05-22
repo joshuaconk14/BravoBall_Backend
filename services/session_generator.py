@@ -36,6 +36,16 @@ class SessionGenerator:
         BASIC_SKILLS: Fundamental skills that can be practiced with minimal equipment
     """
 
+    # Mapping from duration to max drills
+    DURATION_TO_MAX_DRILLS = {
+        15: 2,
+        30: 3,
+        45: 4,
+        60: 5,
+        90: 6,
+        120: 7,
+    }
+
     def __init__(self, db: Session):
         """Initialize the session generator with a database connection."""
         self.db = db
@@ -66,12 +76,16 @@ class SessionGenerator:
         scorer = DrillScorer(preferences)
         ranked_drills = scorer.rank_drills(all_drills)
         
+        # Determine max drills for this session duration
+        max_drills = self.DURATION_TO_MAX_DRILLS.get(preferences.duration, 4)
+        selected_drills = ranked_drills[:max_drills]
+
         suitable_drills = []
         current_duration = 0
         has_limited_equipment = len(preferences.available_equipment) <= 1
 
-        # Process drills in order of their score
-        for ranked_drill in ranked_drills:
+        # Process only the selected drills
+        for ranked_drill in selected_drills:
             drill = ranked_drill['drill']
             scores = ranked_drill['scores']
             
@@ -99,8 +113,10 @@ class SessionGenerator:
             suitable_drills.append(drill)
             current_duration += adjusted_duration
 
-            if self._should_stop_adding_drills(has_limited_equipment, suitable_drills, current_duration, preferences.duration):
-                break
+        # If total duration > session time, drop drills from the end until it fits
+        while sum(drill.adjusted_duration for drill in suitable_drills) > preferences.duration and len(suitable_drills) > 1:
+            removed = suitable_drills.pop()
+            print(f"Removed drill '{removed.title}' to fit session duration constraint.")
 
         print(f"\nFound {len(suitable_drills)} suitable drills")
 
