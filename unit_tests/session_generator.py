@@ -158,7 +158,7 @@ async def test_session_generation():
                     assert missing_equipment <= generator.ADAPTABLE_EQUIPMENT, \
                         f"Drill {drill.title} requires unavailable equipment: {missing_equipment}"
             
-            # New assertion for 90-minute session: max 5 drills
+            # New assertion for 90-minute session: max 6 drills
             if preferences.duration == 90:
                 assert len(session.ordered_drills) <= 6, (
                     f"90-minute session should have at most 6 drills, got {len(session.ordered_drills)}"
