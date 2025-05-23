@@ -51,8 +51,8 @@
             "Vary shot angles and placements within the goal."
         ],
         "rest": 30,
-        "video_url": "https://example.com/still-ball-shot-6-yard-box-video",
-        "thumbnail_url": "https://example.com/still-ball-shot-6-yard-box-thumbnail.jpg"
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-6-yard-box.mp4",
+        "thumbnail_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-6-yard-box.jpg"
     },
     {
         "title": "Roll ball shot on 6 yard box",
