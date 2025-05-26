@@ -24,8 +24,8 @@ class DrillScorer:
         }
         self.ADAPTABLE_EQUIPMENT = {"CONES", "WALL"}
         self.CRITICAL_EQUIPMENT = {"GOALS", "BALL"}
-        # Jitter factor (0.15 = ±15% variation) in drill score. Use this in MVP to avoid repeating session orders.
-        self.jitter_factor = 0.15
+        # Jitter factor (0.25 = ±25% variation) in drill score. Use this in MVP to avoid repeating session orders.
+        self.jitter_factor = 0.25
 
     def score_drill(self, drill: Drill) -> Dict[str, float]:
         """

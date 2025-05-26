@@ -52,7 +52,7 @@
         ],
         "rest": 30,
         "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-6-yard-box.mp4",
-        "thumbnail_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-6-yard-box.jpg"
+        "thumbnail_url": "https://example.com/still-ball-shot-6-yard-box-thumbnail.jpg"
     },
     {
         "title": "Roll ball shot on 6 yard box",
@@ -106,7 +106,7 @@
             "Adjust the angle and position of the target within the goal."
         ],
         "rest": 30,
-        "video_url": "https://example.com/roll-ball-shot-6-yard-box-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/roll-ball-shot-on-6-yard-box.mp4",
         "thumbnail_url": "https://example.com/roll-ball-shot-6-yard-box-thumbnail.jpg"
     },
     {
@@ -162,7 +162,7 @@
             "Vary the shot angles and placements."
         ],
         "rest": 30,
-        "video_url": "https://example.com/still-ball-shot-18-yard-box-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-18-yard-box.mp4",
         "thumbnail_url": "https://example.com/still-ball-shot-18-yard-box-thumbnail.jpg"
     },
     {
@@ -218,7 +218,7 @@
             "Adjust the angle and position of target within the goal."
         ],
         "rest": 30,
-        "video_url": "https://example.com/rolling-ball-shot-18-yard-box-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/rolling-ball-shot-on-18-yard-box.mp4",
         "thumbnail_url": "https://example.com/rolling-ball-shot-18-yard-box-thumbnail.jpg"
     },
     {
@@ -276,7 +276,7 @@
             "Add passing options before the cut-in shot."
         ],
         "rest": 30,
-        "video_url": "https://example.com/turn-to-cut-in-shot-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/turn-to-cut-in-shot.mp4",
         "thumbnail_url": "https://example.com/turn-to-cut-in-shot-thumbnail.jpg"
     },
     {
@@ -334,16 +334,16 @@
             "Vary the positioning of the cones to alter shooting angles."
         ],
         "rest": 30,
-        "video_url": "https://example.com/open-up-body-run-to-shot-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/open-up-body-run-to-shot.mp4",
         "thumbnail_url": "https://example.com/open-up-body-run-to-shot-thumbnail.jpg"
     },
     {
-        "title": "One v one cone to shoot",
-        "description": "A shooting drill that focuses on dribbling and executing a skill move before taking a shot on goal.",
+        "title": "Scissor to shot",
+        "description": "A shooting drill that focuses on the scissor skill to create space before shooting on goal.",
         "type": "reps_based",
-        "duration": 10,
+        "duration": 8,
         "sets": 5,
-        "reps": 5,
+        "reps": 4,
         "equipment": [
             "ball",
             "cones",
@@ -371,30 +371,30 @@
             }
         ],
         "instructions": [
-            "Place a cone in the center of the 18 yard line.",
+            "Place a cone in the center of the 18 yard box.",
             "Start 5 yards behind the cone and dribble towards it with speed.",
-            "Perform a skill move of your choice at the cone.",
-            "Shoot for the far post using either your instep or laces.",
-            "Minimize the number of steps between the skill and the shot."
+            "Execute a scissor move at the cone to fake out the defender.",
+            "Take a touch away from the defender and shoot for the far post using either your instep or laces.",
+            "Minimize the number of steps taken between the scissor and the shot."
         ],
         "tips": [
-            "Keep your head up to assess the goal and defensive positions.",
-            "Use quick and decisive movements when executing skill moves.",
-            "Concentrate on clean ball contact to improve shot accuracy."
+            "Focus on a quick and decisive scissor move.",
+            "Keeping your head up will help you assess the angle for your shot.",
+            "Make sure to position your body correctly for an effective shot."
         ],
         "common_mistakes": [
-            "Taking too many touch steps after executing the skill.",
-            "Losing speed while executing the skill move.",
+            "Not executing the scissor move with enough speed.",
+            "Taking excessive steps between the scissor and shot.",
             "Poor shot technique leading to missed targets."
         ],
         "progression_steps": [
-            "Add a defender to make the drill more game-realistic.",
-            "Vary the distance from which you dribble.",
-            "Incorporate different skill moves to enhance creativity."
+            "Add a defender to increase the difficulty level.",
+            "Practice multiple skill moves before shooting.",
+            "Increase the distance from which you start dribbling."
         ],
         "rest": 30,
-        "video_url": "https://example.com/one-v-one-cone-to-shoot-video",
-        "thumbnail_url": "https://example.com/one-v-one-cone-to-shoot-thumbnail.jpg"
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/scissor-to-shot.mp4",
+        "thumbnail_url": "https://example.com/scissor-to-shot-thumbnail.jpg"
     },
     {
         "title": "Juggle with touch to volley",
@@ -452,7 +452,7 @@
             "Vary the distance from where the volley is taken."
         ],
         "rest": 30,
-        "video_url": "https://example.com/juggle-with-touch-to-volley-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/juggle-with-touch-to-volley.mp4",
         "thumbnail_url": "https://example.com/juggle-with-touch-to-volley-thumbnail.jpg"
     },
     {
@@ -511,67 +511,8 @@
             "Experiment with different shooting angles."
         ],
         "rest": 30,
-        "video_url": "https://example.com/shoulder-drop-to-shot-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/shoulder-drop-to-shot.mp4",
         "thumbnail_url": "https://example.com/shoulder-drop-to-shot-thumbnail.jpg"
-    },
-    {
-        "title": "Scissor to shot",
-        "description": "A shooting drill that focuses on the scissor skill to create space before shooting on goal.",
-        "type": "reps_based",
-        "duration": 8,
-        "sets": 5,
-        "reps": 4,
-        "equipment": [
-            "ball",
-            "cones",
-            "goals"
-        ],
-        "suitable_locations": [
-            "full_field",
-            "medium_field",
-            "location_with_goals"
-        ],
-        "intensity": "high",
-        "training_styles": [
-            "medium_intensity",
-            "high_intensity"
-        ],
-        "difficulty": "intermediate",
-        "primary_skill": {
-            "category": "shooting",
-            "sub_skill": "1v1_to_shoot"
-        },
-        "secondary_skills": [
-            {
-                "category": "shooting",
-                "sub_skill": "shooting_on_the_run"
-            }
-        ],
-        "instructions": [
-            "Place a cone in the center of the 18 yard box.",
-            "Start 5 yards behind the cone and dribble towards it with speed.",
-            "Execute a scissor move at the cone to fake out the defender.",
-            "Take a touch away from the defender and shoot for the far post using either your instep or laces.",
-            "Minimize the number of steps taken between the scissor and the shot."
-        ],
-        "tips": [
-            "Focus on a quick and decisive scissor move.",
-            "Keeping your head up will help you assess the angle for your shot.",
-            "Make sure to position your body correctly for an effective shot."
-        ],
-        "common_mistakes": [
-            "Not executing the scissor move with enough speed.",
-            "Taking excessive steps between the scissor and shot.",
-            "Poor shot technique leading to missed targets."
-        ],
-        "progression_steps": [
-            "Add a defender to increase the difficulty level.",
-            "Practice multiple skill moves before shooting.",
-            "Increase the distance from which you start dribbling."
-        ],
-        "rest": 30,
-        "video_url": "https://example.com/scissor-to-shot-video",
-        "thumbnail_url": "https://example.com/scissor-to-shot-thumbnail.jpg"
     },
     {
         "title": "Inside-out to shot",
@@ -629,16 +570,16 @@
             "Incorporate other skill moves leading up to the inside-out touch."
         ],
         "rest": 30,
-        "video_url": "https://example.com/inside-out-to-shot-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/inside-out-to-shot.mp4",
         "thumbnail_url": "https://example.com/inside-out-to-shot-thumbnail.jpg"
     },
     {
-        "title": "One v one cut in on side",
-        "description": "A practical drill that emphasizes dribbling, body feinting, and curling shots into the net after cutting inside.",
+        "title": "Corner of 6 yard box shot",
+        "description": "A drill that focuses on technique for shooting at a close range.",
         "type": "reps_based",
-        "duration": 8,
+        "duration": 10,
         "sets": 5,
-        "reps": 4,
+        "reps": 5,
         "equipment": [
             "ball",
             "cones",
@@ -649,12 +590,11 @@
             "medium_field",
             "location_with_goals"
         ],
-        "intensity": "high",
+        "intensity": "medium",
         "training_styles": [
-            "medium_intensity",
-            "high_intensity"
+            "low_intensity"
         ],
-        "difficulty": "intermediate",
+        "difficulty": "beginner",
         "primary_skill": {
             "category": "shooting",
             "sub_skill": "1v1_to_shoot"
@@ -663,33 +603,37 @@
             {
                 "category": "shooting",
                 "sub_skill": "finesse_shots"
+            },
+            {
+                "category": "shooting",
+                "sub_skill": "first_time_shots"
             }
         ],
         "instructions": [
-            "Place a cone between the edge of the 18 yard box and the edge of the 6 yard box, with another cone 6-8 yards diagonally behind it.",
-            "Start at the cone farthest from the goal and dribble towards the opposite cone.",
-            "Drop your shoulder to simulate a move and cut inside quickly.",
-            "Curl the ball into the back post netting.",
-            "You can incorporate any skill move you like, but focus on mastering the shoulder drop first."
+            "Place a cone at the corner of the 6 yard box.",
+            "Take a touch toward the cone and shoot for the far post with the instep of your foot.",
+            "Repeat the drill on both sides of the 6 yard box.",
+            "Feel free to perform a skill move of your choice, but focus on mastering the technique first."
         ],
         "tips": [
-            "Quick decision-making is crucial when dropping your shoulder.",
-            "Observe the goalkeeper's position to find the best angle for your shot.",
-            "Maintain control of the ball while cutting inside."
+            "Simple touch out to start off small.",
+            "Aim for the bottom corner or middle of the side-netting to avoid overhitting.",
+            "Aim for accuracy with your shot, targeting the far post."
         ],
         "common_mistakes": [
-            "Not committing to the shoulder drop, making it less effective.",
-            "Failing to curl the ball properly, resulting in lost accuracy.",
-            "Overcomplicating the move with too many skills."
+            "Aiming too high and overhitting the ball.",
+            "Taking too soft of a touch out.",
+            "Not putting enough focus on technique.",
+            "Not using the instep of your foot to shoot."
         ],
         "progression_steps": [
-            "Add a defender for increased challenge.",
-            "Vary the distance between cones for different angles.",
-            "Practice different skill moves to find what works best for you during the approach."
+            "Curl the ball to from outside the post to inside the post.",
+            "Practice various skill moves leading up to the shot.",
+            "Take a quick touch out with no extra steps in-between to get the shot off quicker."
         ],
         "rest": 30,
-        "video_url": "https://example.com/one-v-one-cut-in-on-side-video",
-        "thumbnail_url": "https://example.com/one-v-one-cut-in-on-side-thumbnail.jpg"
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/corner-of-six-yard-box-shot.mp4",
+        "thumbnail_url": "https://example.com/one-v-one-down-line-on-side-thumbnail.jpg"
     },
     {
         "title": "One v one down line on side",
@@ -752,7 +696,7 @@
             "Change the angles from which you start dribbling."
         ],
         "rest": 30,
-        "video_url": "https://example.com/one-v-one-down-line-on-side-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/one-v-one-down-line-on-side.mp4",
         "thumbnail_url": "https://example.com/one-v-one-down-line-on-side-thumbnail.jpg"
     },
     {
@@ -814,7 +758,7 @@
             "Adjust the distance from which you shoot for variety."
         ],
         "rest": 30,
-        "video_url": "https://example.com/box-agility-to-shoot-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/box-agility-to-shoot.mp4",
         "thumbnail_url": "https://example.com/box-agility-to-shoot-thumbnail.jpg"
     },
     {
@@ -872,7 +816,7 @@
             "Practice shooting from different angles after completing the weave."
         ],
         "rest": 30,
-        "video_url": "https://example.com/triangle-weave-to-shot-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/triangle-weave-to-shot.mp4",
         "thumbnail_url": "https://example.com/triangle-weave-to-shot-thumbnail.jpg"
     },
     {
@@ -931,7 +875,7 @@
             "Add a defender to increase pressure when shooting."
         ],
         "rest": 30,
-        "video_url": "https://example.com/cone-weave-to-turn-and-finish-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/cone-weave-to-turn-and-finish.mp4",
         "thumbnail_url": "https://example.com/cone-weave-to-turn-and-finish-thumbnail.jpg"
     },
     {
@@ -989,7 +933,7 @@
             "Experiment with different skill moves when approaching the goal."
         ],
         "rest": 30,
-        "video_url": "https://example.com/mini-zig-zag-dribble-to-shot-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/mini-zig-zag-dribble-to-shot.mp4",
         "thumbnail_url": "https://example.com/mini-zig-zag-dribble-to-shot-thumbnail.jpg"
     },
     {
@@ -1048,7 +992,7 @@
             "Vary the types of finishing techniques (e.g., volleys, placed shots)."
         ],
         "rest": 30,
-        "video_url": "https://example.com/check-to-dribble-to-shot-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/check-to-dribble-to-shot.mp4",
         "thumbnail_url": "https://example.com/check-to-dribble-to-shot-thumbnail.jpg"
     }
 ]
