@@ -51,7 +51,7 @@
             "Challenge yourself by adding lateral movement or incorporating obstacles."
         ],
         "rest": 30,
-        "video_url": "https://example.com/toe-taps-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/toe-taps.mp4",
         "thumbnail_url": "https://example.com/toe-taps-thumbnail.jpg"
     },
     {
@@ -856,6 +856,63 @@
         "rest": 30,
         "video_url": "https://example.com/zig-zag-dribble-video",
         "thumbnail_url": "https://example.com/zig-zag-dribble-thumbnail.jpg"
+    },
+    {
+        "title": "V-touches to 1v1",
+        "description": "A footwork drill involving quick direction changes and driving at a defender.",
+        "type": "time_based",
+        "duration": 5,
+        "sets": 4,
+        "reps": 20,
+        "equipment": [
+            "ball",
+            "training_cone"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "small_space"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity",
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "ball_mastery"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            }
+        ],
+        "instructions": [
+            "Position a cone in front of you with the ball to one side, and another cone 8-10 yards in front.",
+            "Drag the ball back towards you with the sole of the foot closest to the cone.",
+            "Push the ball to the opposite side of the cone using the inside of the same foot.",
+            "After 10 seconds, take a touch out and drive towards the far cone performing a 1v1 move. That is one rep."
+        ],
+        "tips": [
+            "Keep your foot close to the ball during touches for better control.",
+            "Maintain a quick pace to enhance your agility.",
+            "Focus on accuracy while performing the touches.",
+            "Keep the ball close when driving at the cone mimicing a defender."
+        ],
+        "common_mistakes": [
+            "Pushing the ball too far away, making it difficult to control.",
+            "Rushing the movements and losing touch quality.",
+            "Failing to use proper technique when dragging the ball."
+        ],
+        "progression_steps": [
+            "Start slow to ensure proper technique before speeding up.",
+            "Introduce additional cones for a more complex movement.",
+            "Work on increasing the distance between touches to improve control."
+        ],
+        "rest": 30,
+        "video_url": "https://example.com/v-touches-inside-video",
+        "thumbnail_url": "https://example.com/v-touches-inside-thumbnail.jpg"
     },
     {
         "title": "Plus dribbling",
