@@ -14,29 +14,6 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-@router.post("/api/session/generate", response_model=SessionResponse)
-async def generate_session(
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """Generate a training session based on user's current preferences"""
-    try:
-        # Get user's preferences
-        preferences = db.query(SessionPreferences).filter(SessionPreferences.user_id == current_user.id).first()
-        
-        if not preferences:
-            # Create default preferences if none exist
-            preferences = create_default_preferences(db, current_user)
-        
-        # Generate session
-        session_generator = SessionGenerator(db)
-        session = await session_generator.generate_session(preferences)
-        
-        return format_session_for_frontend(session)
-    except Exception as e:
-        logger.error(f"Error generating session: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-
 @router.get("/api/session/preferences")
 async def get_session_preferences(
     current_user: User = Depends(get_current_user),
@@ -161,37 +138,6 @@ async def update_session_preferences(
         logger.error(f"Error updating session preferences: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/api/session/generate-with-preferences", response_model=SessionResponse)
-async def generate_session_with_preferences(
-    preferences: dict,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """
-    Generate a session with custom preferences without saving them
-    (for when user wants to generate a session with custom preferences in the main app home page)
-    """
-    try:
-        # Create temporary preferences object
-        temp_prefs = SessionPreferences(
-            user_id=current_user.id,
-            duration=preferences.get("duration", 30),
-            available_equipment=preferences.get("available_equipment", []),
-            training_style=preferences.get("training_style", "medium_intensity"),
-            training_location=preferences.get("training_location", "full_field"),
-            difficulty=preferences.get("difficulty", "beginner"),
-            target_skills=preferences.get("target_skills", [])
-        )
-        
-        # Generate session
-        session_generator = SessionGenerator(db)
-        session = await session_generator.generate_session(temp_prefs)
-        
-        return format_session_for_frontend(session)
-    except Exception as e:
-        logger.error(f"Error generating session with custom preferences: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-
 def create_default_preferences(db: Session, user: User) -> SessionPreferences:
     """Create default preferences for a user based on their onboarding data"""
     try:
@@ -286,7 +232,8 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
             "primary_skill": {
                 "category": drill.skill_focus[0].category if drill.skill_focus else "general",
                 "sub_skill": drill.skill_focus[0].sub_skill if drill.skill_focus else "general"
-            }
+            },
+            "video_url": drill.video_url
         }
         drills.append(drill_data)
 
@@ -299,7 +246,9 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
                 focus_areas.extend(area["sub_skills"])
             elif isinstance(area, str):
                 focus_areas.append(area)
-
+    
+    logger.info(f"Drill video URLs: {[d.get('video_url') for d in drills]}")
+    
     return {
         "session_id": session.id if hasattr(session, "id") else None,
         "total_duration": session.total_duration if hasattr(session, "total_duration") else sum(d["duration"] for d in drills),

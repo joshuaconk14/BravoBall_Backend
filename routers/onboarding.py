@@ -64,7 +64,8 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
             "primary_skill": {
                 "category": primary_skill.category if primary_skill else "general",
                 "sub_skill": primary_skill.sub_skill if primary_skill else "general"
-            }
+            },
+            "video_url": drill.video_url
         }
         drills.append(drill_data)
     
