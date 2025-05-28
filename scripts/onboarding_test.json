@@ -10,9 +10,9 @@
     "firstName": "J",
     "areasToImprove": ["defending", "shooting", "first_touch"],
     "trainingLocation": ["full_field"],
-    "biggestChallenge": "injury",
+    "biggestChallenge": ["injury"],
     "trainingExperience": "intermediate",
-    "playstyle": "Big Bob",
+    "playstyle": ["Big Bob"],
     "email": "jc17@gmail.com",
     "password": "123"
 } 
