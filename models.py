@@ -41,10 +41,10 @@ class User(Base):
 
     # Onboarding 
     primary_goal = Column(String)
-    biggest_challenge = Column(String)
+    biggest_challenge = Column(JSON)  # Changed from String to JSON to store array
     training_experience = Column(String)
     position = Column(String)
-    playstyle = Column(String)
+    playstyle = Column(JSON)  # Changed from String to JSON to store array
     age_range = Column(String)
     strengths = Column(JSON)
     areas_to_improve = Column(JSON)
@@ -244,10 +244,10 @@ session_drills = Table(
 class OnboardingData(BaseModel):
     # Optional values in onboarding with camelCase field names to match frontend
     primaryGoal: Optional[str] = None
-    biggestChallenge: Optional[str] = None
+    biggestChallenge: Optional[List[str]] = []
     trainingExperience: Optional[str] = None
     position: Optional[str] = None
-    playstyle: Optional[str] = None
+    playstyle: Optional[List[str]] = []
     ageRange: Optional[str] = None
     strengths: Optional[List[str]] = []
     areasToImprove: Optional[List[str]] = []

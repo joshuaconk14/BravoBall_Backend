@@ -103,10 +103,10 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
 
             # Onboarding - handle null values
             primary_goal=player_info.primaryGoal or None,
-            biggest_challenge=player_info.biggestChallenge or None,
+            biggest_challenge=player_info.biggestChallenge or [],
             training_experience=player_info.trainingExperience or None,
             position=player_info.position or None,
-            playstyle=player_info.playstyle or None,
+            playstyle=player_info.playstyle or [],
             age_range=player_info.ageRange or None,
             strengths=player_info.strengths or [],
             areas_to_improve=player_info.areasToImprove or [],
