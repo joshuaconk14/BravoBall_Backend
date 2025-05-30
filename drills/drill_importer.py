@@ -1,6 +1,8 @@
 """
 Utility script to import drills from text files containing JSON data.
 Each file should contain drills for a specific category (e.g., first_touch_drills.txt, passing_drills.txt).
+
+This script is used when restarting the database in testing environments and importing drills from the drills directory.
 """
 import sys
 import os

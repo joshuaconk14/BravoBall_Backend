@@ -2,6 +2,8 @@
 """
 Script to update all drill files to use the simplified enum values.
 This script reads all drill files, standardizes the values, and writes them back.
+
+Only need this script when updating drill text files directly.
 """
 
 import os

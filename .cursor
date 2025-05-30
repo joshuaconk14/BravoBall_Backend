@@ -1,0 +1,31 @@
+# .cursor
+
+[project]
+name = Tekk-app
+description = Soccer training app backend and drill management
+
+[ai]
+# General rules for AI code generation
+rules = """
+- Always use modular, DRY, and decoupled code with modular design for scalability.
+- Prefer dependency injection and clear separation of concerns.
+- Use type hints for all function signatures.
+- Follow PEP8 for Python code.
+- Use SQLAlchemy ORM for all database interactions.
+- Write docstrings for all public functions and classes.
+- Use logging instead of print statements for diagnostics.
+- Validate all user input and handle exceptions gracefully.
+- Prefer list comprehensions and generator expressions for concise code.
+- Use environment variables for all secrets and configuration.
+- Write code that is easy to test and maintain.
+"""
+
+# Claude-specific instructions (if supported)
+claude_prompt = """
+You are an expert Python backend developer. Always follow the project's best practices and rules as defined in the .cursor file. When generating code, explain your reasoning if asked, and always prefer maintainability and clarity.
+"""
+
+[files]
+# Optionally, specify files or directories to include/exclude from AI context
+include = drills/, models.py, services/, routers/, utils/
+exclude = __pycache__/
