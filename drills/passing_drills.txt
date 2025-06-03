@@ -58,7 +58,7 @@
             "Perform the drill under time constraints for added challenge."
         ],
         "rest": null,
-        "video_url": "https://example.com/one-touch-pass-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/one-touch-pass.mp4",
         "thumbnail_url": "https://example.com/one-touch-pass-thumbnail.jpg"
     },
     {
@@ -122,7 +122,7 @@
             "Perform the drill at a faster pace for quicker decision-making."
         ],
         "rest": null,
-        "video_url": "https://example.com/two-touch-pass-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/two-touch-pass.mp4",
         "thumbnail_url": "https://example.com/two-touch-pass-thumbnail.jpg"
     },
     {
@@ -187,7 +187,7 @@
             "Perform the drill at a higher tempo for faster transitions."
         ],
         "rest": null,
-        "video_url": "https://example.com/v-pass-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/v-passes.mp4",
         "thumbnail_url": "https://example.com/v-pass-thumbnail.jpg"
     },
     {
@@ -249,7 +249,7 @@
             "Perform the drill with a partner instead of using a wall."
         ],
         "rest": null,
-        "video_url": "https://example.com/v-to-straight-pass-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/v-to-straight-passes.mp4",
         "thumbnail_url": "https://example.com/v-to-straight-pass-thumbnail.jpg"
     },
     {
@@ -315,7 +315,7 @@
             "Perform the drill with a partner instead of a wall."
         ],
         "rest": 60,
-        "video_url": "https://example.com/check-and-backpedal-passes-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/check-and-backpedal-passes.mp4",
         "thumbnail_url": "https://example.com/check-and-backpedal-passes-thumbnail.jpg"
     },
     {
@@ -377,7 +377,7 @@
             "Perform the drill under pressure with a defender closing in."
         ],
         "rest": null,
-        "video_url": "https://example.com/long-lace-pass-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/long-lace-pass-on-ground.mp4",
         "thumbnail_url": "https://example.com/long-lace-pass-thumbnail.jpg"
     },
     {
@@ -439,7 +439,7 @@
             "Perform the drill under pressure with a defender closing in."
         ],
         "rest": null,
-        "video_url": "https://example.com/long-inside-foot-pass-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/long-inside-foot-pass-on-ground.mp4",
         "thumbnail_url": "https://example.com/long-inside-foot-pass-thumbnail.jpg"
     },
     {
@@ -502,71 +502,8 @@
             "Incorporate movement by adding a sprint to and from the cones."
         ],
         "rest": null,
-        "video_url": "https://example.com/pass-to-inside-touch-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/pass-to-inside-touch.mp4",
         "thumbnail_url": "https://example.com/pass-to-inside-touch-thumbnail.jpg"
-    },
-    {
-        "title": "Pass to Outside Touch",
-        "description": "A passing drill designed to improve outside foot control and passing accuracy using the wall and cones.",
-        "type": "time_based",
-        "duration": 10,
-        "sets": 4,
-        "reps": 30,
-        "equipment": [
-            "ball",
-            "2 cones"
-        ],
-        "suitable_locations": [
-            "medium_field",
-            "small_space",
-            "location_with_wall"
-        ],
-        "intensity": "medium",
-        "training_styles": [
-            "medium_intensity",
-            "medium_intensity"
-        ],
-        "difficulty": "intermediate",
-        "primary_skill": {
-            "category": "passing",
-            "sub_skill": "short_passing"
-        },
-        "secondary_skills": [
-            {
-                "category": "passing",
-                "sub_skill": "technique"
-            },
-            {
-                "category": "passing",
-                "sub_skill": "passing_with_movement"
-            }
-        ],
-        "instructions": [
-            "Set two cones 3-5 yards apart from each other, parallel to a wall.",
-            "Start behind and on the outside of one of the cones.",
-            "Pass the ball against the wall using the foot that is farthest from the cones.",
-            "When the ball rebounds, perform an outside foot touch with the opposite foot across the two cones.",
-            "Move to the outside of the other cone and repeat the process using the foot that made the previous touch."
-        ],
-        "tips": [
-            "Ensure your touch with the outside foot is controlled and directed towards the cones.",
-            "Keep an eye on the ball to anticipate its rebound.",
-            "Practice maintaining balance while performing the outside touch."
-        ],
-        "common_mistakes": [
-            "Using too much force in the outside touch, losing control.",
-            "Not positioning the body properly for the rebound.",
-            "Failing to maintain spatial awareness, leading to misalignment with the cones."
-        ],
-        "progression_steps": [
-            "Start with slow passes and touches for better control.",
-            "Increase the speed of passes as your confidence builds.",
-            "Introduce movement by sprinting to the cones after each touch.",
-            "Add a diagonal touch to challenge your coordination further."
-        ],
-        "rest": null,
-        "video_url": "https://example.com/pass-to-outside-touch-video",
-        "thumbnail_url": "https://example.com/pass-to-outside-touch-thumbnail.jpg"
     },
     {
         "title": "Pass to Cruyff Touch",
@@ -628,7 +565,7 @@
             "Try incorporating a defender to simulate game-like conditions."
         ],
         "rest": null,
-        "video_url": "https://example.com/pass-to-cruyff-touch-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/pass-to-cruyff-touch.mp4",
         "thumbnail_url": "https://example.com/pass-to-cruyff-touch-thumbnail.jpg"
     },
     {
@@ -691,7 +628,7 @@
             "Integrate movement by sprinting to the cones after each complete repetition."
         ],
         "rest": null,
-        "video_url": "https://example.com/pass-to-sole-roll-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/pass-to-sole-role.mp4",
         "thumbnail_url": "https://example.com/pass-to-sole-roll-thumbnail.jpg"
     },
     {
@@ -753,7 +690,7 @@
             "Add a third cone to increase complexity and challenge."
         ],
         "rest": null,
-        "video_url": "https://example.com/double-pass-to-open-up-touch-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/double-pass-to-open-up-touch.mp4",
         "thumbnail_url": "https://example.com/double-pass-to-open-up-touch-thumbnail.jpg"
     },
     {
@@ -816,7 +753,7 @@
             "Introduce a small defender to simulate game scenarios and improve decision-making."
         ],
         "rest": null,
-        "video_url": "https://example.com/three-wall-pass-to-inside-touch-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/three-wall-pass-to-inside-touch.mp4",
         "thumbnail_url": "https://example.com/three-wall-pass-to-inside-touch-thumbnail.jpg"
     },
     {
@@ -873,7 +810,7 @@
             "Add a defender to simulate game pressure while performing the drill."
         ],
         "rest": null,
-        "video_url": "https://example.com/fake-to-long-pass-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/fake-to-long-pass.mp4",
         "thumbnail_url": "https://example.com/fake-to-long-pass-thumbnail.jpg"
     },
     {
@@ -885,7 +822,7 @@
         "reps": 10,
         "equipment": [
             "ball",
-            "2 cones"
+            "cones"
         ],
         "suitable_locations": [
             "medium_field",
@@ -909,10 +846,10 @@
             }
         ],
         "instructions": [
-            "Set up two cones perpendicular to a wall, with 1 yard distance from each other and 3-5 yards away from the wall.",
-            "Stand next to the front cone.",
-            "Pass the ball to the wall and immediately turn to dribble around the back cone.",
-            "Once you reach the opposite side of the front cone, repeat the process."
+            "Set up one cone 3-5 yards away from a wall.",
+            "Stand at either side of the cone.",
+            "Pass the ball to the wall and immediately turn to dribble around the cone.",
+            "Once you reach the opposite side of the cone, repeat the process."
         ],
         "tips": [
             "Ensure your passes are firm and accurate to return for easy control.",
@@ -931,7 +868,7 @@
             "Add a timer to challenge your speed in completing the drill."
         ],
         "rest": null,
-        "video_url": "https://example.com/pass-to-dribble-around-cone-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/pass-to-dribble-around-cone.mp4",
         "thumbnail_url": "https://example.com/pass-to-dribble-around-cone-thumbnail.jpg"
     },
     {
@@ -989,7 +926,7 @@
             "Add a defender to simulate pressure and enhance decision-making."
         ],
         "rest": null,
-        "video_url": "https://example.com/pass-to-figure-eight-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/pass-to-figure-eight.mp4",
         "thumbnail_url": "https://example.com/pass-to-figure-eight-thumbnail.jpg"
     },
     {
@@ -1031,9 +968,9 @@
         "instructions": [
             "Stand 4-6 yards away from a wall.",
             "Set four cones in a line parallel to the wall, 1-3 yards apart.",
-            "Starting from the furthest left cone, pass straight to the wall with your right foot.",
-            "As the ball returns, take an inside touch with your left foot and pass through the first gate with your right foot.",
-            "Continue this process until you pass through the last gate, then return to the start."
+            "Starting on either side, pass straight to the wall with the inside of your foot.",
+            "As the ball returns, take an inside touch with your other foot and pass through the first gate.",
+            "Continue this process until you pass through the last gate, then return to the start or switch sides."
         ],
         "tips": [
             "Ensure your passes are precise to hit the target on the wall.",
@@ -1052,7 +989,7 @@
             "Add competition by timing each run or by having someone else watch for accuracy."
         ],
         "rest": null,
-        "video_url": "https://example.com/three-gated-inside-foot-passes-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/three-gated-pass-to-inside-touch.mp4",
         "thumbnail_url": "https://example.com/three-gated-inside-foot-passes-thumbnail.jpg"
     },
     {
@@ -1093,10 +1030,10 @@
         ],
         "instructions": [
             "Stand 4-6 yards away from a wall.",
-            "Set four cones in a line parallel to the wall, spaced 1-3 yards apart.",
-            "Starting from the furthest left cone, pass the ball to the wall with your right foot.",
-            "As the ball returns, take a touch with the outside of your right foot, and pass through the first gate with your right foot.",
-            "Continue this process until you reach the last cone and then return to the beginning."
+            "Set four cones in a line parallel to the wall, 1-3 yards apart.",
+            "Starting on either side, pass straight to the wall with the inside of your foot.",
+            "As the ball returns, take an outside touch with your other foot and pass through the first gate.",
+            "Continue this process until you pass through the last gate, then return to the start or switch sides."
         ],
         "tips": [
             "Focus on accurate passing to ensure the ball hits the wall cleanly.",
@@ -1115,7 +1052,7 @@
             "Create a timed challenge to enhance speed and efficiency."
         ],
         "rest": null,
-        "video_url": "https://example.com/three-gated-pass-outside-touch-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/three-gated-pass-to-outside-touch.mp4",
         "thumbnail_url": "https://example.com/three-gated-pass-outside-touch-thumbnail.jpg"
     },
     {
@@ -1178,7 +1115,7 @@
             "Introduce a time challenge or count how many successful repetitions you can perform in a set timeframe."
         ],
         "rest": null,
-        "video_url": "https://example.com/middle-across-touch-to-touch-on-side-video",
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/passing-drills/middle-across-touch-to-touch-on-side.mp4",
         "thumbnail_url": "https://example.com/middle-across-touch-to-touch-on-side-thumbnail.jpg"
     }
 ] 
