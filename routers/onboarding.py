@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Dict, Any, List
 from db import get_db
 from models import OnboardingData, User, SessionPreferences
-from auth import create_access_token
+from auth import create_access_token, create_refresh_token
 from config import UserAuth
 import logging
 from services.session_generator import SessionGenerator
@@ -185,6 +185,7 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
                 "user_id": user.id
             }
         )
+        refresh_token = create_refresh_token(user.id, db)
         
         logger.info(f"User created successfully: {user.email}")
         
@@ -208,6 +209,7 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
             "status": "success",
             "message": "Onboarding completed successfully",
             "access_token": access_token,
+            "refresh_token": refresh_token,
             "token_type": "Bearer",
             "user_id": user.id
         }
