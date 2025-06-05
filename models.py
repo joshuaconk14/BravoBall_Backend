@@ -17,7 +17,28 @@ from uuid import UUID
 # *** AUTH MODELS ***
 class LoginRequest(BaseModel):
     email: str
-    password: str   
+    password: str
+
+class EmailCheckRequest(BaseModel):
+    email: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"
+
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str
+    email: str
+    first_name: str
+    last_name: str
+    refresh_token: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
 
 class UserInfoDisplay(BaseModel):
     email: str
@@ -60,6 +81,7 @@ class User(Base):
     session_preferences = relationship("SessionPreferences", back_populates="user", uselist=False)
     progress_history = relationship("ProgressHistory", back_populates="user", uselist=False)
     saved_filters = relationship("SavedFilter", back_populates="user")
+    refresh_tokens = relationship("RefreshToken", back_populates="user")
 
 
 class CompletedSession(Base):
@@ -604,3 +626,16 @@ class UserUpdate(BaseModel):
         from_attributes=True,
         populate_by_name=True
     )
+
+# Add this after your existing models
+class RefreshToken(Base):
+    __tablename__ = "refresh_tokens"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    token = Column(String, unique=True, index=True)
+    expires_at = Column(DateTime)
+    created_at = Column(DateTime, default=func.now())
+    is_revoked = Column(Boolean, default=False)
+
+    user = relationship("User", back_populates="refresh_tokens")

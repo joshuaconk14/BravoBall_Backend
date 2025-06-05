@@ -5,12 +5,18 @@ Endpoint using JWT to authenticate user upon login
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from models import User, LoginRequest, UserInfoDisplay
+from models import User, LoginRequest, UserInfoDisplay, TokenResponse, RefreshTokenRequest, LoginResponse, EmailCheckRequest
 from db import get_db
 import jwt
 from config import UserAuth
 from passlib.context import CryptContext
 from pydantic import BaseModel
+from auth import create_access_token, create_refresh_token, verify_refresh_token, revoke_refresh_token
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 SECRET_KEY = UserAuth.SECRET_KEY
 ALGORITHM = UserAuth.ALGORITHM
@@ -18,9 +24,6 @@ pwd_context = UserAuth.pwd_context
     
 router = APIRouter()
 
-# Add new model for email check request
-class EmailCheckRequest(BaseModel):
-    email: str
 
 def verify_password(plain_password, hashed_password):
     """
@@ -28,18 +31,10 @@ def verify_password(plain_password, hashed_password):
     """
     return pwd_context.verify(plain_password, hashed_password)
 
-def create_access_token(data: dict):
-    """
-    Create an access token for a user using JWT
-    """
-    to_encode = data.copy()
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-
-@router.post("/login/")
+@router.post("/login/", response_model=LoginResponse)
 def login(login_request: LoginRequest, db: Session = Depends(get_db)):
     """
-    Login a user and return an access token if the user is valid
+    Login a user and return access and refresh tokens with user info
     """
     user = db.query(User).filter(User.email == login_request.email).first()
     
@@ -50,24 +45,55 @@ def login(login_request: LoginRequest, db: Session = Depends(get_db)):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # Converts User model data info into JSON format so can make frontend response
-    user_info_JSON = UserInfoDisplay(
+    # Create access token
+    access_token = create_access_token(data={"sub": user.email, "user_id": user.id})
+    
+    # Create refresh token
+    refresh_token = create_refresh_token(user.id, db)
+    
+    logger.info(f"User logged in successfully: {user.email}")
+    
+    # Return the access token, refresh token, and user info
+    return LoginResponse(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        token_type="bearer",
         email=user.email,
         first_name=user.first_name,
         last_name=user.last_name
     )
 
-    access_token = create_access_token(data={"sub": user.email, "user_id": user.id})
-
-    print(f"access token: {access_token}")
-
-    #This must match the frontend structure thats storing these values (LoginResponse)
-    return {
-        "access_token": access_token,
-         "token_type": "bearer",
-         **user_info_JSON.dict()
-         }
-
+@router.post("/refresh/", response_model=TokenResponse)
+def refresh_token(refresh_request: RefreshTokenRequest, db: Session = Depends(get_db)):
+    """
+    Get a new access token using a refresh token
+    """
+    try:
+        # Verify the refresh token and get the user
+        user = verify_refresh_token(refresh_request.refresh_token, db)
+        
+        # Create new access token
+        access_token = create_access_token(data={"sub": user.email, "user_id": user.id})
+        
+        # Create new refresh token
+        new_refresh_token = create_refresh_token(user.id, db)
+        
+        # Revoke the old refresh token
+        revoke_refresh_token(refresh_request.refresh_token, db)
+        
+        logger.info(f"Tokens refreshed successfully for user: {user.email}")
+        
+        return TokenResponse(
+            access_token=access_token,
+            refresh_token=new_refresh_token,
+            token_type="bearer"
+        )
+    except Exception as e:
+        logger.error(f"Error refreshing tokens: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid refresh token"
+        )
 
 @router.post("/check-email/")
 def check_email_exists(email_request: EmailCheckRequest, db: Session = Depends(get_db)):
