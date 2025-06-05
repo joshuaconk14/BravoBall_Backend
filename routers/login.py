@@ -5,7 +5,7 @@ Endpoint using JWT to authenticate user upon login
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from models import User, LoginRequest, UserInfoDisplay, TokenResponse, RefreshTokenRequest
+from models import User, LoginRequest, UserInfoDisplay, TokenResponse, RefreshTokenRequest, LoginResponse, EmailCheckRequest
 from db import get_db
 import jwt
 from config import UserAuth
@@ -24,9 +24,6 @@ pwd_context = UserAuth.pwd_context
     
 router = APIRouter()
 
-# Add new model for email check request
-class EmailCheckRequest(BaseModel):
-    email: str
 
 def verify_password(plain_password, hashed_password):
     """
@@ -34,10 +31,10 @@ def verify_password(plain_password, hashed_password):
     """
     return pwd_context.verify(plain_password, hashed_password)
 
-@router.post("/login/", response_model=TokenResponse)
+@router.post("/login/", response_model=LoginResponse)
 def login(login_request: LoginRequest, db: Session = Depends(get_db)):
     """
-    Login a user and return access and refresh tokens
+    Login a user and return access and refresh tokens with user info
     """
     user = db.query(User).filter(User.email == login_request.email).first()
     
@@ -56,11 +53,14 @@ def login(login_request: LoginRequest, db: Session = Depends(get_db)):
     
     logger.info(f"User logged in successfully: {user.email}")
     
-    # Return the access token and refresh token
-    return TokenResponse(
+    # Return the access token, refresh token, and user info
+    return LoginResponse(
         access_token=access_token,
         refresh_token=refresh_token,
-        token_type="bearer"
+        token_type="bearer",
+        email=user.email,
+        first_name=user.first_name,
+        last_name=user.last_name
     )
 
 @router.post("/refresh/", response_model=TokenResponse)
