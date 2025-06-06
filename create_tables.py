@@ -1,12 +1,17 @@
 """
 create_tables.py
 This file is ran once to create tables for postgres db
+
+Logging level can be set via the LOG_LEVEL environment variable (e.g., LOG_LEVEL=WARNING) for production best practices.
 """
 
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 import models
 from db import SQLALCHEMY_DATABASE_URL
+from config import get_logger
+
+logger = get_logger(__name__)
 
 def create_tables():
     # Create an engine
@@ -22,16 +27,16 @@ def create_tables():
     # Print status for each table
     for table in new_tables:
         if table in existing_tables:
-            print(f"Table '{table}' already exists")
+            logger.info(f"Table '{table}' already exists")
         else:
-            print(f"Creating table '{table}'...")
+            logger.info(f"Creating table '{table}'...")
     
     try:    
         # This will only create tables that don't exist
         models.Base.metadata.create_all(bind=engine)
-        print("\nTable creation completed successfully!")
+        logger.info("\nTable creation completed successfully!")
     except Exception as e:
-        print(f"\nError creating tables: {str(e)}")
+        logger.error(f"\nError creating tables: {str(e)}")
 
 if __name__ == "__main__":
     create_tables()

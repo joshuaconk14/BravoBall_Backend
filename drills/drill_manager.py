@@ -13,7 +13,6 @@ from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 from pathlib import Path
 import json
-import logging
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from models import Drill, DrillCategory, DrillSkillFocus
@@ -21,9 +20,9 @@ from models import Drill, DrillCategory, DrillSkillFocus
 # Database import
 from db import SessionLocal
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from ..config import get_logger
+
+logger = get_logger(__name__)
 
 @dataclass
 class DrillUpdate:
@@ -182,13 +181,11 @@ def main():
     """Main function to update drills from files"""
     
     if len(sys.argv) < 2:
-        print("Usage: python drill_manager.py <drills_file_path> [additional_files...]")
         sys.exit(1)
     
     db = SessionLocal()
     try:
         for file_path in sys.argv[1:]:
-            print(f"\nProcessing {file_path}...")
             update_drills_from_file(file_path, db)
     finally:
         db.close()

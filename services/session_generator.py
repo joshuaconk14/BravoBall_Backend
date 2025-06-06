@@ -25,6 +25,9 @@ from models import (
 )
 from typing import List
 from utils.drill_scorer import DrillScorer
+from config import get_logger
+
+logger = get_logger(__name__)
 
 class SessionGenerator:
     """
@@ -71,7 +74,7 @@ class SessionGenerator:
         """
         # Get and rank all available drills
         all_drills = self.db.query(Drill).all()
-        print(f"\nFound {len(all_drills)} total drills")
+        logger.info(f"\nFound {len(all_drills)} total drills")
 
         scorer = DrillScorer(preferences)
         ranked_drills = scorer.rank_drills(all_drills)
@@ -89,9 +92,9 @@ class SessionGenerator:
             drill = ranked_drill['drill']
             scores = ranked_drill['scores']
             
-            print(f"\nChecking drill: {drill.title}")
-            print(f"Score: {ranked_drill['total_score']:.2f}")
-            print(f"Score breakdown: {scores}")
+            logger.info(f"\nChecking drill: {drill.title}")
+            logger.info(f"Score: {ranked_drill['total_score']:.2f}")
+            logger.info(f"Score breakdown: {scores}")
 
             # Adjust drill duration based on session constraints
             adjusted_duration = self._adjust_drill_duration(
@@ -102,8 +105,8 @@ class SessionGenerator:
                 has_limited_equipment
             )
 
-            print(f"Original duration: {drill.duration} minutes")
-            print(f"Adjusted duration: {adjusted_duration} minutes")
+            logger.info(f"Original duration: {drill.duration} minutes")
+            logger.info(f"Adjusted duration: {adjusted_duration} minutes")
 
             # Store drill adjustments
             drill.adjusted_duration = adjusted_duration
@@ -116,9 +119,9 @@ class SessionGenerator:
         # If total duration > session time, drop drills from the end until it fits
         while sum(drill.adjusted_duration for drill in suitable_drills) > preferences.duration and len(suitable_drills) > 1:
             removed = suitable_drills.pop()
-            print(f"Removed drill '{removed.title}' to fit session duration constraint.")
+            logger.warning(f"Removed drill '{removed.title}' to fit session duration constraint.")
 
-        print(f"\nFound {len(suitable_drills)} suitable drills")
+        logger.info(f"\nFound {len(suitable_drills)} suitable drills")
 
         # Normalize durations to fit within target time
         if suitable_drills:
@@ -133,14 +136,14 @@ class SessionGenerator:
             # Try to find an existing session for this user
             session = self.db.query(TrainingSession).filter(TrainingSession.user_id == preferences.user_id).first()
             if session:
-                print(f"Updating existing session for user: {preferences.user_id}")
+                logger.info(f"Updating existing session for user: {preferences.user_id}")
                 session.total_duration = current_duration
                 session.focus_areas = preferences.target_skills
                 # Remove old OrderedSessionDrills for this session (so we can add the new ones)
                 self.db.query(OrderedSessionDrill).filter(OrderedSessionDrill.session_id == session.id).delete()
                 self.db.commit()
             else:
-                print(f"Creating new session for user: {preferences.user_id}")
+                logger.info(f"Creating new session for user: {preferences.user_id}")
                 session = TrainingSession(
                     total_duration=current_duration,
                     focus_areas=preferences.target_skills,

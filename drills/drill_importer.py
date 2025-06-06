@@ -4,15 +4,15 @@ Each file should contain drills for a specific category (e.g., first_touch_drill
 
 This script is used when restarting the database in testing environments and importing drills from the drills directory.
 """
-import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import json
 from typing import List, Dict, Any
 from sqlalchemy.orm import Session
 from models import DrillCategory, Drill, DrillSkillFocus
 from db import SessionLocal, engine
+from config import get_logger
+
+logger = get_logger(__name__)
 
 def import_drills_from_file(file_path: str) -> List[Dict[str, Any]]:
     """
@@ -45,11 +45,11 @@ def import_drills_from_file(file_path: str) -> List[Dict[str, Any]]:
                 if "primary_skill" not in drill:
                     drill["primary_skill"] = {"category": category}
                 elif drill["primary_skill"].get("category") != category:
-                    print(f"Warning: Drill '{drill['title']}' has category '{drill['primary_skill']['category']}' but is in {filename}")
+                    logger.warning(f"Warning: Drill '{drill['title']}' has category '{drill['primary_skill']['category']}' but is in {filename}")
             
             return drills_data
     except Exception as e:
-        print(f"Error reading file {file_path}: {str(e)}")
+        logger.error(f"Error reading file {file_path}: {str(e)}")
         import traceback
         traceback.print_exc()
         return []
@@ -73,7 +73,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
             category_name = primary_skill.get("category")
             
             if not category_name:
-                print(f"Skipping drill '{drill_data.get('title')}': No category found")
+                logger.warning(f"Skipping drill '{drill_data.get('title')}': No category found")
                 drills_skipped += 1
                 continue
                 
@@ -85,7 +85,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                 )
                 db.add(category)
                 db.flush()
-                print(f"Created new category: {category_name}")
+                logger.info(f"Created new category: {category_name}")
 
             # Check if drill already exists
             existing_drill = db.query(Drill).filter_by(title=drill_data["title"]).first()
@@ -149,7 +149,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                         )
                         db.add(secondary_skill_focus)
                 
-                print(f"Updated existing drill: '{drill_data['title']}'")
+                logger.info(f"Updated existing drill: '{drill_data['title']}'")
                 drills_updated += 1
             else:
                 # Create new drill
@@ -177,7 +177,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                 )
                 db.add(drill)
                 db.flush()
-                print(f"Added new drill: '{drill_data['title']}'")
+                logger.info(f"Added new drill: '{drill_data['title']}'")
                 drills_added += 1
 
                 # Add primary skill focus
@@ -212,15 +212,15 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                         db.add(secondary_skill_focus)
 
         db.commit()
-        print(f"\nImport Summary:")
-        print(f"- Drills added: {drills_added}")
-        print(f"- Drills updated: {drills_updated}")
-        print(f"- Drills skipped: {drills_skipped}")
-        print(f"- Total drills processed: {drills_added + drills_updated + drills_skipped}")
+        logger.info(f"\nImport Summary:")
+        logger.info(f"- Drills added: {drills_added}")
+        logger.info(f"- Drills updated: {drills_updated}")
+        logger.info(f"- Drills skipped: {drills_skipped}")
+        logger.info(f"- Total drills processed: {drills_added + drills_updated + drills_skipped}")
         
     except Exception as e:
         db.rollback()
-        print(f"Error uploading drills to database: {str(e)}")
+        logger.error(f"Error uploading drills to database: {str(e)}")
         import traceback
         traceback.print_exc()
         raise
@@ -231,7 +231,7 @@ def main():
     
     # Ensure a file for drills to process is provided
     if len(sys.argv) < 2:
-        print("Usage: python drill_importer.py <drills_file_path> [additional_files...]")
+        logger.error("Usage: python drill_importer.py <drills_file_path> [additional_files...]")
         sys.exit(1)
         
     db = SessionLocal()
@@ -241,21 +241,21 @@ def main():
         
         # Process each file provided
         for file_path in sys.argv[1:]:
-            print(f"\nProcessing {file_path}...")
+            logger.info(f"\nProcessing {file_path}...")
             drills_data = import_drills_from_file(file_path)
             if not drills_data:
-                print("No drills found to import")
+                logger.info("No drills found to import")
                 continue
                 
-            print(f"Found {len(drills_data)} drills to import")
+            logger.info(f"Found {len(drills_data)} drills to import")
             
             # Upload to database
             upload_drills_to_db(drills_data, db)
             
     finally:
         db.close()
-        print(f"\nOverall Import Summary:")
-        print(f"- Total files processed: {len(sys.argv[1:])}")
+        logger.info(f"\nOverall Import Summary:")
+        logger.info(f"- Total files processed: {len(sys.argv[1:])}")
 
 if __name__ == "__main__":
     main() 

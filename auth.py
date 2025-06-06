@@ -13,20 +13,12 @@ from models import UserInfoDisplay
 from datetime import datetime, timedelta
 from config import UserAuth
 import secrets
-import logging
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # UserAuth variables from config.py
 SECRET_KEY = UserAuth.SECRET_KEY
 ALGORITHM = UserAuth.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = UserAuth.ACCESS_TOKEN_EXPIRE_MINUTES
 REFRESH_TOKEN_EXPIRE_DAYS = UserAuth.REFRESH_TOKEN_EXPIRE_DAYS
-
-print(f"ACCESS_TOKEN_EXPIRE_MINUTES: {ACCESS_TOKEN_EXPIRE_MINUTES}")
-print(f"REFRESH_TOKEN_EXPIRE_DAYS: {REFRESH_TOKEN_EXPIRE_DAYS}")
 
 # class that sets up Oauth2 password flow, extracts access token from request
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
