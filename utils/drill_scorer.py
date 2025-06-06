@@ -2,6 +2,9 @@ from typing import List, Dict, Any
 from models import Drill, SessionPreferences, DrillSkillFocus
 from db import SessionLocal
 import random
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 class DrillScorer:
     """
@@ -124,7 +127,7 @@ class DrillScorer:
             return {"primary": primary_score, "secondary": secondary_score}
         except (AttributeError, TypeError, IndexError) as e:
             # Handle any unexpected errors in skill matching
-            print(f"Error in skill scoring: {str(e)}")
+            logging.error(f"Error in skill scoring: {str(e)}")
             return {"primary": 0.0, "secondary": 0.0}
 
     def _score_equipment(self, required_equipment: List[str]) -> float:

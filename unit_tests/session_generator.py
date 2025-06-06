@@ -13,6 +13,9 @@ import sys
 from pathlib import Path
 import pytest
 from datetime import datetime
+from ..config import get_logger
+
+logger = get_logger(__name__)
 
 sys.path.append(str(Path(__file__).parent.parent))
 
@@ -81,48 +84,48 @@ def print_session_details(profile_name, session, profile):
         session: Generated training session
         profile: User profile configuration
     """
-    print("\n" + "="*80)
-    print(f"🏃 Testing Profile: {profile_name}")
-    print(f"📝 {profile['description']}")
-    print("-"*80)
+    logger.info("\n" + "="*80)
+    logger.info(f"🏃 Testing Profile: {profile_name}")
+    logger.info(f"📝 {profile['description']}")
+    logger.info("-"*80)
     
     # Print Profile Preferences
-    print("\n📋 Profile Preferences:")
+    logger.info("\n📋 Profile Preferences:")
     prefs = profile["preferences"]
-    print(f"⏱  Duration Goal: {prefs['duration']} minutes")
-    print(f"📍  Location: {prefs['training_location']}")
-    print(f"🎯  Difficulty: {prefs['difficulty']}")
-    print(f"⚽  Equipment: {', '.join(prefs['available_equipment'])}")
-    print(f"🔄  Target Skills: {', '.join(prefs['target_skills'])}")
+    logger.info(f"⏱  Duration Goal: {prefs['duration']} minutes")
+    logger.info(f"📍  Location: {prefs['training_location']}")
+    logger.info(f"🎯  Difficulty: {prefs['difficulty']}")
+    logger.info(f"⚽  Equipment: {', '.join(prefs['available_equipment'])}")
+    logger.info(f"🔄  Target Skills: {', '.join(prefs['target_skills'])}")
     
     if not session.ordered_drills:
-        print("\n❌ No suitable drills found for this profile")
+        logger.info("\n❌ No suitable drills found for this profile")
         return
 
     # Print Selected Drills
-    print("\n📚 Selected Drills:")
+    logger.info("\n📚 Selected Drills:")
     for i, osd in enumerate(sorted(session.ordered_drills, key=lambda x: x.position), 1):
         drill = osd.drill
-        print(f"\n{i}. {drill.title}")
-        print(f"   {'Duration':12} │ {getattr(drill, 'duration', 0):2d} min │ Adjusted: {osd.duration or drill.duration:2d} min")
-        print(f"   {'Equipment':12} │ {', '.join(drill.equipment) if drill.equipment else 'None'}")
-        print(f"   {'Difficulty':12} │ {drill.difficulty.title() if drill.difficulty else 'Unknown'}")
-        print(f"   {'Sets':12} │ {osd.sets if osd.sets is not None else drill.sets}")
-        print(f"   {'Reps':12} │ {osd.reps if osd.reps is not None else drill.reps}")
-        print(f"   {'Rest':12} │ {osd.rest if osd.rest is not None else drill.rest}")
+        logger.info(f"\n{i}. {drill.title}")
+        logger.info(f"   {'Duration':12} │ {getattr(drill, 'duration', 0):2d} min │ Adjusted: {osd.duration or drill.duration:2d} min")
+        logger.info(f"   {'Equipment':12} │ {', '.join(drill.equipment) if drill.equipment else 'None'}")
+        logger.info(f"   {'Difficulty':12} │ {drill.difficulty.title() if drill.difficulty else 'Unknown'}")
+        logger.info(f"   {'Sets':12} │ {osd.sets if osd.sets is not None else drill.sets}")
+        logger.info(f"   {'Reps':12} │ {osd.reps if osd.reps is not None else drill.reps}")
+        logger.info(f"   {'Rest':12} │ {osd.rest if osd.rest is not None else drill.rest}")
     
     # Print Session Summary
-    print("\n📊 Session Summary:")
-    print(f"✓ Total Duration: {session.total_duration}/{prefs['duration']} minutes")
-    print(f"✓ Number of Drills: {len(session.ordered_drills)}")
+    logger.info("\n📊 Session Summary:")
+    logger.info(f"✓ Total Duration: {session.total_duration}/{prefs['duration']} minutes")
+    logger.info(f"✓ Number of Drills: {len(session.ordered_drills)}")
     
     equipment_used = set()
     for osd in session.ordered_drills:
         drill = osd.drill
         if drill.equipment:
             equipment_used.update(drill.equipment)
-    print(f"✓ Equipment Types Used: {', '.join(sorted(equipment_used))}")
-    print("="*80 + "\n")
+    logger.info(f"✓ Equipment Types Used: {', '.join(sorted(equipment_used))}")
+    logger.info("="*80 + "\n")
 
 @pytest.mark.asyncio
 async def test_session_generation():

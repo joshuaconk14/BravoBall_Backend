@@ -10,6 +10,7 @@ from urllib.parse import quote
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+from config import get_logger
 
 # Get the absolute path to your .env file
 env_path = Path('.') / '.env'
@@ -33,11 +34,13 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # Create declarative base
 Base = declarative_base()
 
+logger = get_logger(__name__)
+
 # this function is used to get the db session running
 def get_db():
     db = SessionLocal()
     try:
-        print(f"Connecting to database: {db}")
+        logger.info(f"Connecting to database: {db}")
         yield db
     finally:
         db.close()

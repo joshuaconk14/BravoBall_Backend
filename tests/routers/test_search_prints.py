@@ -7,36 +7,39 @@ import sys
 import requests
 import json
 from typing import List, Dict, Any
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 def print_search_results(query: str, results: Dict[str, Any]):
     """Print search results in a clear, simple format"""
-    print("\n" + "="*80)
-    print(f"SEARCH QUERY: '{query}'")
-    print(f"TOTAL RESULTS: {results['total']}")
-    print(f"PAGE: {results['page']} of {results['total_pages']}")
-    print("="*80)
+    logging.info("\n" + "="*80)
+    logging.info(f"SEARCH QUERY: '{query}'")
+    logging.info(f"TOTAL RESULTS: {results['total']}")
+    logging.info(f"PAGE: {results['page']} of {results['total_pages']}")
+    logging.info("="*80)
     
     if not results.get('items'):
-        print("NO RESULTS FOUND")
+        logging.info("NO RESULTS FOUND")
         return
     
-    print("\nDRILL TITLES:")
+    logging.info("\nDRILL TITLES:")
     for i, drill in enumerate(results['items']):
-        print(f"{i+1}. {drill['title']} (ID: {drill['id']})")
+        logging.info(f"{i+1}. {drill['title']} (ID: {drill['id']})")
     
-    print("\n" + "="*80)
-    print("FULL DETAILS OF FIRST RESULT:")
+    logging.info("\n" + "="*80)
+    logging.info("FULL DETAILS OF FIRST RESULT:")
     if results['items']:
         first_drill = results['items'][0]
         for key, value in first_drill.items():
             if key in ['title', 'description', 'difficulty', 'id']:
-                print(f"{key}: {value}")
+                logging.info(f"{key}: {value}")
         
         if 'primary_skill' in first_drill and first_drill['primary_skill']:
             primary_skill = first_drill['primary_skill']
-            print(f"primary_skill: {primary_skill.get('category')} - {primary_skill.get('sub_skill')}")
+            logging.info(f"primary_skill: {primary_skill.get('category')} - {primary_skill.get('sub_skill')}")
     
-    print("="*80)
+    logging.info("="*80)
 
 def test_search(query="", category=None, difficulty=None):
     """Run a search against the API and print results"""
@@ -55,29 +58,29 @@ def test_search(query="", category=None, difficulty=None):
     if params:
         url += "?" + "&".join(params)
     
-    print(f"Calling API: {url}")
+    logging.info(f"Calling API: {url}")
     
     # Make the request
     try:
         response = requests.get(url)
         
         if response.status_code != 200:
-            print(f"Search failed with status {response.status_code}")
-            print(f"Response: {response.text}")
+            logging.error(f"Search failed with status {response.status_code}")
+            logging.error(f"Response: {response.text}")
             return
         
         data = response.json()
         print_search_results(query or "EMPTY QUERY", data)
         
     except Exception as e:
-        print(f"Error: {str(e)}")
+        logging.error(f"Error: {str(e)}")
 
 if __name__ == "__main__":
     # Process command line arguments
     args = sys.argv[1:]
     
     if not args:
-        print("Running tests with various search queries...")
+        logging.info("Running tests with various search queries...")
         # Test with empty query
         test_search()
         
@@ -109,4 +112,4 @@ if __name__ == "__main__":
             
         test_search(query, category, difficulty)
         
-    print("\nDone!") 
+    logging.info("\nDone!") 

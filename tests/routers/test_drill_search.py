@@ -19,6 +19,8 @@ import sys
 from typing import List, Dict, Any
 from sqlalchemy.orm import Session
 from models import Drill, DrillCategory, DrillSkillFocus
+import logging
+logging.basicConfig(level=logging.INFO)
 
 def create_test_drills(db: Session, num_drills: int = 10):
     """Create a variety of test drills with different titles, descriptions, and categories"""
@@ -163,14 +165,14 @@ def create_test_drills(db: Session, num_drills: int = 10):
 
 def print_search_results(query: str, results: Dict[str, Any], highlight: bool = True):
     """Print search results in a detailed format to help diagnose search issues"""
-    print("\n" + "="*80)
-    print(f"SEARCH QUERY: '{query}'")
-    print(f"TOTAL RESULTS: {results['total']}")
-    print(f"PAGE: {results['page']} of {results['total_pages']}")
-    print("="*80)
+    logging.info("\n" + "="*80)
+    logging.info(f"SEARCH QUERY: '{query}'")
+    logging.info(f"TOTAL RESULTS: {results['total']}")
+    logging.info(f"PAGE: {results['page']} of {results['total_pages']}")
+    logging.info("="*80)
     
     if not results['items']:
-        print("NO RESULTS FOUND")
+        logging.info("NO RESULTS FOUND")
         return
     
     for i, drill in enumerate(results['items']):
@@ -184,15 +186,15 @@ def print_search_results(query: str, results: Dict[str, Any], highlight: bool = 
             title = pattern.sub(lambda m: f"\033[1;31m{m.group(0)}\033[0m", title)
             description = pattern.sub(lambda m: f"\033[1;31m{m.group(0)}\033[0m", description)
         
-        print(f"\n{i+1}. {title}")
-        print(f"   ID: {drill['id']}")
-        print(f"   Description: {description}")
+        logging.info(f"\n{i+1}. {title}")
+        logging.info(f"   ID: {drill['id']}")
+        logging.info(f"   Description: {description}")
         if 'primary_skill' in drill and drill['primary_skill']:
             primary_skill = drill['primary_skill']
-            print(f"   Primary Skill: {primary_skill.get('category', 'N/A')} - {primary_skill.get('sub_skill', 'N/A')}")
-        print(f"   Difficulty: {drill.get('difficulty', 'N/A')}")
+            logging.info(f"   Primary Skill: {primary_skill.get('category', 'N/A')} - {primary_skill.get('sub_skill', 'N/A')}")
+        logging.info(f"   Difficulty: {drill.get('difficulty', 'N/A')}")
     
-    print("\n" + "="*80)
+    logging.info("\n" + "="*80)
 
 def test_search_drills_empty_query(client, auth_headers, db):
     """Test searching with an empty query (should return all drills)"""
@@ -381,7 +383,7 @@ if __name__ == "__main__":
     })
     
     if login_response.status_code != 200:
-        print("Authentication failed. Update your credentials.")
+        logging.error("Authentication failed. Update your credentials.")
         sys.exit(1)
     
     token = login_response.json()["token"]
@@ -392,7 +394,7 @@ if __name__ == "__main__":
     response = client.get(f"/api/drills/search?query={search_term}", headers=auth_headers)
     
     if response.status_code != 200:
-        print(f"Search failed with status {response.status_code}: {response.text}")
+        logging.error(f"Search failed with status {response.status_code}: {response.text}")
         sys.exit(1)
     
     data = response.json()

@@ -1,5 +1,8 @@
 import sys
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -20,7 +23,7 @@ def update_drill_video(drill_title: str, new_video_url: str, new_thumbnail_url: 
         # Find the drill by title
         drill = db.query(Drill).filter(Drill.title == drill_title).first()
         if not drill:
-            print(f"Drill not found: {drill_title}")
+            logging.error(f"Drill not found: {drill_title}")
             return
             
         # Update only the video and thumbnail URLs
@@ -29,10 +32,10 @@ def update_drill_video(drill_title: str, new_video_url: str, new_thumbnail_url: 
             drill.thumbnail_url = new_thumbnail_url
             
         db.commit()
-        print(f"Successfully updated video URL for drill: {drill_title}")
+        logging.info(f"Successfully updated video URL for drill: {drill_title}")
     except Exception as e:
         db.rollback()
-        print(f"Error updating drill: {str(e)}")
+        logging.error(f"Error updating drill: {str(e)}")
     finally:
         db.close()
 

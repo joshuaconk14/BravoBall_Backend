@@ -10,6 +10,9 @@ import os
 import json
 import sys
 from typing import Dict, Any, List
+from config import get_logger
+
+logger = get_logger(__name__)
 
 # Mapping dictionaries for converting between frontend labels and backend enum values
 LOCATION_MAPPING = {
@@ -117,7 +120,7 @@ def update_drill_file(file_path: str) -> None:
         file_path: Path to the drill file
     """
     try:
-        print(f"Processing {file_path}...")
+        logger.info(f"Processing {file_path}...")
         
         # Read the file
         with open(file_path, 'r') as file:
@@ -127,7 +130,7 @@ def update_drill_file(file_path: str) -> None:
         start_idx = content.find('[')
         end_idx = content.rfind(']') + 1
         if start_idx == -1 or end_idx == 0:
-            print(f"No JSON array found in {file_path}")
+            logger.warning(f"No JSON array found in {file_path}")
             return
         
         json_content = content[start_idx:end_idx]
@@ -142,10 +145,10 @@ def update_drill_file(file_path: str) -> None:
         with open(file_path, 'w') as file:
             file.write(updated_content)
         
-        print(f"Successfully updated {file_path}")
+        logger.info(f"Successfully updated {file_path}")
     
     except Exception as e:
-        print(f"Error updating {file_path}: {str(e)}")
+        logger.error(f"Error updating {file_path}: {str(e)}")
         import traceback
         traceback.print_exc()
 
@@ -160,16 +163,16 @@ def main():
     ]
     
     if not drill_files:
-        print("No drill files found")
+        logger.warning("No drill files found")
         return
     
-    print(f"Found {len(drill_files)} drill files to update")
+    logger.info(f"Found {len(drill_files)} drill files to update")
     
     # Update each file
     for file_path in drill_files:
         update_drill_file(file_path)
     
-    print("Done!")
+    logger.info("Done!")
 
 if __name__ == "__main__":
     main()

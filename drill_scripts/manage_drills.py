@@ -5,6 +5,9 @@ import argparse
 from pathlib import Path
 from drills.drill_importer import import_drills_from_file, upload_drills_to_db
 from db import SessionLocal
+from config import get_logger
+
+logger = get_logger(__name__)
 
 def update_drills(category: str = None, reset: bool = False) -> None:
     """
@@ -15,7 +18,7 @@ def update_drills(category: str = None, reset: bool = False) -> None:
         reset: Whether to reset the database before importing
 
     Ex:
-    python scripts/manage_drills.py --category dribbling --reset
+    python -m scripts/manage_drills.py --category dribbling --reset
     => will update the database for dril
     """
     drills_dir = Path("drills")
@@ -24,7 +27,7 @@ def update_drills(category: str = None, reset: bool = False) -> None:
         # Optional: Add database reset logic here
         from reset_db import reset_database
         reset_database()
-        print("Database reset complete")
+        logger.info("Database reset complete")
 
     # Get database session
     db = SessionLocal()
@@ -33,28 +36,28 @@ def update_drills(category: str = None, reset: bool = False) -> None:
             # Update specific category
             file_path = drills_dir / f"{category}_drills.txt"
             if file_path.exists():
-                print(f"\nProcessing {file_path}...")
+                logger.info(f"\nProcessing {file_path}...")
                 drills_data = import_drills_from_file(str(file_path))
                 if drills_data:
-                    print(f"Found {len(drills_data)} drills to import")
+                    logger.info(f"Found {len(drills_data)} drills to import")
                     upload_drills_to_db(drills_data, db)
                 else:
-                    print(f"❌ No drills found in file: {file_path}")
+                    logger.warning(f"❌ No drills found in file: {file_path}")
             else:
-                print(f"❌ No drill file found for category: {category}")
+                logger.warning(f"❌ No drill file found for category: {category}")
         else:
             # Update all categories
             for file_path in drills_dir.glob("*_drills.txt"):
-                print(f"\nProcessing {file_path}...")
+                logger.info(f"\nProcessing {file_path}...")
                 drills_data = import_drills_from_file(str(file_path))
                 if drills_data:
-                    print(f"Found {len(drills_data)} drills to import")
+                    logger.info(f"Found {len(drills_data)} drills to import")
                     upload_drills_to_db(drills_data, db)
                 else:
-                    print(f"❌ No drills found in file: {file_path}")
+                    logger.warning(f"❌ No drills found in file: {file_path}")
     finally:
         db.close()
-        print("\nDrill update process completed")
+        logger.info("\nDrill update process completed")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Manage soccer drills database")
