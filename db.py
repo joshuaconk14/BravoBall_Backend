@@ -12,18 +12,18 @@ from dotenv import load_dotenv
 from pathlib import Path
 from config import get_logger
 
-# Get the absolute path to your .env file
-env_path = Path('.') / '.env'
-# Load environment variables from .env file, override existing
-load_dotenv(dotenv_path=env_path, override=True)
-
-password = quote(os.getenv("POSTGRES_PASSWORD"))
-username = os.getenv("POSTGRES_USER")
-host = os.getenv("POSTGRES_HOST")
-db = os.getenv("POSTGRES_DB")
-
-# defining the database URL
-SQLALCHEMY_DATABASE_URL = f"postgresql://{username}:{password}@{host}/{db}"
+# Get the database URL from the environment variables
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
+if not SQLALCHEMY_DATABASE_URL:
+    # Fallback to local development variables
+    env_path = Path('.') / '.env'
+    load_dotenv(dotenv_path=env_path, override=True)
+    from urllib.parse import quote
+    password = quote(os.getenv("POSTGRES_PASSWORD", ""))
+    username = os.getenv("POSTGRES_USER", "")
+    host = os.getenv("POSTGRES_HOST", "")
+    db = os.getenv("POSTGRES_DB", "")
+    SQLALCHEMY_DATABASE_URL = f"postgresql://{username}:{password}@{host}/{db}"
 
 # creating the engine variable to connect to database
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
