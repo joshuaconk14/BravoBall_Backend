@@ -96,24 +96,22 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
         # connects pydantic onboarding data model to the User table
         user = User(
             # Registration / User ID
-            first_name=player_info.firstName,
-            last_name=player_info.lastName,
             email=player_info.email,
             hashed_password=hashed_password,
 
-            # Onboarding - handle null values
-            primary_goal=player_info.primaryGoal or None,
+            # Onboarding - handle null values with defaults
+            primary_goal=player_info.primaryGoal,
             biggest_challenge=player_info.biggestChallenge or [],
-            training_experience=player_info.trainingExperience or None,
-            position=player_info.position or None,
+            training_experience=player_info.trainingExperience,
+            position=player_info.position,
             playstyle=player_info.playstyle or [],
-            age_range=player_info.ageRange or None,
+            age_range=player_info.ageRange,
             strengths=player_info.strengths or [],
             areas_to_improve=player_info.areasToImprove or [],
             training_location=player_info.trainingLocation or [],
-            available_equipment=player_info.availableEquipment or [],
-            daily_training_time=player_info.dailyTrainingTime or None,
-            weekly_training_days=player_info.weeklyTrainingDays or None,
+            available_equipment=player_info.availableEquipment or ["ball"],
+            daily_training_time=player_info.dailyTrainingTime or "30",
+            weekly_training_days=player_info.weeklyTrainingDays or "moderate",
         )
         db.add(user)
         db.commit()
@@ -162,7 +160,7 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
             preferences = SessionPreferences(
                 user_id=user.id,
                 duration=duration,
-                available_equipment=player_info.availableEquipment or [],
+                available_equipment=player_info.availableEquipment or ["ball"],
                 training_style=style_map.get(player_info.trainingExperience, "medium_intensity"),
                 training_location=player_info.trainingLocation[0] if isinstance(player_info.trainingLocation, list) and player_info.trainingLocation else "full_field",
                 difficulty=difficulty_map.get(player_info.trainingExperience, "beginner"),
@@ -178,7 +176,6 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
             # Continue even if preferences creation fails
 
         # Create access token after user is created, made for specific user
-        # create_access_token from auth.py
         access_token = create_access_token(
             data={
                 "sub": user.email,
