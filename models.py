@@ -264,25 +264,23 @@ session_drills = Table(
 # *** PYDANTIC MODELS FOR API REQUESTS/RESPONSES ***
 
 class OnboardingData(BaseModel):
-    # Optional values in onboarding with camelCase field names to match frontend
+    # Required fields for authentication
+    email: str
+    password: str
+
+    # Optional onboarding fields
     primaryGoal: Optional[str] = None
-    biggestChallenge: Optional[List[str]] = []
     trainingExperience: Optional[str] = None
     position: Optional[str] = None
-    playstyle: Optional[List[str]] = []
     ageRange: Optional[str] = None
     strengths: Optional[List[str]] = []
     areasToImprove: Optional[List[str]] = []
+    biggestChallenge: Optional[List[str]] = []
+    playstyle: Optional[List[str]] = []
     trainingLocation: Optional[List[str]] = []
-    availableEquipment: Optional[List[str]] = []
-    dailyTrainingTime: Optional[str] = None
-    weeklyTrainingDays: Optional[str] = None
-
-    # These should be required for registration
-    firstName: str
-    lastName: str
-    email: str
-    password: str
+    availableEquipment: Optional[List[str]] = ["ball"]  # Default to just a soccer ball
+    dailyTrainingTime: Optional[str] = "30"  # Default to 30 minutes
+    weeklyTrainingDays: Optional[str] = "moderate"  # Default to moderate schedule
 
     model_config = ConfigDict(
         from_attributes=True,
