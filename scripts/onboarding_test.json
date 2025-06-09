@@ -1,13 +1,11 @@
 {
     "ageRange": "senior",
-    "lastName": "C",
     "weeklyTrainingDays": "moderate",
     "availableEquipment": ["goals", "wall", "cones", "ball"],
     "strengths": ["fitness"],
     "dailyTrainingTime": "More than 2 hours",
     "primaryGoal": "have_fun",
     "position": "center_back",
-    "firstName": "J",
     "areasToImprove": ["defending", "shooting", "first_touch"],
     "trainingLocation": ["full_field"],
     "biggestChallenge": ["injury"],
