@@ -31,8 +31,6 @@ class LoginResponse(BaseModel):
     access_token: str
     token_type: str
     email: str
-    first_name: str
-    last_name: str
     refresh_token: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
@@ -42,8 +40,6 @@ class RefreshTokenRequest(BaseModel):
 
 class UserInfoDisplay(BaseModel):
     email: str
-    first_name: str 
-    last_name: str
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -615,10 +611,17 @@ class SavedFilterResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class UserUpdate(BaseModel):
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    email: Optional[str] = None
+class EmailUpdate(BaseModel):
+    email: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
+
+class PasswordUpdate(BaseModel):
+    current_password: str
+    new_password: str
 
     model_config = ConfigDict(
         from_attributes=True,

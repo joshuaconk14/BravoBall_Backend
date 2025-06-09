@@ -106,8 +106,6 @@ def test_user(db):
     
     # Create test user in database
     user = User(
-        first_name="Test", 
-        last_name="User", 
         email="test@example.com", 
         hashed_password=hashed_password,
         primary_goal="improve_skill",

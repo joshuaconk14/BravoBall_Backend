@@ -123,7 +123,7 @@ def get_user_display_info(token: str = Depends(oauth2_scheme), db: Session = Dep
         if user is None:
             raise credentials_exception
         
-        return UserInfoDisplay(email=user.email, firstName=user.first_name, lastName=user.last_name)
+        return UserInfoDisplay(email=user.email)
     
     except JWTError:
         raise credentials_exception
