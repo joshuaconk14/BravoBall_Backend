@@ -78,6 +78,7 @@ class User(Base):
     progress_history = relationship("ProgressHistory", back_populates="user", uselist=False)
     saved_filters = relationship("SavedFilter", back_populates="user")
     refresh_tokens = relationship("RefreshToken", back_populates="user")
+    password_reset_codes = relationship("PasswordResetCode", back_populates="user")
 
 
 class CompletedSession(Base):
@@ -628,6 +629,27 @@ class PasswordUpdate(BaseModel):
         populate_by_name=True
     )
 
+# Forgot Password Models
+class ForgotPasswordRequest(BaseModel):
+    email: str
+    model_config = ConfigDict(from_attributes=True)
+
+class ResetPasswordCodeVerification(BaseModel):
+    email: str
+    code: str
+    model_config = ConfigDict(from_attributes=True)
+
+class ResetPasswordRequest(BaseModel):
+    email: str
+    code: str
+    new_password: str
+    model_config = ConfigDict(from_attributes=True)
+
+class ForgotPasswordResponse(BaseModel):
+    message: str
+    success: bool
+    model_config = ConfigDict(from_attributes=True)
+
 # Add this after your existing models
 class RefreshToken(Base):
     __tablename__ = "refresh_tokens"
@@ -640,3 +662,16 @@ class RefreshToken(Base):
     is_revoked = Column(Boolean, default=False)
 
     user = relationship("User", back_populates="refresh_tokens")
+
+
+class PasswordResetCode(Base):
+    __tablename__ = "password_reset_codes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    code = Column(String, index=True)
+    expires_at = Column(DateTime)
+    created_at = Column(DateTime, default=func.now())
+    is_used = Column(Boolean, default=False)
+
+    user = relationship("User", back_populates="password_reset_codes")

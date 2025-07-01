@@ -179,6 +179,18 @@ def create_completed_session(session: CompletedSessionCreate,
     try:
         # Parse the ISO8601 date string to datetime
         session_date = datetime.fromisoformat(session.date.replace('Z', '+00:00'))
+
+        # Check for duplicate sessions (same user, same date, same drill count)
+        existing_session = db.query(CompletedSession).filter(
+            CompletedSession.user_id == current_user.id,
+            CompletedSession.date == session_date,
+            CompletedSession.total_drills == session.total_drills,
+            CompletedSession.total_completed_drills == session.total_completed_drills
+        ).first()
+        
+        if existing_session:
+            # Return existing session instead of creating duplicate
+            return existing_session
         
         # Create the completed session
         db_session = CompletedSession(
