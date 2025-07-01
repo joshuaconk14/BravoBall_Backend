@@ -293,17 +293,17 @@ async def get_progress_history(
             ProgressHistory.user_id == current_user.id
         ).first()
 
-        # if not progress_history:
-        #     # If no progress history exists, return default values
-        #     progress_history = ProgressHistory(
-        #         user_id=current_user.id,
-        #         current_streak=0,
-        #         highest_streak=0,
-        #         completed_sessions_count=0
-        #     )
-        #     db.add(progress_history)
-        #     db.commit()
-        #     db.refresh(progress_history)
+        if not progress_history:
+            # If no progress history exists, create default values
+            progress_history = ProgressHistory(
+                user_id=current_user.id,
+                current_streak=0,
+                highest_streak=0,
+                completed_sessions_count=0
+            )
+            db.add(progress_history)
+            db.commit()
+            db.refresh(progress_history)
 
         return progress_history
 
