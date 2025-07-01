@@ -38,26 +38,43 @@ async def get_ordered_session_drills(
         for ordered_drill in ordered_drills:
             drill = ordered_drill.drill
             if drill:
+                # Get skill focus data
+                skill_focus = drill.skill_focus
+                primary_skill = next((sf for sf in skill_focus if sf.is_primary), None) if skill_focus else None
+                secondary_skills = [sf for sf in skill_focus if not sf.is_primary] if skill_focus else []
+                
+                # Collect all sub-skills (primary + secondary)
+                sub_skills = []
+                if primary_skill:
+                    sub_skills.append(primary_skill.sub_skill)
+                sub_skills.extend([skill.sub_skill for skill in secondary_skills])
+                
+                # Get the main skill category (from primary skill)
+                main_skill = primary_skill.category if primary_skill else "general"
+                
                 result.append({
                     "drill": {
                         "backend_id": drill.id,
                         "title": drill.title,
-                        "skill": getattr(drill, 'skill', None),
+                        "skill": main_skill,
+                        "subSkills": sub_skills,
                         "sets": drill.sets,
                         "reps": drill.reps,
                         "duration": drill.duration,
                         "description": drill.description,
+                        "instructions": drill.instructions,
                         "tips": drill.tips,
                         "equipment": drill.equipment,
-                        "trainingStyle": getattr(drill, 'trainingStyle', None),
-                        "difficulty": drill.difficulty
+                        "trainingStyle": drill.training_styles[0],
+                        "difficulty": drill.difficulty,
+                        "videoUrl": drill.video_url
                     },
                     # Add per-session fields as needed
                     "sets": ordered_drill.sets,
                     "reps": ordered_drill.reps,
                     "duration": ordered_drill.duration,
                     "is_completed": ordered_drill.is_completed,
-                    "position": ordered_drill.position
+                    "position": ordered_drill.position # position in db
                 })
 
         return {
@@ -82,29 +99,41 @@ async def sync_ordered_session_drills(
     is marked as complete.
     """
     try:
-        # Get all sessions for this user
-        user_sessions = db.query(TrainingSession).filter(TrainingSession.user_id == current_user.id).all()
-        session_ids = [s.id for s in user_sessions]
-        # Get existing ordered drills for this user's sessions
+        # Get or create the user's training session
+        user_session = db.query(TrainingSession).filter(TrainingSession.user_id == current_user.id).first()
+        if not user_session:
+            # Create a new training session for the user
+            user_session = TrainingSession(
+                user_id=current_user.id,
+                total_duration=0,  # Will be calculated based on drills
+                focus_areas=[]
+            )
+            db.add(user_session)
+            db.commit()
+            db.refresh(user_session)
+        
+        session_id = user_session.id
+        
+        # Get existing ordered drills for this user's session
         existing_drills = {
-            (drill.session_id, drill.drill_id): drill
+            drill.drill_id: drill
             for drill in db.query(OrderedSessionDrill).filter(
-                OrderedSessionDrill.session_id.in_(session_ids)
+                OrderedSessionDrill.session_id == session_id
             ).all()
         }
-        processed_keys = set()
+        processed_drill_ids = set()
+        
         # Add or update ordered drills
         for position, drill_data in enumerate(ordered_drills.ordered_drills):
             drill = db.query(Drill).filter(Drill.id == drill_data.drill.backend_id).first()
             if not drill and drill_data.drill.backend_id:
                 raise HTTPException(status_code=404, detail=f"Drill with id {drill_data.drill.backend_id} not found")
             drill_id = drill.id if drill else None
-            session_id = drill_data.session_id  # Must be provided by frontend
-            key = (session_id, drill_id)
-            processed_keys.add(key)
-            if key in existing_drills:
+            processed_drill_ids.add(drill_id)
+            
+            if drill_id in existing_drills:
                 # Update existing drill
-                existing_drill = existing_drills[key]
+                existing_drill = existing_drills[drill_id]
                 existing_drill.position = position
                 existing_drill.sets = drill_data.sets
                 existing_drill.reps = drill_data.reps
@@ -122,10 +151,12 @@ async def sync_ordered_session_drills(
                     is_completed=drill_data.is_completed
                 )
                 db.add(ordered_drill)
+        
         # Delete drills that were removed
-        for key, drill in existing_drills.items():
-            if key not in processed_keys:
+        for drill_id, drill in existing_drills.items():
+            if drill_id not in processed_drill_ids:
                 db.delete(drill)
+        
         db.commit()
         return {
             "message": "Current drill progress synced successfully",
@@ -160,14 +191,17 @@ def create_completed_session(session: CompletedSessionCreate,
                     "id": drill.drill.id,
                     "title": drill.drill.title,
                     "skill": drill.drill.skill,
+                    "subSkills": drill.drill.subSkills,
                     "sets": drill.drill.sets,
                     "reps": drill.drill.reps,
                     "duration": drill.drill.duration,
                     "description": drill.drill.description,
+                    "instructions": drill.drill.instructions,
                     "tips": drill.drill.tips,
                     "equipment": drill.drill.equipment,
                     "trainingStyle": drill.drill.trainingStyle,
-                    "difficulty": drill.drill.difficulty
+                    "difficulty": drill.drill.difficulty,
+                    "videoUrl": drill.drill.videoUrl
                 },
                 "setsDone": drill.setsDone,
                 "totalSets": drill.totalSets,
@@ -177,21 +211,6 @@ def create_completed_session(session: CompletedSessionCreate,
             } for drill in session.drills]
         )
         db.add(db_session)
-        
-        # # Update progress history
-        # progress_history = db.query(ProgressHistory).filter(
-        #     ProgressHistory.user_id == current_user.id
-        # ).first()
-        
-        # if progress_history:
-        #     progress_history.completed_sessions_count += 1
-        #     # TODO: Implement proper streak calculation based on consecutive days
-        # else:
-        #     progress_history = ProgressHistory(
-        #         user_id=current_user.id,
-        #         completed_sessions_count=1
-        #     )
-        #     db.add(progress_history)
         
         db.commit()
         db.refresh(db_session)
@@ -274,17 +293,17 @@ async def get_progress_history(
             ProgressHistory.user_id == current_user.id
         ).first()
 
-        if not progress_history:
-            # If no progress history exists, return default values
-            progress_history = ProgressHistory(
-                user_id=current_user.id,
-                current_streak=0,
-                highest_streak=0,
-                completed_sessions_count=0
-            )
-            db.add(progress_history)
-            db.commit()
-            db.refresh(progress_history)
+        # if not progress_history:
+        #     # If no progress history exists, return default values
+        #     progress_history = ProgressHistory(
+        #         user_id=current_user.id,
+        #         current_streak=0,
+        #         highest_streak=0,
+        #         completed_sessions_count=0
+        #     )
+        #     db.add(progress_history)
+        #     db.commit()
+        #     db.refresh(progress_history)
 
         return progress_history
 

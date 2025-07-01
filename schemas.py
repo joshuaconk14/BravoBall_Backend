@@ -14,14 +14,17 @@ class DrillData(BaseModel):
     id: str
     title: str
     skill: str
+    subSkills: List[str]
     sets: Optional[int] = None
     reps: Optional[int] = None
     duration: Optional[int] = None
     description: str
+    instructions: List[str]
     tips: List[str]
     equipment: List[str]
     trainingStyle: str
     difficulty: str
+    videoUrl: str
 
 class CompletedDrillData(BaseModel):
     drill: DrillData
@@ -118,7 +121,6 @@ class OrderedDrillSyncRequest(BaseModel):
     reps: int
     duration: int
     is_completed: bool = False
-    session_id: int
 
     model_config = ConfigDict(from_attributes=True)
 
