@@ -306,7 +306,7 @@ async def get_progress_history(
         ).first()
 
         if not progress_history:
-            # If no progress history exists, return default values
+            # If no progress history exists, create default values
             progress_history = ProgressHistory(
                 user_id=current_user.id,
                 current_streak=0,
