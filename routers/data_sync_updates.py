@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from typing import List
-from datetime import datetime
+from datetime import datetime, timedelta
 from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory, TrainingSession
 from schemas import (
     CompletedSession as CompletedSessionSchema,
@@ -305,17 +305,20 @@ async def get_progress_history(
             ProgressHistory.user_id == current_user.id
         ).first()
 
-        # if not progress_history:
-        #     # If no progress history exists, return default values
-        #     progress_history = ProgressHistory(
-        #         user_id=current_user.id,
-        #         current_streak=0,
-        #         highest_streak=0,
-        #         completed_sessions_count=0
-        #     )
-        #     db.add(progress_history)
-        #     db.commit()
-        #     db.refresh(progress_history)
+        if progress_history:
+            # Check if there was a completed session yesterday
+            yesterday = datetime.now().date() - timedelta(days=1)
+            yesterday_session = db.query(CompletedSession).filter(
+                CompletedSession.user_id == current_user.id,
+                CompletedSession.date >= yesterday,
+                CompletedSession.date < yesterday + timedelta(days=1)
+            ).first()
+            
+            # If no session was completed yesterday, reset current streak to 0
+            if not yesterday_session and progress_history.current_streak > 0:
+                progress_history.current_streak = 0
+                db.commit()
+                db.refresh(progress_history)
 
         return progress_history
 
