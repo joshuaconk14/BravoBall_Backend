@@ -70,6 +70,7 @@ async def get_ordered_session_drills(
                         "videoUrl": drill.video_url
                     },
                     # Add per-session fields as needed
+                    "sets_done": ordered_drill.sets_done,
                     "sets": ordered_drill.sets,
                     "reps": ordered_drill.reps,
                     "duration": ordered_drill.duration,
@@ -135,6 +136,7 @@ async def sync_ordered_session_drills(
                 # Update existing drill
                 existing_drill = existing_drills[drill_id]
                 existing_drill.position = position
+                existing_drill.sets_done = drill_data.sets_done
                 existing_drill.sets = drill_data.sets
                 existing_drill.reps = drill_data.reps
                 existing_drill.duration = drill_data.duration
@@ -145,6 +147,7 @@ async def sync_ordered_session_drills(
                     session_id=session_id,
                     drill_id=drill_id,
                     position=position,
+                    sets_done = drill_data.sets_done,
                     sets=drill_data.sets,
                     reps=drill_data.reps,
                     duration=drill_data.duration,
@@ -305,17 +308,38 @@ async def get_progress_history(
             ProgressHistory.user_id == current_user.id
         ).first()
 
-        if progress_history:
-            # Check if there was a completed session yesterday
-            yesterday = datetime.now().date() - timedelta(days=1)
+        if not progress_history:
+            # Create default progress history if none exists
+            progress_history = ProgressHistory(
+                user_id=current_user.id,
+                current_streak=0,
+                highest_streak=0,
+                completed_sessions_count=0
+            )
+            db.add(progress_history)
+            db.commit()
+            db.refresh(progress_history)
+        else:
+            # Check if there was a completed session today or yesterday
+            today = datetime.now().date()
+            yesterday = today - timedelta(days=1)
+            
+            # Check for sessions completed today
+            today_session = db.query(CompletedSession).filter(
+                CompletedSession.user_id == current_user.id,
+                CompletedSession.date >= today,
+                CompletedSession.date < today + timedelta(days=1)
+            ).first()
+            
+            # Check for sessions completed yesterday
             yesterday_session = db.query(CompletedSession).filter(
                 CompletedSession.user_id == current_user.id,
                 CompletedSession.date >= yesterday,
                 CompletedSession.date < yesterday + timedelta(days=1)
             ).first()
             
-            # If no session was completed yesterday, reset current streak to 0
-            if not yesterday_session and progress_history.current_streak > 0:
+            # If no session was completed today or yesterday, reset current streak to 0
+            if not today_session and not yesterday_session and progress_history.current_streak > 0:
                 progress_history.current_streak = 0
                 db.commit()
                 db.refresh(progress_history)
