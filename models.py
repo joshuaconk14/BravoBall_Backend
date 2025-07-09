@@ -105,6 +105,7 @@ class OrderedSessionDrill(Base):
     session_id = Column(Integer, ForeignKey("training_sessions.id"))  # Link to session
     drill_id = Column(Integer, ForeignKey("drills.id"))
     position = Column(Integer)  # Order in the session
+    sets_done = Column(Integer)
     sets = Column(Integer, nullable=True)
     reps = Column(Integer, nullable=True)
     rest = Column(Integer, nullable=True)  # Per-session rest

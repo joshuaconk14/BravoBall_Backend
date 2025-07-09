@@ -116,7 +116,7 @@ class DrillSyncRequest(BaseModel):
 
 class OrderedDrillSyncRequest(BaseModel):
     drill: DrillSyncRequest
-    sets_done: int = 0
+    sets_done: int
     sets: int
     reps: int
     duration: int
