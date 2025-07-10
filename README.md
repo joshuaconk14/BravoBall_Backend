@@ -137,6 +137,42 @@ python create_tables.py
 
 ## Development
 
+### Database Migration
+
+The project includes a safe database migration tool that syncs your database with your models without losing data:
+
+```bash
+# Check database status (what needs to be migrated)
+./scripts/migrate.sh status
+
+# Run full migration (creates tables, adds columns, indexes)
+./scripts/migrate.sh migrate
+
+# Create missing tables only
+./scripts/migrate.sh tables
+
+# Add missing columns only
+./scripts/migrate.sh columns
+
+# Create missing indexes only
+./scripts/migrate.sh indexes
+
+# Show help
+./scripts/migrate.sh help
+```
+
+#### Migration Features
+- **Safe**: Preserves existing data
+- **Smart**: Only creates/modifies what's needed
+- **Flexible**: Can run specific parts of migration
+- **Status**: Shows what needs to be synced
+
+#### When to Use Migration
+- After pulling changes that modify models.py
+- When adding new tables or columns
+- To sync local database with production changes
+- Before deploying to ensure schema consistency
+
 ### Data Management
 
 #### Drill Management Script
@@ -175,12 +211,14 @@ bravoball/
 ├── main.py                # FastAPI application entry point
 ├── db.py                  # Database connection and session management
 ├── models.py              # SQLAlchemy and Pydantic models
+├── migrate_database.py    # Database migration tool
 ├── routers/               # API route handlers
 ├── services/              # Business logic services
 ├── drills/                # Drill data and import scripts
 ├── scripts/               # Utility scripts for development and deployment
 │   ├── deploy.sh          # Git-based deployment script
-│   └── manage_drills.sh   # Drill import and management script
+│   ├── manage_drills.sh   # Drill import and management script
+│   └── migrate.sh         # Database migration wrapper script
 ├── unit_tests/            # Test suite
 └── SCHEMA_GUIDE.md        # API schema documentation
 ```
