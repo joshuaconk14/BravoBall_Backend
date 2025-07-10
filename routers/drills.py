@@ -54,7 +54,7 @@ def get_drills(
     return {
         "drills": [
             {
-                "id": drill.id,
+                "uuid": str(drill.uuid),  # Use UUID instead of id
                 "title": drill.title,
                 "description": drill.description,
                 "category": drill.category.name if drill.category else "",
