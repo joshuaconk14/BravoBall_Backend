@@ -107,12 +107,39 @@ def check_email_is_new(email_request: EmailCheckRequest, db: Session = Depends(g
     - exists: boolean indicating if email exists
     - message: descriptive message about the email status
     """
-    user = db.query(User).filter(User.email == email_request.email).first()
-    
-    return {
-        "exists": user is not None,
-        "message": "Email already registered" if user else "Email available"
-    }
+    try:
+        logger.info(f"🔍 CHECK-UNIQUE-EMAIL endpoint called")
+        logger.info(f"📧 Email request received: {email_request.email}")
+        logger.info(f"🗄️  Database session type: {type(db)}")
+        
+        # Log the query attempt
+        logger.info(f"🔎 Attempting to query User table for email: {email_request.email}")
+        
+        user = db.query(User).filter(User.email == email_request.email).first()
+        
+        logger.info(f"📊 Query result: {user is not None}")
+        if user:
+            logger.info(f"👤 Found user with ID: {user.id}")
+        else:
+            logger.info(f"❌ No user found with email: {email_request.email}")
+        
+        response_data = {
+            "exists": user is not None,
+            "message": "Email already registered" if user else "Email available"
+        }
+        
+        logger.info(f"📤 Returning response: {response_data}")
+        
+        return response_data
+        
+    except Exception as e:
+        logger.error(f"🚨 ERROR in check_email_is_new: {str(e)}")
+        logger.error(f"🚨 Error type: {type(e)}")
+        logger.error(f"🚨 Email request: {email_request.email if email_request else 'None'}")
+        logger.error(f"🚨 Database session: {db if db else 'None'}")
+        
+        # Re-raise the exception to see the full traceback
+        raise e
 
 @router.post("/check-existing-email/")
 def check_email_exists(email_request: EmailCheckRequest, db: Session = Depends(get_db)):
