@@ -15,7 +15,7 @@ def drill_to_response(drill, db):
     ).all()
     
     return {
-        "id": drill.id,
+        "uuid": str(drill.uuid),  # Use UUID as primary identifier
         "title": drill.title,
         "description": drill.description,
         "type": drill.type,

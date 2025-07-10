@@ -46,7 +46,7 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
             primary_skill = next((skill for skill in drill.skill_focus if skill.is_primary), None)
             
         drill_data = {
-            "id": drill.id,
+            "uuid": str(drill.uuid),  # Use UUID as primary identifier
             "title": drill.title,
             "description": drill.description,
             "duration": duration,

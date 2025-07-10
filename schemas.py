@@ -11,7 +11,7 @@ class CompletedSessionBase(BaseModel):
     drills: List[dict]  # List of drill data
 
 class DrillData(BaseModel):
-    id: str
+    uuid: str  # Use UUID instead of id
     title: str
     skill: str
     subSkills: List[str]
@@ -78,7 +78,7 @@ class DrillGroup(DrillGroupBase):
 
 # Ordered Session Schemas
 class DrillResponse(BaseModel):
-    id: int
+    uuid: str  # Use UUID as primary identifier instead of id
     title: str
     description: str
     type: str
@@ -99,18 +99,8 @@ class DrillResponse(BaseModel):
 
 
 class DrillSyncRequest(BaseModel):
-    id: str  # UUID string from iOS
-    backend_id: Optional[int] = None
+    uuid: str  # Use UUID as primary identifier, required
     title: str
-    skill: str
-    sets: Optional[int] = None
-    reps: Optional[int] = None
-    duration: Optional[int] = None
-    description: str
-    tips: List[str]
-    equipment: List[str]
-    training_style: str
-    difficulty: str
 
     model_config = ConfigDict(from_attributes=True)
 

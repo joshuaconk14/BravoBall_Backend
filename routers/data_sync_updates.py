@@ -54,7 +54,7 @@ async def get_ordered_session_drills(
                 
                 result.append({
                     "drill": {
-                        "backend_id": drill.id,
+                        "uuid": str(drill.uuid),  # Keep UUID field, remove backend_id
                         "title": drill.title,
                         "skill": main_skill,
                         "subSkills": sub_skills,
@@ -126,9 +126,14 @@ async def sync_ordered_session_drills(
         
         # Add or update ordered drills
         for position, drill_data in enumerate(ordered_drills.ordered_drills):
-            drill = db.query(Drill).filter(Drill.id == drill_data.drill.backend_id).first()
-            if not drill and drill_data.drill.backend_id:
-                raise HTTPException(status_code=404, detail=f"Drill with id {drill_data.drill.backend_id} not found")
+            # Find drill by UUID
+            drill = None
+            if drill_data.drill.uuid:
+                drill = db.query(Drill).filter(Drill.uuid == drill_data.drill.uuid).first()
+            
+            if not drill:
+                raise HTTPException(status_code=404, detail=f"Drill not found with uuid {drill_data.drill.uuid}")
+            
             drill_id = drill.id if drill else None
             processed_drill_ids.add(drill_id)
             
@@ -203,7 +208,7 @@ def create_completed_session(session: CompletedSessionCreate,
             total_drills=session.total_drills,
             drills=[{
                 "drill": {
-                    "id": drill.drill.id,
+                    "uuid": drill.drill.uuid,  # Use UUID as primary identifier
                     "title": drill.drill.title,
                     "skill": drill.drill.skill,
                     "subSkills": drill.drill.subSkills,

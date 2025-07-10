@@ -6,13 +6,14 @@ This defines all models used in chatbot app
 from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional, Dict, Any, Union
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
 from sqlalchemy.orm import relationship
 from db import Base
 from enum import Enum
 from sqlalchemy.sql import func
 from datetime import datetime
 from uuid import UUID
+import uuid
 
 # *** AUTH MODELS ***
 class LoginRequest(BaseModel):
@@ -191,6 +192,7 @@ class Drill(Base):
     __tablename__ = "drills"
 
     id = Column(Integer, primary_key=True, index=True)
+    uuid = Column(PG_UUID(as_uuid=True), unique=True, index=True, default=uuid.uuid4, nullable=False)
     title = Column(String)
     description = Column(String)
     category_id = Column(Integer, ForeignKey("drill_categories.id"))
@@ -333,7 +335,7 @@ class DrillRequest(BaseModel):
 
 
 class DrillResponse(BaseModel):
-    id: int
+    uuid: str  # Use UUID instead of id
     title: str
     description: str
     type: str
@@ -400,7 +402,7 @@ class CompletedSessionResponse(BaseModel):
 class DrillGroupRequest(BaseModel):
     name: str
     description: str
-    drill_ids: List[int] = []
+    drill_uuids: List[str] = []  # Changed from drill_ids to drill_uuids
     is_liked_group: bool = False
 
     model_config = ConfigDict(from_attributes=True)

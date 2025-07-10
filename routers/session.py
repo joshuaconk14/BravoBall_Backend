@@ -214,7 +214,7 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
         drill = osd.drill
         # Merge per-session and static fields
         drill_data = {
-            "id": drill.id,
+            "uuid": str(drill.uuid),  # Use UUID as primary identifier
             "title": drill.title,
             "description": drill.description,
             "duration": osd.duration if osd.duration is not None else drill.duration,
