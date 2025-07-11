@@ -249,55 +249,7 @@ def get_completed_sessions(current_user: User = Depends(get_current_user),
     return db.query(CompletedSession).filter(CompletedSession.user_id == current_user.id).all()
 
 
-# Drill Groups Endpoints
-@router.post("/api/drills/groups/", response_model=DrillGroupSchema)
-def create_drill_group(group: DrillGroupCreate,
-                      current_user: User = Depends(get_current_user),
-                      db: Session = Depends(get_db)):
-    db_group = DrillGroup(**group.dict(), user_id=current_user.id)
-    db.add(db_group)
-    db.commit()
-    db.refresh(db_group)
-    return db_group
 
-@router.get("/api/drills/groups/", response_model=List[DrillGroupSchema])
-def get_drill_groups(current_user: User = Depends(get_current_user),
-                    db: Session = Depends(get_db)):
-    return db.query(DrillGroup).filter(DrillGroup.user_id == current_user.id).all()
-
-@router.put("/api/drills/groups/{group_id}", response_model=DrillGroupSchema)
-def update_drill_group(group_id: int,
-                      group: DrillGroupUpdate,
-                      current_user: User = Depends(get_current_user),
-                      db: Session = Depends(get_db)):
-    db_group = db.query(DrillGroup).filter(
-        DrillGroup.id == group_id,
-        DrillGroup.user_id == current_user.id
-    ).first()
-    if not db_group:
-        raise HTTPException(status_code=404, detail="Drill group not found")
-    
-    for field, value in group.dict(exclude_unset=True).items():
-        setattr(db_group, field, value)
-    
-    db.commit()
-    db.refresh(db_group)
-    return db_group
-
-@router.delete("/api/drills/groups/{group_id}")
-def delete_drill_group(group_id: int,
-                      current_user: User = Depends(get_current_user),
-                      db: Session = Depends(get_db)):
-    db_group = db.query(DrillGroup).filter(
-        DrillGroup.id == group_id,
-        DrillGroup.user_id == current_user.id
-    ).first()
-    if not db_group:
-        raise HTTPException(status_code=404, detail="Drill group not found")
-    
-    db.delete(db_group)
-    db.commit()
-    return {"message": "Drill group deleted"}
 
 # Progress History Endpoints
 @router.get("/api/progress_history/", response_model=ProgressHistoryResponse)
@@ -313,41 +265,64 @@ async def get_progress_history(
             ProgressHistory.user_id == current_user.id
         ).first()
 
+        # Fetch all completed sessions for the user, ordered by date ascending
+        completed_sessions = db.query(CompletedSession).filter(
+            CompletedSession.user_id == current_user.id
+        ).order_by(CompletedSession.date.asc()).all()
+        completed_sessions_count = len(completed_sessions)
+
+        # Calculate streaks
+        streak = 0
+        highest_streak = 0
+        previous_streak = progress_history.current_streak if progress_history else 0
+        today = datetime.now().date()
+        last_session_date = None
+
+        for session in completed_sessions:
+            session_date = session.date.date() if hasattr(session.date, 'date') else session.date
+            if last_session_date is None:
+                streak = 1
+            else:
+                days_diff = (session_date - last_session_date).days
+                if days_diff == 1:
+                    streak += 1
+                elif days_diff == 0:
+                    # Same day, don't increment streak
+                    pass
+                else:
+                    streak = 1
+            highest_streak = max(highest_streak, streak)
+            last_session_date = session_date
+
+        # Check if the last session was today, yesterday, or 2 days ago
+        streak_should_reset = True
+        if last_session_date:
+            if (today - last_session_date).days in [0, 1, 2]:
+                streak_should_reset = False
+
+        if streak_should_reset:
+            previous_streak = streak
+            streak = 0
+
         if not progress_history:
             # Create default progress history if none exists
             progress_history = ProgressHistory(
                 user_id=current_user.id,
-                current_streak=0,
-                highest_streak=0,
-                completed_sessions_count=0
+                current_streak=streak,
+                previous_streak=previous_streak,
+                highest_streak=highest_streak,
+                completed_sessions_count=completed_sessions_count
             )
             db.add(progress_history)
             db.commit()
             db.refresh(progress_history)
         else:
-            # Check if there was a completed session today or yesterday
-            today = datetime.now().date()
-            yesterday = today - timedelta(days=1)
-            
-            # Check for sessions completed today
-            today_session = db.query(CompletedSession).filter(
-                CompletedSession.user_id == current_user.id,
-                CompletedSession.date >= today,
-                CompletedSession.date < today + timedelta(days=1)
-            ).first()
-            
-            # Check for sessions completed yesterday
-            yesterday_session = db.query(CompletedSession).filter(
-                CompletedSession.user_id == current_user.id,
-                CompletedSession.date >= yesterday,
-                CompletedSession.date < yesterday + timedelta(days=1)
-            ).first()
-            
-            # If no session was completed today or yesterday, reset current streak to 0
-            if not today_session and not yesterday_session and progress_history.current_streak > 0:
-                progress_history.current_streak = 0
-                db.commit()
-                db.refresh(progress_history)
+            progress_history.previous_streak = previous_streak
+            progress_history.current_streak = streak
+            progress_history.highest_streak = highest_streak
+            progress_history.completed_sessions_count = completed_sessions_count
+            db.commit()
+            db.refresh(progress_history)
 
         return progress_history
 
@@ -376,6 +351,7 @@ async def sync_progress_history(
             progress_history = ProgressHistory(
                 user_id=current_user.id,
                 current_streak=progress.current_streak,
+                previous_streak=progress.previous_streak, # Add previous_streak field
                 highest_streak=progress.highest_streak,
                 completed_sessions_count=progress.completed_sessions_count
             )
@@ -383,6 +359,7 @@ async def sync_progress_history(
         else:
             # Update existing progress history
             progress_history.current_streak = progress.current_streak
+            progress_history.previous_streak = progress.previous_streak # Add previous_streak field
             progress_history.highest_streak = progress.highest_streak
             progress_history.completed_sessions_count = progress.completed_sessions_count
 

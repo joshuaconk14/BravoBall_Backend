@@ -554,6 +554,7 @@ class ProgressHistory(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
     current_streak = Column(Integer, default=0)
+    previous_streak = Column(Integer, default=0)  # Add previous_streak field
     highest_streak = Column(Integer, default=0)
     completed_sessions_count = Column(Integer, default=0)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())

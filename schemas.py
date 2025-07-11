@@ -124,6 +124,7 @@ class OrderedSessionDrillUpdate(BaseModel):
 # Progress History Schemas
 class ProgressHistoryBase(BaseModel):
     current_streak: int = 0
+    previous_streak: int = 0  # Add previous_streak field
     highest_streak: int = 0
     completed_sessions_count: int = 0
 
