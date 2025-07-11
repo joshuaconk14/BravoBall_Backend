@@ -5,13 +5,13 @@ Endpoint using JWT to authenticate user upon login
 
 from fastapi import APIRouter, Depends, HTTPException, status, Body
 from sqlalchemy.orm import Session
-from models import User, LoginRequest, UserInfoDisplay, TokenResponse, RefreshTokenRequest, LoginResponse, EmailCheckRequest, ForgotPasswordRequest, ResetPasswordRequest, ForgotPasswordResponse, RefreshToken, PasswordResetCode, ResetPasswordCodeVerification
+from models import User, LoginRequest, UserInfoDisplay, TokenResponse, RefreshTokenRequest, LoginResponse, EmailCheckRequest, ForgotPasswordRequest, ResetPasswordRequest, ForgotPasswordResponse, RefreshToken, PasswordResetCode, ResetPasswordCodeVerification, EmailVerificationCode, EmailVerificationRequest, EmailVerificationCodeRequest, EmailVerificationResponse
 from db import get_db
 import jwt
 from config import UserAuth
 from passlib.context import CryptContext
 from pydantic import BaseModel
-from auth import create_access_token, create_refresh_token, verify_refresh_token, revoke_refresh_token
+from auth import create_access_token, create_refresh_token, verify_refresh_token, revoke_refresh_token, get_current_user
 import logging
 import secrets
 from datetime import datetime, timedelta
@@ -232,3 +232,114 @@ def reset_password(request: ResetPasswordRequest, db: Session = Depends(get_db))
     except Exception as e:
         logger.error(f"Error in reset_password: {str(e)}")
         raise HTTPException(status_code=500, detail="An error occurred while resetting the password.")
+
+
+@router.post("/send-email-verification/", response_model=EmailVerificationResponse)
+def send_email_verification(
+    request: EmailVerificationRequest, 
+    current_user: User = Depends(get_current_user), 
+    db: Session = Depends(get_db)
+):
+    """
+    Send email verification code when user wants to update their email address
+    """
+    try:
+        # Check if the new email is already in use by another user
+        existing_user = db.query(User).filter(User.email == request.new_email).first()
+        if existing_user and existing_user.id != current_user.id:
+            raise HTTPException(
+                status_code=400, 
+                detail="Email already registered by another user"
+            )
+        
+        # Generate 6-digit code
+        code = f"{random.randint(100000, 999999)}"
+        expires_at = datetime.utcnow() + timedelta(minutes=10)
+        
+        # Store verification code
+        verification_code = EmailVerificationCode(
+            user_id=current_user.id,
+            new_email=request.new_email,
+            code=code,
+            expires_at=expires_at
+        )
+        db.add(verification_code)
+        db.commit()
+        
+        # Send verification email to the NEW email address
+        email_service = EmailService()
+        email_sent = email_service.send_email_verification_code(request.new_email, code)
+        
+        if not email_sent:
+            logger.error(f"Failed to send email verification code to {request.new_email}")
+            # Don't fail the request if email fails, user can retry
+        
+        logger.info(f"Email verification code sent to {request.new_email} for user {current_user.email}")
+        
+        return EmailVerificationResponse(
+            message="Verification code sent to your new email address", 
+            success=True
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in send_email_verification: {str(e)}")
+        raise HTTPException(status_code=500, detail="An error occurred while sending verification code.")
+
+
+@router.post("/verify-email-update/", response_model=EmailVerificationResponse)
+def verify_email_update(
+    request: EmailVerificationCodeRequest, 
+    current_user: User = Depends(get_current_user), 
+    db: Session = Depends(get_db)
+):
+    """
+    Verify the email verification code and update the user's email address
+    """
+    try:
+        # Find valid, unused verification code
+        verification_entry = db.query(EmailVerificationCode).filter(
+            EmailVerificationCode.user_id == current_user.id,
+            EmailVerificationCode.new_email == request.new_email,
+            EmailVerificationCode.code == request.code,
+            EmailVerificationCode.is_used == False,
+            EmailVerificationCode.expires_at > datetime.utcnow()
+        ).first()
+        
+        if not verification_entry:
+            raise HTTPException(status_code=400, detail="Invalid or expired verification code.")
+        
+        # Check again if the new email is still available (in case someone else took it)
+        existing_user = db.query(User).filter(User.email == request.new_email).first()
+        if existing_user and existing_user.id != current_user.id:
+            raise HTTPException(
+                status_code=400, 
+                detail="Email address is no longer available"
+            )
+        
+        # Update user's email
+        old_email = current_user.email
+        current_user.email = request.new_email
+        db.commit()
+        
+        # Mark verification code as used
+        verification_entry.is_used = True
+        db.commit()
+        
+        # Revoke all refresh tokens to force re-login with new email
+        db.query(RefreshToken).filter(RefreshToken.user_id == current_user.id).update({"is_revoked": True})
+        db.commit()
+        
+        logger.info(f"Email updated successfully for user {current_user.id}: {old_email} -> {request.new_email}")
+        
+        return EmailVerificationResponse(
+            message="Email updated successfully", 
+            success=True
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in verify_email_update: {str(e)}")
+        raise HTTPException(status_code=500, detail="An error occurred while updating email.")

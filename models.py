@@ -80,6 +80,7 @@ class User(Base):
     saved_filters = relationship("SavedFilter", back_populates="user")
     refresh_tokens = relationship("RefreshToken", back_populates="user")
     password_reset_codes = relationship("PasswordResetCode", back_populates="user")
+    email_verification_codes = relationship("EmailVerificationCode", back_populates="user")
 
 
 class CompletedSession(Base):
@@ -679,3 +680,35 @@ class PasswordResetCode(Base):
     is_used = Column(Boolean, default=False)
 
     user = relationship("User", back_populates="password_reset_codes")
+
+
+class EmailVerificationCode(Base):
+    __tablename__ = "email_verification_codes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    new_email = Column(String, index=True)  # The new email address being verified
+    code = Column(String, index=True)
+    expires_at = Column(DateTime)
+    created_at = Column(DateTime, default=func.now())
+    is_used = Column(Boolean, default=False)
+
+    user = relationship("User", back_populates="email_verification_codes")
+
+
+# Email Verification Request/Response Models
+class EmailVerificationRequest(BaseModel):
+    new_email: str
+    model_config = ConfigDict(from_attributes=True)
+
+
+class EmailVerificationCodeRequest(BaseModel):
+    new_email: str
+    code: str
+    model_config = ConfigDict(from_attributes=True)
+
+
+class EmailVerificationResponse(BaseModel):
+    message: str
+    success: bool
+    model_config = ConfigDict(from_attributes=True)

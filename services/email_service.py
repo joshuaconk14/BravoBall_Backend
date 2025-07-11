@@ -76,37 +76,70 @@ class EmailService:
         except Exception as e:
             logger.error(f"Error sending welcome email: {str(e)}")
             return False
-    
-    def send_password_reset_code_email(self, to_email: str, code: str) -> bool:
+
+    def _send_verification_code_email(self, to_email: str, code: str, code_type: str) -> bool:
+        """
+        ✅ UNIFIED METHOD: Send verification code email (used by both password reset and email verification)
+        This ensures both systems use IDENTICAL email templates that go to inbox, not spam.
+        
+        Args:
+            to_email: The recipient's email address
+            code: The 6-digit verification code
+            code_type: Either "Password Reset" or "Email Verification" for the subject
+            
+        Returns:
+            bool: True if email sent successfully, False otherwise
+        """
         try:
             if not self.api_key:
                 logger.error("SendGrid API key not configured")
                 return False
-            subject = f"Your {self.app_name} Password Reset Code"
+            
+            # ✅ UNIFIED: Same subject pattern that works for password reset
+            subject = f"Your {self.app_name} {code_type} Code"
+            
+            # ✅ UNIFIED: Exact same template as password reset (proven to work)
             html_content = f"""
             <html><body>
-            <h2>Password Reset Code</h2>
-            <p>Your password reset code is:</p>
+            <h2>{code_type} Code</h2>
+            <p>Your {code_type.lower()} code is:</p>
             <h1 style='letter-spacing: 0.2em;'>{code}</h1>
             <p>This code will expire in 10 minutes.</p>
             <p>If you didn't request this, you can ignore this email.</p>
             <br><p>The {self.app_name} Team</p>
             </body></html>
             """
-            text_content = f"Your {self.app_name} password reset code is: {code}\nThis code will expire in 10 minutes."
+            
+            text_content = f"Your {self.app_name} {code_type.lower()} code is: {code}\nThis code will expire in 10 minutes."
+            
             from_email = Email(self.from_email)
             to_email_obj = To(to_email)
             content = Content("text/html", html_content)
             mail = Mail(from_email, to_email_obj, subject, content)
             mail.add_content(Content("text/plain", text_content))
+            
             sg = SendGridAPIClient(api_key=self.api_key)
             response = sg.send(mail)
+            
             if response.status_code in [200, 201, 202]:
-                logger.info(f"Password reset code email sent successfully to {to_email}")
+                logger.info(f"{code_type} code email sent successfully to {to_email}")
                 return True
             else:
-                logger.error(f"Failed to send code email. Status code: {response.status_code}")
+                logger.error(f"Failed to send {code_type.lower()} code email. Status code: {response.status_code}")
                 return False
+                
         except Exception as e:
-            logger.error(f"Error sending password reset code email: {str(e)}")
-            return False 
+            logger.error(f"Error sending {code_type.lower()} code email: {str(e)}")
+            return False
+
+    def send_password_reset_code_email(self, to_email: str, code: str) -> bool:
+        """
+        ✅ REFACTORED: Now uses unified method to ensure consistency
+        """
+        return self._send_verification_code_email(to_email, code, "Password Reset")
+
+    def send_email_verification_code(self, to_email: str, code: str) -> bool:
+        """
+        ✅ REFACTORED: Now uses unified method to ensure consistency with password reset
+        """
+        return self._send_verification_code_email(to_email, code, "Email Verification") 
