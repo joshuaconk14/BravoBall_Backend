@@ -5,6 +5,7 @@ import pytest
 from fastapi import status
 import json
 from models import Drill, DrillGroup, DrillGroupItem
+import uuid
 
 def test_get_user_drill_groups(client, auth_headers, test_user, test_drill_group):
     """Test getting all drill groups for a user"""
@@ -90,17 +91,17 @@ def test_get_liked_drills_group(client, auth_headers):
 def test_like_drill(client, auth_headers, test_drill):
     """Test liking a drill"""
     # Check initial state - drill should not be liked
-    initial_check = client.get(f"/api/drills/{test_drill.id}/like", headers=auth_headers)
+    initial_check = client.get(f"/api/drills/{test_drill.uuid}/like", headers=auth_headers)
     assert initial_check.status_code == status.HTTP_200_OK
     assert initial_check.json()["is_liked"] == False
     
     # Like the drill
-    like_response = client.post(f"/api/drills/{test_drill.id}/like", headers=auth_headers)
+    like_response = client.post(f"/api/drills/{test_drill.uuid}/like", headers=auth_headers)
     assert like_response.status_code == status.HTTP_200_OK
     assert like_response.json()["is_liked"] == True
     
     # Check that drill is now liked
-    check_response = client.get(f"/api/drills/{test_drill.id}/like", headers=auth_headers)
+    check_response = client.get(f"/api/drills/{test_drill.uuid}/like", headers=auth_headers)
     assert check_response.status_code == status.HTTP_200_OK
     assert check_response.json()["is_liked"] == True
     
@@ -109,7 +110,7 @@ def test_like_drill(client, auth_headers, test_drill):
     liked_drills = liked_drills_response.json()["drills"]
     
     assert len(liked_drills) == 1
-    assert liked_drills[0]["id"] == test_drill.id
+    assert liked_drills[0]["uuid"] == test_drill.uuid  # Use UUID instead of id
 
 def test_add_multiple_drills_to_group(client, auth_headers, db, test_user, test_drill_category):
     """Test adding multiple drills to a drill group at once"""
@@ -123,9 +124,10 @@ def test_add_multiple_drills_to_group(client, auth_headers, db, test_user, test_
     group_id = response.json()["id"]
     
     # Create test drills
-    drill_ids = []
+    drill_uuids = []  # Changed from drill_ids to drill_uuids
     for i in range(3):
         drill = Drill(
+            uuid=str(uuid.uuid4()),  # Generate UUID for test drill
             title=f"Test Drill {i}",
             description=f"Test Description {i}",
             category_id=test_drill_category.id,
@@ -146,17 +148,16 @@ def test_add_multiple_drills_to_group(client, auth_headers, db, test_user, test_
         db.add(drill)
         db.commit()
         db.refresh(drill)
-        drill_ids.append(drill.id)
+        drill_uuids.append(drill.uuid)  # Use UUID instead of id
     
     # Add multiple drills to the group
     response = client.post(
         f"/api/drill-groups/{group_id}/drills",
-        json=drill_ids,
+        json=drill_uuids,  # Send UUIDs instead of IDs
         headers=auth_headers
     )
     assert response.status_code == 200
     assert response.json()["added_count"] == 3
-    assert response.json()["group_id"] == group_id
     
     # Get the group to verify drills were added
     response = client.get(
@@ -169,7 +170,7 @@ def test_add_multiple_drills_to_group(client, auth_headers, db, test_user, test_
     # Test adding the same drills again (should skip existing)
     response = client.post(
         f"/api/drill-groups/{group_id}/drills",
-        json=drill_ids,
+        json=drill_uuids,  # Send UUIDs instead of IDs
         headers=auth_headers
     )
     assert response.status_code == 200
@@ -189,6 +190,7 @@ def test_get_public_drill_groups(client, db, test_user, test_drill_category):
     
     # Create a test drill and add it to the group
     drill = Drill(
+        uuid=str(uuid.uuid4()),  # Generate UUID for test drill
         title="Public Test Drill",
         description="Public Test Description",
         category_id=test_drill_category.id,

@@ -6,6 +6,7 @@ This script is used when restarting the database in testing environments and imp
 """
 import os
 import json
+import uuid
 from typing import List, Dict, Any
 from sqlalchemy.orm import Session
 from models import DrillCategory, Drill, DrillSkillFocus
@@ -154,6 +155,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
             else:
                 # Create new drill
                 drill = Drill(
+                    uuid=str(uuid.uuid4()),  # Generate UUID for new drill
                     category_id=category.id,
                     title=drill_data["title"],
                     description=drill_data["description"],
