@@ -35,7 +35,7 @@ def get_drills(
         query = query.join(DrillCategory).filter(DrillCategory.name == category)
     
     if difficulty:
-        query = query.filter(Drill.difficulty == difficulty)
+        query = query.filter(func.lower(Drill.difficulty) == difficulty.lower())
     
     if equipment:
         # Use PostgreSQL JSONB containment operator
@@ -128,7 +128,7 @@ async def search_drills(
         # Apply difficulty filter if provided
         if difficulty:
             drill_query = drill_query.filter(
-                Drill.difficulty == difficulty
+                func.lower(Drill.difficulty) == difficulty.lower()
             )
         
         # Get total count for pagination
@@ -195,7 +195,7 @@ async def public_search_drills(
         # Apply difficulty filter if provided
         if difficulty:
             drill_query = drill_query.filter(
-                Drill.difficulty == difficulty
+                func.lower(Drill.difficulty) == difficulty.lower()
             )
         
         # Get total count for pagination
