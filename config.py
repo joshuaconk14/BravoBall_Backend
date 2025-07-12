@@ -26,7 +26,7 @@ load_dotenv()
 class UserAuth:
     SECRET_KEY = os.getenv('SECRET_KEY')
     ALGORITHM = os.getenv('ALGORITHM')
-    ACCESS_TOKEN_EXPIRE_MINUTES = float(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', 30))
-    REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv('REFRESH_TOKEN_EXPIRE_DAYS', 30))
+    ACCESS_TOKEN_EXPIRE_MINUTES = 1  # 24 hours
+    REFRESH_TOKEN_EXPIRE_DAYS = 90      # 90 days
     # password hashing context
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

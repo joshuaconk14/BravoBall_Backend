@@ -23,7 +23,7 @@ from models import (
     Difficulty,
     OrderedSessionDrill
 )
-from typing import List
+from typing import List, Dict
 from utils.drill_scorer import DrillScorer
 from config import get_logger
 
@@ -68,9 +68,10 @@ class SessionGenerator:
             
         The generation process involves:
         1. Retrieving and scoring all available drills
-        2. Filtering suitable drills based on equipment and skills
-        3. Adjusting drill durations to fit session constraints
-        4. Normalizing the overall session duration
+        2. Creating a larger pool of top-ranked drills
+        3. Balancing drill selection to match user's skill preferences proportionally
+        4. Adjusting drill durations to fit session constraints
+        5. Normalizing the overall session duration
         """
         # Get and rank all available drills
         all_drills = self.db.query(Drill).all()
@@ -81,20 +82,30 @@ class SessionGenerator:
         
         # Determine max drills for this session duration
         max_drills = self.DURATION_TO_MAX_DRILLS.get(preferences.duration, 4)
-        selected_drills = ranked_drills[:max_drills]
+        
+        # Create a larger pool for skill balancing (4-5x the target number)
+        pool_size = min(len(ranked_drills), max_drills * 5)
+        drill_pool = ranked_drills[:pool_size]
+        
+        logger.info(f"Created drill pool of {pool_size} drills from {len(ranked_drills)} total ranked drills")
+        
+        # Balance drill selection based on user's skill preferences
+        selected_drills = self._balance_drill_selection_by_skills(drill_pool, max_drills, preferences)
+        
+        logger.info(f"Selected {len(selected_drills)} balanced drills for session")
 
         suitable_drills = []
         current_duration = 0
         has_limited_equipment = len(preferences.available_equipment) <= 1
 
-        # Process only the selected drills
+        # Process the balanced selection of drills
         for ranked_drill in selected_drills:
             drill = ranked_drill['drill']
             scores = ranked_drill['scores']
             
-            logger.info(f"\nChecking drill: {drill.title}")
+            logger.info(f"\nProcessing drill: {drill.title}")
             logger.info(f"Score: {ranked_drill['total_score']:.2f}")
-            logger.info(f"Score breakdown: {scores}")
+            logger.info(f"Primary skill: {self._get_drill_primary_skill(drill)}")
 
             # Adjust drill duration based on session constraints
             adjusted_duration = self._adjust_drill_duration(
@@ -345,3 +356,126 @@ class SessionGenerator:
                 actual_reduction = min(excess_time, potential_reduction)
                 drill.adjusted_duration = current_duration - actual_reduction
                 excess_time -= actual_reduction
+
+    def _balance_drill_selection_by_skills(self, drill_pool: List[Dict], max_drills: int, preferences: SessionPreferences) -> List[Dict]:
+        """
+        Balance drill selection to be proportional to user's selected skills.
+        
+        Args:
+            drill_pool: List of ranked drills with scores
+            max_drills: Maximum number of drills to select
+            preferences: User preferences containing target skills
+            
+        Returns:
+            List of selected drills balanced by skill distribution
+        """
+        if not preferences.target_skills:
+            # If no specific skills selected, just return top drills
+            return drill_pool[:max_drills]
+        
+        # Group drills by their primary skill category
+        drills_by_skill = {}
+        unmatched_drills = []
+        
+        for drill_info in drill_pool:
+            primary_skill = self._get_drill_primary_skill(drill_info['drill'])
+            
+            if primary_skill:
+                if primary_skill not in drills_by_skill:
+                    drills_by_skill[primary_skill] = []
+                drills_by_skill[primary_skill].append(drill_info)
+            else:
+                unmatched_drills.append(drill_info)
+        
+        # Calculate skill proportions from user's target skills
+        skill_counts = self._calculate_skill_proportions(preferences.target_skills)
+        total_selected_skills = sum(skill_counts.values())
+        
+        if total_selected_skills == 0:
+            return drill_pool[:max_drills]
+        
+        # Allocate drills proportionally
+        selected_drills = []
+        allocated_count = 0
+        
+        for skill_category, count in skill_counts.items():
+            if skill_category in drills_by_skill:
+                # Calculate how many drills this skill should get
+                proportion = count / total_selected_skills
+                target_drills = max(1, round(proportion * max_drills))  # At least 1 drill per selected skill
+                
+                # Take the best drills for this skill category
+                skill_drills = drills_by_skill[skill_category][:target_drills]
+                selected_drills.extend(skill_drills)
+                allocated_count += len(skill_drills)
+                
+                logger.info(f"Allocated {len(skill_drills)} drills for skill '{skill_category}' (proportion: {proportion:.2f})")
+        
+        # Fill remaining slots with top-scored drills if we haven't reached max_drills
+        if allocated_count < max_drills:
+            remaining_slots = max_drills - allocated_count
+            
+            # Get all drills not yet selected, sorted by score
+            selected_drill_ids = {drill_info['drill'].id for drill_info in selected_drills}
+            remaining_drills = [
+                drill_info for drill_info in drill_pool 
+                if drill_info['drill'].id not in selected_drill_ids
+            ]
+            
+            # Add highest scoring remaining drills
+            selected_drills.extend(remaining_drills[:remaining_slots])
+            logger.info(f"Filled {min(remaining_slots, len(remaining_drills))} remaining slots with top-scored drills")
+        
+        # Sort final selection by score to maintain quality order
+        selected_drills.sort(key=lambda x: x['total_score'], reverse=True)
+        
+        # Ensure we don't exceed max_drills
+        return selected_drills[:max_drills]
+
+    def _get_drill_primary_skill(self, drill: Drill) -> str:
+        """
+        Extract the primary skill category from a drill.
+        
+        Args:
+            drill: The drill to analyze
+            
+        Returns:
+            Primary skill category as a string, or None if not found
+        """
+        if not drill.skill_focus:
+            return None
+            
+        # Find the primary skill focus
+        primary_skill = next((focus for focus in drill.skill_focus if focus.is_primary), None)
+        if primary_skill and primary_skill.category:
+            return primary_skill.category.lower()
+            
+        return None
+
+    def _calculate_skill_proportions(self, target_skills: List) -> dict:
+        """
+        Calculate the proportion of each skill category from user's target skills.
+        
+        Args:
+            target_skills: List of target skills from user preferences
+            
+        Returns:
+            Dictionary mapping skill categories to their counts
+        """
+        skill_counts = {}
+    
+        for target in target_skills:
+            if isinstance(target, dict) and "category" in target and "sub_skills" in target:
+                category = target["category"].lower()
+                sub_skills = target["sub_skills"]
+                
+                if isinstance(sub_skills, list):
+                    # Count each sub-skill
+                    skill_counts[category] = skill_counts.get(category, 0) + len(sub_skills)
+                else:
+                    # Single sub-skill
+                    skill_counts[category] = skill_counts.get(category, 0) + 1
+                    
+                logger.info(f"Skill category '{category}' has {skill_counts[category]} sub-skills")
+        
+        return skill_counts
