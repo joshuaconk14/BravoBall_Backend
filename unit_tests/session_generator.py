@@ -31,7 +31,7 @@ USER_PROFILES = {
         "preferences": {
             "duration": 30,
             "available_equipment": [Equipment.BALL.value, Equipment.CONES.value],
-            "training_style": TrainingStyle.MEDIUM_INTENSITY.value,
+            "training_style": TrainingStyle.LOW_INTENSITY.value,
             "training_location": TrainingLocation.BACKYARD.value,
             "difficulty": Difficulty.BEGINNER.value,
             "target_skills": ["passing", "first_touch"]

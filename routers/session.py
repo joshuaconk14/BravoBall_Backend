@@ -151,8 +151,8 @@ def create_default_preferences(db: Session, user: User) -> SessionPreferences:
         
         # Map training style
         style_map = {
-            "beginner": "medium_intensity",
-            "intermediate": "medium_intensity",
+            "beginner": "low_intensity",
+            "intermediate": "medium_intensity", 
             "advanced": "high_intensity",
             "professional": "high_intensity"
         }

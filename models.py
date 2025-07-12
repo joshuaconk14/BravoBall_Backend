@@ -494,11 +494,9 @@ class TrainingFrequency(str, Enum):
     INTENSE = "intense"
 
 class TrainingStyle(str, Enum):
+    LOW_INTENSITY = "low_intensity"
     MEDIUM_INTENSITY = "medium_intensity"
     HIGH_INTENSITY = "high_intensity"
-    GAME_PREP = "game_prep"
-    GAME_RECOVERY = "game_recovery"
-    REST_DAY = "rest_day"
 
 class Difficulty(str, Enum):
     BEGINNER = "beginner"

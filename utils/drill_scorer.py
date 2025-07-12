@@ -201,15 +201,35 @@ class DrillScorer:
         """Score based on intensity match"""
         if not intensity:  # Handle None value
             return 0.5  # Default score for drills with no intensity
+        
+        # Map intensity levels to their variations
         intensities = {
-            "low": ["LOW_INTENSITY", "low_intensity"],
-            "medium": ["MEDIUM_INTENSITY", "medium_intensity"],
-            "high": ["HIGH_INTENSITY", "high_intensity", "GAME_PREP", "game_prep"]
+            "low": ["LOW_INTENSITY", "low_intensity", "low"],
+            "medium": ["MEDIUM_INTENSITY", "medium_intensity", "medium"],
+            "high": ["HIGH_INTENSITY", "high_intensity", "high"]
         }
-        for level, styles in intensities.items():
-            if intensity.lower() in [s.lower() for s in styles]:
-                return float(self.preferences.training_style.lower() in [s.lower() for s in styles])
-        return 0.0
+        
+        # Find which intensity level the drill belongs to
+        drill_intensity_level = None
+        for level, variations in intensities.items():
+            if intensity.lower() in [v.lower() for v in variations]:
+                drill_intensity_level = level
+                break
+        
+        # Find which intensity level the preference belongs to
+        pref_intensity_level = None
+        if self.preferences.training_style:
+            pref_style = self.preferences.training_style.lower()
+            for level, variations in intensities.items():
+                if pref_style in [v.lower() for v in variations]:
+                    pref_intensity_level = level
+                    break
+        
+        # Score based on match
+        if drill_intensity_level and pref_intensity_level:
+            return 1.0 if drill_intensity_level == pref_intensity_level else 0.5
+        
+        return 0.5  # Default score if intensity levels can't be determined
 
     def _score_duration(self, duration: int) -> float:
         """Score how well the drill duration fits within session time"""
