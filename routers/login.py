@@ -44,10 +44,19 @@ def login(login_request: LoginRequest, db: Session = Depends(get_db)):
     """
     user = db.query(User).filter(User.email == login_request.email).first()
     
-    if not user or not verify_password(login_request.password, user.hashed_password):
+    # Check if user exists first
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials",
+            detail="Account doesn't exist. Please check your email or create a new account.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Check password
+    if not verify_password(login_request.password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect password. Please try again.",
             headers={"WWW-Authenticate": "Bearer"},
         )
     

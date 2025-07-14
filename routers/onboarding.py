@@ -92,7 +92,10 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
     # if user already exists, raise an error
     if existing_user:
         logger.warning(f"Email already registered: {player_info.email}")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, 
+            detail="This email is already registered. Please use a different email or try logging in instead."
+        )
     
     # hash the password
     hashed_password = hash_password(player_info.password)

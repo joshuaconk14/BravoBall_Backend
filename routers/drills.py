@@ -32,7 +32,9 @@ def get_drills(
 
     # Apply filters if provided
     if category:
-        query = query.join(DrillCategory).filter(DrillCategory.name == category)
+        # ✅ UPDATED: Map frontend category name to backend database name
+        backend_category = map_frontend_category_to_backend(category)
+        query = query.join(DrillCategory).filter(DrillCategory.name == backend_category)
     
     if difficulty:
         query = query.filter(func.lower(Drill.difficulty) == difficulty.lower())
@@ -157,6 +159,214 @@ async def search_drills(
         raise HTTPException(status_code=500, detail=f"Failed to search drills: {str(e)}") 
 
 
+# ✅ NEW: Helper function to map frontend category names to backend database category names
+def map_frontend_category_to_backend(frontend_category: str) -> str:
+    """
+    Map frontend category names (with spaces) to backend database category names (with underscores)
+    """
+    category_mapping = {
+        "Passing": "passing",
+        "Shooting": "shooting", 
+        "Dribbling": "dribbling",
+        "First Touch": "first_touch",  # ✅ CRITICAL: Map "First Touch" to "first_touch"
+        "Defending": "defending",
+        "Fitness": "fitness",
+    }
+    
+    return category_mapping.get(frontend_category, frontend_category.lower().replace(" ", "_"))
+
+
+# ✅ NEW: Guest mode limited drills endpoint
+@router.get("/public/drills/limited")
+async def get_limited_drills_for_guests(db: Session = Depends(get_db)):
+    """
+    Get a limited, curated set of drills for guest users to try the app.
+    Returns 7 drills each from key categories: Passing, Dribbling, Shooting, First Touch.
+    No authentication required.
+    """
+    try:
+        logging.info("Fetching limited drills for guest mode")
+        
+        # Define the categories we want to showcase
+        featured_categories = ["Passing", "Dribbling", "Shooting", "First Touch"]
+        
+        all_guest_drills = []
+        
+        for category_name in featured_categories:
+            # ✅ UPDATED: Map frontend category name to backend database name
+            backend_category = map_frontend_category_to_backend(category_name)
+            
+            # Get drills for this category - reduced to 7 per category
+            category_drills = db.query(Drill).join(DrillCategory).filter(
+                DrillCategory.name.ilike(f"%{backend_category}%")
+            ).limit(7).all()
+            
+            # Convert to response format
+            for drill in category_drills:
+                drill_response = drill_to_response(drill, db)
+                all_guest_drills.append(drill_response)
+        
+        # Also add some general drills if we don't have enough (max 28 total)
+        if len(all_guest_drills) < 28:
+            general_drills = db.query(Drill).filter(
+                ~Drill.id.in_([d["backend_id"] for d in all_guest_drills if "backend_id" in d])
+            ).limit(7).all()
+            
+            for drill in general_drills:
+                drill_response = drill_to_response(drill, db)
+                all_guest_drills.append(drill_response)
+        
+        logging.info(f"Returning {len(all_guest_drills)} drills for guest mode")
+        
+        return {
+            "drills": all_guest_drills,
+            "total_count": len(all_guest_drills),
+            "categories_included": featured_categories,
+            "message": f"Limited drill selection for guest users - {len(all_guest_drills)} drills available. Sign up for access to 100+ drills!"
+        }
+        
+    except Exception as e:
+        logging.error(f"Error fetching limited drills for guests: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch guest drills: {str(e)}")
+
+
+# ✅ NEW: Guest mode search with limits
+@router.get("/public/drills/search/limited")
+async def search_drills_for_guests(
+    query: str = "",
+    category: Optional[str] = None,
+    difficulty: Optional[str] = None,
+    page: int = 1,
+    limit: int = 10,  # Reduced limit for guests
+    db: Session = Depends(get_db)
+):
+    """
+    Limited search endpoint for guest users.
+    Returns smaller result sets to encourage account creation.
+    When limit is high (>30), returns all available guest drills.
+    """
+    try:
+        logging.info(f"Guest search: query='{query}', category='{category}', difficulty='{difficulty}', limit={limit}")
+        
+        # ✅ NEW: If limit is high, return all guest drills (for search page)
+        if limit >= 30:
+            # Get the full guest drill catalog from the limited endpoint
+            all_guest_drills = []
+            featured_categories = ["Passing", "Dribbling", "Shooting", "First Touch"]
+            
+            for category_name in featured_categories:
+                # ✅ UPDATED: Map frontend category name to backend database name
+                backend_category = map_frontend_category_to_backend(category_name)
+                
+                category_drills = db.query(Drill).join(DrillCategory).filter(
+                    DrillCategory.name.ilike(f"%{backend_category}%")
+                ).limit(7).all()
+                
+                for drill in category_drills:
+                    drill_response = drill_to_response(drill, db)
+                    all_guest_drills.append(drill_response)
+            
+            # Apply search filters to the full guest catalog
+            filtered_drills = all_guest_drills
+            
+            if query:
+                filtered_drills = [
+                    drill for drill in filtered_drills
+                    if query.lower() in drill.get('title', '').lower() or
+                       query.lower() in drill.get('description', '').lower()
+                ]
+            
+            if category:
+                # ✅ UPDATED: Map frontend category to backend for comparison
+                backend_category = map_frontend_category_to_backend(category)
+                
+                # Find drills that match the category through their primary or secondary skills
+                filtered_drills = [
+                    drill for drill in filtered_drills
+                    if (drill.get('primary_skill', {}).get('category', '').lower() == backend_category.lower() or
+                        any(skill.get('category', '').lower() == backend_category.lower() 
+                            for skill in drill.get('secondary_skills', [])))
+                ]
+            
+            if difficulty:
+                filtered_drills = [
+                    drill for drill in filtered_drills
+                    if drill.get('difficulty', '').lower() == difficulty.lower()
+                ]
+            
+            logging.info(f"Returning {len(filtered_drills)} drills for guest search (all available)")
+            
+            return {
+                "items": filtered_drills,
+                "total": len(filtered_drills),
+                "page": 1,
+                "page_size": len(filtered_drills),
+                "total_pages": 1,
+                "has_next": False,
+                "has_prev": False,
+                "guest_mode": True,
+                "message": f"Showing {len(filtered_drills)} of 28 available guest drills. Create an account for access to 100+ drills!"
+            }
+        
+        # ✅ EXISTING: Standard pagination for smaller limits
+        # Start with a base query
+        drill_query = db.query(Drill)
+        
+        # Apply text search if provided
+        if query:
+            drill_query = drill_query.filter(
+                or_(
+                    Drill.title.ilike(f"%{query}%"),
+                    Drill.description.ilike(f"%{query}%")
+                )
+            )
+        
+        # Apply category filter if provided
+        if category:
+            # ✅ UPDATED: Map frontend category name to backend database name
+            backend_category = map_frontend_category_to_backend(category)
+            drill_query = drill_query.join(DrillCategory).filter(
+                DrillCategory.name.ilike(f"%{backend_category}%")
+            )
+        
+        # Apply difficulty filter if provided
+        if difficulty:
+            drill_query = drill_query.filter(
+                func.lower(Drill.difficulty) == difficulty.lower()
+            )
+        
+        # Get total count but limit to guest maximum
+        total = min(drill_query.count(), 28)  # Cap at 28 total results for guests
+        
+        # Apply pagination with guest limits
+        drills = drill_query.offset((page - 1) * limit).limit(limit).all()
+        
+        # Convert to response format
+        drill_responses = []
+        for drill in drills[:limit]:  # Extra safety to ensure limit
+            drill_responses.append(drill_to_response(drill, db))
+        
+        # Include pagination metadata with guest messaging
+        response = {
+            "items": drill_responses,
+            "total": total,
+            "page": page,
+            "page_size": limit,
+            "total_pages": (total + limit - 1) // limit,
+            "has_next": page * limit < total,
+            "has_prev": page > 1,
+            "guest_mode": True,
+            "message": f"Showing {len(drill_responses)} of {total} drills for guest users. Create an account for access to 100+ drills!"
+        }
+        
+        logging.info(f"Returning {len(drill_responses)} drills for guest search")
+        
+        return response
+        
+    except Exception as e:
+        logging.error(f"Error in guest search: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to search drills for guest: {str(e)}")
+
 
 # For testing: public search endpoint that doesn't require authentication
 @router.get("/public/drills/search")
@@ -188,8 +398,10 @@ async def public_search_drills(
         
         # Apply category filter if provided
         if category:
+            # ✅ UPDATED: Map frontend category name to backend database name
+            backend_category = map_frontend_category_to_backend(category)
             drill_query = drill_query.join(DrillCategory).filter(
-                DrillCategory.name.ilike(f"%{category}%")
+                DrillCategory.name.ilike(f"%{backend_category}%")
             )
         
         # Apply difficulty filter if provided

@@ -255,3 +255,93 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
         "focus_areas": focus_areas,
         "drills": drills
     }
+
+# ✅ NEW: Public session generation for guest users
+@router.post("/public/session/generate")
+async def generate_public_session(
+    session_request: dict,
+    db: Session = Depends(get_db)
+):
+    """
+    Generate a training session for guest users without requiring authentication.
+    This allows guests to test the session generator functionality.
+    """
+    try:
+        logger.info(f"Generating public session for guest user with preferences: {session_request}")
+        
+        # Extract preferences from request
+        preferences_data = session_request.get('preferences', {})
+        
+        # Map training experience to difficulty if not provided
+        difficulty_map = {
+            "Beginner": "beginner",
+            "Intermediate": "intermediate", 
+            "Advanced": "advanced",
+            "Professional": "advanced"
+        }
+        
+        # Map training style
+        style_map = {
+            "Beginner": "low_intensity",
+            "Intermediate": "medium_intensity",
+            "Advanced": "high_intensity",
+            "Professional": "high_intensity"
+        }
+        
+        # Create temporary session preferences object
+        duration = preferences_data.get("duration", 30)
+        available_equipment = preferences_data.get("available_equipment", ["ball"])
+        training_style = preferences_data.get("training_style", "medium_intensity")
+        training_location = preferences_data.get("training_location", "full_field")
+        difficulty = preferences_data.get("difficulty", "beginner")
+        target_skills = preferences_data.get("target_skills", [])
+        
+        # ✅ Map frontend skills to backend format if provided
+        if target_skills and isinstance(target_skills, list):
+            # Convert frontend skills to backend format
+            backend_skills = map_frontend_to_backend(set(target_skills))
+            # Format skills for session preferences
+            formatted_skills = format_skills_for_session(backend_skills)
+        else:
+            formatted_skills = []
+        
+        logger.info(f"Mapped skills for public session: {target_skills} -> {formatted_skills}")
+        
+        # Create a temporary SessionPreferences-like object
+        class TempPreferences:
+            def __init__(self):
+                self.user_id = None  # No user for guest
+                self.duration = duration
+                self.available_equipment = available_equipment
+                self.training_style = training_style
+                self.training_location = training_location
+                self.difficulty = difficulty
+                self.target_skills = formatted_skills
+        
+        temp_preferences = TempPreferences()
+        
+        # Generate session using the session generator
+        session_generator = SessionGenerator(db)
+        session = await session_generator.generate_session(temp_preferences)
+        
+        if not session:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to generate session with provided preferences"
+            )
+        
+        # Format response for frontend
+        session_response = format_session_for_frontend(session)
+        
+        logger.info(f"Generated public session with {len(session_response.get('drills', []))} drills")
+        
+        return {
+            "status": "success",
+            "message": f"Session generated successfully with {len(session_response.get('drills', []))} drills",
+            "data": session_response,
+            "guest_mode": True
+        }
+        
+    except Exception as e:
+        logger.error(f"Error generating public session: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate session: {str(e)}")
