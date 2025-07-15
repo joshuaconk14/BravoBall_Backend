@@ -15,8 +15,142 @@ from schemas import (
 )
 from db import get_db
 from auth import get_current_user
+from collections import Counter
 
 router = APIRouter()
+
+def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSession], user_position: str = None) -> dict:
+    """
+    Calculate enhanced progress metrics based on completed sessions.
+    
+    Args:
+        completed_sessions: List of completed sessions for the user
+        user_position: User's position (optional, for position-specific metrics)
+    
+    Returns:
+        Dictionary containing all calculated metrics
+    """
+    if not completed_sessions:
+        return {
+            'favorite_drill': '',
+            'drills_per_session': 0.0,
+            'minutes_per_session': 0.0,
+            'total_time_all_sessions': 0,
+            'dribbling_drills_completed': 0,
+            'first_touch_drills_completed': 0,
+            'passing_drills_completed': 0,
+            'shooting_drills_completed': 0,
+            'most_improved_skill': '',
+            'unique_drills_completed': 0,
+            'beginner_drills_completed': 0,
+            'intermediate_drills_completed': 0,
+            'advanced_drills_completed': 0
+        }
+    
+    # Initialize counters
+    drill_counts = Counter()  # Track drill frequency
+    unique_drills = set()  # Track unique drills completed
+    total_drills = 0
+    total_time = 0
+    skill_counts = {
+        'dribbling': 0,
+        'first_touch': 0,
+        'passing': 0,
+        'shooting': 0
+    }
+    difficulty_counts = {
+        'beginner': 0,
+        'intermediate': 0,
+        'advanced': 0
+    }
+    skill_improvement_tracker = {
+        'dribbling': 0,
+        'first_touch': 0,
+        'passing': 0,
+        'shooting': 0
+    }
+    
+    
+    # Process each completed session
+    for session in completed_sessions:
+        if not session.drills:
+            continue
+            
+        session_drills = 0
+        session_time = 0
+        
+        for drill_data in session.drills:
+            if isinstance(drill_data, dict):
+                drill = drill_data.get('drill', {})
+                sets_done = drill_data.get('setsDone', 0)
+                total_duration = drill_data.get('totalDuration', 0)
+                
+                # Count drill frequency (for favorite drill)
+                drill_title = drill.get('title', '')
+                if drill_title:
+                    drill_counts[drill_title] += 1
+                
+                # Count completed drills
+                if sets_done > 0:
+                    session_drills += 1
+                    total_drills += 1
+                    session_time += total_duration
+                    
+                    # Track unique drills
+                    drill_uuid = drill.get('uuid', '')
+                    if drill_uuid:
+                        unique_drills.add(drill_uuid)
+                    
+                    # Count by skill category
+                    skill = drill.get('skill', '')
+                    skill_normalized = skill.lower().replace(' ', '_')
+                    if skill_normalized in skill_counts:
+                        skill_counts[skill_normalized] += 1
+                        skill_improvement_tracker[skill_normalized] += 1
+                    
+                    # Count by difficulty
+                    difficulty = drill.get('difficulty', '').lower()
+                    if difficulty in difficulty_counts:
+                        difficulty_counts[difficulty] += 1
+    
+        total_time += session_time
+    
+    # Calculate metrics
+    num_sessions = len(completed_sessions)
+    
+    # Favorite drill (most frequently completed)
+    favorite_drill = drill_counts.most_common(1)[0][0] if drill_counts else ''
+    
+    # Drills per session (average)
+    drills_per_session = round(total_drills / num_sessions, 2) if num_sessions > 0 else 0.0
+    
+    # Minutes per session (average)
+    minutes_per_session = round(total_time / num_sessions, 2) if num_sessions > 0 else 0.0
+    
+    # Total time across all sessions
+    total_time_all_sessions = total_time
+    
+    # Most improved skill (skill with highest count)
+    most_improved_skill = max(skill_improvement_tracker.items(), key=lambda x: x[1])[0] if skill_improvement_tracker else ''
+    
+    # Unique drills completed
+    unique_drills_completed = len(unique_drills)
+    
+    return {
+        'favorite_drill': favorite_drill,
+        'drills_per_session': drills_per_session,
+        'minutes_per_session': minutes_per_session,
+        'total_time_all_sessions': total_time_all_sessions,
+        'dribbling_drills_completed': skill_counts['dribbling'],
+        'first_touch_drills_completed': skill_counts['first_touch'],
+        'passing_drills_completed': skill_counts['passing'],
+        'shooting_drills_completed': skill_counts['shooting'],
+        'most_improved_skill': most_improved_skill,
+        'unique_drills_completed': unique_drills_completed,
+        'beginner_drills_completed': difficulty_counts['beginner'],
+        'intermediate_drills_completed': difficulty_counts['intermediate'],
+        'advanced_drills_completed': difficulty_counts['advanced']
+    }
 
 # ordered drills endpoint
 @router.get("/api/sessions/ordered_drills/")
@@ -271,6 +405,9 @@ async def get_progress_history(
         ).order_by(CompletedSession.date.asc()).all()
         completed_sessions_count = len(completed_sessions)
 
+        # Calculate enhanced progress metrics
+        enhanced_metrics = calculate_enhanced_progress_metrics(completed_sessions, current_user.position)
+
         # Calculate streaks
         streak = 0
         highest_streak = 0
@@ -311,7 +448,21 @@ async def get_progress_history(
                 current_streak=streak,
                 previous_streak=previous_streak,
                 highest_streak=highest_streak,
-                completed_sessions_count=completed_sessions_count
+                completed_sessions_count=completed_sessions_count,
+                # ✅ NEW: Enhanced progress metrics
+                favorite_drill=enhanced_metrics['favorite_drill'],
+                drills_per_session=enhanced_metrics['drills_per_session'],
+                minutes_per_session=enhanced_metrics['minutes_per_session'],
+                total_time_all_sessions=enhanced_metrics['total_time_all_sessions'],
+                dribbling_drills_completed=enhanced_metrics['dribbling_drills_completed'],
+                first_touch_drills_completed=enhanced_metrics['first_touch_drills_completed'],
+                passing_drills_completed=enhanced_metrics['passing_drills_completed'],
+                shooting_drills_completed=enhanced_metrics['shooting_drills_completed'],
+                most_improved_skill=enhanced_metrics['most_improved_skill'],
+                unique_drills_completed=enhanced_metrics['unique_drills_completed'],
+                beginner_drills_completed=enhanced_metrics['beginner_drills_completed'],
+                intermediate_drills_completed=enhanced_metrics['intermediate_drills_completed'],
+                advanced_drills_completed=enhanced_metrics['advanced_drills_completed']
             )
             db.add(progress_history)
             db.commit()
@@ -321,6 +472,20 @@ async def get_progress_history(
             progress_history.current_streak = streak
             progress_history.highest_streak = highest_streak
             progress_history.completed_sessions_count = completed_sessions_count
+            # ✅ NEW: Update enhanced progress metrics
+            progress_history.favorite_drill = enhanced_metrics['favorite_drill']
+            progress_history.drills_per_session = enhanced_metrics['drills_per_session']
+            progress_history.minutes_per_session = enhanced_metrics['minutes_per_session']
+            progress_history.total_time_all_sessions = enhanced_metrics['total_time_all_sessions']
+            progress_history.dribbling_drills_completed = enhanced_metrics['dribbling_drills_completed']
+            progress_history.first_touch_drills_completed = enhanced_metrics['first_touch_drills_completed']
+            progress_history.passing_drills_completed = enhanced_metrics['passing_drills_completed']
+            progress_history.shooting_drills_completed = enhanced_metrics['shooting_drills_completed']
+            progress_history.most_improved_skill = enhanced_metrics['most_improved_skill']
+            progress_history.unique_drills_completed = enhanced_metrics['unique_drills_completed']
+            progress_history.beginner_drills_completed = enhanced_metrics['beginner_drills_completed']
+            progress_history.intermediate_drills_completed = enhanced_metrics['intermediate_drills_completed']
+            progress_history.advanced_drills_completed = enhanced_metrics['advanced_drills_completed']
             db.commit()
             db.refresh(progress_history)
 

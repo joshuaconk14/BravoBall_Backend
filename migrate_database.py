@@ -90,7 +90,19 @@ class DatabaseMigrator:
                     # For functions like func.now()
                     default = f"DEFAULT {column.default.arg.__name__}()"
                 else:
-                    default = f"DEFAULT {column.default.arg}"
+                    # Handle different types of default values
+                    default_arg = column.default.arg
+                    if isinstance(default_arg, str):
+                        if default_arg == '':
+                            default = "DEFAULT ''"
+                        else:
+                            default = f"DEFAULT '{default_arg}'"
+                    elif isinstance(default_arg, (int, float)):
+                        default = f"DEFAULT {default_arg}"
+                    elif default_arg is None:
+                        default = "DEFAULT NULL"
+                    else:
+                        default = f"DEFAULT {default_arg}"
             elif hasattr(column.default, 'arg'):
                 default = f"DEFAULT {column.default}"
         
@@ -132,6 +144,30 @@ class DatabaseMigrator:
         # This is a placeholder - you can expand this if needed
         pass
     
+    def remove_deprecated_columns(self):
+        """Remove columns that are no longer in the model"""
+        logger.info("Checking for deprecated columns...")
+        
+        # List of columns to remove: table_name -> [column_names]
+        deprecated_columns = {
+            'progress_history': ['drills_for_position']
+        }
+        
+        for table_name, columns_to_remove in deprecated_columns.items():
+            if table_name in self.get_existing_tables():
+                existing_columns = self.get_table_columns(table_name)
+                
+                for column_name in columns_to_remove:
+                    if column_name in existing_columns:
+                        try:
+                            with self.engine.connect() as conn:
+                                sql = f"ALTER TABLE {table_name} DROP COLUMN IF EXISTS {column_name}"
+                                conn.execute(text(sql))
+                                conn.commit()
+                                logger.info(f"✅ Removed deprecated column {column_name} from {table_name}")
+                        except Exception as e:
+                            logger.error(f"❌ Failed to remove column {column_name} from {table_name}: {e}")
+    
     def run_migration(self):
         """Run the complete migration process"""
         logger.info("🚀 Starting database migration...")
@@ -145,12 +181,16 @@ class DatabaseMigrator:
             logger.info("Step 2: Adding missing columns...")
             self.add_missing_columns()
             
-            # Step 3: Create missing indexes
-            logger.info("Step 3: Creating missing indexes...")
+            # Step 3: Remove deprecated columns
+            logger.info("Step 3: Removing deprecated columns...")
+            self.remove_deprecated_columns()
+            
+            # Step 4: Create missing indexes
+            logger.info("Step 4: Creating missing indexes...")
             self.create_missing_indexes()
             
-            # Step 4: Check foreign keys
-            logger.info("Step 4: Checking foreign keys...")
+            # Step 5: Check foreign keys
+            logger.info("Step 5: Checking foreign keys...")
             self.check_foreign_keys()
             
             logger.info("✅ Migration completed successfully!")
@@ -196,14 +236,17 @@ def main():
             migrator.create_missing_tables()
         elif command == "columns":
             migrator.add_missing_columns()
+        elif command == "remove":
+            migrator.remove_deprecated_columns()
         elif command == "indexes":
             migrator.create_missing_indexes()
         else:
-            print("Usage: python migrate_database.py [status|migrate|tables|columns|indexes]")
+            print("Usage: python migrate_database.py [status|migrate|tables|columns|remove|indexes]")
             print("  status  - Show database status")
             print("  migrate - Run full migration")
             print("  tables  - Create missing tables only")
             print("  columns - Add missing columns only")
+            print("  remove  - Remove deprecated columns only")
             print("  indexes - Create missing indexes only")
     else:
         # Default: run full migration

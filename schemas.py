@@ -127,6 +127,21 @@ class ProgressHistoryBase(BaseModel):
     previous_streak: int = 0  # Add previous_streak field
     highest_streak: int = 0
     completed_sessions_count: int = 0
+    # ✅ NEW: Enhanced progress metrics
+    favorite_drill: str = ''
+    drills_per_session: float = 0.0
+    minutes_per_session: float = 0.0
+    total_time_all_sessions: int = 0
+    dribbling_drills_completed: int = 0
+    first_touch_drills_completed: int = 0
+    passing_drills_completed: int = 0
+    shooting_drills_completed: int = 0
+    # ✅ NEW: Additional progress metrics
+    most_improved_skill: str = ''
+    unique_drills_completed: int = 0
+    beginner_drills_completed: int = 0
+    intermediate_drills_completed: int = 0
+    advanced_drills_completed: int = 0
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -138,6 +153,6 @@ class ProgressHistoryResponse(ProgressHistoryBase):
     user_id: int
     updated_at: datetime
 
-    model_config = ConfigDict(from_attributes=True) 
+    model_config = ConfigDict(from_attributes=True)
 
 # Saved Filters Schemas

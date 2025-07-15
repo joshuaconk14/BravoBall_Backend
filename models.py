@@ -5,7 +5,7 @@ This defines all models used in chatbot app
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional, Dict, Any, Union
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table, Float
 from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
 from sqlalchemy.orm import relationship
 from db import Base
@@ -556,6 +556,21 @@ class ProgressHistory(Base):
     previous_streak = Column(Integer, default=0)  # Add previous_streak field
     highest_streak = Column(Integer, default=0)
     completed_sessions_count = Column(Integer, default=0)
+    # ✅ NEW: Enhanced progress metrics
+    favorite_drill = Column(String, default='', nullable=True)
+    drills_per_session = Column(Float, default=0.0)
+    minutes_per_session = Column(Float, default=0.0)
+    total_time_all_sessions = Column(Integer, default=0)
+    dribbling_drills_completed = Column(Integer, default=0)
+    first_touch_drills_completed = Column(Integer, default=0)
+    passing_drills_completed = Column(Integer, default=0)
+    shooting_drills_completed = Column(Integer, default=0)
+    # ✅ NEW: Additional progress metrics
+    most_improved_skill = Column(String, default='', nullable=True)
+    unique_drills_completed = Column(Integer, default=0)
+    beginner_drills_completed = Column(Integer, default=0)
+    intermediate_drills_completed = Column(Integer, default=0)
+    advanced_drills_completed = Column(Integer, default=0)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     # Relationship
