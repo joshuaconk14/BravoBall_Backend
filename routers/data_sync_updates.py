@@ -405,8 +405,10 @@ async def get_progress_history(
         ).order_by(CompletedSession.date.asc()).all()
         completed_sessions_count = len(completed_sessions)
 
+
         # Calculate enhanced progress metrics
         enhanced_metrics = calculate_enhanced_progress_metrics(completed_sessions, current_user.position)
+
 
         # Calculate streaks
         streak = 0
@@ -418,10 +420,12 @@ async def get_progress_history(
         for session in completed_sessions:
             session_date = session.date.date() if hasattr(session.date, 'date') else session.date
             if last_session_date is None:
+                # First session in completed sessions loop is set to 1
                 streak = 1
             else:
                 days_diff = (session_date - last_session_date).days
                 if days_diff == 1:
+                    # Sessions have diff date, increment streak
                     streak += 1
                 elif days_diff == 0:
                     # Same day, don't increment streak
@@ -431,10 +435,10 @@ async def get_progress_history(
             highest_streak = max(highest_streak, streak)
             last_session_date = session_date
 
-        # Check if the last session was today, yesterday, or 2 days ago
+        # Check if the last session was today or yesterday
         streak_should_reset = True
         if last_session_date:
-            if (today - last_session_date).days in [0, 1, 2]:
+            if (today - last_session_date).days in [0, 1]:
                 streak_should_reset = False
 
         if streak_should_reset:
@@ -495,47 +499,4 @@ async def get_progress_history(
         raise HTTPException(
             status_code=500,
             detail=f"Failed to get progress history: {str(e)}"
-        )
-
-@router.put("/api/progress_history/", response_model=ProgressHistoryResponse)
-async def sync_progress_history(
-    progress: ProgressHistoryUpdate,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """
-    Sync the user's progress history (streaks and completed sessions count)
-    """
-    try:
-        # Get or create progress history for the user
-        progress_history = db.query(ProgressHistory).filter(
-            ProgressHistory.user_id == current_user.id
-        ).first()
-
-        if not progress_history:
-            progress_history = ProgressHistory(
-                user_id=current_user.id,
-                current_streak=progress.current_streak,
-                previous_streak=progress.previous_streak, # Add previous_streak field
-                highest_streak=progress.highest_streak,
-                completed_sessions_count=progress.completed_sessions_count
-            )
-            db.add(progress_history)
-        else:
-            # Update existing progress history
-            progress_history.current_streak = progress.current_streak
-            progress_history.previous_streak = progress.previous_streak # Add previous_streak field
-            progress_history.highest_streak = progress.highest_streak
-            progress_history.completed_sessions_count = progress.completed_sessions_count
-
-        db.commit()
-        db.refresh(progress_history)
-        
-        return progress_history
-        
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to sync progress history: {str(e)}"
         )
