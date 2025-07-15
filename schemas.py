@@ -6,9 +6,16 @@ from datetime import datetime
 # Completed Session Schemas
 class CompletedSessionBase(BaseModel):
     date: datetime
-    total_completed_drills: int
-    total_drills: int
-    drills: List[dict]  # List of drill data
+    session_type: str = 'drill_training'  # 'drill_training', 'mental_training', etc.
+    
+    # ✅ UPDATED: Optional drill-specific fields
+    total_completed_drills: Optional[int] = None
+    total_drills: Optional[int] = None
+    drills: Optional[List[dict]] = None  # List of drill data (null for mental training)
+    
+    # ✅ NEW: Mental training specific fields
+    duration_minutes: Optional[int] = None  # For mental training sessions
+    mental_training_session_id: Optional[int] = None
 
 class DrillData(BaseModel):
     uuid: str  # Use UUID instead of id
@@ -34,11 +41,38 @@ class CompletedDrillData(BaseModel):
     totalDuration: int
     isCompleted: bool
 
-class CompletedSessionCreate(BaseModel):
+# ✅ NEW: Drill training session creation
+class CompletedDrillSessionCreate(BaseModel):
     date: str  # ISO8601 formatted string
+    session_type: str = 'drill_training'
     drills: List[CompletedDrillData]
     total_completed_drills: int
     total_drills: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+# ✅ NEW: Mental training session creation
+class CompletedMentalTrainingSessionCreate(BaseModel):
+    date: str  # ISO8601 formatted string
+    session_type: str = 'mental_training'
+    duration_minutes: int
+    mental_training_session_id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+# ✅ UPDATED: Generic completed session creation (backwards compatible)
+class CompletedSessionCreate(BaseModel):
+    date: str  # ISO8601 formatted string
+    session_type: str = 'drill_training'
+    
+    # Drill session fields (optional)
+    drills: Optional[List[CompletedDrillData]] = None
+    total_completed_drills: Optional[int] = None
+    total_drills: Optional[int] = None
+    
+    # Mental training session fields (optional)
+    duration_minutes: Optional[int] = None
+    mental_training_session_id: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -142,6 +176,9 @@ class ProgressHistoryBase(BaseModel):
     beginner_drills_completed: int = 0
     intermediate_drills_completed: int = 0
     advanced_drills_completed: int = 0
+    # ✅ NEW: Mental training metrics
+    mental_training_sessions: int = 0
+    total_mental_training_minutes: int = 0
 
     model_config = ConfigDict(from_attributes=True)
 

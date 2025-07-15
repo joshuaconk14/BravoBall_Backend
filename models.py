@@ -45,6 +45,29 @@ class UserInfoDisplay(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+# *** MENTAL TRAINING MODELS ***
+class MentalTrainingQuote(Base):
+    __tablename__ = "mental_training_quotes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    content = Column(String, nullable=False)
+    author = Column(String, nullable=False)
+    type = Column(String, nullable=False)  # 'motivational', 'soccer_tip', 'mental_training'
+    display_duration = Column(Integer, default=8)  # seconds to display
+    created_at = Column(DateTime, server_default=func.now())
+
+class MentalTrainingSession(Base):
+    __tablename__ = "mental_training_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    date = Column(DateTime, server_default=func.now())
+    duration_minutes = Column(Integer, nullable=False)
+    session_type = Column(String, default="mental_training")
+    
+    # Relationship
+    user = relationship("User", backref="mental_training_sessions")
+
 # *** USER AND USER DATA MODELS ***
 
 class User(Base):
@@ -89,14 +112,24 @@ class CompletedSession(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     date = Column(DateTime)
-    total_completed_drills = Column(Integer)
-    total_drills = Column(Integer)
     
-    # Store the completed drills data as JSON
-    drills = Column(JSON)  # Will store array of DrillResponse data
+    # ✅ NEW: Session type for polymorphic sessions
+    session_type = Column(String, default='drill_training')  # 'drill_training', 'mental_training', etc.
+    
+    # ✅ UPDATED: Make drill-specific fields nullable for mental training sessions
+    total_completed_drills = Column(Integer, nullable=True)  # Null for mental training
+    total_drills = Column(Integer, nullable=True)  # Null for mental training
+    
+    # ✅ UPDATED: Store session data as JSON (flexible for different session types)
+    drills = Column(JSON, nullable=True)  # Null for mental training
+    
+    # ✅ NEW: Mental training specific fields (nullable for drill sessions)
+    duration_minutes = Column(Integer, nullable=True)  # For mental training sessions
+    mental_training_session_id = Column(Integer, ForeignKey("mental_training_sessions.id"), nullable=True)
     
     # Relationship
     user = relationship("User", back_populates="completed_sessions")
+    mental_training_session = relationship("MentalTrainingSession", backref="completed_session")
 
 
 
@@ -571,6 +604,9 @@ class ProgressHistory(Base):
     beginner_drills_completed = Column(Integer, default=0)
     intermediate_drills_completed = Column(Integer, default=0)
     advanced_drills_completed = Column(Integer, default=0)
+    # ✅ NEW: Mental training metrics
+    mental_training_sessions = Column(Integer, default=0)
+    total_mental_training_minutes = Column(Integer, default=0)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     # Relationship
@@ -724,4 +760,29 @@ class EmailVerificationCodeRequest(BaseModel):
 class EmailVerificationResponse(BaseModel):
     message: str
     success: bool
+    model_config = ConfigDict(from_attributes=True)
+
+
+# *** MENTAL TRAINING PYDANTIC MODELS ***
+
+class MentalTrainingQuoteResponse(BaseModel):
+    id: int
+    content: str
+    author: str
+    type: str
+    display_duration: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+class MentalTrainingSessionCreate(BaseModel):
+    duration_minutes: int
+    session_type: str = "mental_training"
+
+class MentalTrainingSessionResponse(BaseModel):
+    id: int
+    user_id: int
+    date: datetime
+    duration_minutes: int
+    session_type: str
+
     model_config = ConfigDict(from_attributes=True)

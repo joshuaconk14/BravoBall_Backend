@@ -22,9 +22,10 @@ router = APIRouter()
 def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSession], user_position: str = None) -> dict:
     """
     Calculate enhanced progress metrics based on completed sessions.
+    Now supports both drill training and mental training sessions.
     
     Args:
-        completed_sessions: List of completed sessions for the user
+        completed_sessions: List of completed sessions for the user (both drill and mental training)
         user_position: User's position (optional, for position-specific metrics)
     
     Returns:
@@ -44,7 +45,10 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
             'unique_drills_completed': 0,
             'beginner_drills_completed': 0,
             'intermediate_drills_completed': 0,
-            'advanced_drills_completed': 0
+            'advanced_drills_completed': 0,
+            # ✅ NEW: Mental training metrics
+            'mental_training_sessions': 0,
+            'total_mental_training_minutes': 0
         }
     
     # Initialize counters
@@ -52,104 +56,105 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
     unique_drills = set()  # Track unique drills completed
     total_drills = 0
     total_time = 0
-    skill_counts = {
+    
+    # ✅ NEW: Mental training counters
+    mental_training_sessions = 0
+    total_mental_training_minutes = 0
+    
+    # Skill-specific counters
+    skill_counters = {
         'dribbling': 0,
         'first_touch': 0,
         'passing': 0,
         'shooting': 0
     }
-    difficulty_counts = {
+    
+    # Difficulty counters
+    difficulty_counters = {
         'beginner': 0,
         'intermediate': 0,
         'advanced': 0
     }
-    skill_improvement_tracker = {
-        'dribbling': 0,
-        'first_touch': 0,
-        'passing': 0,
-        'shooting': 0
-    }
-    
     
     # Process each completed session
     for session in completed_sessions:
+        # ✅ NEW: Handle mental training sessions
+        if session.session_type == 'mental_training':
+            mental_training_sessions += 1
+            if session.duration_minutes:
+                total_mental_training_minutes += session.duration_minutes
+                total_time += session.duration_minutes
+            continue
+        
+        # Handle drill training sessions (existing logic)
         if not session.drills:
             continue
             
-        session_drills = 0
-        session_time = 0
+        session_drill_count = len(session.drills)
+        total_drills += session_drill_count
+        
+        # Calculate estimated session time (if not provided)
+        estimated_session_time = 0
         
         for drill_data in session.drills:
-            if isinstance(drill_data, dict):
-                drill = drill_data.get('drill', {})
-                sets_done = drill_data.get('setsDone', 0)
-                total_duration = drill_data.get('totalDuration', 0)
-                
-                # Count drill frequency (for favorite drill)
-                drill_title = drill.get('title', '')
-                if drill_title:
-                    drill_counts[drill_title] += 1
-                
-                # Count completed drills
-                if sets_done > 0:
-                    session_drills += 1
-                    total_drills += 1
-                    session_time += total_duration
-                    
-                    # Track unique drills
-                    drill_uuid = drill.get('uuid', '')
-                    if drill_uuid:
-                        unique_drills.add(drill_uuid)
-                    
-                    # Count by skill category
-                    skill = drill.get('skill', '')
-                    skill_normalized = skill.lower().replace(' ', '_')
-                    if skill_normalized in skill_counts:
-                        skill_counts[skill_normalized] += 1
-                        skill_improvement_tracker[skill_normalized] += 1
-                    
-                    # Count by difficulty
-                    difficulty = drill.get('difficulty', '').lower()
-                    if difficulty in difficulty_counts:
-                        difficulty_counts[difficulty] += 1
-    
-        total_time += session_time
+            drill_info = drill_data.get('drill', {})
+            drill_title = drill_info.get('title', 'Unknown')
+            drill_skill = drill_info.get('skill', '').lower()
+            drill_difficulty = drill_info.get('difficulty', '').lower()
+            
+            # Count drill occurrences for favorite drill calculation
+            drill_counts[drill_title] += 1
+            unique_drills.add(drill_title)
+            
+            # Count by skill
+            if drill_skill in skill_counters:
+                skill_counters[drill_skill] += 1
+            
+            # Count by difficulty
+            if drill_difficulty in difficulty_counters:
+                difficulty_counters[drill_difficulty] += 1
+            
+            # Estimate time for this drill
+            drill_duration = drill_info.get('duration')
+            drill_sets = drill_info.get('sets', 1)
+            if drill_duration:
+                estimated_session_time += drill_duration * drill_sets
+        
+        total_time += estimated_session_time
     
     # Calculate metrics
-    num_sessions = len(completed_sessions)
+    drill_sessions_count = len([s for s in completed_sessions if s.session_type != 'mental_training'])
+    total_sessions_count = len(completed_sessions)
     
-    # Favorite drill (most frequently completed)
+    # Favorite drill (most frequent drill)
     favorite_drill = drill_counts.most_common(1)[0][0] if drill_counts else ''
     
-    # Drills per session (average)
-    drills_per_session = round(total_drills / num_sessions, 2) if num_sessions > 0 else 0.0
+    # Average drills per session (only counting drill sessions)
+    drills_per_session = total_drills / drill_sessions_count if drill_sessions_count > 0 else 0.0
     
-    # Minutes per session (average)
-    minutes_per_session = round(total_time / num_sessions, 2) if num_sessions > 0 else 0.0
+    # Average minutes per session (including mental training)
+    minutes_per_session = total_time / total_sessions_count if total_sessions_count > 0 else 0.0
     
-    # Total time across all sessions
-    total_time_all_sessions = total_time
-    
-    # Most improved skill (skill with highest count)
-    most_improved_skill = max(skill_improvement_tracker.items(), key=lambda x: x[1])[0] if skill_improvement_tracker else ''
-    
-    # Unique drills completed
-    unique_drills_completed = len(unique_drills)
+    # Most improved skill (skill with most drills completed)
+    most_improved_skill = max(skill_counters, key=skill_counters.get) if any(skill_counters.values()) else ''
     
     return {
         'favorite_drill': favorite_drill,
-        'drills_per_session': drills_per_session,
-        'minutes_per_session': minutes_per_session,
-        'total_time_all_sessions': total_time_all_sessions,
-        'dribbling_drills_completed': skill_counts['dribbling'],
-        'first_touch_drills_completed': skill_counts['first_touch'],
-        'passing_drills_completed': skill_counts['passing'],
-        'shooting_drills_completed': skill_counts['shooting'],
+        'drills_per_session': round(drills_per_session, 1),
+        'minutes_per_session': round(minutes_per_session, 1),
+        'total_time_all_sessions': total_time,
+        'dribbling_drills_completed': skill_counters['dribbling'],
+        'first_touch_drills_completed': skill_counters['first_touch'],
+        'passing_drills_completed': skill_counters['passing'],
+        'shooting_drills_completed': skill_counters['shooting'],
         'most_improved_skill': most_improved_skill,
-        'unique_drills_completed': unique_drills_completed,
-        'beginner_drills_completed': difficulty_counts['beginner'],
-        'intermediate_drills_completed': difficulty_counts['intermediate'],
-        'advanced_drills_completed': difficulty_counts['advanced']
+        'unique_drills_completed': len(unique_drills),
+        'beginner_drills_completed': difficulty_counters['beginner'],
+        'intermediate_drills_completed': difficulty_counters['intermediate'],
+        'advanced_drills_completed': difficulty_counters['advanced'],
+        # ✅ NEW: Mental training metrics
+        'mental_training_sessions': mental_training_sessions,
+        'total_mental_training_minutes': total_mental_training_minutes
     }
 
 # ordered drills endpoint
@@ -466,7 +471,10 @@ async def get_progress_history(
                 unique_drills_completed=enhanced_metrics['unique_drills_completed'],
                 beginner_drills_completed=enhanced_metrics['beginner_drills_completed'],
                 intermediate_drills_completed=enhanced_metrics['intermediate_drills_completed'],
-                advanced_drills_completed=enhanced_metrics['advanced_drills_completed']
+                advanced_drills_completed=enhanced_metrics['advanced_drills_completed'],
+                # ✅ NEW: Mental training metrics
+                mental_training_sessions=enhanced_metrics['mental_training_sessions'],
+                total_mental_training_minutes=enhanced_metrics['total_mental_training_minutes']
             )
             db.add(progress_history)
             db.commit()
@@ -490,6 +498,9 @@ async def get_progress_history(
             progress_history.beginner_drills_completed = enhanced_metrics['beginner_drills_completed']
             progress_history.intermediate_drills_completed = enhanced_metrics['intermediate_drills_completed']
             progress_history.advanced_drills_completed = enhanced_metrics['advanced_drills_completed']
+            # ✅ NEW: Update mental training metrics
+            progress_history.mental_training_sessions = enhanced_metrics['mental_training_sessions']
+            progress_history.total_mental_training_minutes = enhanced_metrics['total_mental_training_minutes']
             db.commit()
             db.refresh(progress_history)
 

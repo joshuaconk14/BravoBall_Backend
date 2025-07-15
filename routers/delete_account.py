@@ -5,7 +5,7 @@ Endpoint to delete user account
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from models import User, OrderedSessionDrill, CompletedSession, DrillGroup, SessionPreferences, ProgressHistory, SavedFilter, TrainingSession
+from models import User, OrderedSessionDrill, CompletedSession, DrillGroup, SessionPreferences, ProgressHistory, SavedFilter, TrainingSession, MentalTrainingSession
 from db import get_db
 from auth import get_current_user
 
@@ -37,6 +37,11 @@ async def delete_account(current_user: User = Depends(get_current_user), db: Ses
         # Delete completed sessions
         db.query(CompletedSession).filter(
             CompletedSession.user_id == current_user.id
+        ).delete()
+
+        # Delete mental training sessions
+        db.query(MentalTrainingSession).filter(
+            MentalTrainingSession.user_id == current_user.id
         ).delete()
 
         # Delete drill groups
