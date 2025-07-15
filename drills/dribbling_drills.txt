@@ -288,7 +288,7 @@
         "reps": 20,
         "equipment": [
             "ball",
-            "training_cone"
+            "training_cones"
         ],
         "suitable_locations": [
             "medium_field",
@@ -344,7 +344,7 @@
         "reps": 20,
         "equipment": [
             "ball",
-            "training_cone"
+            "training_cones"
         ],
         "suitable_locations": [
             "medium_field",
@@ -866,7 +866,7 @@
         "reps": 20,
         "equipment": [
             "ball",
-            "training_cone"
+            "training_cones"
         ],
         "suitable_locations": [
             "medium_field",

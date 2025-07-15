@@ -170,6 +170,7 @@ def map_frontend_category_to_backend(frontend_category: str) -> str:
         "Dribbling": "dribbling",
         "First Touch": "first_touch",  # ✅ CRITICAL: Map "First Touch" to "first_touch"
         "Defending": "defending",
+        "Goalkeeping": "goalkeeping",  # ✅ NEW: Add goalkeeping mapping
         "Fitness": "fitness",
     }
     
@@ -181,14 +182,14 @@ def map_frontend_category_to_backend(frontend_category: str) -> str:
 async def get_limited_drills_for_guests(db: Session = Depends(get_db)):
     """
     Get a limited, curated set of drills for guest users to try the app.
-    Returns 7 drills each from key categories: Passing, Dribbling, Shooting, First Touch.
+    Returns 7 drills each from key categories: Passing, Dribbling, Shooting, First Touch, Defending, Goalkeeping, Fitness.
     No authentication required.
     """
     try:
         logging.info("Fetching limited drills for guest mode")
         
         # Define the categories we want to showcase
-        featured_categories = ["Passing", "Dribbling", "Shooting", "First Touch"]
+        featured_categories = ["Passing", "Dribbling", "Shooting", "First Touch", "Defending", "Goalkeeping", "Fitness"]  # ✅ UPDATED: Add fitness
         
         all_guest_drills = []
         
@@ -206,8 +207,8 @@ async def get_limited_drills_for_guests(db: Session = Depends(get_db)):
                 drill_response = drill_to_response(drill, db)
                 all_guest_drills.append(drill_response)
         
-        # Also add some general drills if we don't have enough (max 28 total)
-        if len(all_guest_drills) < 28:
+        # Also add some general drills if we don't have enough (max 49 total - 7 categories * 7 drills)
+        if len(all_guest_drills) < 49:
             general_drills = db.query(Drill).filter(
                 ~Drill.id.in_([d["backend_id"] for d in all_guest_drills if "backend_id" in d])
             ).limit(7).all()
@@ -252,7 +253,7 @@ async def search_drills_for_guests(
         if limit >= 30:
             # Get the full guest drill catalog from the limited endpoint
             all_guest_drills = []
-            featured_categories = ["Passing", "Dribbling", "Shooting", "First Touch"]
+            featured_categories = ["Passing", "Dribbling", "Shooting", "First Touch", "Defending", "Goalkeeping", "Fitness"]  # ✅ UPDATED: Add fitness
             
             for category_name in featured_categories:
                 # ✅ UPDATED: Map frontend category name to backend database name
@@ -305,7 +306,7 @@ async def search_drills_for_guests(
                 "has_next": False,
                 "has_prev": False,
                 "guest_mode": True,
-                "message": f"Showing {len(filtered_drills)} of 28 available guest drills. Create an account for access to 100+ drills!"
+                "message": f"Showing {len(filtered_drills)} of 49 available guest drills. Create an account for access to 100+ drills!"  # ✅ UPDATED: Update message to reflect 49 drills
             }
         
         # ✅ EXISTING: Standard pagination for smaller limits

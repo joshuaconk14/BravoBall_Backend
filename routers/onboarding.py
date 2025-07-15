@@ -82,7 +82,7 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
     }
 
 @router.post("/api/onboarding")
-async def create_onboarding(player_info: OnboardingData, db: Session = Depends(get_db)):
+async def create_onboarding_with_generated_session(player_info: OnboardingData, db: Session = Depends(get_db)):
     # Log received data for debugging
     logger.info(f"Received onboarding data: {player_info}")
     
@@ -167,7 +167,7 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
             # ✅ ENHANCED: Properly map frontend skills to backend format
             areas_to_improve = player_info.areasToImprove or []
             if areas_to_improve:
-                # Map main skill categories to representative sub-skills
+                # Map main (base) skill categories to representative sub-skills
                 skill_to_subskills_map = {
                     "Passing": ["Short passing", "Long passing"],
                     "Dribbling": ["Close control", "1v1 moves"], 
@@ -175,6 +175,7 @@ async def create_onboarding(player_info: OnboardingData, db: Session = Depends(g
                     "First touch": ["Ground control", "Touch and move"],
                     "First Touch": ["Ground control", "Touch and move"],  # Handle both cases
                     "Defending": ["Tackling", "Positioning"],
+                    "Goalkeeping": ["Catching", "Shot stopping"],
                     "Fitness": ["Speed", "Agility"]
                 }
                 

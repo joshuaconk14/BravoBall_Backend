@@ -1,0 +1,339 @@
+[
+    {
+        "title": "Rapid Fire Catch & Reset",
+        "description": "A goalkeeper drill that improves handling under pressure, reflex catching, and fast positioning resets to mimic game-like rapid sequences.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 3,
+        "reps": 10,
+        "equipment": [
+            "ball",
+            "partner"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "small_space"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "catching"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "reflexes"
+            }
+        ],
+        "instructions": [
+            "Partner stands 5-8 yards away with 5-10 balls.",
+            "Stand in your ready goalkeeper position with knees bent and hands ready.",
+            "Partner shoots or throws balls rapidly at chest height or slightly off-center.",
+            "Catch each ball cleanly and securely.",
+            "Immediately toss the ball aside and reset for the next shot.",
+            "If solo, use a rebounder or wall - throw, catch, reset quickly."
+        ],
+        "tips": [
+            "Keep your eyes on the ball at all times.",
+            "Maintain proper goalkeeper stance throughout the drill.",
+            "Use your whole body to absorb the ball's momentum.",
+            "Reset quickly but don't rush - focus on proper technique.",
+            "Communicate with your partner about shot placement and pace."
+        ],
+        "common_mistakes": [
+            "Not maintaining proper goalkeeper stance.",
+            "Rushing the reset and losing balance.",
+            "Not catching the ball cleanly, leading to rebounds.",
+            "Taking eyes off the ball during the reset phase.",
+            "Moving too slowly between catches."
+        ],
+        "progression_steps": [
+            "Start with slower, more controlled shots to perfect technique.",
+            "Increase the speed and frequency of shots.",
+            "Add variety in shot placement (high, low, left, right).",
+            "Incorporate different types of shots (volleys, half-volleys).",
+            "Increase the distance between goalkeeper and shooter."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/rapid-fire-catch-reset.mp4",
+        "thumbnail_url": "https://example.com/rapid-fire-catch-reset-thumbnail.jpg"
+    },
+    {
+        "title": "Reaction Ball Drops",
+        "description": "A goalkeeper drill that focuses on pure reflex training, hand-eye coordination, and low dive timing for stopping deflected or quick-reaction shots.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 4,
+        "reps": 8,
+        "equipment": [
+            "reaction_ball",
+            "partner"
+        ],
+        "suitable_locations": [
+            "small_space",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "reflexes"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "diving"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "hand_eye_coordination"
+            }
+        ],
+        "instructions": [
+            "Use a reaction ball or small bouncy ball for unpredictable movement.",
+            "Partner drops the reaction ball from waist height.",
+            "React quickly and dive or scoop low before the ball bounces away.",
+            "If solo, toss the ball against a wall and react to its unpredictable rebound.",
+            "Challenge yourself with 5-10 reps on each side.",
+            "Focus on quick reactions and proper diving technique."
+        ],
+        "tips": [
+            "Stay in a low, ready position to react quickly.",
+            "Keep your eyes focused on the ball's movement.",
+            "Use proper diving technique to avoid injury.",
+            "React with your whole body, not just your hands.",
+            "Practice on both sides to develop balanced skills."
+        ],
+        "common_mistakes": [
+            "Not staying in a proper ready position.",
+            "Reacting too slowly to the ball's movement.",
+            "Using poor diving technique that could cause injury.",
+            "Not practicing equally on both sides.",
+            "Taking eyes off the ball during the reaction phase."
+        ],
+        "progression_steps": [
+            "Start with slower drops to perfect the technique.",
+            "Increase the speed and unpredictability of the drops.",
+            "Add different heights and angles for the drops.",
+            "Incorporate different types of reaction balls.",
+            "Add a shot after the reaction save for realism."
+        ],
+        "rest": 45,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/reaction-ball-drops.mp4",
+        "thumbnail_url": "https://example.com/reaction-ball-drops-thumbnail.jpg"
+    },
+    {
+        "title": "Cone Shuffle + Shot Save",
+        "description": "A goalkeeper drill that combines agility footwork with live shot-saving, combining conditioning with real-time shot-stopping techniques.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 6,
+        "equipment": [
+            "ball",
+            "training_cones",
+            "partner"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "shot_stopping"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "hand_eye_coordination"
+            }
+        ],
+        "instructions": [
+            "Place 4-6 cones in a zigzag or W shape, 1 yard apart.",
+            "Start at one end of the cone pattern.",
+            "Shuffle quickly through the cones while facing forward.",
+            "As soon as you exit the cone pattern, partner shoots on goal from 10-12 yards.",
+            "Dive or react as necessary to make the save.",
+            "Repeat with variety: low shots, volleys, or half-volleys."
+        ],
+        "tips": [
+            "Maintain proper goalkeeper stance during the shuffle.",
+            "Keep your eyes up and ready for the shot.",
+            "Use quick, explosive movements through the cones.",
+            "React immediately after exiting the cone pattern.",
+            "Communicate with your partner about shot timing."
+        ],
+        "common_mistakes": [
+            "Not maintaining proper stance during the shuffle.",
+            "Moving too slowly through the cone pattern.",
+            "Not being ready for the shot after exiting cones.",
+            "Poor footwork that affects balance.",
+            "Not communicating with the partner about timing."
+        ],
+        "progression_steps": [
+            "Start with fewer cones and slower movement.",
+            "Increase the number of cones and speed.",
+            "Add different cone patterns and directions.",
+            "Incorporate different types of shots and angles.",
+            "Add a second shot after the initial save."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/cone-shuffle-shot-save.mp4",
+        "thumbnail_url": "https://example.com/cone-shuffle-shot-save-thumbnail.jpg"
+    },
+    {
+        "title": "One-Touch Reaction Save",
+        "description": "A goalkeeper drill that focuses on reaction time, quick foot repositioning, and non-telegraphed save responses for elite-level reflex work.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 4,
+        "reps": 8,
+        "equipment": [
+            "ball",
+            "wall_or_rebounder",
+            "partner"
+        ],
+        "suitable_locations": [
+            "small_space",
+            "indoor_court"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "reflexes"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "shot_stopping"
+            }
+        ],
+        "instructions": [
+            "Partner with a ball, standing 5-7 yards away from a wall or rebounder.",
+            "Partner tosses the ball off the wall or rebounder.",
+            "You must make a quick reaction save from the deflection - no warning where it's going.",
+            "Use goalkeeper gloves and maintain proper stance.",
+            "Increase pace and distance for advanced variation.",
+            "Focus on quick reactions and proper save technique."
+        ],
+        "tips": [
+            "Stay in a low, ready position at all times.",
+            "Keep your eyes focused on the ball's movement.",
+            "Use quick footwork to reposition as needed.",
+            "React with your whole body, not just your hands.",
+            "Practice different angles and distances."
+        ],
+        "common_mistakes": [
+            "Not staying in a proper ready position.",
+            "Reacting too slowly to the deflected ball.",
+            "Poor footwork that affects save ability.",
+            "Not using proper goalkeeper technique.",
+            "Taking eyes off the ball during the reaction."
+        ],
+        "progression_steps": [
+            "Start with slower, more predictable deflections.",
+            "Increase the speed and unpredictability.",
+            "Add different angles and distances.",
+            "Incorporate different types of deflections.",
+            "Add a second save after the initial reaction."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/one-touch-reaction-save.mp4",
+        "thumbnail_url": "https://example.com/one-touch-reaction-save-thumbnail.jpg"
+    },
+    {
+        "title": "Dive & Recover Drill",
+        "description": "A goalkeeper drill that focuses on explosive dives, recovery speed, and simulating second chance saves or rebounds to build core goalkeeper movement habits.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 3,
+        "reps": 10,
+        "equipment": [
+            "ball",
+            "partner"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "diving"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "shot_stopping"
+            }
+        ],
+        "instructions": [
+            "Place 2 balls, one to your left and one to your right, 5 yards apart.",
+            "Start centered between the two balls.",
+            "Dive explosively to one side and smother the ball.",
+            "Pop up quickly and sprint back to the center position.",
+            "Immediately dive to the other ball.",
+            "Partner can add a shot after recovery for realism."
+        ],
+        "tips": [
+            "Use explosive power for each dive.",
+            "Recover quickly and efficiently to center.",
+            "Maintain proper goalkeeper technique throughout.",
+            "Keep your eyes on the target ball during each dive.",
+            "Use your whole body for maximum reach and power."
+        ],
+        "common_mistakes": [
+            "Not diving explosively enough.",
+            "Slow recovery back to center position.",
+            "Poor diving technique that affects save ability.",
+            "Not maintaining proper stance during recovery.",
+            "Taking eyes off the target ball."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect technique.",
+            "Increase the distance between balls.",
+            "Add different types of dives (low, high, side).",
+            "Incorporate a shot after the recovery.",
+            "Add multiple balls for increased complexity."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/dive-recover-drill.mp4",
+        "thumbnail_url": "https://example.com/dive-recover-drill-thumbnail.jpg"
+    }
+] 

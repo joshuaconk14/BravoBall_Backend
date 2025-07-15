@@ -54,7 +54,7 @@ class SessionGenerator:
         self.db = db
         self.ADAPTABLE_EQUIPMENT = {"CONES", "WALL"}  # Can use household items instead
         self.CRITICAL_EQUIPMENT = {"GOALS", "BALL"}   # Essential equipment
-        self.BASIC_SKILLS = {"ball_mastery", "first_touch", "dribbling"}  # Core skills
+        self.BASIC_SKILLS = {"passing", "shooting", "first_touch", "dribbling", "defending", "goalkeeping", "fitness"}  # Core skills including goalkeeping and fitness
 
     async def generate_session(self, preferences: SessionPreferences) -> TrainingSession:
         """

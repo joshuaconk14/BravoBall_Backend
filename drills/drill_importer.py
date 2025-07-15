@@ -5,6 +5,11 @@ Each file should contain drills for a specific category (e.g., first_touch_drill
 This script is used when restarting the database in testing environments and importing drills from the drills directory.
 """
 import os
+import sys
+
+# Add the parent directory to the Python path so we can import from the root
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import json
 import uuid
 from typing import List, Dict, Any
@@ -229,7 +234,6 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
 
 def main():
     """Main function to import drills from a file and upload to database."""
-    import sys
     
     # Ensure a file for drills to process is provided
     if len(sys.argv) < 2:

@@ -170,6 +170,9 @@ class ProgressHistoryBase(BaseModel):
     first_touch_drills_completed: int = 0
     passing_drills_completed: int = 0
     shooting_drills_completed: int = 0
+    defending_drills_completed: int = 0
+    goalkeeping_drills_completed: int = 0
+    fitness_drills_completed: int = 0  # ✅ NEW: Add fitness drills completed
     # ✅ NEW: Additional progress metrics
     most_improved_skill: str = ''
     unique_drills_completed: int = 0

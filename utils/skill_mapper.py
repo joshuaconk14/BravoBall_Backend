@@ -42,7 +42,22 @@ SKILL_MAP: Dict[str, str] = {
     "Tackling": "defending-tackling",
     "Marking": "defending-marking",
     "Intercepting": "defending-intercepting",
-    "Positioning": "defending-positioning"
+    "Positioning": "defending-positioning",
+    "Agility": "defending-agility",
+    "Aerial defending": "defending-aerial_defending",
+    
+    # Goalkeeping
+    "Catching": "goalkeeping-catching",
+    "Shot stopping": "goalkeeping-shot_stopping",
+    "Diving": "goalkeeping-diving",
+    "Reflexes": "goalkeeping-reflexes",
+    "Hand eye coordination": "goalkeeping-hand_eye_coordination",
+    "Positioning": "goalkeeping-positioning",
+    
+    # Fitness
+    "Speed": "fitness-speed",
+    "Agility": "fitness-agility",
+    "Endurance": "fitness-endurance",
 }
 
 # Reverse mapping for backend to frontend

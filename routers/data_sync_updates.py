@@ -41,6 +41,8 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
             'first_touch_drills_completed': 0,
             'passing_drills_completed': 0,
             'shooting_drills_completed': 0,
+            'defending_drills_completed': 0,
+            'goalkeeping_drills_completed': 0,
             'most_improved_skill': '',
             'unique_drills_completed': 0,
             'beginner_drills_completed': 0,
@@ -66,7 +68,10 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
         'dribbling': 0,
         'first_touch': 0,
         'passing': 0,
-        'shooting': 0
+        'shooting': 0,
+        'defending': 0,
+        'goalkeeping': 0,  # ✅ NEW: Add goalkeeping counter
+        'fitness': 0  # ✅ NEW: Add fitness counter
     }
     
     # Difficulty counters
@@ -115,10 +120,9 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
                 difficulty_counters[drill_difficulty] += 1
             
             # Estimate time for this drill
-            drill_duration = drill_info.get('duration')
-            drill_sets = drill_info.get('sets', 1)
+            drill_duration = drill_data.get('totalDuration')
             if drill_duration:
-                estimated_session_time += drill_duration * drill_sets
+                estimated_session_time += drill_duration
         
         total_time += estimated_session_time
     
@@ -147,6 +151,9 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
         'first_touch_drills_completed': skill_counters['first_touch'],
         'passing_drills_completed': skill_counters['passing'],
         'shooting_drills_completed': skill_counters['shooting'],
+        'defending_drills_completed': skill_counters['defending'],
+        'goalkeeping_drills_completed': skill_counters['goalkeeping'],
+        'fitness_drills_completed': skill_counters['fitness'],  # ✅ NEW: Add fitness drills completed
         'most_improved_skill': most_improved_skill,
         'unique_drills_completed': len(unique_drills),
         'beginner_drills_completed': difficulty_counters['beginner'],
@@ -467,6 +474,9 @@ async def get_progress_history(
                 first_touch_drills_completed=enhanced_metrics['first_touch_drills_completed'],
                 passing_drills_completed=enhanced_metrics['passing_drills_completed'],
                 shooting_drills_completed=enhanced_metrics['shooting_drills_completed'],
+                defending_drills_completed=enhanced_metrics['defending_drills_completed'],
+                goalkeeping_drills_completed=enhanced_metrics['goalkeeping_drills_completed'],
+                fitness_drills_completed=enhanced_metrics['fitness_drills_completed'],  # ✅ NEW: Add fitness drills completed
                 most_improved_skill=enhanced_metrics['most_improved_skill'],
                 unique_drills_completed=enhanced_metrics['unique_drills_completed'],
                 beginner_drills_completed=enhanced_metrics['beginner_drills_completed'],
@@ -493,6 +503,9 @@ async def get_progress_history(
             progress_history.first_touch_drills_completed = enhanced_metrics['first_touch_drills_completed']
             progress_history.passing_drills_completed = enhanced_metrics['passing_drills_completed']
             progress_history.shooting_drills_completed = enhanced_metrics['shooting_drills_completed']
+            progress_history.defending_drills_completed = enhanced_metrics['defending_drills_completed']
+            progress_history.goalkeeping_drills_completed = enhanced_metrics['goalkeeping_drills_completed']
+            progress_history.fitness_drills_completed = enhanced_metrics['fitness_drills_completed']
             progress_history.most_improved_skill = enhanced_metrics['most_improved_skill']
             progress_history.unique_drills_completed = enhanced_metrics['unique_drills_completed']
             progress_history.beginner_drills_completed = enhanced_metrics['beginner_drills_completed']

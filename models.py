@@ -542,6 +542,8 @@ class SkillCategory(str, Enum):
     SHOOTING = "shooting"
     DRIBBLING = "dribbling"
     FIRST_TOUCH = "first_touch"
+    DEFENDING = "defending"
+    GOALKEEPING = "goalkeeping"
     FITNESS = "fitness"
 
 class PassingSubSkill(str, Enum):
@@ -568,6 +570,22 @@ class FirstTouchSubSkill(str, Enum):
     AERIAL_CONTROL = "aerial_control"
     TURNING_WITH_BALL = "turning_with_ball"
     ONE_TOUCH_CONTROL = "one_touch_control"
+
+class DefendingSubSkill(str, Enum):
+    TACKLING = "tackling"
+    MARKING = "marking"
+    INTERCEPTING = "intercepting"
+    POSITIONING = "positioning"
+    AGILITY = "agility"
+    AERIAL_DEFENDING = "aerial_defending"
+
+class GoalkeepingSubSkill(str, Enum):
+    HAND_EYE_COORDINATION = "hand_eye_coordination"
+    DIVING = "diving"
+    REFLEXES = "reflexes"
+    SHOT_STOPPING = "shot_stopping"
+    POSITIONING = "positioning"
+    CATCHING = "catching"
 
 class FitnessSubSkill(str, Enum):
     SPEED = "speed"
@@ -598,6 +616,9 @@ class ProgressHistory(Base):
     first_touch_drills_completed = Column(Integer, default=0)
     passing_drills_completed = Column(Integer, default=0)
     shooting_drills_completed = Column(Integer, default=0)
+    defending_drills_completed = Column(Integer, default=0)
+    goalkeeping_drills_completed = Column(Integer, default=0)
+    fitness_drills_completed = Column(Integer, default=0)  # ✅ NEW: Add fitness drills completed
     # ✅ NEW: Additional progress metrics
     most_improved_skill = Column(String, default='', nullable=True)
     unique_drills_completed = Column(Integer, default=0)

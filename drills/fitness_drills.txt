@@ -1,0 +1,939 @@
+[
+    {
+        "title": "10-Yard Explosive Starts",
+        "description": "A speed-focused drill that develops first-step quickness, drive phase mechanics, and explosive acceleration from a stationary position.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 6,
+        "reps": 8,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "speed"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up a cone 10 yards ahead of your starting position.",
+            "Start in a low athletic stance with knees bent and weight forward.",
+            "Sprint to the cone as explosively as possible, focusing on first-step quickness.",
+            "Walk back to the starting position to recover.",
+            "Repeat for 6-8 sets with proper rest between each sprint.",
+            "Focus on maintaining proper sprint mechanics throughout."
+        ],
+        "tips": [
+            "Keep your weight forward in the starting stance.",
+            "Drive with your arms and legs simultaneously.",
+            "Maintain proper running form even when fatigued.",
+            "Take full recovery between sets to maintain quality.",
+            "Focus on explosive first step and acceleration."
+        ],
+        "common_mistakes": [
+            "Not maintaining proper starting stance.",
+            "Rushing through sets without proper recovery.",
+            "Poor running form during acceleration.",
+            "Not driving with arms and legs together.",
+            "Taking too long between sets."
+        ],
+        "progression_steps": [
+            "Start with shorter distances (5-8 yards) to perfect technique.",
+            "Increase distance gradually as speed improves.",
+            "Add resistance bands for advanced training.",
+            "Reduce rest periods as fitness improves.",
+            "Add a ball for game-realistic training."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/10-yard-explosive-starts.mp4",
+        "thumbnail_url": "https://example.com/10-yard-explosive-starts-thumbnail.jpg"
+    },
+    {
+        "title": "Sprint with Ball Control",
+        "description": "A speed drill that combines sprinting with ball control to develop match-pace dribbling speed and control under fatigue.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 4,
+        "reps": 8,
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "speed"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            }
+        ],
+        "instructions": [
+            "Set up a 15-yard sprint lane with cones marking start and finish.",
+            "Start with the ball at your feet in a ready position.",
+            "Dribble the ball at full sprint for the entire 15 yards.",
+            "Maintain ball control while running at maximum speed.",
+            "Rest for 30 seconds between each sprint.",
+            "Complete 8 sprints per set for 4 total sets."
+        ],
+        "tips": [
+            "Keep the ball close to your feet during the sprint.",
+            "Use quick, controlled touches to maintain control.",
+            "Focus on speed while keeping the ball under control.",
+            "Maintain proper running form throughout.",
+            "Push yourself to maximum speed while maintaining control."
+        ],
+        "common_mistakes": [
+            "Losing control of the ball during the sprint.",
+            "Not maintaining maximum speed throughout.",
+            "Poor ball control technique at high speed.",
+            "Taking too long to recover between sprints.",
+            "Not pushing hard enough during the sprint phase."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect technique.",
+            "Increase distance gradually as control improves.",
+            "Add obstacles or defenders for advanced training.",
+            "Reduce rest periods as fitness improves.",
+            "Add finishing elements at the end of each sprint."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/sprint-with-ball-control.mp4",
+        "thumbnail_url": "https://example.com/sprint-with-ball-control-thumbnail.jpg"
+    },
+    {
+        "title": "Band-Resisted Sprint",
+        "description": "A speed drill using resistance bands to build acceleration power and explosive strength for improved sprint performance.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 4,
+        "reps": 6,
+        "equipment": [
+            "resistance_band",
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "speed"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "endurance"
+            }
+        ],
+        "instructions": [
+            "Attach a resistance band to a partner or sturdy object.",
+            "Stand 5-10 yards away from the anchor point.",
+            "Sprint against the resistance for 5-10 yards.",
+            "Release the band and continue sprinting freely for another 10-15 yards.",
+            "Walk back to the starting position.",
+            "Repeat for 6 reps per set, completing 4 total sets."
+        ],
+        "tips": [
+            "Maintain proper running form against resistance.",
+            "Focus on explosive acceleration when the band is released.",
+            "Use appropriate resistance level for your fitness.",
+            "Keep your core engaged throughout the movement.",
+            "Take full recovery between sets."
+        ],
+        "common_mistakes": [
+            "Using too much resistance that affects form.",
+            "Not maintaining proper running mechanics.",
+            "Poor acceleration after band release.",
+            "Insufficient recovery between sets.",
+            "Not engaging core muscles properly."
+        ],
+        "progression_steps": [
+            "Start with lighter resistance to perfect technique.",
+            "Increase resistance gradually as strength improves.",
+            "Add distance to the free sprint portion.",
+            "Reduce rest periods as fitness improves.",
+            "Add a ball for game-realistic training."
+        ],
+        "rest": 120,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/band-resisted-sprint.mp4",
+        "thumbnail_url": "https://example.com/band-resisted-sprint-thumbnail.jpg"
+    },
+    {
+        "title": "Flying Sprints",
+        "description": "A speed drill that develops top-end speed and acceleration transition by building up to full sprint from a jogging start.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 10,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "speed"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "endurance"
+            }
+        ],
+        "instructions": [
+            "Set up a 5-yard build-up zone followed by a 15-yard sprint zone.",
+            "Start jogging into the build-up zone.",
+            "Hit full sprint as you enter the 15-yard sprint zone.",
+            "Maintain maximum speed through the entire sprint zone.",
+            "Walk back to the starting position to recover.",
+            "Repeat for 10 reps per set, completing 3 total sets."
+        ],
+        "tips": [
+            "Build up gradually in the build-up zone.",
+            "Explode into full sprint at the transition point.",
+            "Maintain top-end speed throughout the sprint zone.",
+            "Take full recovery between each sprint.",
+            "Focus on smooth acceleration transition."
+        ],
+        "common_mistakes": [
+            "Not building up properly in the build-up zone.",
+            "Poor acceleration transition.",
+            "Not maintaining maximum speed in sprint zone.",
+            "Insufficient recovery between sprints.",
+            "Poor running form during the sprint."
+        ],
+        "progression_steps": [
+            "Start with shorter sprint zones to perfect technique.",
+            "Increase sprint zone distance gradually.",
+            "Add more build-up distance for advanced training.",
+            "Reduce rest periods as fitness improves.",
+            "Add a ball for game-realistic training."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/flying-sprints.mp4",
+        "thumbnail_url": "https://example.com/flying-sprints-thumbnail.jpg"
+    },
+    {
+        "title": "Sprint Starts from Ground",
+        "description": "A speed drill that develops explosive reaction and acceleration from awkward positions, simulating game-like scenarios.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 5,
+        "reps": 6,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "speed"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up a cone 10 yards ahead of your starting position.",
+            "Start lying face down on the ground.",
+            "On your signal, push up explosively from the ground.",
+            "Immediately sprint to the cone as fast as possible.",
+            "Walk back to the starting position to recover.",
+            "Repeat for 6 reps per set, completing 5 total sets."
+        ],
+        "tips": [
+            "Explode up from the ground with power.",
+            "Transition smoothly from push-up to sprint.",
+            "Maintain proper running form after getting up.",
+            "Focus on quick reaction and acceleration.",
+            "Take full recovery between each sprint."
+        ],
+        "common_mistakes": [
+            "Slow transition from ground to sprint.",
+            "Poor push-up form affecting sprint start.",
+            "Not maintaining proper running mechanics.",
+            "Insufficient recovery between sprints.",
+            "Not pushing hard enough during the sprint."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect technique.",
+            "Increase distance gradually as strength improves.",
+            "Add different starting positions (side, back).",
+            "Reduce rest periods as fitness improves.",
+            "Add a ball for game-realistic training."
+        ],
+        "rest": 75,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/sprint-starts-from-ground.mp4",
+        "thumbnail_url": "https://example.com/sprint-starts-from-ground-thumbnail.jpg"
+    },
+    {
+        "title": "20/20 Intervals",
+        "description": "An endurance drill that builds both anaerobic and aerobic capacity through alternating sprint and recovery intervals.",
+        "type": "time_based",
+        "duration": 12,
+        "sets": 1,
+        "reps": 1,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "endurance"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up a 20-yard sprint lane with cones marking start and finish.",
+            "Sprint for 20 seconds at maximum effort.",
+            "Immediately walk or jog for 20 seconds to recover.",
+            "Repeat the sprint/recovery cycle for 8-12 minutes total.",
+            "Maintain consistent effort throughout the entire session.",
+            "Focus on proper running form even when fatigued."
+        ],
+        "tips": [
+            "Push hard during the 20-second sprint phase.",
+            "Use the recovery period to prepare for the next sprint.",
+            "Maintain proper running form throughout.",
+            "Stay consistent with your effort level.",
+            "Listen to your body and adjust intensity as needed."
+        ],
+        "common_mistakes": [
+            "Not pushing hard enough during sprint phases.",
+            "Poor recovery technique during rest periods.",
+            "Inconsistent effort throughout the session.",
+            "Poor running form when fatigued.",
+            "Not maintaining proper breathing rhythm."
+        ],
+        "progression_steps": [
+            "Start with shorter total duration (6-8 minutes).",
+            "Increase total duration gradually as endurance improves.",
+            "Reduce recovery time to 15 seconds for advanced training.",
+            "Add a ball for game-realistic training.",
+            "Increase sprint time to 30 seconds for advanced players."
+        ],
+        "rest": 0,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/20-20-intervals.mp4",
+        "thumbnail_url": "https://example.com/20-20-intervals-thumbnail.jpg"
+    },
+    {
+        "title": "Cone Tempo Runs",
+        "description": "An endurance drill that mimics game rhythm through alternating jog and sprint intervals around a square course.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 8,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "endurance"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones forming a square with 20 yards per side.",
+            "Start at one corner of the square.",
+            "Jog one side of the square at a controlled pace.",
+            "Sprint the next side at maximum effort.",
+            "Jog the third side, then sprint the final side.",
+            "Complete 6-8 laps around the square per set.",
+            "Rest between sets and repeat for 3 total sets."
+        ],
+        "tips": [
+            "Maintain consistent jogging pace during recovery sides.",
+            "Push hard during the sprint sides.",
+            "Use the jogging phases to recover and prepare.",
+            "Maintain proper running form throughout.",
+            "Focus on smooth transitions between jog and sprint."
+        ],
+        "common_mistakes": [
+            "Not maintaining proper jogging pace during recovery.",
+            "Poor sprint effort during sprint phases.",
+            "Inconsistent effort throughout the drill.",
+            "Poor running form when fatigued.",
+            "Not using recovery phases effectively."
+        ],
+        "progression_steps": [
+            "Start with fewer laps to build endurance.",
+            "Increase number of laps gradually.",
+            "Reduce jogging time to walking for advanced training.",
+            "Add a ball for game-realistic training.",
+            "Increase square size for advanced players."
+        ],
+        "rest": 120,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/cone-tempo-runs.mp4",
+        "thumbnail_url": "https://example.com/cone-tempo-runs-thumbnail.jpg"
+    },
+    {
+        "title": "Ladder Tempo Run",
+        "description": "An endurance drill that builds stamina through progressively increasing and decreasing sprint distances.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 2,
+        "reps": 1,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "endurance"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up cones at 10, 20, 30, 40, 50, and 60 yards from start.",
+            "Sprint 10 yards, then walk back to start.",
+            "Sprint 20 yards, then walk back to start.",
+            "Continue increasing distance: 30, 40, 50, 60 yards.",
+            "Then reverse the ladder: 50, 40, 30, 20, 10 yards.",
+            "Rest between sets and complete 2 total sets."
+        ],
+        "tips": [
+            "Maintain consistent effort throughout the ladder.",
+            "Use the walk back as active recovery.",
+            "Focus on proper running form at all distances.",
+            "Push hard during the longer sprints.",
+            "Stay consistent with your effort level."
+        ],
+        "common_mistakes": [
+            "Not maintaining consistent effort throughout.",
+            "Poor running form during longer sprints.",
+            "Insufficient recovery during walk back.",
+            "Not pushing hard enough on longer distances.",
+            "Poor pacing strategy throughout the ladder."
+        ],
+        "progression_steps": [
+            "Start with shorter maximum distance (40 yards).",
+            "Increase maximum distance gradually.",
+            "Reduce rest time between sprints.",
+            "Add a ball for game-realistic training.",
+            "Increase number of sets as endurance improves."
+        ],
+        "rest": 180,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/ladder-tempo-run.mp4",
+        "thumbnail_url": "https://example.com/ladder-tempo-run-thumbnail.jpg"
+    },
+    {
+        "title": "Ball Control Endurance Circuit",
+        "description": "An endurance drill that develops ball control under fatigue, simulating second-half game conditions.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 1,
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "endurance"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones in a 10x10 yard square formation.",
+            "Start with the ball at one corner of the square.",
+            "Dribble around the square continuously for 2-3 minutes.",
+            "Maintain medium-high tempo throughout the drill.",
+            "Rest for 1-2 minutes between sets.",
+            "Complete 3-5 total sets depending on fitness level."
+        ],
+        "tips": [
+            "Keep the ball close to your feet throughout.",
+            "Maintain consistent tempo even when fatigued.",
+            "Use both feet for dribbling control.",
+            "Keep your head up to scan the area.",
+            "Focus on ball control under fatigue."
+        ],
+        "common_mistakes": [
+            "Losing control of the ball when fatigued.",
+            "Not maintaining consistent tempo.",
+            "Poor ball control technique under fatigue.",
+            "Not using both feet effectively.",
+            "Taking too long to recover between sets."
+        ],
+        "progression_steps": [
+            "Start with shorter duration (1-2 minutes).",
+            "Increase duration gradually as endurance improves.",
+            "Add obstacles or defenders for advanced training.",
+            "Reduce rest periods between sets.",
+            "Increase square size for advanced players."
+        ],
+        "rest": 120,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/ball-control-endurance-circuit.mp4",
+        "thumbnail_url": "https://example.com/ball-control-endurance-circuit-thumbnail.jpg"
+    },
+    {
+        "title": "Partner Alternating Shuttle",
+        "description": "An endurance drill that combines competitive elements with active recovery through partner alternating sprints.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 2,
+        "reps": 10,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "endurance"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up cones 10-15 yards apart.",
+            "Partner A sprints out and back while Partner B rests.",
+            "Then Partner B sprints while Partner A rests.",
+            "Continue alternating for 10 rounds each.",
+            "Complete 2 total sets with rest between sets.",
+            "Focus on maximum effort during each sprint."
+        ],
+        "tips": [
+            "Push hard during your sprint phase.",
+            "Use the rest period to recover fully.",
+            "Maintain proper running form throughout.",
+            "Stay competitive with your partner.",
+            "Focus on consistent effort across all rounds."
+        ],
+        "common_mistakes": [
+            "Not pushing hard enough during sprint phases.",
+            "Poor recovery during rest periods.",
+            "Inconsistent effort across rounds.",
+            "Poor running form when fatigued.",
+            "Not maintaining competitive spirit."
+        ],
+        "progression_steps": [
+            "Start with fewer rounds to build endurance.",
+            "Increase number of rounds gradually.",
+            "Increase distance between cones.",
+            "Reduce rest time between sets.",
+            "Add a ball for game-realistic training."
+        ],
+        "rest": 180,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/partner-alternating-shuttle.mp4",
+        "thumbnail_url": "https://example.com/partner-alternating-shuttle-thumbnail.jpg"
+    },
+    {
+        "title": "Cone Slalom",
+        "description": "An agility drill that develops lateral movement, foot coordination, and change of direction speed through weaving patterns.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 4,
+        "reps": 8,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "agility"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up 5-6 cones in a zigzag pattern, 2 yards apart.",
+            "Start at the first cone in an athletic stance.",
+            "Quickly weave in and out of the cones with tight body control.",
+            "Maintain proper running form throughout the movement.",
+            "Walk back to the starting position to recover.",
+            "Repeat for 8 reps per set, completing 4 total sets."
+        ],
+        "tips": [
+            "Stay on the balls of your feet for quick direction changes.",
+            "Keep your center of gravity low and controlled.",
+            "Use quick, sharp movements to navigate the cones.",
+            "Maintain proper running form throughout.",
+            "Focus on smooth transitions between direction changes."
+        ],
+        "common_mistakes": [
+            "Not staying low and controlled during movements.",
+            "Poor foot coordination during direction changes.",
+            "Not maintaining proper running form.",
+            "Taking too long to complete the pattern.",
+            "Not using proper body positioning."
+        ],
+        "progression_steps": [
+            "Start with fewer cones and wider spacing.",
+            "Increase number of cones and reduce spacing.",
+            "Add a ball for advanced training.",
+            "Reduce rest periods between sets.",
+            "Increase speed through the pattern."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/cone-slalom.mp4",
+        "thumbnail_url": "https://example.com/cone-slalom-thumbnail.jpg"
+    },
+    {
+        "title": "Y-Drill",
+        "description": "An agility drill that develops decision-based cutting and explosive change of direction through a Y-shaped course.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 4,
+        "reps": 6,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "agility"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up one cone at the base and two cones 45° apart, 5 yards away.",
+            "Start at the base cone in an athletic stance.",
+            "Sprint forward toward the center point.",
+            "Break left or right to one of the top cones.",
+            "Walk back to the starting position to recover.",
+            "Alternate between left and right breaks for 6 reps per set."
+        ],
+        "tips": [
+            "Stay low and controlled during the forward sprint.",
+            "Explode into the cut with proper body positioning.",
+            "Use your arms to help drive the direction change.",
+            "Maintain proper running form throughout.",
+            "Focus on quick, explosive cuts."
+        ],
+        "common_mistakes": [
+            "Not staying low during the forward sprint.",
+            "Poor body positioning during the cut.",
+            "Not using arms effectively for direction change.",
+            "Slow transition into the cut.",
+            "Poor running form during the movement."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect technique.",
+            "Increase distance gradually as agility improves.",
+            "Add a ball for advanced training.",
+            "Reduce rest periods between sets.",
+            "Add a partner to call directions randomly."
+        ],
+        "rest": 75,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/y-drill.mp4",
+        "thumbnail_url": "https://example.com/y-drill-thumbnail.jpg"
+    },
+    {
+        "title": "Drop-Step Reaction Drill",
+        "description": "An agility drill that develops reaction speed and efficient change of direction through partner-directed movements.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 4,
+        "reps": 8,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "agility"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up one cone in front and one cone on each side (left/right).",
+            "Start in an athletic stance facing the front cone.",
+            "Partner points left or right randomly.",
+            "Drop step in the indicated direction and sprint to that cone.",
+            "Return to the starting position.",
+            "Repeat for 8 reps per set, completing 4 total sets."
+        ],
+        "tips": [
+            "Stay in an athletic stance ready to move.",
+            "React quickly to the partner's direction.",
+            "Use proper drop-step technique for direction change.",
+            "Explode into the sprint after the drop step.",
+            "Maintain proper running form throughout."
+        ],
+        "common_mistakes": [
+            "Not staying in proper athletic stance.",
+            "Slow reaction to direction changes.",
+            "Poor drop-step technique.",
+            "Not exploding into the sprint.",
+            "Poor running form during the movement."
+        ],
+        "progression_steps": [
+            "Start with predictable patterns to perfect technique.",
+            "Increase randomness of direction calls.",
+            "Add more direction options (forward, backward).",
+            "Reduce rest periods between sets.",
+            "Add a ball for game-realistic training."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/drop-step-reaction-drill.mp4",
+        "thumbnail_url": "https://example.com/drop-step-reaction-drill-thumbnail.jpg"
+    },
+    {
+        "title": "Box Agility Drill",
+        "description": "An agility drill that develops multi-directional movement and foot control through a square pattern with different movement types.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": 5,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "agility"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "endurance"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones in a 5x5 yard square formation.",
+            "Start at one corner of the square.",
+            "Sprint forward to the next corner.",
+            "Shuffle right to the third corner.",
+            "Backpedal to the fourth corner.",
+            "Shuffle left back to the starting corner.",
+            "Repeat the pattern 4-5 times per set."
+        ],
+        "tips": [
+            "Maintain proper form for each movement type.",
+            "Stay on the balls of your feet during shuffling.",
+            "Keep your head up and stay aware of your position.",
+            "Use quick, explosive movements for each transition.",
+            "Maintain good posture during backpedaling."
+        ],
+        "common_mistakes": [
+            "Poor form during shuffling movements.",
+            "Not maintaining proper posture during backpedaling.",
+            "Slow transitions between movement types.",
+            "Not staying on the balls of feet during shuffling.",
+            "Poor body control during direction changes."
+        ],
+        "progression_steps": [
+            "Start with larger square size to perfect technique.",
+            "Reduce square size gradually as control improves.",
+            "Add a ball for advanced training.",
+            "Increase number of repetitions per set.",
+            "Add more complex movement patterns."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/box-agility-drill.mp4",
+        "thumbnail_url": "https://example.com/box-agility-drill-thumbnail.jpg"
+    },
+    {
+        "title": "T-Test",
+        "description": "A classic agility test that develops multi-directional speed and is used in professional combines and academies.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 4,
+        "reps": 3,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "agility"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up a T-shaped cone layout: 1 cone forward, 2 cones laterally from it.",
+            "Start at the base of the T in an athletic stance.",
+            "Sprint forward to the center cone.",
+            "Shuffle left to the left cone and touch it.",
+            "Shuffle right past the center cone to the right cone and touch it.",
+            "Shuffle left back to the center cone.",
+            "Backpedal to the starting position.",
+            "Time your runs to track progress."
+        ],
+        "tips": [
+            "Stay low and controlled during all movements.",
+            "Touch each cone with your hand during the test.",
+            "Maintain proper form throughout the entire movement.",
+            "Use quick, explosive movements for direction changes.",
+            "Focus on smooth transitions between movement types."
+        ],
+        "common_mistakes": [
+            "Not touching the cones during the test.",
+            "Poor form during shuffling movements.",
+            "Slow transitions between movement types.",
+            "Not maintaining proper body positioning.",
+            "Poor backpedaling technique."
+        ],
+        "progression_steps": [
+            "Start with larger distances to perfect technique.",
+            "Reduce distances gradually as speed improves.",
+            "Add a ball for advanced training.",
+            "Reduce rest periods between sets.",
+            "Add timing goals for performance tracking."
+        ],
+        "rest": 120,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/t-test.mp4",
+        "thumbnail_url": "https://example.com/t-test-thumbnail.jpg"
+    }
+] 
