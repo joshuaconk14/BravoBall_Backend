@@ -16,12 +16,13 @@ display_help() {
     echo "Options:"
     echo "  --all                Import all drill categories"
     echo "  --category CATEGORY  Update drills for a specific category"
-    echo "                       (passing, shooting, dribbling, first_touch)"
+    echo "                       (passing, shooting, dribbling, first_touch, fitness, goalkeeper, defending)"
     echo "  --help               Display this help message"
     echo ""
     echo "Examples:"
     echo "  ./manage_drills.sh --all"
     echo "  ./manage_drills.sh --category dribbling"
+    echo "  ./manage_drills.sh --category fitness"
 }
 
 # Function to import all drills
@@ -55,9 +56,33 @@ import_all_drills() {
     echo -e "${YELLOW}Importing dribbling drills...${NC}"
     python3 -m drills.drill_importer drills/dribbling_drills.txt
     if [ $? -ne 0 ]; then
-        echo -e "${RED}Failed to import dribbling drills.${NC}"
+        echo -e "${RED}Failed to import dribbling drills. Continuing with other categories...${NC}"
     else
         echo -e "${GREEN}Successfully imported dribbling drills.${NC}"
+    fi
+    
+    echo -e "${YELLOW}Importing fitness drills...${NC}"
+    python3 -m drills.drill_importer drills/fitness_drills.txt
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Failed to import fitness drills. Continuing with other categories...${NC}"
+    else
+        echo -e "${GREEN}Successfully imported fitness drills.${NC}"
+    fi
+    
+    echo -e "${YELLOW}Importing goalkeeper drills...${NC}"
+    python3 -m drills.drill_importer drills/goalkeeper_drills.txt
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Failed to import goalkeeper drills. Continuing with other categories...${NC}"
+    else
+        echo -e "${GREEN}Successfully imported goalkeeper drills.${NC}"
+    fi
+    
+    echo -e "${YELLOW}Importing defending drills...${NC}"
+    python3 -m drills.drill_importer drills/defending_drills.txt
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Failed to import defending drills. Continuing with other categories...${NC}"
+    else
+        echo -e "${GREEN}Successfully imported defending drills.${NC}"
     fi
     
     echo -e "${GREEN}All drill categories processed.${NC}"
@@ -67,10 +92,10 @@ import_all_drills() {
 update_category_drills() {
     category=$1
     
-    # Validate category
-    if [[ ! "$category" =~ ^(passing|shooting|dribbling|first_touch)$ ]]; then
+    # Validate category - ✅ UPDATED: Added new categories
+    if [[ ! "$category" =~ ^(passing|shooting|dribbling|first_touch|fitness|goalkeeper|defending)$ ]]; then
         echo -e "${RED}Invalid category: $category${NC}"
-        echo -e "${YELLOW}Valid categories: passing, shooting, dribbling, first_touch${NC}"
+        echo -e "${YELLOW}Valid categories: passing, shooting, dribbling, first_touch, fitness, goalkeeper, defending${NC}"
         exit 1
     fi
     

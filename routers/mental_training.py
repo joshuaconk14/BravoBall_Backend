@@ -76,7 +76,7 @@ async def create_mental_training_session(
         # ✅ NEW: Create completed session entry for streak tracking
         completed_session = CompletedSession(
             user_id=current_user.id,
-            date=new_session.created_at,  # Use the session creation time
+            date=new_session.date,  # ✅ FIXED: Use 'date' field, not 'created_at'
             session_type='mental_training',
             duration_minutes=session_data.duration_minutes,
             mental_training_session_id=new_session.id,
