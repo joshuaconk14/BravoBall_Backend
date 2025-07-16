@@ -64,7 +64,7 @@ async def create_mental_training_session(
         new_session = MentalTrainingSession(
             user_id=current_user.id,
             duration_minutes=session_data.duration_minutes,
-            session_type=session_data.session_type
+            session_type='mental_training'
         )
         
         db.add(new_session)
@@ -73,24 +73,6 @@ async def create_mental_training_session(
         
         logger.info(f"Mental training session created successfully with ID: {new_session.id}")
         
-        # ✅ NEW: Create completed session entry for streak tracking
-        completed_session = CompletedSession(
-            user_id=current_user.id,
-            date=new_session.date,  # ✅ FIXED: Use 'date' field, not 'created_at'
-            session_type='mental_training',
-            duration_minutes=session_data.duration_minutes,
-            mental_training_session_id=new_session.id,
-            # Drill fields are None for mental training
-            total_completed_drills=None,
-            total_drills=None,
-            drills=None
-        )
-        
-        db.add(completed_session)
-        db.commit()
-        db.refresh(completed_session)
-        
-        logger.info(f"Created completed session entry for mental training session ID: {new_session.id}")
         
         return new_session
         

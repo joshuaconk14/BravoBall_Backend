@@ -62,13 +62,13 @@ class CompletedMentalTrainingSessionCreate(BaseModel):
 
 # ✅ UPDATED: Generic completed session creation (backwards compatible)
 class CompletedSessionCreate(BaseModel):
-    date: str  # ISO8601 formatted string
-    session_type: str = 'drill_training'
-    
+    date: str  # ISO8601 formatted string    
     # Drill session fields (optional)
     drills: Optional[List[CompletedDrillData]] = None
     total_completed_drills: Optional[int] = None
     total_drills: Optional[int] = None
+    session_type: Optional[str] = None
+
     
     # Mental training session fields (optional)
     duration_minutes: Optional[int] = None

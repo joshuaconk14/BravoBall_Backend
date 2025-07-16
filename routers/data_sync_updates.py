@@ -71,7 +71,8 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
         'shooting': 0,
         'defending': 0,
         'goalkeeping': 0,  # ✅ NEW: Add goalkeeping counter
-        'fitness': 0  # ✅ NEW: Add fitness counter
+        'fitness': 0,  # ✅ NEW: Add fitness counter
+        'mental_training': 0  # ✅ NEW: Add mental training counter
     }
     
     # Difficulty counters
@@ -83,14 +84,6 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
     
     # Process each completed session
     for session in completed_sessions:
-        # ✅ NEW: Handle mental training sessions
-        if session.session_type == 'mental_training':
-            mental_training_sessions += 1
-            if session.duration_minutes:
-                total_mental_training_minutes += session.duration_minutes
-                total_time += session.duration_minutes
-            continue
-        
         # Handle drill training sessions (existing logic)
         if not session.drills:
             continue
@@ -100,6 +93,7 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
         
         # Calculate estimated session time (if not provided)
         estimated_session_time = 0
+        session_has_mental_training = False
         
         for drill_data in session.drills:
             drill_info = drill_data.get('drill', {})
@@ -119,15 +113,28 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
             if drill_difficulty in difficulty_counters:
                 difficulty_counters[drill_difficulty] += 1
             
-            # Estimate time for this drill
-            drill_duration = drill_data.get('totalDuration')
-            if drill_duration:
-                estimated_session_time += drill_duration
+            # ✅ NEW: Handle mental training drills specifically
+            if session.session_type == 'mental_training':
+                session_has_mental_training = True
+                # Use the drill's totalDuration for mental training time
+                drill_duration = drill_data.get('totalDuration')
+                if drill_duration:
+                    total_mental_training_minutes += drill_duration
+                    estimated_session_time += drill_duration
+            else:
+                # Estimate time for non-mental training drills
+                drill_duration = drill_data.get('totalDuration')
+                if drill_duration:
+                    estimated_session_time += drill_duration
+        
+        # ✅ NEW: Count mental training sessions
+        if session_has_mental_training:
+            mental_training_sessions += 1
         
         total_time += estimated_session_time
     
     # Calculate metrics
-    drill_sessions_count = len([s for s in completed_sessions if s.session_type != 'mental_training'])
+    drill_sessions_count = len(completed_sessions)  # All sessions are drill sessions now
     total_sessions_count = len(completed_sessions)
     
     # Favorite drill (most frequent drill)
@@ -154,6 +161,7 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
         'defending_drills_completed': skill_counters['defending'],
         'goalkeeping_drills_completed': skill_counters['goalkeeping'],
         'fitness_drills_completed': skill_counters['fitness'],  # ✅ NEW: Add fitness drills completed
+        'mental_training_drills_completed': skill_counters['mental_training'],  # ✅ NEW: Add mental training drills completed
         'most_improved_skill': most_improved_skill,
         'unique_drills_completed': len(unique_drills),
         'beginner_drills_completed': difficulty_counters['beginner'],
@@ -339,7 +347,8 @@ def create_completed_session(session: CompletedSessionCreate,
             CompletedSession.user_id == current_user.id,
             CompletedSession.date == session_date,
             CompletedSession.total_drills == session.total_drills,
-            CompletedSession.total_completed_drills == session.total_completed_drills
+            CompletedSession.total_completed_drills == session.total_completed_drills,
+            CompletedSession.session_type == session.session_type
         ).first()
         
         if existing_session:
@@ -352,6 +361,7 @@ def create_completed_session(session: CompletedSessionCreate,
             date=session_date,
             total_completed_drills=session.total_completed_drills,
             total_drills=session.total_drills,
+            session_type=session.session_type,
             drills=[{
                 "drill": {
                     "uuid": drill.drill.uuid,  # Use UUID as primary identifier

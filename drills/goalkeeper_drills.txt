@@ -335,5 +335,340 @@
         "rest": 90,
         "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/dive-recover-drill.mp4",
         "thumbnail_url": "https://example.com/dive-recover-drill-thumbnail.jpg"
+    },
+    {
+        "title": "Dynamic Positioning Grid",
+        "description": "A beginner goalkeeper drill that develops proper positioning awareness, footwork, and spatial understanding through controlled movement patterns.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": 5,
+        "equipment": [
+            "training_cones",
+            "goal"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "medium_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "positioning"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "hand_eye_coordination"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones in a square pattern 3-4 yards apart in front of a goal.",
+            "Start in the center of the square in proper goalkeeper stance.",
+            "Move to each cone in sequence: front, right, back, left, returning to center.",
+            "At each cone, pause and assume the correct goalkeeper position for that angle.",
+            "Focus on maintaining proper stance and positioning relative to the goal.",
+            "Complete the pattern 5 times per set, then reverse direction."
+        ],
+        "tips": [
+            "Keep your eyes on the goal throughout the movement.",
+            "Maintain proper goalkeeper stance at each position.",
+            "Use quick, controlled footwork between positions.",
+            "Stay on the balls of your feet for quick reactions.",
+            "Visualize where shots would come from at each position."
+        ],
+        "common_mistakes": [
+            "Not maintaining proper stance during movement.",
+            "Moving too quickly and losing balance.",
+            "Not positioning correctly relative to the goal.",
+            "Taking eyes off the target area.",
+            "Poor footwork that affects positioning."
+        ],
+        "progression_steps": [
+            "Start with slower movements to perfect positioning.",
+            "Increase speed while maintaining proper form.",
+            "Add a ball to simulate shot preparation.",
+            "Incorporate different goalkeeper stances at each position.",
+            "Add a partner to call out positions randomly."
+        ],
+        "rest": 45,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/dynamic-positioning-grid.mp4",
+        "thumbnail_url": "https://example.com/dynamic-positioning-grid-thumbnail.jpg"
+    },
+    {
+        "title": "Agility Ladder Catching",
+        "description": "A beginner goalkeeper drill that combines footwork agility with catching practice, developing coordination and movement efficiency.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 3,
+        "reps": 8,
+        "equipment": [
+            "soccer_ball",
+            "training_cones",
+            "goal"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "medium_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "catching"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "hand_eye_coordination"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Set up cones in a ladder pattern (5-6 rungs) 1 yard apart in front of a goal.",
+            "Start at one end with a ball in your hands.",
+            "Step through the ladder pattern using quick, controlled footwork.",
+            "At each rung, toss the ball up and catch it while maintaining movement.",
+            "Continue through the entire ladder, then turn and repeat in the opposite direction.",
+            "Focus on clean catches and smooth footwork coordination."
+        ],
+        "tips": [
+            "Keep your eyes on the ball during each catch.",
+            "Maintain proper goalkeeper stance throughout the drill.",
+            "Use quick, light footwork through the ladder.",
+            "Catch the ball cleanly at chest height.",
+            "Stay balanced and controlled during the movement."
+        ],
+        "common_mistakes": [
+            "Not maintaining proper catching technique.",
+            "Poor footwork that affects balance.",
+            "Taking eyes off the ball during catches.",
+            "Moving too quickly and losing control.",
+            "Not staying in proper goalkeeper stance."
+        ],
+        "progression_steps": [
+            "Start with slower movement to perfect technique.",
+            "Increase speed while maintaining clean catches.",
+            "Add different catching heights and positions.",
+            "Incorporate different footwork patterns.",
+            "Add a partner to throw balls during the movement."
+        ],
+        "rest": 50,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/agility-ladder-catching.mp4",
+        "thumbnail_url": "https://example.com/agility-ladder-catching-thumbnail.jpg"
+    },
+    {
+        "title": "Multi-Angle Hand-Eye Challenge",
+        "description": "An intermediate goalkeeper drill that develops hand-eye coordination through varied catching angles and dynamic positioning.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 6,
+        "equipment": [
+            "soccer_ball",
+            "training_cones",
+            "goal"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "hand_eye_coordination"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "catching"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Set up 3 cones at different angles around the goal: left post, center, right post.",
+            "Start at the center cone in proper goalkeeper stance.",
+            "Partner stands 8-10 yards away with multiple balls.",
+            "Partner calls out a cone position and immediately throws the ball.",
+            "Quickly move to the called position and catch the ball cleanly.",
+            "Return to center and repeat with different positions and ball heights."
+        ],
+        "tips": [
+            "Stay in a ready position at all times.",
+            "Keep your eyes on the ball throughout the movement.",
+            "Use quick, explosive footwork to reach each position.",
+            "Catch the ball at the highest point possible.",
+            "Communicate clearly with your partner about timing."
+        ],
+        "common_mistakes": [
+            "Not reacting quickly enough to the call.",
+            "Poor footwork that affects catching ability.",
+            "Not maintaining proper catching technique.",
+            "Taking eyes off the ball during movement.",
+            "Not communicating effectively with partner."
+        ],
+        "progression_steps": [
+            "Start with slower, more predictable throws.",
+            "Increase the speed and unpredictability of calls.",
+            "Add different ball heights and angles.",
+            "Incorporate different catching techniques.",
+            "Add multiple balls for increased challenge."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/multi-angle-hand-eye-challenge.mp4",
+        "thumbnail_url": "https://example.com/multi-angle-hand-eye-challenge-thumbnail.jpg"
+    },
+    {
+        "title": "Explosive Dive Circuit",
+        "description": "An advanced goalkeeper drill that combines explosive diving with dynamic movement patterns, developing power and recovery speed.",
+        "type": "set_based",
+        "duration": 18,
+        "sets": 3,
+        "reps": 4,
+        "equipment": [
+            "soccer_ball",
+            "training_cones",
+            "goal"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "diving"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "shot_stopping"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones in a diamond pattern around the goal area.",
+            "Place a ball at each cone position.",
+            "Start in the center of the diamond in goalkeeper stance.",
+            "Explosively dive to one cone, smother the ball, then recover to center.",
+            "Immediately dive to the next cone in sequence.",
+            "Complete the full circuit, then reverse direction for the next set."
+        ],
+        "tips": [
+            "Use maximum explosive power for each dive.",
+            "Recover quickly and efficiently to center position.",
+            "Maintain proper diving technique throughout.",
+            "Keep your eyes on the target ball during each dive.",
+            "Use your whole body for maximum reach and power."
+        ],
+        "common_mistakes": [
+            "Not diving explosively enough.",
+            "Slow recovery back to center position.",
+            "Poor diving technique that affects save ability.",
+            "Not maintaining proper stance during recovery.",
+            "Taking eyes off the target ball."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect technique.",
+            "Increase the distance between cones.",
+            "Add different types of dives (low, high, side).",
+            "Incorporate a shot after each recovery.",
+            "Add multiple balls for increased complexity."
+        ],
+        "rest": 120,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/explosive-dive-circuit.mp4",
+        "thumbnail_url": "https://example.com/explosive-dive-circuit-thumbnail.jpg"
+    },
+    {
+        "title": "Dynamic Shot-Stopping Challenge",
+        "description": "An advanced goalkeeper drill that combines multiple sub-skills through complex movement patterns and varied shot scenarios.",
+        "type": "set_based",
+        "duration": 20,
+        "sets": 2,
+        "reps": 3,
+        "equipment": [
+            "soccer_ball",
+            "training_cones",
+            "goal"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "shot_stopping"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "reflexes"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Set up a complex course with cones in various patterns around the goal.",
+            "Partner stands at different shooting positions with multiple balls.",
+            "Navigate through the cone course using goalkeeper footwork patterns.",
+            "At random intervals, partner calls out and immediately shoots.",
+            "React quickly to make the save, then continue through the course.",
+            "Complete the full course, then repeat with different patterns and shot types."
+        ],
+        "tips": [
+            "Stay mentally focused throughout the entire drill.",
+            "Maintain proper goalkeeper stance during movement.",
+            "React immediately to shot calls without hesitation.",
+            "Use proper save technique for each shot type.",
+            "Communicate clearly with your partner about timing."
+        ],
+        "common_mistakes": [
+            "Not staying mentally engaged throughout the drill.",
+            "Reacting too slowly to shot calls.",
+            "Poor footwork that affects save ability.",
+            "Not maintaining proper technique during saves.",
+            "Not communicating effectively with partner."
+        ],
+        "progression_steps": [
+            "Start with simpler cone patterns and slower pace.",
+            "Increase the complexity of the course and speed.",
+            "Add different types of shots and angles.",
+            "Incorporate different save techniques.",
+            "Add multiple partners for increased challenge."
+        ],
+        "rest": 150,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/dynamic-shot-stopping-challenge.mp4",
+        "thumbnail_url": "https://example.com/dynamic-shot-stopping-challenge-thumbnail.jpg"
     }
 ] 
