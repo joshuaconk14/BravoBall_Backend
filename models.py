@@ -794,16 +794,3 @@ class MentalTrainingQuoteResponse(BaseModel):
     display_duration: int
 
     model_config = ConfigDict(from_attributes=True)
-
-class MentalTrainingSessionCreate(BaseModel):
-    duration_minutes: int
-    session_type: str = "mental_training"
-
-class MentalTrainingSessionResponse(BaseModel):
-    id: int
-    user_id: int
-    date: datetime
-    duration_minutes: int
-    session_type: str
-
-    model_config = ConfigDict(from_attributes=True)
