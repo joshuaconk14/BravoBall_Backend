@@ -8,6 +8,8 @@ This script safely migrates your database to match your SQLAlchemy models:
 - Adds missing columns (with proper defaults)
 - Creates missing indexes and constraints
 - Handles data type changes (with warnings)
+- Seeds initial data (mental training quotes, drills)
+- Syncs data changes from files to database
 - Provides rollback recommendations
 - Safe for production use with proper backups
 
@@ -15,12 +17,17 @@ Usage:
     python migrate_schema.py status                    # Show current status
     python migrate_schema.py migrate --dry-run         # See what would change (safe)
     python migrate_schema.py migrate                   # Run full migration
+    python migrate_schema.py migrate --seed            # Run migration + seed data
+    python migrate_schema.py seed                      # Seed data only
+    python migrate_schema.py sync-drills               # Sync drill data only
     python migrate_schema.py backup                    # Generate backup commands
     python migrate_schema.py production <DATABASE_URL> # Production migration
 """
 
 import sys
 import os
+import json
+from pathlib import Path
 from sqlalchemy import create_engine, inspect, text, MetaData, Column, Index
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
@@ -29,7 +36,6 @@ import models
 from db import SQLALCHEMY_DATABASE_URL
 from config import get_logger
 from datetime import datetime
-import json
 
 logger = get_logger(__name__)
 
@@ -41,6 +47,10 @@ class SchemaMigrator:
         self.metadata = models.Base.metadata
         self.changes_applied = []
         self.warnings = []
+        
+        # ✅ NEW: Data seeding paths
+        self.drills_dir = Path("drills")
+        self.quotes_file = self.drills_dir / "mental_training_quotes.txt"
         
     def get_existing_tables(self):
         """Get list of existing tables in database"""
@@ -267,6 +277,251 @@ class SchemaMigrator:
         
         return missing_indexes
     
+    # ✅ NEW: Data seeding functionality
+    def seed_mental_training_quotes(self, dry_run=False):
+        """Seed mental training quotes from the text file"""
+        if not self.quotes_file.exists():
+            logger.warning(f"⚠️  Mental training quotes file not found: {self.quotes_file}")
+            return 0
+        
+        try:
+            with open(self.quotes_file, 'r') as f:
+                quotes_data = json.load(f)
+            
+            SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+            db = SessionLocal()
+            
+            try:
+                # Get existing quotes to avoid duplicates
+                existing_quotes = set()
+                for quote in db.query(models.MentalTrainingQuote).all():
+                    existing_quotes.add((quote.content.strip(), quote.author.strip()))
+                
+                new_quotes = []
+                for quote_data in quotes_data:
+                    content = quote_data['content'].strip()
+                    author = quote_data['author'].strip()
+                    
+                    if (content, author) not in existing_quotes:
+                        new_quotes.append(models.MentalTrainingQuote(
+                            content=content,
+                            author=author,
+                            type=quote_data.get('type', 'motivational'),
+                            display_duration=quote_data.get('display_duration', 8)
+                        ))
+                
+                if new_quotes:
+                    logger.info(f"🧠 Found {len(new_quotes)} new mental training quotes to seed")
+                    
+                    if dry_run:
+                        for quote in new_quotes[:3]:  # Show first 3
+                            logger.info(f"   [DRY RUN] Would add: \"{quote.content[:50]}...\" - {quote.author}")
+                        if len(new_quotes) > 3:
+                            logger.info(f"   [DRY RUN] ... and {len(new_quotes) - 3} more quotes")
+                        return len(new_quotes)
+                    
+                    for quote in new_quotes:
+                        db.add(quote)
+                    
+                    db.commit()
+                    logger.info(f"✅ Seeded {len(new_quotes)} mental training quotes")
+                    self.changes_applied.append(f"Seeded {len(new_quotes)} mental training quotes")
+                    return len(new_quotes)
+                else:
+                    logger.info("✅ All mental training quotes already exist")
+                    return 0
+                    
+            finally:
+                db.close()
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to seed mental training quotes: {e}")
+            raise
+    
+    def sync_drill_data(self, dry_run=False):
+        """Sync drill data from JSON files to database"""
+        if not self.drills_dir.exists():
+            logger.warning(f"⚠️  Drills directory not found: {self.drills_dir}")
+            return 0
+        
+        drill_files = list(self.drills_dir.glob("*_drills.txt"))
+        if not drill_files:
+            logger.info("ℹ️  No drill files found to sync")
+            return 0
+        
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+        db = SessionLocal()
+        
+        try:
+            total_synced = 0
+            
+            for drill_file in drill_files:
+                category_name = drill_file.stem.replace('_drills', '')
+                logger.info(f"🏃 Syncing {category_name} drills from {drill_file.name}")
+                
+                try:
+                    with open(drill_file, 'r') as f:
+                        drills_data = json.load(f)
+                    
+                    # Get or create drill category
+                    category = db.query(models.DrillCategory).filter(
+                        models.DrillCategory.name == category_name
+                    ).first()
+                    
+                    if not category:
+                        if dry_run:
+                            logger.info(f"   [DRY RUN] Would create category: {category_name}")
+                        else:
+                            category = models.DrillCategory(name=category_name, description=f"{category_name.title()} drills")
+                            db.add(category)
+                            db.commit()
+                            db.refresh(category)
+                            logger.info(f"✅ Created drill category: {category_name}")
+                    
+                    synced_count = 0
+                    for drill_data in drills_data:
+                        # Create a unique identifier for the drill (title + category)
+                        drill_title = drill_data.get('title', '').strip()
+                        if not drill_title:
+                            continue
+                        
+                        # Check if drill exists
+                        existing_drill = db.query(models.Drill).filter(
+                            models.Drill.title == drill_title,
+                            models.Drill.category_id == category.id
+                        ).first()
+                        
+                        if existing_drill:
+                            # ✅ UPDATE: Sync changes to existing drill
+                            updated = self._update_drill_from_data(existing_drill, drill_data, dry_run)
+                            if updated:
+                                synced_count += 1
+                        else:
+                            # ✅ CREATE: Add new drill
+                            if dry_run:
+                                logger.info(f"   [DRY RUN] Would create drill: {drill_title}")
+                                synced_count += 1
+                            else:
+                                new_drill = self._create_drill_from_data(drill_data, category.id, db)
+                                if new_drill:
+                                    synced_count += 1
+                    
+                    if not dry_run and synced_count > 0:
+                        db.commit()
+                    
+                    logger.info(f"✅ Synced {synced_count} drills for {category_name}")
+                    total_synced += synced_count
+                    
+                except json.JSONDecodeError as e:
+                    logger.error(f"❌ Invalid JSON in {drill_file}: {e}")
+                except Exception as e:
+                    logger.error(f"❌ Failed to sync drills from {drill_file}: {e}")
+            
+            if total_synced > 0:
+                self.changes_applied.append(f"Synced {total_synced} drills from files")
+            
+            return total_synced
+            
+        finally:
+            db.close()
+    
+    def _update_drill_from_data(self, drill, drill_data, dry_run=False):
+        """Update existing drill with data from JSON file"""
+        # Compare key fields and update if different
+        changes = []
+        
+        if drill.description != drill_data.get('description', ''):
+            changes.append('description')
+        if drill.difficulty != drill_data.get('difficulty', ''):
+            changes.append('difficulty')
+        if drill.duration != drill_data.get('duration'):
+            changes.append('duration')
+        
+        # Add more field comparisons as needed
+        
+        if changes:
+            if dry_run:
+                logger.info(f"   [DRY RUN] Would update drill '{drill.title}': {', '.join(changes)}")
+                return True
+            else:
+                # Update the drill
+                drill.description = drill_data.get('description', drill.description)
+                drill.difficulty = drill_data.get('difficulty', drill.difficulty)
+                drill.duration = drill_data.get('duration', drill.duration)
+                drill.sets = drill_data.get('sets', drill.sets)
+                drill.reps = drill_data.get('reps', drill.reps)
+                drill.rest = drill_data.get('rest', drill.rest)
+                drill.equipment = drill_data.get('equipment', drill.equipment)
+                drill.suitable_locations = drill_data.get('suitable_locations', drill.suitable_locations)
+                drill.intensity = drill_data.get('intensity', drill.intensity)
+                drill.training_styles = drill_data.get('training_styles', drill.training_styles)
+                drill.instructions = drill_data.get('instructions', drill.instructions)
+                drill.tips = drill_data.get('tips', drill.tips)
+                drill.common_mistakes = drill_data.get('common_mistakes', drill.common_mistakes)
+                drill.progression_steps = drill_data.get('progression_steps', drill.progression_steps)
+                drill.variations = drill_data.get('variations', drill.variations)
+                drill.video_url = drill_data.get('video_url', drill.video_url)
+                drill.thumbnail_url = drill_data.get('thumbnail_url', drill.thumbnail_url)
+                
+                return True
+        
+        return False
+    
+    def _create_drill_from_data(self, drill_data, category_id, db):
+        """Create new drill from JSON data"""
+        try:
+            drill = models.Drill(
+                title=drill_data.get('title', ''),
+                description=drill_data.get('description', ''),
+                category_id=category_id,
+                type=drill_data.get('type', 'time_based'),
+                duration=drill_data.get('duration'),
+                sets=drill_data.get('sets'),
+                reps=drill_data.get('reps'),
+                rest=drill_data.get('rest'),
+                equipment=drill_data.get('equipment', []),
+                suitable_locations=drill_data.get('suitable_locations', []),
+                intensity=drill_data.get('intensity', 'medium'),
+                training_styles=drill_data.get('training_styles', []),
+                difficulty=drill_data.get('difficulty', 'beginner'),
+                instructions=drill_data.get('instructions', []),
+                tips=drill_data.get('tips', []),
+                common_mistakes=drill_data.get('common_mistakes', []),
+                progression_steps=drill_data.get('progression_steps', []),
+                variations=drill_data.get('variations', []),
+                video_url=drill_data.get('video_url'),
+                thumbnail_url=drill_data.get('thumbnail_url')
+            )
+            
+            db.add(drill)
+            
+            # Add skill focus relationships
+            primary_skill = drill_data.get('primary_skill', {})
+            if primary_skill:
+                skill_focus = models.DrillSkillFocus(
+                    drill=drill,
+                    category=primary_skill.get('category', ''),
+                    sub_skill=primary_skill.get('sub_skill', ''),
+                    is_primary=True
+                )
+                db.add(skill_focus)
+            
+            # Add secondary skills
+            for secondary_skill in drill_data.get('secondary_skills', []):
+                skill_focus = models.DrillSkillFocus(
+                    drill=drill,
+                    category=secondary_skill.get('category', ''),
+                    sub_skill=secondary_skill.get('sub_skill', ''),
+                    is_primary=False
+                )
+                db.add(skill_focus)
+            
+            return drill
+            
+        except Exception as e:
+            logger.error(f"Failed to create drill from data: {e}")
+            return None
+    
     def analyze_database(self):
         """Comprehensive analysis of database vs models"""
         logger.info("🔍 Analyzing database schema vs models...")
@@ -325,6 +580,9 @@ class SchemaMigrator:
         # Check for type changes
         type_changes = self.check_column_changes()
         
+        # ✅ NEW: Check data seeding status
+        self._show_data_status()
+        
         # Summary
         needs_migration = bool(
             analysis['missing_tables'] or 
@@ -340,9 +598,60 @@ class SchemaMigrator:
         
         return analysis
     
-    def run_migration(self, dry_run=False):
+    def _show_data_status(self):
+        """Show status of data seeding"""
+        logger.info("📊 Data Seeding Status")
+        logger.info("-" * 30)
+        
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+        db = SessionLocal()
+        
+        try:
+            # Check mental training quotes
+            if 'mental_training_quotes' in self.get_existing_tables():
+                quote_count = db.query(models.MentalTrainingQuote).count()
+                logger.info(f"🧠 Mental Training Quotes: {quote_count} in database")
+                
+                if self.quotes_file.exists():
+                    try:
+                        with open(self.quotes_file, 'r') as f:
+                            file_quotes = json.load(f)
+                        logger.info(f"   📄 {len(file_quotes)} quotes in file")
+                        if len(file_quotes) > quote_count:
+                            logger.warning(f"   ⚠️  {len(file_quotes) - quote_count} quotes need seeding")
+                    except Exception:
+                        logger.warning("   ❌ Could not read quotes file")
+                else:
+                    logger.warning("   ⚠️  Quotes file not found")
+            
+            # Check drills
+            if 'drills' in self.get_existing_tables():
+                drill_count = db.query(models.Drill).count()
+                logger.info(f"🏃 Drills: {drill_count} in database")
+                
+                drill_files = list(self.drills_dir.glob("*_drills.txt"))
+                if drill_files:
+                    total_file_drills = 0
+                    for drill_file in drill_files:
+                        try:
+                            with open(drill_file, 'r') as f:
+                                drills_data = json.load(f)
+                            total_file_drills += len(drills_data)
+                        except Exception:
+                            pass
+                    logger.info(f"   📄 ~{total_file_drills} drills in files")
+                else:
+                    logger.warning("   ⚠️  No drill files found")
+                    
+        finally:
+            db.close()
+    
+    def run_migration(self, dry_run=False, seed_data=False):
         """Run the complete migration process"""
         action = "DRY RUN" if dry_run else "MIGRATION"
+        if seed_data:
+            action += " + DATA SEEDING"
+            
         logger.info(f"🚀 Starting {action}...")
         logger.info("=" * 50)
         
@@ -363,15 +672,32 @@ class SchemaMigrator:
             logger.info("Step 4: Checking for missing indexes...")
             missing_indexes = self.create_missing_indexes(dry_run=dry_run)
             
+            # ✅ NEW: Step 5: Seed data if requested
+            seeded_quotes = 0
+            synced_drills = 0
+            if seed_data:
+                logger.info("Step 5: Seeding mental training quotes...")
+                seeded_quotes = self.seed_mental_training_quotes(dry_run=dry_run)
+                
+                logger.info("Step 6: Syncing drill data...")
+                synced_drills = self.sync_drill_data(dry_run=dry_run)
+            
             # Summary
             total_changes = len(missing_tables) + len(missing_columns) + len(missing_indexes)
+            total_data_changes = seeded_quotes + synced_drills
             
             if dry_run:
-                logger.info(f"📋 DRY RUN COMPLETE - {total_changes} changes would be applied")
-                if total_changes > 0:
+                logger.info(f"📋 DRY RUN COMPLETE")
+                logger.info(f"   - {total_changes} schema changes would be applied")
+                if seed_data:
+                    logger.info(f"   - {total_data_changes} data changes would be applied")
+                if total_changes > 0 or (seed_data and total_data_changes > 0):
                     logger.info("💡 Run without --dry-run to apply changes")
             else:
-                logger.info(f"✅ MIGRATION COMPLETE - {total_changes} changes applied")
+                logger.info(f"✅ MIGRATION COMPLETE")
+                logger.info(f"   - {total_changes} schema changes applied")
+                if seed_data:
+                    logger.info(f"   - {total_data_changes} data changes applied")
                 
                 if self.changes_applied:
                     logger.info("📝 Changes applied:")
@@ -421,18 +747,24 @@ def main():
         print("  status                     - Show database status vs models")
         print("  migrate                    - Run full migration")
         print("  migrate --dry-run          - Show what would be changed")
+        print("  migrate --seed             - Run migration + seed data")
+        print("  seed                       - Seed data only (quotes + drills)")
+        print("  sync-drills                - Sync drill data only")
         print("  backup                     - Show backup commands")
         print("  production <DATABASE_URL>  - Production migration with safety checks")
         print("")
         print("Examples:")
         print("  python migrate_schema.py status")
         print("  python migrate_schema.py migrate --dry-run")
-        print("  python migrate_schema.py migrate")
+        print("  python migrate_schema.py migrate --seed")
+        print("  python migrate_schema.py seed")
+        print("  python migrate_schema.py sync-drills")
         print("  python migrate_schema.py production 'postgresql://user:pass@host:5432/db'")
         sys.exit(1)
     
     command = sys.argv[1]
     dry_run = "--dry-run" in sys.argv
+    seed_data = "--seed" in sys.argv
     
     try:
         if command == "production":
@@ -457,7 +789,7 @@ def main():
                 sys.exit(1)
             
             # Run migration
-            migrator.run_migration(dry_run=dry_run)
+            migrator.run_migration(dry_run=dry_run, seed_data=seed_data)
             
         else:
             migrator = SchemaMigrator()
@@ -465,7 +797,22 @@ def main():
             if command == "status":
                 migrator.show_status()
             elif command == "migrate":
-                migrator.run_migration(dry_run=dry_run)
+                migrator.run_migration(dry_run=dry_run, seed_data=seed_data)
+            elif command == "seed":
+                logger.info("🌱 Seeding database with initial data...")
+                quotes_seeded = migrator.seed_mental_training_quotes(dry_run=dry_run)
+                drills_synced = migrator.sync_drill_data(dry_run=dry_run)
+                if dry_run:
+                    logger.info(f"[DRY RUN] Would seed {quotes_seeded} quotes and sync {drills_synced} drills")
+                else:
+                    logger.info(f"✅ Seeded {quotes_seeded} quotes and synced {drills_synced} drills")
+            elif command == "sync-drills":
+                logger.info("🏃 Syncing drill data from files...")
+                synced = migrator.sync_drill_data(dry_run=dry_run)
+                if dry_run:
+                    logger.info(f"[DRY RUN] Would sync {synced} drills")
+                else:
+                    logger.info(f"✅ Synced {synced} drills")
             elif command == "backup":
                 migrator.generate_backup_commands()
             else:

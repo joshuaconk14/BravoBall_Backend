@@ -384,7 +384,8 @@ def create_completed_session(session: CompletedSessionCreate,
                 "totalReps": drill.totalReps,
                 "totalDuration": drill.totalDuration,
                 "isCompleted": drill.isCompleted
-            } for drill in session.drills]
+            } for drill in session.drills] if session.drills else None,
+            duration_minutes=session.duration_minutes
         )
         db.add(db_session)
         
