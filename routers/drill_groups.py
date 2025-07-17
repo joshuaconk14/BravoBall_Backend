@@ -115,15 +115,14 @@ async def create_drill_group(
         for drill_uuid in group_data.drill_uuids:
             drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
             if drill:
-                # Add to junction table
+                # Add to junction table using UUID
                 drill_item = DrillGroupItem(
                     drill_group_id=new_group.id,
-                    drill_id=drill.id,  # Use drill.id for database foreign key
+                    drill_uuid=drill_uuid,  # Use UUID directly
                     position=position
                 )
                 db.add(drill_item)
                 position += 1
-        
         db.commit()
         db.refresh(new_group)
         
@@ -191,19 +190,18 @@ async def update_drill_group(
         # Remove all existing drill items
         db.query(DrillGroupItem).filter(DrillGroupItem.drill_group_id == existing_group.id).delete()
         
-        # Add new drill items
+        # Add new drill items using UUIDs
         position = 0
         for drill_uuid in group_data.drill_uuids:
             drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
             if drill:
                 drill_item = DrillGroupItem(
                     drill_group_id=existing_group.id,
-                    drill_id=drill.id,  # Use drill.id for database foreign key
+                    drill_uuid=drill_uuid,  # Use UUID directly
                     position=position
                 )
                 db.add(drill_item)
                 position += 1
-        
         db.commit()
         db.refresh(existing_group)
         
@@ -288,10 +286,10 @@ async def add_drill_to_group(
         if not drill:
             raise HTTPException(status_code=404, detail="Drill not found")
         
-        # Check if drill already in group
+        # Check if drill already in group using UUID
         existing_item = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == group_id,
-            DrillGroupItem.drill_id == drill.id
+            DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
         ).first()
         
         if existing_item:
@@ -302,10 +300,10 @@ async def add_drill_to_group(
             DrillGroupItem.drill_group_id == group_id
         ).count()
         
-        # Add drill to group
+        # Add drill to group using UUID
         drill_item = DrillGroupItem(
             drill_group_id=group_id,
-            drill_id=drill.id,  # Use drill.id for database foreign key
+            drill_uuid=drill_uuid,  # Use UUID directly
             position=max_position
         )
         db.add(drill_item)
@@ -346,10 +344,10 @@ async def remove_drill_from_group(
         if not drill:
             raise HTTPException(status_code=404, detail="Drill not found")
         
-        # Find and remove the drill from the group
+        # Find and remove the drill from the group using UUID
         drill_item = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == group_id,
-            DrillGroupItem.drill_id == drill.id
+            DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
         ).first()
         
         if not drill_item:
@@ -446,10 +444,10 @@ async def toggle_drill_like(
             db.add(liked_group)
             db.flush()  # Get the ID without committing
         
-        # Check if drill is already in liked group
+        # Check if drill is already in liked group using UUID
         existing_item = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == liked_group.id,
-            DrillGroupItem.drill_id == drill.id
+            DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
         ).first()
         
         if existing_item:
@@ -466,7 +464,7 @@ async def toggle_drill_like(
             
             drill_item = DrillGroupItem(
                 drill_group_id=liked_group.id,
-                drill_id=drill.id,  # Use drill.id for database foreign key
+                drill_uuid=drill_uuid,  # Use UUID directly
                 position=max_position
             )
             db.add(drill_item)
@@ -512,10 +510,10 @@ async def check_drill_liked(
         if not liked_group:
             return {"is_liked": False}
         
-        # Check if drill is in liked group
+        # Check if drill is in liked group using UUID
         existing_item = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == liked_group.id,
-            DrillGroupItem.drill_id == drill.id
+            DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
         ).first()
         
         return {"is_liked": existing_item is not None}
@@ -557,22 +555,21 @@ async def add_multiple_drills_to_group(
             drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
             
             if drill:
-                # Check if drill already in group
+                # Check if drill already in group using UUID
                 existing_item = db.query(DrillGroupItem).filter(
                     DrillGroupItem.drill_group_id == group_id,
-                    DrillGroupItem.drill_id == drill.id
+                    DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
                 ).first()
                 
                 if not existing_item:
-                    # Add drill to group
+                    # Add drill to group using UUID
                     drill_item = DrillGroupItem(
                         drill_group_id=group_id,
-                        drill_id=drill.id,  # Use drill.id for database foreign key
+                        drill_uuid=drill_uuid,  # Use UUID directly
                         position=max_position + added_count
                     )
                     db.add(drill_item)
                     added_count += 1
-        
         db.commit()
         
         return {
@@ -659,22 +656,21 @@ async def add_multiple_drills_to_liked(
             drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
             
             if drill:
-                # Check if drill already in liked group
+                # Check if drill already in liked group using UUID
                 existing_item = db.query(DrillGroupItem).filter(
                     DrillGroupItem.drill_group_id == liked_group.id,
-                    DrillGroupItem.drill_id == drill.id
+                    DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
                 ).first()
                 
                 if not existing_item:
-                    # Add drill to liked group
+                    # Add drill to liked group using UUID
                     drill_item = DrillGroupItem(
                         drill_group_id=liked_group.id,
-                        drill_id=drill.id,  # Use drill.id for database foreign key
+                        drill_uuid=drill_uuid,  # Use UUID directly
                         position=max_position + added_count
                     )
                     db.add(drill_item)
                     added_count += 1
-        
         db.commit()
         
         return {

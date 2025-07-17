@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from typing import List
 from datetime import datetime, timedelta
-from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory, TrainingSession
+from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory, TrainingSession, CustomDrill
 from schemas import (
     CompletedSession as CompletedSessionSchema,
     CompletedSessionCreate,
@@ -280,11 +280,16 @@ async def sync_ordered_session_drills(
         
         # Add or update ordered drills
         for position, drill_data in enumerate(ordered_drills.ordered_drills):
-            # Find drill by UUID
+            # Find drill by UUID - check both regular drills and custom drills
             drill = None
             if drill_data.drill.uuid:
+                # First try to find in regular drills
                 drill = db.query(Drill).filter(Drill.uuid == drill_data.drill.uuid).first()
-            
+                
+                # If not found in regular drills, try custom drills
+                if not drill:
+                    drill = db.query(CustomDrill).filter(CustomDrill.uuid == drill_data.drill.uuid).first()
+
             if not drill:
                 raise HTTPException(status_code=404, detail=f"Drill not found with uuid {drill_data.drill.uuid}")
             
