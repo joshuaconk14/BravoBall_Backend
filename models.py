@@ -184,11 +184,12 @@ class DrillGroup(Base):
     
     # Relationships
     user = relationship("User", back_populates="drill_groups")
-    drills = relationship(
-        "Drill",
-        secondary="drill_group_items",
-        backref="drill_groups"
-    )
+    drill_items = relationship("DrillGroupItem", back_populates="drill_group", cascade="all, delete-orphan")
+    
+    # Property to get drills through the junction table
+    @property
+    def drills(self):
+        return [item.drill for item in self.drill_items if item.drill]
 
 
 # New junction table for many-to-many relationship between drill groups and drills
@@ -197,9 +198,13 @@ class DrillGroupItem(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     drill_group_id = Column(Integer, ForeignKey("drill_groups.id", ondelete="CASCADE"))
-    drill_id = Column(Integer, ForeignKey("drills.id", ondelete="CASCADE"))
+    drill_uuid = Column(PG_UUID(as_uuid=True), ForeignKey("drills.uuid", ondelete="CASCADE"))  # Changed from drill_id to drill_uuid
     position = Column(Integer)  # To maintain order of drills in a group
     created_at = Column(DateTime, server_default=func.now())
+    
+    # Relationships
+    drill_group = relationship("DrillGroup", back_populates="drill_items")
+    drill = relationship("Drill", foreign_keys=[drill_uuid])
 
 
 # *** DRILL AND SESSION MODELS ***
@@ -261,6 +266,53 @@ class Drill(Base):
     # Relationships
     category = relationship("DrillCategory", backref="drills")
     skill_focus = relationship("DrillSkillFocus", backref="drill")  # Relationship to skill focus
+
+
+class CustomDrill(Base):
+    __tablename__ = "custom_drills"
+
+    id = Column(Integer, primary_key=True, index=True)
+    uuid = Column(PG_UUID(as_uuid=True), unique=True, index=True, default=uuid.uuid4, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)  # Creator of the drill
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    
+    # Time and Intensity
+    duration = Column(Integer, nullable=True)  # in minutes, can be null for rep-based drills
+    intensity = Column(String, nullable=True)  # high, medium, low
+    training_styles = Column(JSON, nullable=True)  # List of TrainingStyle
+    
+    # Structure
+    type = Column(String, nullable=True)  # DrillType enum
+    sets = Column(Integer, nullable=True)
+    reps = Column(Integer, nullable=True)
+    rest = Column(Integer, nullable=True)  # in seconds
+    
+    # Requirements
+    equipment = Column(JSON, nullable=True)  # List of Equipment
+    suitable_locations = Column(JSON, nullable=True)  # List of Location
+    
+    # Technical
+    difficulty = Column(String, nullable=True)
+    
+    # Content
+    instructions = Column(JSON, nullable=True)  # List of steps
+    tips = Column(JSON, nullable=True)  # List of coaching tips
+    common_mistakes = Column(JSON, nullable=True)  # Things to watch out for
+    progression_steps = Column(JSON, nullable=True)  # How to make it harder/easier
+    variations = Column(JSON, nullable=True)  # Alternative versions
+    video_url = Column(String, nullable=True)
+    thumbnail_url = Column(String, nullable=True)
+    
+    # Skill focus (stored as JSON for simplicity)
+    primary_skill = Column(JSON, nullable=True)  # {"category": "...", "sub_skill": "..."}
+    secondary_skills = Column(JSON, nullable=True)  # [{"category": "...", "sub_skill": "..."}]
+    # Metadata
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+    
+    # Relationships
+    user = relationship("User", backref="custom_drills")
 
 
 class TrainingSession(Base):
@@ -391,6 +443,61 @@ class DrillResponse(BaseModel):
     variations: List[str] = []
     video_url: Optional[str] = None
     thumbnail_url: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CustomDrillCreate(BaseModel):
+    title: str
+    description: str
+    type: Optional[str] = None
+    duration: Optional[int] = None
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    rest: Optional[int] = None
+    equipment: Optional[List[str]] = None
+    suitable_locations: Optional[List[str]] = None
+    intensity: Optional[str] = None
+    training_styles: Optional[List[str]] = None
+    difficulty: Optional[str] = None
+    primary_skill: Optional[Dict[str, str]] = None  # {"category": "...", "sub_skill": "..."}
+    secondary_skills: Optional[List[Dict[str, str]]] = []  # [{"category": "...", "sub_skill": "..."}]
+    instructions: Optional[List[str]] = []
+    tips: Optional[List[str]] = None
+    common_mistakes: Optional[List[str]] = None
+    progression_steps: Optional[List[str]] = None
+    variations: Optional[List[str]] = None
+    video_url: Optional[str] = None
+    thumbnail_url: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CustomDrillResponse(BaseModel):
+    uuid: str
+    title: str
+    description: str
+    type: Optional[str] = None
+    duration: Optional[int] = None
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    rest: Optional[int] = None
+    equipment: Optional[List[str]] = None
+    suitable_locations: Optional[List[str]] = None
+    intensity: Optional[str] = None
+    training_styles: Optional[List[str]] = None
+    difficulty: Optional[str] = None
+    primary_skill: Optional[Dict[str, str]] = None
+    secondary_skills: Optional[List[Dict[str, str]]] = []
+    instructions: Optional[List[str]] = []
+    tips: Optional[List[str]] = None
+    common_mistakes: Optional[List[str]] = None
+    progression_steps: Optional[List[str]] = None
+    variations: Optional[List[str]] = None
+    video_url: Optional[str] = None
+    thumbnail_url: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
 
