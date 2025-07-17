@@ -186,10 +186,33 @@ class DrillGroup(Base):
     user = relationship("User", back_populates="drill_groups")
     drill_items = relationship("DrillGroupItem", back_populates="drill_group", cascade="all, delete-orphan")
     
-    # Property to get drills through the junction table
+    # ✅ UPDATED: Property to get drills from both regular drills and custom drills tables
     @property
     def drills(self):
-        return [item.drill for item in self.drill_items if item.drill]
+        """
+        Get all drills for this group by looking up UUIDs in both drills and custom_drills tables.
+        This replaces the simple relationship since we need to check multiple tables.
+        """
+        from sqlalchemy.orm import object_session
+        
+        session = object_session(self)
+        if not session:
+            return []
+        
+        all_drills = []
+        for item in self.drill_items:
+            if item.drill_uuid:
+                # First try regular drills table
+                drill = session.query(Drill).filter(Drill.uuid == item.drill_uuid).first()
+                if drill:
+                    all_drills.append(drill)
+                else:
+                    # Then try custom drills table
+                    custom_drill = session.query(CustomDrill).filter(CustomDrill.uuid == item.drill_uuid).first()
+                    if custom_drill:
+                        all_drills.append(custom_drill)
+        
+        return all_drills
 
 
 # New junction table for many-to-many relationship between drill groups and drills
