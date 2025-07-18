@@ -580,71 +580,186 @@ class SchemaMigrator:
         # Check for type changes
         type_changes = self.check_column_changes()
         
-        # ✅ NEW: Check data seeding status
+        # ✅ NEW: Check data integrity status
+        logger.info("")
         self._show_data_status()
+        
+        # Check if data integrity fixes are needed
+        data_fixes_needed = 0
+        try:
+            with self.engine.connect() as conn:
+                result = conn.execute(text("""
+                    SELECT COUNT(*) FROM drill_skill_focus dsf
+                    LEFT JOIN drills d ON dsf.drill_uuid = d.uuid
+                    WHERE d.uuid IS NULL
+                """))
+                data_fixes_needed = result.scalar()
+        except Exception:
+            pass
         
         # Summary
         needs_migration = bool(
             analysis['missing_tables'] or 
             analysis['missing_columns'] or 
-            type_changes
+            type_changes or
+            data_fixes_needed > 0
         )
         
+        logger.info("")
         if needs_migration:
-            logger.warning("⚠️  Database schema is OUT OF SYNC with models.py")
-            logger.info("💡 Run 'python migrate_schema.py migrate' to fix")
+            logger.warning("⚠️  Database is OUT OF SYNC with models.py")
+            if data_fixes_needed > 0:
+                logger.warning(f"⚠️  {data_fixes_needed} data integrity issues found")
+            logger.info("💡 Run 'python migrate_schema.py migrate' to fix everything")
+            logger.info("💡 Run 'python migrate_schema.py migrate --dry-run' to preview changes")
         else:
-            logger.info("✅ Database schema is IN SYNC with models.py")
+            logger.info("✅ Database is IN SYNC with models.py")
+            logger.info("✅ All data integrity checks passed")
         
         return analysis
     
     def _show_data_status(self):
-        """Show status of data seeding"""
-        logger.info("📊 Data Seeding Status")
+        """Show status of data integrity and seeding"""
+        logger.info("📊 Data Integrity Status")
         logger.info("-" * 30)
         
-        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
-        db = SessionLocal()
+        try:
+            with self.engine.connect() as conn:
+                # Check mental training quotes
+                result = conn.execute(text("SELECT COUNT(*) FROM mental_training_quotes"))
+                quotes_count = result.scalar()
+                logger.info(f"📝 Mental training quotes: {quotes_count}")
+                
+                # Check drill count
+                result = conn.execute(text("SELECT COUNT(*) FROM drills"))
+                drills_count = result.scalar()
+                logger.info(f"🏃 Drills: {drills_count}")
+                
+                # ✅ NEW: Check drill_skill_focus integrity
+                result = conn.execute(text("""
+                    SELECT COUNT(*) FROM drill_skill_focus dsf
+                    LEFT JOIN drills d ON dsf.drill_uuid = d.uuid
+                    WHERE d.uuid IS NULL
+                """))
+                orphaned_skill_focus = result.scalar()
+                
+                if orphaned_skill_focus > 0:
+                    logger.warning(f"⚠️  Orphaned drill_skill_focus records: {orphaned_skill_focus}")
+                    logger.warning("   💡 Run 'python migrate_schema.py fix-data' to repair")
+                else:
+                    logger.info(f"✅ Drill skill focus integrity: OK")
+                
+        except Exception as e:
+            logger.warning(f"⚠️  Could not check data status: {e}")
+
+    def fix_data_integrity(self, dry_run=False):
+        """Fix data integrity issues, specifically drill_skill_focus UUID relationships"""
+        logger.info("🔧 Checking and fixing data integrity issues...")
+        
+        fixed_count = 0
         
         try:
-            # Check mental training quotes
-            if 'mental_training_quotes' in self.get_existing_tables():
-                quote_count = db.query(models.MentalTrainingQuote).count()
-                logger.info(f"🧠 Mental Training Quotes: {quote_count} in database")
+            with self.engine.connect() as conn:
+                # Check for orphaned drill_skill_focus records
+                result = conn.execute(text("""
+                    SELECT COUNT(*) FROM drill_skill_focus dsf
+                    LEFT JOIN drills d ON dsf.drill_uuid = d.uuid
+                    WHERE d.uuid IS NULL
+                """))
+                orphaned_count = result.scalar()
                 
-                if self.quotes_file.exists():
-                    try:
-                        with open(self.quotes_file, 'r') as f:
-                            file_quotes = json.load(f)
-                        logger.info(f"   📄 {len(file_quotes)} quotes in file")
-                        if len(file_quotes) > quote_count:
-                            logger.warning(f"   ⚠️  {len(file_quotes) - quote_count} quotes need seeding")
-                    except Exception:
-                        logger.warning("   ❌ Could not read quotes file")
-                else:
-                    logger.warning("   ⚠️  Quotes file not found")
-            
-            # Check drills
-            if 'drills' in self.get_existing_tables():
-                drill_count = db.query(models.Drill).count()
-                logger.info(f"🏃 Drills: {drill_count} in database")
+                if orphaned_count == 0:
+                    logger.info("✅ No data integrity issues found")
+                    return 0
                 
-                drill_files = list(self.drills_dir.glob("*_drills.txt"))
-                if drill_files:
-                    total_file_drills = 0
-                    for drill_file in drill_files:
-                        try:
-                            with open(drill_file, 'r') as f:
-                                drills_data = json.load(f)
-                            total_file_drills += len(drills_data)
-                        except Exception:
-                            pass
-                    logger.info(f"   📄 ~{total_file_drills} drills in files")
-                else:
-                    logger.warning("   ⚠️  No drill files found")
+                logger.info(f"🔍 Found {orphaned_count} orphaned drill_skill_focus records")
+                
+                if dry_run:
+                    logger.info(f"[DRY RUN] Would fix {orphaned_count} orphaned drill_skill_focus records")
+                    return orphaned_count
+                
+                # Create backup table first
+                backup_table = f"drill_skill_focus_backup_{int(datetime.now().timestamp())}"
+                conn.execute(text(f"""
+                    CREATE TABLE {backup_table} AS 
+                    SELECT * FROM drill_skill_focus
+                """))
+                logger.info(f"💾 Created backup table: {backup_table}")
+                
+                # Get drill ID to UUID mapping
+                result = conn.execute(text("SELECT id, uuid FROM drills"))
+                id_to_uuid = {row[0]: str(row[1]) for row in result}
+                logger.info(f"📋 Found {len(id_to_uuid)} drill ID to UUID mappings")
+                
+                # Get orphaned records and try to fix them
+                result = conn.execute(text("""
+                    SELECT dsf.id, dsf.drill_uuid, dsf.category, dsf.sub_skill, dsf.is_primary
+                    FROM drill_skill_focus dsf
+                    LEFT JOIN drills d ON dsf.drill_uuid = d.uuid
+                    WHERE d.uuid IS NULL
+                """))
+                
+                orphaned_records = result.fetchall()
+                
+                for record in orphaned_records:
+                    record_id, old_drill_uuid, category, sub_skill, is_primary = record
                     
-        finally:
-            db.close()
+                    try:
+                        # Try to parse the old drill_uuid as an integer (probably old drill_id)
+                        old_drill_id = int(old_drill_uuid) if old_drill_uuid else None
+                        
+                        if old_drill_id and old_drill_id in id_to_uuid:
+                            correct_uuid = id_to_uuid[old_drill_id]
+                            
+                            # Update the record
+                            conn.execute(text("""
+                                UPDATE drill_skill_focus 
+                                SET drill_uuid = :new_uuid
+                                WHERE id = :record_id
+                            """), {
+                                'new_uuid': correct_uuid,
+                                'record_id': record_id
+                            })
+                            
+                            fixed_count += 1
+                            logger.info(f"   ✅ Fixed record {record_id}: drill_id {old_drill_id} -> UUID {correct_uuid}")
+                        else:
+                            # Remove orphaned record that can't be fixed
+                            conn.execute(text("""
+                                DELETE FROM drill_skill_focus WHERE id = :record_id
+                            """), {'record_id': record_id})
+                            logger.warning(f"   🗑️  Removed orphaned record {record_id} (drill_uuid: {old_drill_uuid})")
+                            
+                    except (ValueError, TypeError):
+                        # Remove records with invalid drill_uuid values
+                        conn.execute(text("""
+                            DELETE FROM drill_skill_focus WHERE id = :record_id
+                        """), {'record_id': record_id})
+                        logger.warning(f"   🗑️  Removed invalid record {record_id} (drill_uuid: {old_drill_uuid})")
+                
+                conn.commit()
+                
+                # Verify the fix
+                result = conn.execute(text("""
+                    SELECT COUNT(*) FROM drill_skill_focus dsf
+                    LEFT JOIN drills d ON dsf.drill_uuid = d.uuid
+                    WHERE d.uuid IS NULL
+                """))
+                remaining_orphaned = result.scalar()
+                
+                if remaining_orphaned == 0:
+                    logger.info(f"✅ Successfully fixed all drill_skill_focus relationships")
+                    logger.info(f"   📊 {fixed_count} records updated, {orphaned_count - fixed_count} invalid records removed")
+                    logger.info(f"   💾 Backup available at: {backup_table}")
+                    self.changes_applied.append(f"Fixed {fixed_count} drill_skill_focus relationships")
+                else:
+                    logger.warning(f"⚠️  {remaining_orphaned} orphaned records remain")
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to fix data integrity: {e}")
+            raise
+        
+        return fixed_count
     
     def run_migration(self, dry_run=False, seed_data=False):
         """Run the complete migration process"""
@@ -672,30 +787,42 @@ class SchemaMigrator:
             logger.info("Step 4: Checking for missing indexes...")
             missing_indexes = self.create_missing_indexes(dry_run=dry_run)
             
-            # ✅ NEW: Step 5: Seed data if requested
+            # ✅ NEW: Step 5: Fix data integrity issues
+            logger.info("Step 5: Checking data integrity...")
+            fixed_data_count = self.fix_data_integrity(dry_run=dry_run)
+            
+            # ✅ UPDATED: Step 6: Seed data if requested (moved after data fixes)
             seeded_quotes = 0
             synced_drills = 0
             if seed_data:
-                logger.info("Step 5: Seeding mental training quotes...")
+                logger.info("Step 6: Seeding mental training quotes...")
                 seeded_quotes = self.seed_mental_training_quotes(dry_run=dry_run)
                 
-                logger.info("Step 6: Syncing drill data...")
+                logger.info("Step 7: Syncing drill data...")
                 synced_drills = self.sync_drill_data(dry_run=dry_run)
             
             # Summary
-            total_changes = len(missing_tables) + len(missing_columns) + len(missing_indexes)
+            total_changes = len(missing_tables) + len(missing_columns) + len(missing_indexes) + fixed_data_count
             total_data_changes = seeded_quotes + synced_drills
             
             if dry_run:
                 logger.info(f"📋 DRY RUN COMPLETE")
-                logger.info(f"   - {total_changes} schema changes would be applied")
+                logger.info(f"   - {total_changes} total changes would be applied")
+                logger.info(f"     • {len(missing_tables)} tables created")
+                logger.info(f"     • {len(missing_columns)} columns added")
+                logger.info(f"     • {len(missing_indexes)} indexes created")
+                logger.info(f"     • {fixed_data_count} data integrity fixes")
                 if seed_data:
                     logger.info(f"   - {total_data_changes} data changes would be applied")
                 if total_changes > 0 or (seed_data and total_data_changes > 0):
                     logger.info("💡 Run without --dry-run to apply changes")
             else:
                 logger.info(f"✅ MIGRATION COMPLETE")
-                logger.info(f"   - {total_changes} schema changes applied")
+                logger.info(f"   - {total_changes} total changes applied")
+                logger.info(f"     • {len(missing_tables)} tables created")
+                logger.info(f"     • {len(missing_columns)} columns added") 
+                logger.info(f"     • {len(missing_indexes)} indexes created")
+                logger.info(f"     • {fixed_data_count} data integrity fixes")
                 if seed_data:
                     logger.info(f"   - {total_data_changes} data changes applied")
                 
@@ -752,6 +879,7 @@ def main():
         print("  sync-drills                - Sync drill data only")
         print("  backup                     - Show backup commands")
         print("  production <DATABASE_URL>  - Production migration with safety checks")
+        print("  fix-data                   - Fix drill_skill_focus UUID integrity issues")
         print("")
         print("Examples:")
         print("  python migrate_schema.py status")
@@ -760,6 +888,7 @@ def main():
         print("  python migrate_schema.py seed")
         print("  python migrate_schema.py sync-drills")
         print("  python migrate_schema.py production 'postgresql://user:pass@host:5432/db'")
+        print("  python migrate_schema.py fix-data")
         sys.exit(1)
     
     command = sys.argv[1]
@@ -791,6 +920,13 @@ def main():
             # Run migration
             migrator.run_migration(dry_run=dry_run, seed_data=seed_data)
             
+        elif command == "fix-data":
+            migrator = SchemaMigrator()
+            fixed_count = migrator.fix_data_integrity(dry_run=dry_run)
+            if dry_run:
+                logger.info(f"[DRY RUN] Would fix {fixed_count} drill_skill_focus relationships")
+            else:
+                logger.info(f"✅ Fixed {fixed_count} drill_skill_focus relationships")
         else:
             migrator = SchemaMigrator()
             
