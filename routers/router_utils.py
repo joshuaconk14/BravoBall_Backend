@@ -45,7 +45,8 @@ def drill_to_response(drill, db):
         "progression_steps": drill.progression_steps,
         "variations": drill.variations,
         "video_url": drill.video_url,
-        "thumbnail_url": drill.thumbnail_url
+        "thumbnail_url": drill.thumbnail_url,
+        "is_custom": drill.is_custom  # ✅ NEW: Custom drill identifier (Boolean)
     }
 
 # ✅ ADDED: Helper function to convert CustomDrill object to DrillResponse dict
@@ -69,14 +70,15 @@ def custom_drill_to_response(custom_drill):
         "training_styles": custom_drill.training_styles or [],
         "difficulty": custom_drill.difficulty,
         "primary_skill": custom_drill.primary_skill or {},
-        "secondary_skills": custom_drill.secondary_skills or [],
+        "secondary_skills": [],  # ✅ FIXED: Return empty list since secondary_skills field was removed
         "instructions": custom_drill.instructions or [],
         "tips": custom_drill.tips or [],
         "common_mistakes": custom_drill.common_mistakes or [],
         "progression_steps": custom_drill.progression_steps or [],
         "variations": custom_drill.variations or [],
         "video_url": custom_drill.video_url,
-        "thumbnail_url": custom_drill.thumbnail_url
+        "thumbnail_url": custom_drill.thumbnail_url,
+        "is_custom": custom_drill.is_custom  # ✅ NEW: Custom drill identifier (Boolean)
     }
 
 # ✅ ADDED: Universal drill converter that handles both Drill and CustomDrill objects

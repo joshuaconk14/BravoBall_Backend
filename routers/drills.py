@@ -64,7 +64,8 @@ def get_drills(
                 "difficulty": drill.difficulty if drill.difficulty else "beginner",
                 "equipment": drill.equipment if drill.equipment else [],
                 "instructions": drill.instructions if drill.instructions else [],
-                "tips": drill.tips if drill.tips else []
+                "tips": drill.tips if drill.tips else [],
+                "is_custom": drill.is_custom  # ✅ Add is_custom field
             } for drill in drills
         ],
         "metadata": {
@@ -106,47 +107,98 @@ async def search_drills(
     """
     Search for drills based on various criteria.
     Used when users want to find drills to add to their groups.
+    Includes both default drills and user's custom drills.
     """
     try:
-        # Start with a base query
-        drill_query = db.query(Drill)
+        from models import CustomDrill
+        from sqlalchemy import union_all, select, literal_column
         
-        # Apply text search if provided
+        # ✅ UPDATED: Search both default drills and user's custom drills
+        # Start with default drills query
+        default_drill_query = db.query(Drill)
+        
+        # Apply text search to default drills if provided
         if query:
-            # Search in title and description
-            drill_query = drill_query.filter(
+            default_drill_query = default_drill_query.filter(
                 or_(
                     Drill.title.ilike(f"%{query}%"),
                     Drill.description.ilike(f"%{query}%")
                 )
             )
         
-        # Apply category filter if provided
+        # Apply category filter to default drills if provided
         if category:
-            drill_query = drill_query.join(DrillCategory).filter(
+            default_drill_query = default_drill_query.join(DrillCategory).filter(
                 DrillCategory.name.ilike(f"%{category}%")
             )
         
-        # Apply difficulty filter if provided
+        # Apply difficulty filter to default drills if provided
         if difficulty:
-            drill_query = drill_query.filter(
+            default_drill_query = default_drill_query.filter(
                 func.lower(Drill.difficulty) == difficulty.lower()
             )
         
-        # Get total count for pagination
-        total = drill_query.count()
+        # Get default drills
+        default_drills = default_drill_query.all()
         
-        # Apply pagination
-        drills = drill_query.offset((page - 1) * limit).limit(limit).all()
+        # Now search custom drills (only for the current user)
+        custom_drill_query = db.query(CustomDrill).filter(CustomDrill.user_id == current_user.id)
         
-        # Convert to response format
-        drill_responses = []
-        for drill in drills:
-            drill_responses.append(drill_to_response(drill, db))
+        # Apply text search to custom drills if provided
+        if query:
+            custom_drill_query = custom_drill_query.filter(
+                or_(
+                    CustomDrill.title.ilike(f"%{query}%"),
+                    CustomDrill.description.ilike(f"%{query}%")
+                )
+            )
+        
+        # Apply difficulty filter to custom drills if provided
+        if difficulty:
+            custom_drill_query = custom_drill_query.filter(
+                func.lower(CustomDrill.difficulty) == difficulty.lower()
+            )
+        
+        # Apply category filter to custom drills if provided (using primary_skill JSON field)
+        if category:
+            # Map frontend category to backend
+            backend_category = map_frontend_category_to_backend(category)
+            # Use proper JSON operators for PostgreSQL - access the 'category' field within primary_skill
+            custom_drill_query = custom_drill_query.filter(
+                func.cast(CustomDrill.primary_skill, JSONB)['category'].astext == backend_category
+            )
+        
+        # Get custom drills
+        custom_drills = custom_drill_query.all()
+        
+        # Combine and convert to response format
+        all_drills = []
+        
+        # Add default drills
+        for drill in default_drills:
+            drill_response = drill_to_response(drill, db)
+            all_drills.append(drill_response)
+        
+        # Add custom drills
+        for custom_drill in custom_drills:
+            from routers.router_utils import custom_drill_to_response
+            drill_response = custom_drill_to_response(custom_drill)
+            all_drills.append(drill_response)
+        
+        # Sort by title for consistent ordering
+        all_drills.sort(key=lambda x: x.get('title', ''))
+        
+        # Get total count
+        total = len(all_drills)
+        
+        # Apply pagination manually since we have a list
+        start_idx = (page - 1) * limit
+        end_idx = start_idx + limit
+        paginated_drills = all_drills[start_idx:end_idx]
         
         # Include pagination metadata
         response = {
-            "items": drill_responses,
+            "items": paginated_drills,
             "total": total,
             "page": page,
             "page_size": limit,
@@ -156,7 +208,7 @@ async def search_drills(
         return response
     except Exception as e:
         logging.error(f"Error searching drills: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to search drills: {str(e)}") 
+        raise HTTPException(status_code=500, detail=f"Failed to search drills: {str(e)}")
 
 
 # ✅ NEW: Helper function to map frontend category names to backend database category names
@@ -245,13 +297,14 @@ async def search_drills_for_guests(
     Limited search endpoint for guest users.
     Returns smaller result sets to encourage account creation.
     When limit is high (>30), returns all available guest drills.
+    Guests can only search default drills (no custom drills).
     """
     try:
         logging.info(f"Guest search: query='{query}', category='{category}', difficulty='{difficulty}', limit={limit}")
         
         # ✅ NEW: If limit is high, return all guest drills (for search page)
         if limit >= 30:
-            # Get the full guest drill catalog from the limited endpoint
+            # ✅ UPDATED: Get only default drills for guests - no custom drills
             all_guest_drills = []
             featured_categories = ["Passing", "Dribbling", "Shooting", "First Touch", "Defending", "Goalkeeping", "Fitness"]  # ✅ UPDATED: Add fitness
             
@@ -310,7 +363,7 @@ async def search_drills_for_guests(
             }
         
         # ✅ EXISTING: Standard pagination for smaller limits
-        # Start with a base query
+        # ✅ UPDATED: Only search default drills - guests cannot access custom drills
         drill_query = db.query(Drill)
         
         # Apply text search if provided
@@ -382,9 +435,10 @@ async def public_search_drills(
     """
     A public search endpoint for drills that doesn't require authentication.
     Useful for testing and public access to drill information.
+    Guests can only search default drills (no custom drills).
     """
     try:
-        # Start with a base query
+        # ✅ UPDATED: Only search default drills - guests cannot access custom drills
         drill_query = db.query(Drill)
         
         # Apply text search if provided

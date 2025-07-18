@@ -935,5 +935,378 @@
         "rest": 120,
         "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/t-test.mp4",
         "thumbnail_url": "https://example.com/t-test-thumbnail.jpg"
+    },
+    {
+        "title": "Walking to Jogging Transitions",
+        "description": "A beginner-friendly speed drill that develops gradual acceleration and teaches proper running form through controlled pace changes.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": 6,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "speed"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "endurance"
+            }
+        ],
+        "instructions": [
+            "Set up two cones 20 yards apart.",
+            "Start at the first cone and walk for 5 yards.",
+            "Gradually transition to a light jog for the next 10 yards.",
+            "Return to walking for the final 5 yards to the second cone.",
+            "Turn around and repeat the pattern back to the starting cone.",
+            "Complete 6 round trips per set, with 3 total sets."
+        ],
+        "tips": [
+            "Focus on smooth transitions between walking and jogging.",
+            "Maintain proper running form during the jogging phase.",
+            "Keep your head up and look ahead while moving.",
+            "Use your arms naturally to help with balance.",
+            "Breathe steadily throughout the drill."
+        ],
+        "common_mistakes": [
+            "Rushing the transitions between walking and jogging.",
+            "Poor running form during the jogging phase.",
+            "Not maintaining consistent pace during each phase.",
+            "Looking down at the ground while moving.",
+            "Holding your breath during the transitions."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect the transitions.",
+            "Increase the jogging distance gradually.",
+            "Add more jogging phases as fitness improves.",
+            "Reduce walking time between jogging phases.",
+            "Add a ball for game-realistic training."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/walking-to-jogging-transitions.mp4",
+        "thumbnail_url": "https://example.com/walking-to-jogging-transitions-thumbnail.jpg"
+    },
+    {
+        "title": "Side-to-Side Shuffles",
+        "description": "A beginner speed drill that develops lateral movement and teaches proper shuffling technique for soccer-specific movements.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 3,
+        "reps": 8,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "speed"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up two cones 5 yards apart.",
+            "Start in an athletic stance between the cones.",
+            "Shuffle to the right cone and touch it with your hand.",
+            "Shuffle back to the left cone and touch it.",
+            "Continue alternating for 8 complete cycles.",
+            "Rest between sets and complete 3 total sets."
+        ],
+        "tips": [
+            "Stay on the balls of your feet throughout the movement.",
+            "Keep your knees slightly bent in an athletic stance.",
+            "Use your arms to help maintain balance.",
+            "Stay low and controlled during the shuffling.",
+            "Focus on quick, efficient movements."
+        ],
+        "common_mistakes": [
+            "Not staying in an athletic stance.",
+            "Crossing your feet during the shuffle.",
+            "Standing too upright during the movement.",
+            "Not touching the cones with your hand.",
+            "Moving too slowly through the drill."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect technique.",
+            "Increase distance between cones gradually.",
+            "Add more repetitions per set.",
+            "Increase speed of shuffling movements.",
+            "Add a ball for advanced training."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/side-to-side-shuffles.mp4",
+        "thumbnail_url": "https://example.com/side-to-side-shuffles-thumbnail.jpg"
+    },
+    {
+        "title": "Simple Cone Weaving",
+        "description": "A beginner agility drill that develops basic coordination and teaches players to navigate around obstacles with proper footwork.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 3,
+        "reps": 6,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "agility"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up 3 cones in a straight line, 3 yards apart.",
+            "Start at the first cone in an athletic stance.",
+            "Run forward and weave around the first cone to the right.",
+            "Continue weaving around the second cone to the left.",
+            "Weave around the third cone to the right.",
+            "Run back through the cones in reverse order.",
+            "Complete 6 round trips per set, with 3 total sets."
+        ],
+        "tips": [
+            "Stay on the balls of your feet for quick direction changes.",
+            "Keep your head up and look ahead while weaving.",
+            "Use your arms to help maintain balance.",
+            "Stay controlled and don't rush the movements.",
+            "Focus on smooth transitions around each cone."
+        ],
+        "common_mistakes": [
+            "Knocking over the cones during weaving.",
+            "Looking down at the ground while moving.",
+            "Moving too quickly and losing control.",
+            "Not using proper footwork around the cones.",
+            "Poor body positioning during direction changes."
+        ],
+        "progression_steps": [
+            "Start with fewer cones to perfect technique.",
+            "Increase number of cones gradually.",
+            "Reduce spacing between cones for more challenge.",
+            "Increase speed through the weaving pattern.",
+            "Add a ball for advanced training."
+        ],
+        "rest": 75,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/simple-cone-weaving.mp4",
+        "thumbnail_url": "https://example.com/simple-cone-weaving-thumbnail.jpg"
+    },
+    {
+        "title": "Forward and Backward Movement",
+        "description": "A beginner agility drill that develops basic forward and backward movement patterns essential for soccer positioning and awareness.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": 5,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "agility"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up two cones 8 yards apart.",
+            "Start at the first cone in an athletic stance.",
+            "Run forward to the second cone.",
+            "Turn around and backpedal to the first cone.",
+            "Turn around and run forward again.",
+            "Continue alternating for 5 complete cycles.",
+            "Rest between sets and complete 3 total sets."
+        ],
+        "tips": [
+            "Stay in an athletic stance throughout the drill.",
+            "Keep your head up while backpedaling.",
+            "Use your arms to help maintain balance.",
+            "Stay on the balls of your feet for quick transitions.",
+            "Focus on smooth direction changes."
+        ],
+        "common_mistakes": [
+            "Looking down while backpedaling.",
+            "Poor posture during backward movement.",
+            "Slow transitions between forward and backward.",
+            "Not maintaining proper athletic stance.",
+            "Moving too quickly and losing control."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect technique.",
+            "Increase distance between cones gradually.",
+            "Add more repetitions per set.",
+            "Increase speed of transitions.",
+            "Add a ball for advanced training."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/forward-and-backward-movement.mp4",
+        "thumbnail_url": "https://example.com/forward-and-backward-movement-thumbnail.jpg"
+    },
+    {
+        "title": "Continuous Walking Circuit",
+        "description": "A beginner endurance drill that builds basic stamina through continuous walking with occasional light jogging intervals.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": 1,
+        "reps": 1,
+        "equipment": [
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field",
+            "medium_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "endurance"
+        },
+        "secondary_skills": [
+            {
+                "category": "fitness",
+                "sub_skill": "speed"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones in a square formation, 15 yards apart.",
+            "Start at any corner of the square.",
+            "Walk around the square at a steady pace.",
+            "Every 2 minutes, jog one side of the square.",
+            "Return to walking for the remaining sides.",
+            "Continue this pattern for 15 minutes total.",
+            "Focus on maintaining consistent pace throughout."
+        ],
+        "tips": [
+            "Maintain a steady walking pace throughout.",
+            "Use the jogging intervals to gradually build endurance.",
+            "Keep your head up and look ahead while moving.",
+            "Breathe steadily and rhythmically.",
+            "Stay relaxed and don't rush the movements."
+        ],
+        "common_mistakes": [
+            "Walking too quickly and getting tired early.",
+            "Not maintaining consistent pace throughout.",
+            "Poor posture during the walking phase.",
+            "Not using the jogging intervals effectively.",
+            "Looking down at the ground while moving."
+        ],
+        "progression_steps": [
+            "Start with shorter total duration (10 minutes).",
+            "Increase total duration gradually.",
+            "Add more jogging intervals as endurance improves.",
+            "Increase jogging distance gradually.",
+            "Add a ball for game-realistic training."
+        ],
+        "rest": 0,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/continuous-walking-circuit.mp4",
+        "thumbnail_url": "https://example.com/continuous-walking-circuit-thumbnail.jpg"
+    },
+    {
+        "title": "Ball Jogging Endurance",
+        "description": "A beginner endurance drill that combines jogging with basic ball control to develop stamina while improving touch and coordination.",
+        "type": "time_based",
+        "duration": 12,
+        "sets": 1,
+        "reps": 1,
+        "equipment": [
+            "ball",
+            "training_cones"
+        ],
+        "suitable_locations": [
+            "small_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "fitness",
+            "sub_skill": "endurance"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones in a 10x10 yard square formation.",
+            "Start with the ball at one corner of the square.",
+            "Jog around the square while keeping the ball close to your feet.",
+            "Use both feet to control the ball as you jog.",
+            "Complete 8-10 laps around the square.",
+            "Focus on maintaining consistent jogging pace and ball control.",
+            "Take short breaks if needed, but keep moving."
+        ],
+        "tips": [
+            "Keep the ball close to your feet throughout.",
+            "Use both feet to control the ball.",
+            "Maintain a steady jogging pace.",
+            "Keep your head up to scan the area.",
+            "Stay relaxed and don't rush the movements."
+        ],
+        "common_mistakes": [
+            "Losing control of the ball frequently.",
+            "Jogging too quickly and getting tired.",
+            "Not using both feet for ball control.",
+            "Looking down at the ball constantly.",
+            "Poor posture during the jogging phase."
+        ],
+        "progression_steps": [
+            "Start with fewer laps to build endurance.",
+            "Increase number of laps gradually.",
+            "Add more complex ball control movements.",
+            "Increase jogging speed as fitness improves.",
+            "Add obstacles or defenders for advanced training."
+        ],
+        "rest": 0,
+        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/ball-jogging-endurance.mp4",
+        "thumbnail_url": "https://example.com/ball-jogging-endurance-thumbnail.jpg"
     }
 ] 

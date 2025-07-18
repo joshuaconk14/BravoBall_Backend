@@ -16,6 +16,7 @@ from schemas import (
 from db import get_db
 from auth import get_current_user
 from collections import Counter
+from routers.drill_groups import find_drill_by_uuid
 
 router = APIRouter()
 
@@ -43,6 +44,7 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
             'shooting_drills_completed': 0,
             'defending_drills_completed': 0,
             'goalkeeping_drills_completed': 0,
+            'fitness_drills_completed': 0,  # ✅ NEW: Add fitness drills completed
             'most_improved_skill': '',
             'unique_drills_completed': 0,
             'beginner_drills_completed': 0,
@@ -185,26 +187,37 @@ async def get_ordered_session_drills(
         # Join OrderedSessionDrill with TrainingSession to filter by user
         ordered_drills = db.query(OrderedSessionDrill).join(OrderedSessionDrill.session).filter(
             TrainingSession.user_id == current_user.id
-        ).options(joinedload(OrderedSessionDrill.drill)).order_by(OrderedSessionDrill.position).all()
+        ).order_by(OrderedSessionDrill.position).all()
 
         # Include the associated drill data for each ordered drill
         result = []
         for ordered_drill in ordered_drills:
-            drill = ordered_drill.drill
+            # ✅ UPDATED: Use find_drill_by_uuid to get drill from either table
+            drill = None
+            if ordered_drill.drill_uuid:
+                drill, is_custom = find_drill_by_uuid(db, str(ordered_drill.drill_uuid), current_user.id)
+            
             if drill:
-                # Get skill focus data
-                skill_focus = drill.skill_focus
-                primary_skill = next((sf for sf in skill_focus if sf.is_primary), None) if skill_focus else None
-                secondary_skills = [sf for sf in skill_focus if not sf.is_primary] if skill_focus else []
-                
-                # Collect all sub-skills (primary + secondary)
-                sub_skills = []
-                if primary_skill:
-                    sub_skills.append(primary_skill.sub_skill)
-                sub_skills.extend([skill.sub_skill for skill in secondary_skills])
-                
-                # Get the main skill category (from primary skill)
-                main_skill = primary_skill.category if primary_skill else "general"
+                # ✅ UPDATED: Handle skill focus differently for Drill vs CustomDrill
+                if is_custom:
+                    # CustomDrill uses primary_skill JSON field
+                    primary_skill_data = drill.primary_skill or {}
+                    main_skill = primary_skill_data.get('category', 'general')
+                    sub_skills = [primary_skill_data.get('sub_skill', '')] if primary_skill_data.get('sub_skill') else []
+                else:
+                    # Regular Drill uses skill_focus relationship
+                    skill_focus = drill.skill_focus
+                    primary_skill = next((sf for sf in skill_focus if sf.is_primary), None) if skill_focus else None
+                    secondary_skills = [sf for sf in skill_focus if not sf.is_primary] if skill_focus else []
+                    
+                    # Collect all sub-skills (primary + secondary)
+                    sub_skills = []
+                    if primary_skill:
+                        sub_skills.append(primary_skill.sub_skill)
+                    sub_skills.extend([skill.sub_skill for skill in secondary_skills])
+                    
+                    # Get the main skill category (from primary skill)
+                    main_skill = primary_skill.category if primary_skill else "general"
                 
                 result.append({
                     "drill": {
@@ -219,9 +232,10 @@ async def get_ordered_session_drills(
                         "instructions": drill.instructions,
                         "tips": drill.tips,
                         "equipment": drill.equipment,
-                        "trainingStyle": drill.training_styles[0],
+                        "trainingStyle": drill.training_styles[0] if drill.training_styles else None,
                         "difficulty": drill.difficulty,
-                        "videoUrl": drill.video_url
+                        "videoUrl": drill.video_url,
+                        "is_custom": is_custom  # ✅ Use the is_custom flag from find_drill_by_uuid
                     },
                     # Add per-session fields as needed
                     "sets_done": ordered_drill.sets_done,
@@ -271,34 +285,29 @@ async def sync_ordered_session_drills(
         
         # Get existing ordered drills for this user's session
         existing_drills = {
-            drill.drill_id: drill
+            drill.drill_uuid: drill
             for drill in db.query(OrderedSessionDrill).filter(
                 OrderedSessionDrill.session_id == session_id
             ).all()
         }
-        processed_drill_ids = set()
+        processed_drill_uuids = set()
         
         # Add or update ordered drills
         for position, drill_data in enumerate(ordered_drills.ordered_drills):
-            # Find drill by UUID - check both regular drills and custom drills
+            # ✅ UPDATED: Use is_custom field for efficient drill lookup
             drill = None
             if drill_data.drill.uuid:
-                # First try to find in regular drills
-                drill = db.query(Drill).filter(Drill.uuid == drill_data.drill.uuid).first()
-                
-                # If not found in regular drills, try custom drills
-                if not drill:
-                    drill = db.query(CustomDrill).filter(CustomDrill.uuid == drill_data.drill.uuid).first()
+                drill, _ = find_drill_by_uuid(db, drill_data.drill.uuid, current_user.id, drill_data.drill.is_custom)
 
             if not drill:
                 raise HTTPException(status_code=404, detail=f"Drill not found with uuid {drill_data.drill.uuid}")
             
-            drill_id = drill.id if drill else None
-            processed_drill_ids.add(drill_id)
+            drill_uuid = drill.uuid if drill else None
+            processed_drill_uuids.add(drill_uuid)
             
-            if drill_id in existing_drills:
+            if drill_uuid in existing_drills:
                 # Update existing drill
-                existing_drill = existing_drills[drill_id]
+                existing_drill = existing_drills[drill_uuid]
                 existing_drill.position = position
                 existing_drill.sets_done = drill_data.sets_done
                 existing_drill.sets = drill_data.sets
@@ -309,7 +318,7 @@ async def sync_ordered_session_drills(
                 # Add new drill
                 ordered_drill = OrderedSessionDrill(
                     session_id=session_id,
-                    drill_id=drill_id,
+                    drill_uuid=drill_uuid,
                     position=position,
                     sets_done = drill_data.sets_done,
                     sets=drill_data.sets,
@@ -320,8 +329,8 @@ async def sync_ordered_session_drills(
                 db.add(ordered_drill)
         
         # Delete drills that were removed
-        for drill_id, drill in existing_drills.items():
-            if drill_id not in processed_drill_ids:
+        for drill_uuid, drill in existing_drills.items():
+            if drill_uuid not in processed_drill_uuids:
                 db.delete(drill)
         
         db.commit()

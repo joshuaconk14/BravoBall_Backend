@@ -181,7 +181,7 @@ class SessionGenerator:
         for idx, drill in enumerate(suitable_drills):
             osd = OrderedSessionDrill(
                 session_id=session.id,  # Link to the session
-                drill_id=drill.id,      # Link to the static drill
+                drill_uuid=drill.uuid,  # ✅ CHANGED: Use UUID instead of drill_id
                 position=idx,           # Order in the session
                 sets=getattr(drill, 'sets', None),
                 reps=getattr(drill, 'reps', None),

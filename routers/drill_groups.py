@@ -9,30 +9,57 @@ from routers.router_utils import drill_to_response, any_drill_to_response
 
 router = APIRouter()
 
-# ✅ ADDED: Helper function to find drill by UUID in either drills or custom_drills table
-def find_drill_by_uuid(db: Session, drill_uuid: str, user_id: int = None):
+# ✅ UPDATED: Efficient drill lookup using is_custom field
+def find_drill_by_uuid(db: Session, drill_uuid: str, user_id: int = None, is_custom: bool = None):
     """
-    Find a drill by UUID in either the drills table or custom_drills table.
-    For custom drills, optionally filter by user_id for security.
-    Returns tuple: (drill_object, is_custom_drill)
+    Find a drill by UUID using the is_custom field to determine which table to search.
+    This is more efficient than checking both tables.
+    
+    Args:
+        db: Database session
+        drill_uuid: UUID of the drill to find
+        user_id: User ID for security (required for custom drills)
+        is_custom: Boolean indicating if this is a custom drill (True) or default drill (False)
+    
+    Returns:
+        tuple: (drill_object, is_custom_drill)
     """
-    # First check regular drills table
-    drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
-    if drill:
-        return drill, False
+    if is_custom is not None:
+        # Use is_custom to determine which table to search (most efficient)
+        if is_custom:
+            # Search custom drills table
+            custom_drill_query = db.query(CustomDrill).filter(CustomDrill.uuid == drill_uuid)
+            
+            # If user_id provided, filter by user (for security)
+            if user_id is not None:
+                custom_drill_query = custom_drill_query.filter(CustomDrill.user_id == user_id)
+            
+            custom_drill = custom_drill_query.first()
+            return custom_drill, True if custom_drill else None
+        else:
+            # Search regular drills table
+            drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
+            return drill, False if drill else None
     
-    # Then check custom drills table
-    custom_drill_query = db.query(CustomDrill).filter(CustomDrill.uuid == drill_uuid)
-    
-    # If user_id provided, filter by user (for security - users can only access their own custom drills)
-    if user_id is not None:
-        custom_drill_query = custom_drill_query.filter(CustomDrill.user_id == user_id)
-    
-    custom_drill = custom_drill_query.first()
-    if custom_drill:
-        return custom_drill, True
+    else:
+        # If is_custom is not provided, check both tables (fallback)
+        # First check regular drills table (more common)
+        drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
+        if drill:
+            return drill, False
         
-    return None, False
+        # Then check custom drills table
+        custom_drill_query = db.query(CustomDrill).filter(CustomDrill.uuid == drill_uuid)
+        
+        # If user_id provided, filter by user (for security - users can only access their own custom drills)
+        if user_id is not None:
+            custom_drill_query = custom_drill_query.filter(CustomDrill.user_id == user_id)
+        
+        custom_drill = custom_drill_query.first()
+        if custom_drill:
+            return custom_drill, True
+            
+        return None, False
 
 
 # Get all drill groups for the current user

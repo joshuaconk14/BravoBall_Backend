@@ -5,7 +5,7 @@ Endpoint to delete user account
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from models import User, OrderedSessionDrill, CompletedSession, DrillGroup, SessionPreferences, ProgressHistory, SavedFilter, TrainingSession, MentalTrainingSession
+from models import User, OrderedSessionDrill, CompletedSession, DrillGroup, SessionPreferences, ProgressHistory, SavedFilter, TrainingSession, MentalTrainingSession, CustomDrill, RefreshToken, PasswordResetCode, EmailVerificationCode
 from db import get_db
 from auth import get_current_user
 
@@ -44,6 +44,11 @@ async def delete_account(current_user: User = Depends(get_current_user), db: Ses
             MentalTrainingSession.user_id == current_user.id
         ).delete()
 
+        # Delete custom drills
+        db.query(CustomDrill).filter(
+            CustomDrill.user_id == current_user.id
+        ).delete()
+
         # Delete drill groups
         db.query(DrillGroup).filter(
             DrillGroup.user_id == current_user.id
@@ -62,6 +67,21 @@ async def delete_account(current_user: User = Depends(get_current_user), db: Ses
         # Delete saved filters
         db.query(SavedFilter).filter(
             SavedFilter.user_id == current_user.id
+        ).delete()
+
+        # Delete refresh tokens
+        db.query(RefreshToken).filter(
+            RefreshToken.user_id == current_user.id
+        ).delete()
+
+        # Delete password reset codes
+        db.query(PasswordResetCode).filter(
+            PasswordResetCode.user_id == current_user.id
+        ).delete()
+
+        # Delete email verification codes
+        db.query(EmailVerificationCode).filter(
+            EmailVerificationCode.user_id == current_user.id
         ).delete()
 
         # Finally, delete the user

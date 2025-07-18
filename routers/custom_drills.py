@@ -31,14 +31,14 @@ async def create_custom_drill(
             training_styles=drill_data.training_styles,
             difficulty=drill_data.difficulty,
             primary_skill=drill_data.primary_skill,
-            secondary_skills=drill_data.secondary_skills,
             instructions=drill_data.instructions,
             tips=drill_data.tips,
             common_mistakes=drill_data.common_mistakes,
             progression_steps=drill_data.progression_steps,
             variations=drill_data.variations,
             video_url=drill_data.video_url,
-            thumbnail_url=drill_data.thumbnail_url
+            thumbnail_url=drill_data.thumbnail_url,
+            is_custom=True  # ✅ Set to True for custom drills
         )
         
         db.add(custom_drill)
@@ -61,7 +61,6 @@ async def create_custom_drill(
             training_styles=custom_drill.training_styles,
             difficulty=custom_drill.difficulty,
             primary_skill=custom_drill.primary_skill,
-            secondary_skills=custom_drill.secondary_skills,
             instructions=custom_drill.instructions,
             tips=custom_drill.tips,
             common_mistakes=custom_drill.common_mistakes,
@@ -111,7 +110,6 @@ async def get_user_custom_drills(
                 training_styles=drill.training_styles,
                 difficulty=drill.difficulty,
                 primary_skill=drill.primary_skill,
-                secondary_skills=drill.secondary_skills,
                 instructions=drill.instructions,
                 tips=drill.tips,
                 common_mistakes=drill.common_mistakes,
@@ -120,7 +118,8 @@ async def get_user_custom_drills(
                 video_url=drill.video_url,
                 thumbnail_url=drill.thumbnail_url,
                 created_at=drill.created_at.isoformat() if drill.created_at else None,
-                updated_at=drill.updated_at.isoformat() if drill.updated_at else None
+                updated_at=drill.updated_at.isoformat() if drill.updated_at else None,
+                is_custom=drill.is_custom
             )
             response.append(drill_response)
         
@@ -166,7 +165,6 @@ async def get_custom_drill(
             training_styles=custom_drill.training_styles,
             difficulty=custom_drill.difficulty,
             primary_skill=custom_drill.primary_skill,
-            secondary_skills=custom_drill.secondary_skills,
             instructions=custom_drill.instructions,
             tips=custom_drill.tips,
             common_mistakes=custom_drill.common_mistakes,
@@ -175,7 +173,8 @@ async def get_custom_drill(
             video_url=custom_drill.video_url,
             thumbnail_url=custom_drill.thumbnail_url,
             created_at=custom_drill.created_at.isoformat() if custom_drill.created_at else None,
-            updated_at=custom_drill.updated_at.isoformat() if custom_drill.updated_at else None
+            updated_at=custom_drill.updated_at.isoformat() if custom_drill.updated_at else None,
+            is_custom=custom_drill.is_custom
         )
         
         return response
@@ -221,7 +220,6 @@ async def update_custom_drill(
         custom_drill.training_styles = drill_data.training_styles
         custom_drill.difficulty = drill_data.difficulty
         custom_drill.primary_skill = drill_data.primary_skill
-        custom_drill.secondary_skills = drill_data.secondary_skills
         custom_drill.instructions = drill_data.instructions
         custom_drill.tips = drill_data.tips
         custom_drill.common_mistakes = drill_data.common_mistakes
@@ -249,7 +247,6 @@ async def update_custom_drill(
             training_styles=custom_drill.training_styles,
             difficulty=custom_drill.difficulty,
             primary_skill=custom_drill.primary_skill,
-            secondary_skills=custom_drill.secondary_skills,
             instructions=custom_drill.instructions,
             tips=custom_drill.tips,
             common_mistakes=custom_drill.common_mistakes,

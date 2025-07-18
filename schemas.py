@@ -134,6 +134,7 @@ class DrillResponse(BaseModel):
 class DrillSyncRequest(BaseModel):
     uuid: str  # Use UUID as primary identifier, required
     title: str
+    is_custom: bool = False  # ✅ NEW: Boolean to determine which table to search
 
     model_config = ConfigDict(from_attributes=True)
 

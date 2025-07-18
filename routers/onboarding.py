@@ -9,6 +9,7 @@ from config import UserAuth
 import logging
 from services.session_generator import SessionGenerator
 from utils.skill_mapper import map_frontend_to_backend, format_skills_for_session
+from routers.drill_groups import find_drill_by_uuid
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -22,7 +23,7 @@ def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 # Helper function to format session for frontend
-def format_session_for_frontend(session) -> Dict[str, Any]:
+def format_session_for_frontend(session, db: Session, user_id: int) -> Dict[str, Any]:
     """Format training session for frontend consumption using OrderedSessionDrill."""
     drills = []
 
@@ -36,31 +37,51 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
         }
 
     for osd in sorted(session.ordered_drills, key=lambda x: x.position):
-        drill = osd.drill
-        # Merge per-session and static fields
-        drill_data = {
-            "uuid": str(drill.uuid),  # Use UUID as primary identifier
-            "title": drill.title,
-            "description": drill.description,
-            "duration": osd.duration if osd.duration is not None else drill.duration,
-            "intensity": drill.intensity,
-            "difficulty": drill.difficulty,
-            "equipment": drill.equipment,
-            "suitable_locations": drill.suitable_locations,
-            "instructions": drill.instructions,
-            "tips": drill.tips,
-            "type": drill.type,
-            "sets": osd.sets if osd.sets is not None else drill.sets,
-            "reps": osd.reps if osd.reps is not None else drill.reps,
-            "rest": osd.rest if osd.rest is not None else drill.rest,
-            "training_styles": drill.training_styles or [],
-            "primary_skill": {
-                "category": drill.skill_focus[0].category if drill.skill_focus else "general",
-                "sub_skill": drill.skill_focus[0].sub_skill if drill.skill_focus else "general"
-            },
-            "video_url": drill.video_url
-        }
-        drills.append(drill_data)
+        # ✅ UPDATED: Use find_drill_by_uuid to get drill from either table
+        drill = None
+        is_custom = False
+        if osd.drill_uuid:
+            drill, is_custom = find_drill_by_uuid(db, str(osd.drill_uuid), user_id)
+        
+        if drill:
+            # ✅ UPDATED: Handle skill focus differently for Drill vs CustomDrill
+            if is_custom:
+                # CustomDrill uses primary_skill JSON field
+                primary_skill_data = drill.primary_skill or {}
+                main_skill = primary_skill_data.get('category', 'general')
+                sub_skill = primary_skill_data.get('sub_skill', 'general')
+            else:
+                # Regular Drill uses skill_focus relationship
+                skill_focus = drill.skill_focus
+                primary_skill = next((sf for sf in skill_focus if sf.is_primary), None) if skill_focus else None
+                main_skill = primary_skill.category if primary_skill else "general"
+                sub_skill = primary_skill.sub_skill if primary_skill else "general"
+            
+            # Merge per-session and static fields
+            drill_data = {
+                "uuid": str(drill.uuid),  # Use UUID as primary identifier
+                "title": drill.title,
+                "description": drill.description,
+                "duration": osd.duration if osd.duration is not None else drill.duration,
+                "intensity": drill.intensity,
+                "difficulty": drill.difficulty,
+                "equipment": drill.equipment,
+                "suitable_locations": drill.suitable_locations,
+                "instructions": drill.instructions,
+                "tips": drill.tips,
+                "type": drill.type,
+                "sets": osd.sets if osd.sets is not None else drill.sets,
+                "reps": osd.reps if osd.reps is not None else drill.reps,
+                "rest": osd.rest if osd.rest is not None else drill.rest,
+                "training_styles": drill.training_styles or [],
+                "primary_skill": {
+                    "category": main_skill,
+                    "sub_skill": sub_skill
+                },
+                "video_url": drill.video_url,
+                "is_custom": is_custom  # ✅ Add is_custom field
+            }
+            drills.append(drill_data)
 
     # Format focus areas as a list of sub-skills
     focus_areas = []
@@ -272,7 +293,7 @@ async def create_onboarding_with_generated_session(player_info: OnboardingData, 
                 session = await session_generator.generate_session(preferences)
                 
                 # Format response for frontend
-                initial_session = format_session_for_frontend(session)
+                initial_session = format_session_for_frontend(session, db, user.id)
                 logger.info(f"Generated initial training session for user: {user.email}")
                 logger.info(f"Session contains {len(initial_session.get('drills', []))} drills")
             except Exception as e:

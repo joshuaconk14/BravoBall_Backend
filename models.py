@@ -138,7 +138,7 @@ class OrderedSessionDrill(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     session_id = Column(Integer, ForeignKey("training_sessions.id"))  # Link to session
-    drill_id = Column(Integer, ForeignKey("drills.id"))
+    drill_uuid = Column(PG_UUID(as_uuid=True), nullable=False)  # ✅ CHANGED: Use UUID instead of drill_id
     position = Column(Integer)  # Order in the session
     sets_done = Column(Integer)
     sets = Column(Integer, nullable=True)
@@ -148,7 +148,6 @@ class OrderedSessionDrill(Base):
     is_completed = Column(Boolean, default=False)
 
     # Relationships
-    drill = relationship("Drill")
     session = relationship("TrainingSession", back_populates="ordered_drills")
 
 # Remove direct relationship from User to OrderedSessionDrill
@@ -186,33 +185,50 @@ class DrillGroup(Base):
     user = relationship("User", back_populates="drill_groups")
     drill_items = relationship("DrillGroupItem", back_populates="drill_group", cascade="all, delete-orphan")
     
-    # ✅ UPDATED: Property to get drills from both regular drills and custom drills tables
+    # ✅ UPDATED: Property to get drills using is_custom field for efficiency
     @property
     def drills(self):
         """
-        Get all drills for this group by looking up UUIDs in both drills and custom_drills tables.
-        This replaces the simple relationship since we need to check multiple tables.
+        Get all drills for this group by looking up UUIDs using the is_custom field.
+        This is more efficient than checking both tables.
         """
         from sqlalchemy.orm import object_session
+        from sqlalchemy import union_all, select, literal_column
         
         session = object_session(self)
         if not session:
             return []
         
-        all_drills = []
-        for item in self.drill_items:
-            if item.drill_uuid:
-                # First try regular drills table
-                drill = session.query(Drill).filter(Drill.uuid == item.drill_uuid).first()
-                if drill:
-                    all_drills.append(drill)
-                else:
-                    # Then try custom drills table
-                    custom_drill = session.query(CustomDrill).filter(CustomDrill.uuid == item.drill_uuid).first()
-                    if custom_drill:
-                        all_drills.append(custom_drill)
+        if not self.drill_items:
+            return []
         
-        return all_drills
+        # Get all UUIDs from drill items
+        drill_uuids = [item.drill_uuid for item in self.drill_items if item.drill_uuid]
+        
+        if not drill_uuids:
+            return []
+        
+        # Query both tables efficiently using UNION
+        from models import Drill, CustomDrill
+        
+        # Query regular drills
+        regular_drills = session.query(Drill).filter(Drill.uuid.in_(drill_uuids)).all()
+        
+        # Query custom drills
+        custom_drills = session.query(CustomDrill).filter(CustomDrill.uuid.in_(drill_uuids)).all()
+        
+        # Combine results
+        all_drills = regular_drills + custom_drills
+        
+        # Sort by the order in drill_items
+        uuid_to_drill = {str(drill.uuid): drill for drill in all_drills}
+        ordered_drills = []
+        
+        for item in self.drill_items:
+            if item.drill_uuid and str(item.drill_uuid) in uuid_to_drill:
+                ordered_drills.append(uuid_to_drill[str(item.drill_uuid)])
+        
+        return ordered_drills
 
 
 # New junction table for many-to-many relationship between drill groups and drills
@@ -285,6 +301,9 @@ class Drill(Base):
     variations = Column(JSON)  # Alternative versions
     video_url = Column(String, nullable=True)
     thumbnail_url = Column(String, nullable=True)
+    
+    # ✅ NEW: Custom drill identifier
+    is_custom = Column(Boolean, default=False)  # False for default drills, True for custom drills
 
     # Relationships
     category = relationship("DrillCategory", backref="drills")
@@ -329,10 +348,14 @@ class CustomDrill(Base):
     
     # Skill focus (stored as JSON for simplicity)
     primary_skill = Column(JSON, nullable=True)  # {"category": "...", "sub_skill": "..."}
-    secondary_skills = Column(JSON, nullable=True)  # [{"category": "...", "sub_skill": "..."}]
+    # ✅ REMOVED: secondary_skills field since it's not being used
+    
     # Metadata
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
+    
+    # ✅ NEW: Custom drill identifier
+    is_custom = Column(Boolean, default=True)  # "default" or "custom"
     
     # Relationships
     user = relationship("User", backref="custom_drills")
@@ -348,26 +371,10 @@ class TrainingSession(Base):
     created_at = Column(DateTime, server_default=func.now())
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Optional user association
 
-    # Many-to-many relationship with drills
-    drills = relationship(
-        "Drill",
-        secondary="session_drills",
-        backref="training_sessions"
-    )
-
     user = relationship("User", backref="training_sessions")
 
     # Add ordered_drills relationship
     ordered_drills = relationship("OrderedSessionDrill", back_populates="session")
-
-
-# Association table for many-to-many relationship between sessions and drills
-session_drills = Table(
-    "session_drills",
-    Base.metadata,
-    Column("session_id", Integer, ForeignKey("training_sessions.id")),
-    Column("drill_id", Integer, ForeignKey("drills.id")),
-)
 
 
 # *** PYDANTIC MODELS FOR API REQUESTS/RESPONSES ***
@@ -466,6 +473,7 @@ class DrillResponse(BaseModel):
     variations: List[str] = []
     video_url: Optional[str] = None
     thumbnail_url: Optional[str] = None
+    is_custom: bool = False  # ✅ NEW: Custom drill identifier
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -484,7 +492,7 @@ class CustomDrillCreate(BaseModel):
     training_styles: Optional[List[str]] = None
     difficulty: Optional[str] = None
     primary_skill: Optional[Dict[str, str]] = None  # {"category": "...", "sub_skill": "..."}
-    secondary_skills: Optional[List[Dict[str, str]]] = []  # [{"category": "...", "sub_skill": "..."}]
+    # ✅ REMOVED: secondary_skills field since it's not being used
     instructions: Optional[List[str]] = []
     tips: Optional[List[str]] = None
     common_mistakes: Optional[List[str]] = None
@@ -511,7 +519,7 @@ class CustomDrillResponse(BaseModel):
     training_styles: Optional[List[str]] = None
     difficulty: Optional[str] = None
     primary_skill: Optional[Dict[str, str]] = None
-    secondary_skills: Optional[List[Dict[str, str]]] = []
+    # ✅ REMOVED: secondary_skills field since it's not being used
     instructions: Optional[List[str]] = []
     tips: Optional[List[str]] = None
     common_mistakes: Optional[List[str]] = None
@@ -521,6 +529,7 @@ class CustomDrillResponse(BaseModel):
     thumbnail_url: Optional[str] = None
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
+    is_custom: bool = True  # ✅ NEW: Custom drill identifier
 
     model_config = ConfigDict(from_attributes=True)
 
