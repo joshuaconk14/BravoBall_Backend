@@ -270,7 +270,7 @@ async def update_custom_drill(
             detail=f"Failed to update custom drill: {str(e)}"
         )
 
-@router.delete("/api/custom-drills/{drill_uuid}")
+@router.delete("/api/custom-drills/{drill_uuid}/")
 async def delete_custom_drill(
     drill_uuid: str,
     current_user: User = Depends(get_current_user),
