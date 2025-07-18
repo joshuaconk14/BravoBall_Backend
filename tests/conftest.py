@@ -196,7 +196,7 @@ def test_drill(db, test_drill_category):
     
     # Add skill focus
     primary_skill = DrillSkillFocus(
-        drill_id=drill.id,
+        drill_uuid=drill.uuid,
         category="dribbling",
         sub_skill="close_control",
         is_primary=True
@@ -204,7 +204,7 @@ def test_drill(db, test_drill_category):
     db.add(primary_skill)
     
     secondary_skill = DrillSkillFocus(
-        drill_id=drill.id,
+        drill_uuid=drill.uuid,
         category="dribbling",
         sub_skill="ball_mastery",
         is_primary=False

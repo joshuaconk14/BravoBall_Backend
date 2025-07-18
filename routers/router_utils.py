@@ -4,13 +4,13 @@ from models import DrillSkillFocus
 def drill_to_response(drill, db):
     # Get the primary skill
     primary_skill = db.query(DrillSkillFocus).filter(
-        DrillSkillFocus.drill_id == drill.id,
+        DrillSkillFocus.drill_uuid == drill.uuid,
         DrillSkillFocus.is_primary == True
     ).first()
     
     # Get secondary skills
     secondary_skills = db.query(DrillSkillFocus).filter(
-        DrillSkillFocus.drill_id == drill.id,
+        DrillSkillFocus.drill_uuid == drill.uuid,
         DrillSkillFocus.is_primary == False
     ).all()
     

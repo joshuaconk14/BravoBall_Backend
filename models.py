@@ -260,7 +260,7 @@ class DrillSkillFocus(Base):
     __tablename__ = "drill_skill_focus"
     
     id = Column(Integer, primary_key=True, index=True)
-    drill_id = Column(Integer, ForeignKey("drills.id"))
+    drill_uuid = Column(PG_UUID(as_uuid=True), ForeignKey("drills.uuid"))
     category = Column(String)  # SkillCategory enum value
     sub_skill = Column(String)  # Corresponding SubSkill enum value
     is_primary = Column(Boolean, default=True)  # Whether this is a primary or secondary skill focus
@@ -307,7 +307,7 @@ class Drill(Base):
 
     # Relationships
     category = relationship("DrillCategory", backref="drills")
-    skill_focus = relationship("DrillSkillFocus", backref="drill")  # Relationship to skill focus
+    skill_focus = relationship("DrillSkillFocus", foreign_keys="DrillSkillFocus.drill_uuid", primaryjoin="Drill.uuid == DrillSkillFocus.drill_uuid", backref="drill")  # Relationship to skill focus
 
 
 class CustomDrill(Base):

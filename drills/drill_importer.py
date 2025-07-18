@@ -122,11 +122,11 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                     existing_drill.category_id = category.id
                 
                 # Delete existing skill focus entries
-                db.query(DrillSkillFocus).filter_by(drill_id=existing_drill.id).delete()
+                db.query(DrillSkillFocus).filter_by(drill_uuid=existing_drill.uuid).delete()
                 
                 # Add primary skill focus
                 primary_skill_focus = DrillSkillFocus(
-                    drill_id=existing_drill.id,
+                    drill_uuid=existing_drill.uuid,
                     category=primary_skill["category"],
                     sub_skill=primary_skill["sub_skill"],
                     is_primary=True
@@ -139,7 +139,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                         # Handle multiple sub-skills
                         for sub_skill in skill["sub_skill"]:
                             secondary_skill_focus = DrillSkillFocus(
-                                drill_id=existing_drill.id,
+                                drill_uuid=existing_drill.uuid,
                                 category=skill["category"],
                                 sub_skill=sub_skill,
                                 is_primary=False
@@ -148,7 +148,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                     else:
                         # Handle single sub-skill
                         secondary_skill_focus = DrillSkillFocus(
-                            drill_id=existing_drill.id,
+                            drill_uuid=existing_drill.uuid,
                             category=skill["category"],
                             sub_skill=skill["sub_skill"],
                             is_primary=False
@@ -189,7 +189,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
 
                 # Add primary skill focus
                 primary_skill_focus = DrillSkillFocus(
-                    drill_id=drill.id,
+                    drill_uuid=drill.uuid,
                     category=primary_skill["category"],
                     sub_skill=primary_skill["sub_skill"],
                     is_primary=True
@@ -202,7 +202,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                         # Handle multiple sub-skills
                         for sub_skill in skill["sub_skill"]:
                             secondary_skill_focus = DrillSkillFocus(
-                                drill_id=drill.id,
+                                drill_uuid=drill.uuid,
                                 category=skill["category"],
                                 sub_skill=sub_skill,
                                 is_primary=False
@@ -211,7 +211,7 @@ def upload_drills_to_db(drills_data: List[Dict[str, Any]], db: Session):
                     else:
                         # Handle single sub-skill
                         secondary_skill_focus = DrillSkillFocus(
-                            drill_id=drill.id,
+                            drill_uuid=drill.uuid,
                             category=skill["category"],
                             sub_skill=skill["sub_skill"],
                             is_primary=False

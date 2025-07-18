@@ -65,14 +65,12 @@ class DrillRepository:
             logger.error(f"Drill not found with UUID: {drill_uuid}")
             return
         
-        drill_id = drill.id
-        
         # Delete existing skill focus
-        self.db.query(DrillSkillFocus).filter(DrillSkillFocus.drill_id == drill_id).delete()
+        self.db.query(DrillSkillFocus).filter(DrillSkillFocus.drill_uuid == drill_uuid).delete()
         
         # Add primary skill
         primary_skill_focus = DrillSkillFocus(
-            drill_id=drill_id,
+            drill_uuid=drill_uuid,
             category=primary_skill["category"],
             sub_skill=primary_skill["sub_skill"],
             is_primary=True
@@ -84,7 +82,7 @@ class DrillRepository:
             if isinstance(skill["sub_skill"], list):
                 for sub_skill in skill["sub_skill"]:
                     secondary_skill_focus = DrillSkillFocus(
-                        drill_id=drill_id,
+                        drill_uuid=drill_uuid,
                         category=skill["category"],
                         sub_skill=sub_skill,
                         is_primary=False
@@ -92,7 +90,7 @@ class DrillRepository:
                     self.db.add(secondary_skill_focus)
             else:
                 secondary_skill_focus = DrillSkillFocus(
-                    drill_id=drill_id,
+                    drill_uuid=drill_uuid,
                     category=skill["category"],
                     sub_skill=skill["sub_skill"],
                     is_primary=False
