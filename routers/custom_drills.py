@@ -188,7 +188,7 @@ async def get_custom_drill(
             detail=f"Failed to get custom drill: {str(e)}"
         )
 
-@router.put("/api/custom-drills/{drill_uuid}", response_model=CustomDrillResponse)
+@router.put("/api/custom-drills/{drill_uuid}/", response_model=CustomDrillResponse)
 async def update_custom_drill(
     drill_uuid: str,
     drill_data: CustomDrillCreate,
