@@ -270,6 +270,52 @@ async def update_custom_drill(
             detail=f"Failed to update custom drill: {str(e)}"
         )
 
+@router.patch("/api/custom-drills/{drill_uuid}/")
+async def update_custom_drill_video(
+    drill_uuid: str,
+    video_data: dict,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update only the video URL of a custom drill.
+    Expects a JSON body with 'video_url' field.
+    """
+    try:
+        custom_drill = db.query(CustomDrill).filter(
+            CustomDrill.uuid == drill_uuid,
+            CustomDrill.user_id == current_user.id
+        ).first()
+        
+        if not custom_drill:
+            raise HTTPException(
+                status_code=404, detail="Custom drill not found"
+            )
+        
+        # Update only the video URL
+        if 'video_url' in video_data:
+            custom_drill.video_url = video_data['video_url']
+            logging.info(f"Updating video URL for drill {drill_uuid} to: {video_data['video_url']}")
+        
+        db.commit()
+        db.refresh(custom_drill)
+        
+        return {
+            "message": "Video updated successfully",
+            "video_url": custom_drill.video_url,
+            "drill_uuid": str(custom_drill.uuid)
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        logging.error(f"Error updating custom drill video: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update custom drill video: {str(e)}"
+        )
+
 @router.delete("/api/custom-drills/{drill_uuid}/")
 async def delete_custom_drill(
     drill_uuid: str,
