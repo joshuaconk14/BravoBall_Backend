@@ -240,6 +240,7 @@ class ProductionMigrator:
             'first_touch': {'category': 'first_touch', 'sub_skill': 'ground_control'},
             'fitness': {'category': 'fitness', 'sub_skill': 'agility'},
             'defending': {'category': 'defending', 'sub_skill': 'positioning'},
+            'goalkeeping': {'category': 'goalkeeping', 'sub_skill': 'shot_stopping'},
         }
         
         fixed_count = 0

@@ -1,127 +1,49 @@
 [
     {
-        "content": "You have to fight to reach your dream. You have to sacrifice and work hard for it.",
+        "content": "In football, the result is an impostor. You can do things really, really well but not win. There's something greater than the result, more lasting — a legacy.",
+        "author": "Xavi",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "All good athletes make mistakes; the great ones learn to make that mistake only once.",
+        "author": "Raul Lopez",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Surround yourself with good people. Surround yourself with positivity and people who are going to challenge you to make you better. If you just kind of let yourself stay alone and be by yourself, the negative, it is just not going to help you. You can control two things, your work ethic and your attitude about anything.",
+        "author": "Ali Krieger",
+        "type": "motivational",
+        "display_duration": 12
+    },
+    {
+        "content": "Failure happens all the time. It happens every day in practice. What makes you better is how you react to it.",
+        "author": "Mia Hamm",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "I am not a perfectionist, but I like to feel that things are done well. More important than that, I feel an endless need to learn, to improve, to evolve, not only to please the coach and the fans but also to feel satisfied with myself. It is my conviction that there are no limits to learning and that it can never stop, no matter what our age.",
+        "author": "Cristiano Ronaldo",
+        "type": "motivational",
+        "display_duration": 12
+    },
+    {
+        "content": "Something deep in my character allows me to take the hits and get on with trying to win.",
         "author": "Lionel Messi",
         "type": "motivational",
         "display_duration": 8
     },
     {
-        "content": "I start early and I stay late, day after day, year after year. It took me 17 years and 114 days to become an overnight success.",
-        "author": "Lionel Messi",
+        "content": "Keep dreaming, even when people laugh at your dreams or tell you that they are impossible to achieve. Keep believing in yourself.",
+        "author": "Tobin Heath",
         "type": "motivational",
         "display_duration": 8
     },
     {
-        "content": "You can overcome anything, if only you love something enough.",
-        "author": "Lionel Messi",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "I've always really just liked football, and I've always devoted a lot of time to it.",
-        "author": "Lionel Messi",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The best decisions aren't made with your mind, but with your instincts.",
-        "author": "Lionel Messi",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Everything that's happened to me in my career has been special, even the tough times: they leave marks on you that shape your life.",
-        "author": "Lionel Messi",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Dreams are not what you see in your sleep, dreams are things which do not let you sleep.",
-        "author": "Cristiano Ronaldo",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Your love makes me strong. Your hate makes me unstoppable.",
-        "author": "Cristiano Ronaldo",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Talent without working hard is nothing.",
-        "author": "Cristiano Ronaldo",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "I've never tried to hide the fact that it is my intention to become the best.",
-        "author": "Cristiano Ronaldo",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "We don't want to tell our dreams. We want to show them.",
-        "author": "Cristiano Ronaldo",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "If you don't believe you are the best, then you will never achieve all that you are capable of.",
-        "author": "Cristiano Ronaldo",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Dedication, hard work all the time, and belief.",
-        "author": "Cristiano Ronaldo",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Success is no accident. It is hard work, perseverance, learning, studying, sacrifice and most of all, love of what you are doing.",
-        "author": "Pele",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Everything is practice.",
-        "author": "Pele",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Enthusiasm is everything. It must be taut and vibrating like a guitar string.",
-        "author": "Pele",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The more difficult the victory, the greater the happiness in winning.",
-        "author": "Pele",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "A lot of people, when a guy scores a lot of goals, think, 'He's a great player', because a goal is very important, but a great player is a player who can do everything on the field.",
-        "author": "Pele",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "To see the ball, to run after it, makes me the happiest man in the world.",
-        "author": "Diego Maradona",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "When you win, you don't get carried away. But if you go step by step, with confidence, you can go far.",
-        "author": "Diego Maradona",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Playing football is very simple, but playing simple football is the hardest thing there is.",
-        "author": "Johan Cruyff",
+        "content": "I made many mistakes, but I learned from everything. I still make mistakes; I still learn from them. Nobody is perfect.",
+        "author": "Zlatan Ibrahimovic",
         "type": "motivational",
         "display_duration": 8
     },
@@ -132,285 +54,207 @@
         "display_duration": 8
     },
     {
-        "content": "Football is an art, like dancing. It requires whole-hearted concentration.",
-        "author": "Arsene Wenger",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "I've missed more than 9000 shots in my career. I've lost almost 300 games. I've failed over and over and over again in my life. And that is why I succeed.",
-        "author": "Michael Jordan",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Talent wins games, but teamwork and intelligence win championships.",
-        "author": "Michael Jordan",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "You must expect great things of yourself before you can do them.",
-        "author": "Michael Jordan",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "I can accept failure, everyone fails at something. But I can't accept not trying.",
-        "author": "Michael Jordan",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "If you're trying to achieve, there will be roadblocks. Figure out how to climb it, go through it, or work around it.",
-        "author": "Michael Jordan",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Always turn a negative situation into a positive situation.",
-        "author": "Michael Jordan",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Some people want it to happen, some wish it would happen, others make it happen.",
-        "author": "Michael Jordan",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Obstacles don't have to stop you. If you run into a wall, don't turn around and give up.",
-        "author": "Michael Jordan",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Never say never, because limits, like fears, are often just an illusion.",
-        "author": "Michael Jordan",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "I really think a champion is defined not by their wins but by how they can recover when they fall.",
-        "author": "Serena Williams",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "You have to believe in yourself when no one else does.",
-        "author": "Serena Williams",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The success of every woman should be the inspiration to another. We should raise each other up.",
-        "author": "Serena Williams",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The way I see it, if you want the rainbow, you gotta put up with the rain.",
-        "author": "Dolly Parton",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Champions keep playing until they get it right.",
-        "author": "Billie Jean King",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "You miss 100% of the shots you don't take.",
-        "author": "Wayne Gretzky",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "It's not whether you get knocked down; it's whether you get up.",
-        "author": "Vince Lombardi",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The will to win, the desire to succeed, the urge to reach your full potential... these are the keys that will unlock the door to personal excellence.",
-        "author": "Confucius",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work.",
-        "author": "Steve Jobs",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Innovation distinguishes between a leader and a follower.",
-        "author": "Steve Jobs",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The way to get started is to quit talking and begin doing.",
-        "author": "Walt Disney",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Don't be afraid to give up the good to go for the great.",
-        "author": "John D. Rockefeller",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Success is not final, failure is not fatal: it is the courage to continue that counts.",
-        "author": "Winston Churchill",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The only impossible journey is the one you never begin.",
-        "author": "Tony Robbins",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "What lies behind us and what lies before us are tiny matters compared to what lies within us.",
-        "author": "Ralph Waldo Emerson",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Success is going from failure to failure without losing your enthusiasm.",
-        "author": "Winston Churchill",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Believe you can and you're halfway there.",
-        "author": "Theodore Roosevelt",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "It does not matter how slowly you go as long as you do not stop.",
-        "author": "Confucius",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "I once cried because I had no shoes to play football with my friends, but one day I saw a man who had no feet, and I realized how rich I am.",
+        "content": "Life is full of regrets, but it doesn't pay to look back.",
         "author": "Zinedine Zidane",
         "type": "motivational",
         "display_duration": 8
     },
     {
-        "content": "My game is based on improvisation. Often a forward does not know what he will do until he sees the defenders' reactions.",
+        "content": "When you win, you don't get carried away. But if you go step by step, with confidence, you can go far.",
+        "author": "Diego Maradona",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "I always want to become better. If never being satisfied is a problem, then I have it. At least it's a good problem.",
+        "author": "Zlatan Ibrahimovic",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "A champion is someone who does not settle for that day's practice, that day's competition, that day's performance. They are always striving to be better. They don't live in the past.",
+        "author": "Briana Scurry",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "I have to keep working hard and playing well because I don't like to be second or third. They're the worst places to be. You would be proud, of course, because it means you're on the way, but you want to finish first.",
+        "author": "Paul Pogba",
+        "type": "motivational",
+        "display_duration": 12
+    },
+    {
+        "content": "Success is no accident. It is hard work, perseverance, learning, studying, sacrifice, and most of all, love of what you are doing or learning to do.",
+        "author": "Pele",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "To win, you have to score one more goal than your opponent.",
+        "author": "Johan Cruyff",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Before kids can play like a pro, they must enjoy playing the game like a kid.",
+        "author": "Steve Locker",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "The most important thing for a forward is the speed of thought. Top players read the game.",
+        "author": "Samuel Eto'o",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "In football, the worst blindness is only seeing the ball.",
+        "author": "Nelson Falcão Rodrigues",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "You owe it to yourself to be the best you can be.",
+        "author": "Christian Pulisic",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Play for the name on the front of the shirt, and they will remember the name on the back.",
+        "author": "Tony Adams",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "In football as in watchmaking, talent and elegance mean nothing without rigor and precision.",
+        "author": "Lionel Messi",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Soccer is simple. You just need to have the right mentality, fighting in every game, in every practice, and for every ball.",
+        "author": "Hristo Stoichkov",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Good soccer players need not be titans sculpted by Michelangelo. In soccer, your ability is much more important than shape, and in many cases, skill is the art of turning limitations into virtues.",
+        "author": "Eduardo Galeano",
+        "type": "motivational",
+        "display_duration": 12
+    },
+    {
+        "content": "Substitution is a true test of strength. The real performance of a player is seen not only during playing time but also and more especially when the player is substituted.",
+        "author": "Ernest Agyemang Yeboah",
+        "type": "motivational",
+        "display_duration": 12
+    },
+    {
+        "content": "For sports players who want to be champions, the mind can be as important, if not more important, than any other part of the body.",
+        "author": "Gary Neville",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "You can overcome anything if, and only if, you love something enough.",
+        "author": "Lionel Messi",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Keep working even when no one is watching.",
+        "author": "Alex Morgan",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Embrace the opportunity, no matter what it is. Look at everything in a positive light.",
+        "author": "Julie Ertz",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Injuries can never be used as excuses.",
+        "author": "Victor Valdes",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Whatever brings you down will eventually make you stronger.",
+        "author": "Alex Morgan",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "It's hard to beat somebody that never gives up.",
+        "author": "Megan Rapinoe",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "I've never scored a goal in my life without getting a pass from someone else.",
+        "author": "Abby Wambach",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Take your victories, whatever they might be, cherish them, use them, but don't settle for them.",
+        "author": "Mia Hamm",
+        "type": "motivational",
+        "display_duration": 12
+    },
+    {
+        "content": "I've never tried to hide the fact that it is my intention to become the best.",
+        "author": "Cristiano Ronaldo",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "I learned all about life with a ball at my feet.",
         "author": "Ronaldinho",
         "type": "motivational",
         "display_duration": 8
     },
     {
-        "content": "If there is one thing more than others that a successful footballer needs, it is energy.",
-        "author": "Michel Platini",
+        "content": "You have to fight to reach your dream. You have to sacrifice and work hard for it.",
+        "author": "Lionel Messi",
         "type": "motivational",
         "display_duration": 8
     },
     {
-        "content": "Failure happens all the time. It happens every day in practice. What makes you better is how you react to it.",
+        "content": "I don't have time for hobbies. At the end of the day, I treat my job as a hobby. It's something I love doing.",
+        "author": "David Beckham",
+        "type": "motivational",
+        "display_duration": 12
+    },
+    {
+        "content": "When people succeed, it is because of hard work. Luck has nothing to do with success.",
+        "author": "Diego Maradona",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "Talent without working hard is nothing.",
+        "author": "Cristiano Ronaldo",
+        "type": "motivational",
+        "display_duration": 8
+    },
+    {
+        "content": "The secret is to believe in your dreams; in your potential that you can be like your star, keep searching, keep believing and don't lose faith in yourself.",
+        "author": "Neymar",
+        "type": "motivational",
+        "display_duration": 12
+    },
+    {
+        "content": "Most of us are in this more than just for playing soccer. We're in it for the bigger goal - to move it along for the next generation.",
+        "author": "Landon Donovan",
+        "type": "motivational",
+        "display_duration": 12
+    },
+    {
+        "content": "Many people say I'm the best women's soccer player in the world. I don't think so. And because of that, someday I just might be.",
         "author": "Mia Hamm",
         "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "As someone who loves football, I want to give something back to the game and help it develop further.",
-        "author": "Franz Beckenbauer",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The difference between ordinary and extraordinary is that little extra.",
-        "author": "Jimmy Johnson",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Excellence is not a skill, it's an attitude.",
-        "author": "Ralph Marston",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Champions aren't made in the gyms. Champions are made from something deep inside them - a desire, a dream, a vision.",
-        "author": "Muhammad Ali",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Don't watch the clock; do what it does. Keep going.",
-        "author": "Sam Levenson",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The harder you work, the harder it is to surrender.",
-        "author": "Vince Lombardi",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Success is where preparation and opportunity meet.",
-        "author": "Bobby Unser",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Confidence comes from discipline and training.",
-        "author": "Robert Kiyosaki",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The best time to plant a tree was 20 years ago. The second best time is now.",
-        "author": "Chinese Proverb",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Whether you think you can or you think you can't, you're right.",
-        "author": "Henry Ford",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "Don't let yesterday take up too much of today.",
-        "author": "Will Rogers",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "You learn more from failure than from success. Don't let it stop you. Failure builds character.",
-        "author": "Unknown",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "If you are not willing to risk the usual, you will have to settle for the ordinary.",
-        "author": "Jim Rohn",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "All our dreams can come true if we have the courage to pursue them.",
-        "author": "Walt Disney",
-        "type": "motivational",
-        "display_duration": 8
-    },
-    {
-        "content": "The future belongs to those who believe in the beauty of their dreams.",
-        "author": "Eleanor Roosevelt",
-        "type": "motivational",
-        "display_duration": 8
+        "display_duration": 12
     }
 ] 
