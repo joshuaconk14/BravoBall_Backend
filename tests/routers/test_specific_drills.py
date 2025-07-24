@@ -42,7 +42,7 @@ def update_drill_video(drill_title: str, new_video_url: str, new_thumbnail_url: 
 if __name__ == "__main__":
     # Example usage
     drill_title = "Toe-Taps"  # Replace with the exact title of the drill you want to test
-    new_video_url = "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/toe-taps.mp4"  # Replace with your test video URL
+    new_video_url = "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/toe-taps.mp4"  # Replace with your test video URL
     new_thumbnail_url = "https://example.com/your-test-thumbnail.jpg"  # Optional
     
     update_drill_video(drill_title, new_video_url, new_thumbnail_url)

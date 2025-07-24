@@ -58,7 +58,7 @@
             "Add a ball for game-realistic training."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/10-yard-explosive-starts.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/10-yard-explosive-starts.mp4",
         "thumbnail_url": "https://example.com/10-yard-explosive-starts-thumbnail.jpg"
     },
     {
@@ -121,7 +121,7 @@
             "Add finishing elements at the end of each sprint."
         ],
         "rest": 90,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/sprint-with-ball-control.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/sprint-with-ball-control.mp4",
         "thumbnail_url": "https://example.com/sprint-with-ball-control-thumbnail.jpg"
     },
     {
@@ -184,7 +184,7 @@
             "Add a ball for game-realistic training."
         ],
         "rest": 120,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/band-resisted-sprint.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/band-resisted-sprint.mp4",
         "thumbnail_url": "https://example.com/band-resisted-sprint-thumbnail.jpg"
     },
     {
@@ -246,7 +246,7 @@
             "Add a ball for game-realistic training."
         ],
         "rest": 90,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/flying-sprints.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/flying-sprints.mp4",
         "thumbnail_url": "https://example.com/flying-sprints-thumbnail.jpg"
     },
     {
@@ -308,7 +308,7 @@
             "Add a ball for game-realistic training."
         ],
         "rest": 75,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/sprint-starts-from-ground.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/sprint-starts-from-ground.mp4",
         "thumbnail_url": "https://example.com/sprint-starts-from-ground-thumbnail.jpg"
     },
     {
@@ -370,7 +370,7 @@
             "Increase sprint time to 30 seconds for advanced players."
         ],
         "rest": 0,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/20-20-intervals.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/20-20-intervals.mp4",
         "thumbnail_url": "https://example.com/20-20-intervals-thumbnail.jpg"
     },
     {
@@ -433,7 +433,7 @@
             "Increase square size for advanced players."
         ],
         "rest": 120,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/cone-tempo-runs.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/cone-tempo-runs.mp4",
         "thumbnail_url": "https://example.com/cone-tempo-runs-thumbnail.jpg"
     },
     {
@@ -495,7 +495,7 @@
             "Increase number of sets as endurance improves."
         ],
         "rest": 180,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/ladder-tempo-run.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/ladder-tempo-run.mp4",
         "thumbnail_url": "https://example.com/ladder-tempo-run-thumbnail.jpg"
     },
     {
@@ -558,7 +558,7 @@
             "Increase square size for advanced players."
         ],
         "rest": 120,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/ball-control-endurance-circuit.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/ball-control-endurance-circuit.mp4",
         "thumbnail_url": "https://example.com/ball-control-endurance-circuit-thumbnail.jpg"
     },
     {
@@ -620,7 +620,7 @@
             "Add a ball for game-realistic training."
         ],
         "rest": 180,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/partner-alternating-shuttle.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/partner-alternating-shuttle.mp4",
         "thumbnail_url": "https://example.com/partner-alternating-shuttle-thumbnail.jpg"
     },
     {
@@ -682,7 +682,7 @@
             "Increase speed through the pattern."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/cone-slalom.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/cone-slalom.mp4",
         "thumbnail_url": "https://example.com/cone-slalom-thumbnail.jpg"
     },
     {
@@ -744,7 +744,7 @@
             "Add a partner to call directions randomly."
         ],
         "rest": 75,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/y-drill.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/y-drill.mp4",
         "thumbnail_url": "https://example.com/y-drill-thumbnail.jpg"
     },
     {
@@ -806,7 +806,7 @@
             "Add a ball for game-realistic training."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/drop-step-reaction-drill.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/drop-step-reaction-drill.mp4",
         "thumbnail_url": "https://example.com/drop-step-reaction-drill-thumbnail.jpg"
     },
     {
@@ -869,7 +869,7 @@
             "Add more complex movement patterns."
         ],
         "rest": 90,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/box-agility-drill.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/box-agility-drill.mp4",
         "thumbnail_url": "https://example.com/box-agility-drill-thumbnail.jpg"
     },
     {
@@ -933,7 +933,7 @@
             "Add timing goals for performance tracking."
         ],
         "rest": 120,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/t-test.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/t-test.mp4",
         "thumbnail_url": "https://example.com/t-test-thumbnail.jpg"
     },
     {
@@ -995,7 +995,7 @@
             "Add a ball for game-realistic training."
         ],
         "rest": 90,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/walking-to-jogging-transitions.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/walking-to-jogging-transitions.mp4",
         "thumbnail_url": "https://example.com/walking-to-jogging-transitions-thumbnail.jpg"
     },
     {
@@ -1056,7 +1056,7 @@
             "Add a ball for advanced training."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/side-to-side-shuffles.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/side-to-side-shuffles.mp4",
         "thumbnail_url": "https://example.com/side-to-side-shuffles-thumbnail.jpg"
     },
     {
@@ -1118,7 +1118,7 @@
             "Add a ball for advanced training."
         ],
         "rest": 75,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/simple-cone-weaving.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/simple-cone-weaving.mp4",
         "thumbnail_url": "https://example.com/simple-cone-weaving-thumbnail.jpg"
     },
     {
@@ -1180,7 +1180,7 @@
             "Add a ball for advanced training."
         ],
         "rest": 90,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/forward-and-backward-movement.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/forward-and-backward-movement.mp4",
         "thumbnail_url": "https://example.com/forward-and-backward-movement-thumbnail.jpg"
     },
     {
@@ -1243,7 +1243,7 @@
             "Add a ball for game-realistic training."
         ],
         "rest": 0,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/continuous-walking-circuit.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/continuous-walking-circuit.mp4",
         "thumbnail_url": "https://example.com/continuous-walking-circuit-thumbnail.jpg"
     },
     {
@@ -1306,7 +1306,7 @@
             "Add obstacles or defenders for advanced training."
         ],
         "rest": 0,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/fitness-drills/ball-jogging-endurance.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/fitness-drills/ball-jogging-endurance.mp4",
         "thumbnail_url": "https://example.com/ball-jogging-endurance-thumbnail.jpg"
     }
 ] 

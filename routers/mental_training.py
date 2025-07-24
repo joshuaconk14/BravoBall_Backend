@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from typing import List
 from models import User, MentalTrainingQuote, MentalTrainingQuoteResponse
 from db import get_db
-from auth import get_current_user
 import logging
 from sqlalchemy import func
 from datetime import datetime
@@ -18,15 +17,15 @@ router = APIRouter()
 async def get_mental_training_quotes(
     limit: int = 50,
     quote_type: str = None,
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
     Get mental training quotes for the timer display.
     Returns a randomized list of quotes to cycle through during mental training.
+    This is a public endpoint that doesn't require authentication for guest mode access.
     """
     try:
-        logger.info(f"Fetching mental training quotes for user: {current_user.email}")
+        logger.info(f"Fetching {limit} mental training quotes (public endpoint)")
         
         # Start with all quotes
         query = db.query(MentalTrainingQuote)

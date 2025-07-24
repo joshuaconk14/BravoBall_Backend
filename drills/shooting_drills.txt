@@ -51,7 +51,7 @@
             "Vary shot angles and placements within the goal."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-6-yard-box.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-6-yard-box.mp4",
         "thumbnail_url": "https://example.com/still-ball-shot-6-yard-box-thumbnail.jpg"
     },
     {
@@ -106,7 +106,7 @@
             "Adjust the angle and position of the target within the goal."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/roll-ball-shot-on-6-yard-box.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/roll-ball-shot-on-6-yard-box.mp4",
         "thumbnail_url": "https://example.com/roll-ball-shot-6-yard-box-thumbnail.jpg"
     },
     {
@@ -162,7 +162,7 @@
             "Vary the shot angles and placements."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-18-yard-box.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-18-yard-box.mp4",
         "thumbnail_url": "https://example.com/still-ball-shot-18-yard-box-thumbnail.jpg"
     },
     {
@@ -218,7 +218,7 @@
             "Adjust the angle and position of target within the goal."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/rolling-ball-shot-on-18-yard-box.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/rolling-ball-shot-on-18-yard-box.mp4",
         "thumbnail_url": "https://example.com/rolling-ball-shot-18-yard-box-thumbnail.jpg"
     },
     {
@@ -276,7 +276,7 @@
             "Add passing options before the cut-in shot."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/turn-to-cut-in-shot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/turn-to-cut-in-shot.mp4",
         "thumbnail_url": "https://example.com/turn-to-cut-in-shot-thumbnail.jpg"
     },
     {
@@ -334,7 +334,7 @@
             "Vary the positioning of the cones to alter shooting angles."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/open-up-body-run-to-shot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/open-up-body-run-to-shot.mp4",
         "thumbnail_url": "https://example.com/open-up-body-run-to-shot-thumbnail.jpg"
     },
     {
@@ -393,7 +393,7 @@
             "Increase the distance from which you start dribbling."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/scissor-to-shot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/scissor-to-shot.mp4",
         "thumbnail_url": "https://example.com/scissor-to-shot-thumbnail.jpg"
     },
     {
@@ -452,7 +452,7 @@
             "Vary the distance from where the volley is taken."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/juggle-with-touch-to-volley.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/juggle-with-touch-to-volley.mp4",
         "thumbnail_url": "https://example.com/juggle-with-touch-to-volley-thumbnail.jpg"
     },
     {
@@ -511,7 +511,7 @@
             "Experiment with different shooting angles."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/shoulder-drop-to-shot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/shoulder-drop-to-shot.mp4",
         "thumbnail_url": "https://example.com/shoulder-drop-to-shot-thumbnail.jpg"
     },
     {
@@ -570,7 +570,7 @@
             "Incorporate other skill moves leading up to the inside-out touch."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/inside-out-to-shot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/inside-out-to-shot.mp4",
         "thumbnail_url": "https://example.com/inside-out-to-shot-thumbnail.jpg"
     },
     {
@@ -632,7 +632,7 @@
             "Take a quick touch out with no extra steps in-between to get the shot off quicker."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/corner-of-six-yard-box-shot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/corner-of-six-yard-box-shot.mp4",
         "thumbnail_url": "https://example.com/one-v-one-down-line-on-side-thumbnail.jpg"
     },
     {
@@ -696,7 +696,7 @@
             "Change the angles from which you start dribbling."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/one-v-one-down-line-on-side.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/one-v-one-down-line-on-side.mp4",
         "thumbnail_url": "https://example.com/one-v-one-down-line-on-side-thumbnail.jpg"
     },
     {
@@ -758,7 +758,7 @@
             "Adjust the distance from which you shoot for variety."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/box-agility-to-shoot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/box-agility-to-shoot.mp4",
         "thumbnail_url": "https://example.com/box-agility-to-shoot-thumbnail.jpg"
     },
     {
@@ -816,7 +816,7 @@
             "Practice shooting from different angles after completing the weave."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/triangle-weave-to-shot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/triangle-weave-to-shot.mp4",
         "thumbnail_url": "https://example.com/triangle-weave-to-shot-thumbnail.jpg"
     },
     {
@@ -875,7 +875,7 @@
             "Add a defender to increase pressure when shooting."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/cone-weave-to-turn-and-finish.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/cone-weave-to-turn-and-finish.mp4",
         "thumbnail_url": "https://example.com/cone-weave-to-turn-and-finish-thumbnail.jpg"
     },
     {
@@ -933,7 +933,7 @@
             "Experiment with different skill moves when approaching the goal."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/mini-zig-zag-dribble-to-shot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/mini-zig-zag-dribble-to-shot.mp4",
         "thumbnail_url": "https://example.com/mini-zig-zag-dribble-to-shot-thumbnail.jpg"
     },
     {
@@ -992,7 +992,7 @@
             "Vary the types of finishing techniques (e.g., volleys, placed shots)."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/shooting-drills/check-to-dribble-to-shot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/check-to-dribble-to-shot.mp4",
         "thumbnail_url": "https://example.com/check-to-dribble-to-shot-thumbnail.jpg"
     }
 ]

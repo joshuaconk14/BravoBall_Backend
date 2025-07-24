@@ -55,7 +55,7 @@
             "Incorporate different defensive stances at each cone."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/triangle-shuffle.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/triangle-shuffle.mp4",
         "thumbnail_url": "https://example.com/triangle-shuffle-thumbnail.jpg"
     },
     {
@@ -119,7 +119,7 @@
             "Incorporate tackling attempts at the end of each session."
         ],
         "rest": 45,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/advanced-shadow-defending.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/advanced-shadow-defending.mp4",
         "thumbnail_url": "https://example.com/advanced-shadow-defending-thumbnail.jpg"
     },
     {
@@ -182,7 +182,7 @@
             "Incorporate different defensive techniques at the end of the recovery."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/crossover-recovery-runs.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/crossover-recovery-runs.mp4",
         "thumbnail_url": "https://example.com/crossover-recovery-runs-thumbnail.jpg"
     },
     {
@@ -246,7 +246,7 @@
             "Incorporate defensive techniques at the end of the recovery."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/recovery-sprint-with-hip-turn.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/recovery-sprint-with-hip-turn.mp4",
         "thumbnail_url": "https://example.com/recovery-sprint-hip-turn-thumbnail.jpg"
     },
     {
@@ -310,7 +310,7 @@
             "Incorporate different defensive techniques after landing."
         ],
         "rest": 45,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/shuffle-to-header-drill.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/shuffle-to-header-drill.mp4",
         "thumbnail_url": "https://example.com/shuffle-to-header-drill-thumbnail.jpg"
     },
     {
@@ -369,7 +369,7 @@
             "Add a partner to provide visual cues for stance changes."
         ],
         "rest": 40,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/defensive-stance-progression.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/defensive-stance-progression.mp4",
         "thumbnail_url": "https://example.com/defensive-stance-progression-thumbnail.jpg"
     },
     {
@@ -428,7 +428,7 @@
             "Incorporate defensive hand movements and positioning cues."
         ],
         "rest": 35,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/lateral-slide-defense.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/lateral-slide-defense.mp4",
         "thumbnail_url": "https://example.com/lateral-slide-defense-thumbnail.jpg"
     },
     {
@@ -495,7 +495,7 @@
             "Increase the distance between cones for greater challenge."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/cone-to-cone-shadow-defense.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/cone-to-cone-shadow-defense.mp4",
         "thumbnail_url": "https://example.com/cone-to-cone-shadow-defense-thumbnail.jpg"
     },
     {
@@ -559,7 +559,7 @@
             "Incorporate tackling and intercepting techniques at the end of each recovery."
         ],
         "rest": 90,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/multi-directional-recovery-challenge.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/multi-directional-recovery-challenge.mp4",
         "thumbnail_url": "https://example.com/multi-directional-recovery-challenge-thumbnail.jpg"
     },
     {
@@ -626,7 +626,7 @@
             "Add time pressure and specific defensive objectives."
         ],
         "rest": 120,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/defending-drills/pressure-and-contain-drill.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/pressure-and-contain-drill.mp4",
         "thumbnail_url": "https://example.com/pressure-and-contain-drill-thumbnail.jpg"
     }
 ] 

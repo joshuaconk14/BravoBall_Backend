@@ -63,7 +63,7 @@
             "Increase the distance between goalkeeper and shooter."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/rapid-fire-catch-reset.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/rapid-fire-catch-reset.mp4",
         "thumbnail_url": "https://example.com/rapid-fire-catch-reset-thumbnail.jpg"
     },
     {
@@ -130,7 +130,7 @@
             "Add a shot after the reaction save for realism."
         ],
         "rest": 45,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/reaction-ball-drops.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/reaction-ball-drops.mp4",
         "thumbnail_url": "https://example.com/reaction-ball-drops-thumbnail.jpg"
     },
     {
@@ -198,7 +198,7 @@
             "Add a second shot after the initial save."
         ],
         "rest": 90,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/cone-shuffle-shot-save.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/cone-shuffle-shot-save.mp4",
         "thumbnail_url": "https://example.com/cone-shuffle-shot-save-thumbnail.jpg"
     },
     {
@@ -266,7 +266,7 @@
             "Add a second save after the initial reaction."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/one-touch-reaction-save.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/one-touch-reaction-save.mp4",
         "thumbnail_url": "https://example.com/one-touch-reaction-save-thumbnail.jpg"
     },
     {
@@ -333,7 +333,7 @@
             "Add multiple balls for increased complexity."
         ],
         "rest": 90,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/dive-recover-drill.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/dive-recover-drill.mp4",
         "thumbnail_url": "https://example.com/dive-recover-drill-thumbnail.jpg"
     },
     {
@@ -396,7 +396,7 @@
             "Add a partner to call out positions randomly."
         ],
         "rest": 45,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/dynamic-positioning-grid.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/dynamic-positioning-grid.mp4",
         "thumbnail_url": "https://example.com/dynamic-positioning-grid-thumbnail.jpg"
     },
     {
@@ -464,7 +464,7 @@
             "Add a partner to throw balls during the movement."
         ],
         "rest": 50,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/agility-ladder-catching.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/agility-ladder-catching.mp4",
         "thumbnail_url": "https://example.com/agility-ladder-catching-thumbnail.jpg"
     },
     {
@@ -532,7 +532,7 @@
             "Add multiple balls for increased challenge."
         ],
         "rest": 60,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/multi-angle-hand-eye-challenge.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/multi-angle-hand-eye-challenge.mp4",
         "thumbnail_url": "https://example.com/multi-angle-hand-eye-challenge-thumbnail.jpg"
     },
     {
@@ -600,7 +600,7 @@
             "Add multiple balls for increased complexity."
         ],
         "rest": 120,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/explosive-dive-circuit.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/explosive-dive-circuit.mp4",
         "thumbnail_url": "https://example.com/explosive-dive-circuit-thumbnail.jpg"
     },
     {
@@ -668,7 +668,7 @@
             "Add multiple partners for increased challenge."
         ],
         "rest": 150,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/goalkeeper-drills/dynamic-shot-stopping-challenge.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/dynamic-shot-stopping-challenge.mp4",
         "thumbnail_url": "https://example.com/dynamic-shot-stopping-challenge-thumbnail.jpg"
     }
 ] 

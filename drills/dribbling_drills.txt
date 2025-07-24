@@ -51,7 +51,7 @@
             "Challenge yourself by adding lateral movement or incorporating obstacles."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/toe-taps.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/toe-taps.mp4",
         "thumbnail_url": "https://example.com/toe-taps-thumbnail.jpg"
     },
     {
@@ -106,7 +106,7 @@
             "Incorporate directional changes or more complex footwork as you progress."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/shuffles.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/shuffles.mp4",
         "thumbnail_url": "https://example.com/shuffles-thumbnail.jpg"
     },
     {
@@ -161,7 +161,7 @@
             "Introduce lateral movements or obstacles to vary the drill."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/sole-rolls.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/sole-rolls.mp4",
         "thumbnail_url": "https://example.com/sole-rolls-thumbnail.jpg"
     },
     {
@@ -216,7 +216,7 @@
             "Challenge yourself by integrating additional footwork or obstacles."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/inside-outside-touches.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/inside-outside-touches.mp4",
         "thumbnail_url": "https://example.com/inside-outside-touches-thumbnail.jpg"
     },
     {
@@ -276,7 +276,7 @@
             "Incorporate cones or obstacles to navigate around."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/l-drags.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/l-drags.mp4",
         "thumbnail_url": "https://example.com/l-drags-thumbnail.jpg"
     },
     {
@@ -332,7 +332,7 @@
             "Work on increasing the distance between touches to improve control."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/v-touches-sole-to-outside.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/v-touches-sole-to-outside.mp4",
         "thumbnail_url": "https://example.com/v-touches-thumbnail.jpg"
     },
     {
@@ -388,7 +388,7 @@
             "Work on increasing the distance between touches to improve control."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/v-touches-sole-to-inside-foot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/v-touches-sole-to-inside-foot.mp4",
         "thumbnail_url": "https://example.com/v-touches-inside-thumbnail.jpg"
     },
     {
@@ -444,7 +444,7 @@
             "Incorporate obstacles for added challenge."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/sole-square-rolls.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/sole-square-rolls.mp4",
         "thumbnail_url": "https://example.com/sole-square-rolls-thumbnail.jpg"
     },
     {
@@ -500,7 +500,7 @@
             "Set up additional cones to increase the length of the drill."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-same-foot.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-same-foot.mp4",
         "thumbnail_url": "https://example.com/cone-weave-same-foot-thumbnail.jpg"
     },
     {
@@ -559,7 +559,7 @@
             "Increase the distance between cones to enhance challenge."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-inside-outside.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-inside-outside.mp4",
         "thumbnail_url": "https://example.com/cone-weave-inside-outside-thumbnail.jpg"
     },
     {
@@ -619,7 +619,7 @@
             "Try to incorporate a small sprint after each touch to improve pace."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-roll-to-inside.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-roll-to-inside.mp4",
         "thumbnail_url": "https://example.com/cone-weave-roll-to-inside-thumbnail.jpg"
     },
     {
@@ -677,7 +677,7 @@
             "Increase the number of cones for a longer drill."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-in-in-out-out.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-in-in-out-out.mp4",
         "thumbnail_url": "https://example.com/cone-weave-in-in-out-out-thumbnail.jpg"
     },
     {
@@ -736,7 +736,7 @@
             " gradually decrease the distance between cones for a greater challenge."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-la-croqueta.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/cone-weave-la-croqueta.mp4",
         "thumbnail_url": "https://example.com/cone-weave-la-croqueta-thumbnail.jpg"
     },
     {
@@ -796,7 +796,7 @@
             "Incorporate feints or tricks before the turn for added difficulty."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/ronaldinho-drill-to-cone-turn.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/ronaldinho-drill-to-cone-turn.mp4",
         "thumbnail_url": "https://example.com/ronaldinho-drill-cone-turn-thumbnail.jpg"
     },
     {
@@ -854,7 +854,7 @@
             "Reduce the distance between cones for a greater challenge."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/zig-zag-dribble.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/zig-zag-dribble.mp4",
         "thumbnail_url": "https://example.com/zig-zag-dribble-thumbnail.jpg"
     },
     {
@@ -911,7 +911,7 @@
             "Work on increasing the distance between touches to improve control."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/v-touches-to-1v1.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/v-touches-to-1v1.mp4",
         "thumbnail_url": "https://example.com/v-touches-inside-thumbnail.jpg"
     },
     {
@@ -971,7 +971,7 @@
             "Incorporate variations such as feints or directional changes."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/plus-dribbling.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/plus-dribbling.mp4",
         "thumbnail_url": "https://example.com/plus-dribbling-thumbnail.jpg"
     },
     {
@@ -1029,7 +1029,7 @@
             "Incorporate fakes or moves before driving forward."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/figure-eight-weave-to-drive.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/figure-eight-weave-to-drive.mp4",
         "thumbnail_url": "https://example.com/figure-eight-weave-thumbnail.jpg"
     },
     {
@@ -1089,7 +1089,7 @@
             "Add a challenge by counting successful skills performed."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/box-freestyle.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/box-freestyle.mp4",
         "thumbnail_url": "https://example.com/box-freestyle-thumbnail.jpg"
     },
     {
@@ -1146,7 +1146,7 @@
             "Incorporate a partner to add a defensive element."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/skills-triangle.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/skills-triangle.mp4",
         "thumbnail_url": "https://example.com/skills-triangle-thumbnail.jpg"
     },
     {
@@ -1208,7 +1208,7 @@
             "Increase speed during the drill for a greater challenge."
         ],
         "rest": 30,
-        "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/dribbling-drills/box-dribble-with-center-cone.mp4",
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/box-dribble-with-center-cone.mp4",
         "thumbnail_url": "https://example.com/box-dribble-with-center-cone-thumbnail.jpg"
     }
 ]
