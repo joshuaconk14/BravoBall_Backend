@@ -160,6 +160,9 @@ class SchemaMigrator:
                     # For server defaults like func.now()
                     if column.default.arg == func.now:
                         default_clause = "DEFAULT CURRENT_TIMESTAMP"
+                    # Handle UUID defaults
+                    elif hasattr(column.default.arg, '__name__') and column.default.arg.__name__ == 'uuid4':
+                        default_clause = "DEFAULT uuid_generate_v4()"
                     else:
                         default_clause = f"DEFAULT {column.default.arg.__name__}()"
                 elif isinstance(column.default.arg, (str, int, float, bool)):
@@ -182,6 +185,8 @@ class SchemaMigrator:
                 default_clause = "DEFAULT false"
             elif 'timestamp' in str(column.type).lower():
                 default_clause = "DEFAULT CURRENT_TIMESTAMP"
+            elif 'uuid' in str(column.type).lower():
+                default_clause = "DEFAULT uuid_generate_v4()"
         
         sql = f"ALTER TABLE {table_name} ADD COLUMN {column.name} {column_type} {nullable} {default_clause}"
         
