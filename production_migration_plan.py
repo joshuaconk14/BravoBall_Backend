@@ -191,9 +191,13 @@ class ProductionMigrator:
             # Step 2: Fix drill skill focus
             logger.info("Step 2: Fixing drill skill focus entries...")
             self.fix_drill_skills()
+
+            # Step 3: Fix drill UUID relationships
+            logger.info("Step 3: Fixing drill UUID relationships...")
+            self.fix_drill_uuid_relationships()
             
-            # Step 3: Validate migration
-            logger.info("Step 3: Validating migration results...")
+            # Step 4: Validate migration
+            logger.info("Step 4: Validating migration results...")
             validation = self.validate_current_state()
             
             if validation and validation['drills_without_skills'] == 0:
@@ -270,6 +274,48 @@ class ProductionMigrator:
         self.db.commit()
         logger.info(f"✅ Fixed {fixed_count} drills!")
         return fixed_count
+
+    def fix_drill_uuid_relationships(self):
+        """Fix drill UUID relationships in related tables"""
+        logger.info("🔧 Fixing drill UUID relationships...")
+        
+        try:
+            # Get drill ID to UUID mapping
+            result = self.db.execute(text("SELECT id, uuid FROM drills"))
+            id_to_uuid = {row[0]: str(row[1]) for row in result}
+            logger.info(f"📋 Found {len(id_to_uuid)} drill ID to UUID mappings")
+            
+            # Fix ordered_session_drills
+            logger.info("Fixing ordered_session_drills drill_uuid relationships...")
+            result = self.db.execute(text("""
+                UPDATE ordered_session_drills 
+                SET drill_uuid = :drill_uuid
+                WHERE drill_id = :drill_id
+            """), [{'drill_uuid': id_to_uuid[drill_id], 'drill_id': drill_id} 
+                   for drill_id in id_to_uuid.keys()])
+            
+            updated_count = result.rowcount
+            logger.info(f"✅ Updated {updated_count} ordered_session_drills records")
+            
+            # Fix drill_group_items
+            logger.info("Fixing drill_group_items drill_uuid relationships...")
+            result = self.db.execute(text("""
+                UPDATE drill_group_items 
+                SET drill_uuid = :drill_uuid
+                WHERE drill_id = :drill_id
+            """), [{'drill_uuid': id_to_uuid[drill_id], 'drill_id': drill_id} 
+                   for drill_id in id_to_uuid.keys()])
+            
+            updated_count = result.rowcount
+            logger.info(f"✅ Updated {updated_count} drill_group_items records")
+            
+            self.db.commit()
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to fix drill UUID relationships: {e}")
+            self.db.rollback()
+            return False
     
     def test_api_endpoints(self):
         """Test API endpoints to ensure skill focus is working"""
