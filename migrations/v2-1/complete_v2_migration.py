@@ -33,9 +33,35 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 import models
 from db import Base
 
-# Database URLs
-PROD_URL = 'postgresql://jordan:nznEGcxVZbVyX5PvYXG5LuVQ15v0Tsd5@dpg-d11nbs3ipnbc73d2e2f0-a.oregon-postgres.render.com/bravoballdb'
-STAGING_URL = 'postgresql://bravoball_staging_db_user:DszQQ1qg7XH2ocCNSCU844S43SMU4G4V@dpg-d21l5oh5pdvs7382nib0-a.oregon-postgres.render.com/bravoball_staging_db'
+# Database URLs - Now using environment variables
+def get_database_urls():
+    """Get database URLs from environment variables with fallbacks"""
+    load_dotenv()
+    
+    # Production database URL
+    prod_url = os.getenv('PRODUCTION_DATABASE_URL')
+    if not prod_url:
+        # Fallback to legacy hard-coded URL for backwards compatibility
+        prod_url = 'postgresql://jordan:nznEGcxVZbVyX5PvYXG5LuVQ15v0Tsd5@dpg-d11nbs3ipnbc73d2e2f0-a.oregon-postgres.render.com/bravoballdb'
+        logging.warning("⚠️ Using fallback PRODUCTION_DATABASE_URL. Set PRODUCTION_DATABASE_URL environment variable.")
+    
+    # Staging database URL  
+    staging_url = os.getenv('STAGING_DATABASE_URL')
+    if not staging_url:
+        # Fallback to legacy hard-coded URL for backwards compatibility
+        staging_url = 'postgresql://bravoball_staging_db_user:DszQQ1qg7XH2ocCNSCU844S43SMU4G4V@dpg-d21l5oh5pdvs7382nib0-a.oregon-postgres.render.com/bravoball_staging_db'
+        logging.warning("⚠️ Using fallback STAGING_DATABASE_URL. Set STAGING_DATABASE_URL environment variable.")
+    
+    # V2 database URL (for blue-green deployment)
+    v2_url = os.getenv('V2_DATABASE_URL')
+    if not v2_url:
+        v2_url = staging_url  # Default to staging for now
+        logging.info("ℹ️ V2_DATABASE_URL not set, using staging URL as default")
+    
+    return prod_url, staging_url, v2_url
+
+# Initialize database URLs
+PROD_URL, STAGING_URL, V2_URL = get_database_urls()
 
 def setup_logging():
     """Setup logging for migration in v2-1 directory"""
@@ -1350,7 +1376,11 @@ def main():
     parser.add_argument('--dry-run', action='store_true', help='Preview changes without applying')
     parser.add_argument('--skip-backup', action='store_true', help='Skip backup creation')
     parser.add_argument('--skip-data-import', action='store_true', help='Skip Phase 1 data import (use when data already copied)')
-    parser.add_argument('--staging-url', default=STAGING_URL, help='Staging database URL')
+    parser.add_argument('--production-url', default=PROD_URL, help='Production database URL (source)')
+    parser.add_argument('--staging-url', default=STAGING_URL, help='Staging database URL (current target)')
+    parser.add_argument('--v2-url', default=V2_URL, help='V2 database URL (for blue-green deployment)')
+    parser.add_argument('--target-db', choices=['staging', 'v2'], default='staging', 
+                        help='Target database for migration (staging or v2)')
     parser.add_argument('--phase', type=int, choices=[1,2,3,4,5,6,7,8,9], help='Run specific phase only')
     
     args = parser.parse_args()
@@ -1367,9 +1397,18 @@ def main():
         logging.info("⏭️ SKIPPING DATA IMPORT - Assuming production data already copied")
     
     try:
-        # Create staging engine
-        staging_engine = create_engine(args.staging_url)
-        logging.info(f"🔗 Connected to staging database")
+        # Determine target database URL based on --target-db argument
+        if args.target_db == 'v2':
+            target_url = args.v2_url
+            target_name = "V2 database"
+        else:
+            target_url = args.staging_url
+            target_name = "staging database"
+        
+        # Create target engine (keeping variable name for compatibility)
+        staging_engine = create_engine(target_url)
+        logging.info(f"🔗 Connected to {target_name}")
+        logging.info(f"📍 Target URL: {target_url[:50]}...") # Show partial URL for verification
         
         # Create initial backup
         if not args.dry_run and not args.skip_backup:
