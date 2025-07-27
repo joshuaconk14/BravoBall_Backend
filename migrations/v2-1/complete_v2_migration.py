@@ -1,20 +1,30 @@
 #!/usr/bin/env python3
 """
 Complete BravoBall v2 Migration - Production Data + Schema + UUIDs
-Date: 2025-07-25
-Purpose: 
-1. Import ALL production data to staging
-2. Apply v2 schema changes carefully
-3. Populate UUIDs for existing drills
-4. Maintain data integrity throughout
-5. Create proper backups at each step
+Date: 2025-07-27 (Updated for Environment Variables & Blue-Green Deployment)
 
-Commands:
-    python migrations/v2-1/simple_production_to_staging.py              # Copy production db to staging db
-    python migrations/v2-1/complete_v2_migration.py --skip-data-import  # Schema and data migration
+Purpose: 
+1. Apply v2 schema changes from models.py
+2. Populate UUIDs for existing drills
+3. Seed new content (mental training, new drill categories)
+4. Fix data integrity issues
+5. Support both staging and V2 database targets
+
+Environment Variables Required:
+    PRODUCTION_DATABASE_URL, STAGING_DATABASE_URL, V2_DATABASE_URL
+
+Common Usage:
+    # Test with staging
+    python migrations/v2-1/complete_v2_migration.py --dry-run
     
-To run everything at once in a new terminal while in project root:
-    source venv/bin/activate && python migrations/v2-1/simple_production_to_staging.py && python migrations/v2-1/complete_v2_migration.py --skip-data-import
+    # Migrate to V2 for blue-green deployment  
+    python migrations/v2-1/complete_v2_migration.py --target-db v2 --skip-data-import
+    
+    # Full staging migration for v2
+    # This resets the V2 database with copied-over production data and applies v2 schema
+    # We will run this after we have tested the V2 backend and are ready to deploy to production
+    python migrations/v2-1/simple_production_to_staging.py --target-db v2
+    python migrations/v2-1/complete_v2_migration.py --target-db v2 --skip-data-import
 """
 
 import json

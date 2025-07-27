@@ -1,34 +1,48 @@
-# V2.1 Migration
+# V2.1 Migration (Updated: Environment Variables + Blue-Green Deployment)
 
 ## Overview
-Two-step migration process to copy production data to staging and apply v2 schema changes.
+Migration system supporting both staging and V2 databases with environment variable configuration for blue-green deployment strategy.
+
+## Prerequisites
+Set environment variables in `.env`:
+```bash
+PRODUCTION_DATABASE_URL=postgresql://...
+STAGING_DATABASE_URL=postgresql://...
+V2_DATABASE_URL=postgresql://...
+```
 
 ## Scripts
 
 ### 1. `simple_production_to_staging.py`
-- **Purpose**: Copies production database to staging using pg_dump/psql
-- **Steps**: Creates dump → clears staging → restores data → verifies
-- **Usage**: `python migrations/v2-1/simple_production_to_staging.py`
+- **Purpose**: Copies production database to target (staging or V2)
+- **Targets**: `--target-db staging` (default) or `--target-db v2`
+- **Steps**: Creates dump → clears target → restores data → verifies
 
 ### 2. `complete_v2_migration.py`
 - **Purpose**: Applies v2 schema changes and populates UUIDs
+- **Targets**: `--target-db staging` (default) or `--target-db v2`
 - **9 Phases**: Schema migration → UUID population → new content seeding → data fixes
-- **Usage**: `python migrations/v2-1/complete_v2_migration.py --skip-data-import`
 
 ## Quick Commands
 
-**Run both scripts sequentially:**
+**Blue-Green Deployment (V2):**
 ```bash
-source venv/bin/activate && python migrations/v2-1/simple_production_to_staging.py && python migrations/v2-1/complete_v2_migration.py --skip-data-import
+# This resets the V2 database with copied-over production data and applies v2 schema
+python migrations/v2-1/simple_production_to_staging.py --target-db v2
+python migrations/v2-1/complete_v2_migration.py --target-db v2 --skip-data-import
 ```
 
-**Individual execution:**
+**Traditional Staging:**
 ```bash
-# Step 1: Copy production data
+# This resets the STAGING database with copied-over production data and applies v2 schema
 python migrations/v2-1/simple_production_to_staging.py
-
-# Step 2: Apply v2 schema
 python migrations/v2-1/complete_v2_migration.py --skip-data-import
+```
+
+**Testing:**
+```bash
+# Dry run against V2
+python migrations/v2-1/complete_v2_migration.py --dry-run --target-db v2
 ```
 
 ## What It Does
