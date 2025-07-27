@@ -1,0 +1,38 @@
+2025-07-27 04:00:24,792 - INFO - 🚀 Starting Simple Production to Staging Copy
+2025-07-27 04:00:24,792 - INFO - ============================================================
+2025-07-27 04:00:24,792 - INFO - 
+🎯 Step 1: Creating Production Dump
+2025-07-27 04:00:24,793 - INFO - 📦 Creating production dump: /Users/jordan/Desktop/bravoball/BravoBall_Backend/migrations/v2-1/backups/production_data_dump_20250727_040024.sql
+2025-07-27 04:00:24,793 - INFO - 🔄 Creating production dump
+2025-07-27 04:00:24,793 - INFO -    Running: pg_dump postgresql://jordan:nznEGcxVZbVyX5PvYXG5LuVQ15v0Tsd5@dpg-d11nbs3ipnbc73d2e2f0-a.oregon-postgres.render.com/bravoballdb --no-owner...
+2025-07-27 04:00:35,716 - INFO -    ✅ Success: Creating production dump
+2025-07-27 04:00:35,716 - INFO -    ✅ Dump created: /Users/jordan/Desktop/bravoball/BravoBall_Backend/migrations/v2-1/backups/production_data_dump_20250727_040024.sql
+2025-07-27 04:00:35,717 - INFO - 
+🎯 Step 2: Clearing Staging Database
+2025-07-27 04:00:35,717 - INFO - 🧹 Clearing staging database
+2025-07-27 04:00:35,717 - INFO - 🔄 Clearing staging database
+2025-07-27 04:00:35,717 - INFO -    Running: psql postgresql://bravoball_staging_db_user:DszQQ1qg7XH2ocCNSCU844S43SMU4G4V@dpg-d21l5oh5pdvs7382nib0-a.oregon-postgres.render.com/bravoball_staging_db -f...
+2025-07-27 04:00:36,607 - INFO -    ✅ Success: Clearing staging database
+2025-07-27 04:00:36,607 - INFO - 
+🎯 Step 3: Restoring to Staging
+2025-07-27 04:00:36,607 - INFO - 📥 Restoring /Users/jordan/Desktop/bravoball/BravoBall_Backend/migrations/v2-1/backups/production_data_dump_20250727_040024.sql to staging
+2025-07-27 04:00:36,608 - INFO - 🔄 Restoring /Users/jordan/Desktop/bravoball/BravoBall_Backend/migrations/v2-1/backups/production_data_dump_20250727_040024.sql to staging
+2025-07-27 04:00:36,608 - INFO -    Running: psql postgresql://bravoball_staging_db_user:DszQQ1qg7XH2ocCNSCU844S43SMU4G4V@dpg-d21l5oh5pdvs7382nib0-a.oregon-postgres.render.com/bravoball_staging_db -f...
+2025-07-27 04:00:57,387 - INFO -    ✅ Success: Restoring /Users/jordan/Desktop/bravoball/BravoBall_Backend/migrations/v2-1/backups/production_data_dump_20250727_040024.sql to staging
+2025-07-27 04:00:57,389 - INFO - 
+🎯 Step 4: Verification
+2025-07-27 04:00:57,389 - INFO - 🔍 Verifying staging data
+2025-07-27 04:00:58,110 - INFO -    ✅ users: 3394 records
+2025-07-27 04:00:58,576 - INFO -    ✅ drills: 78 records
+2025-07-27 04:00:59,153 - INFO -    ✅ drill_groups: 132 records
+2025-07-27 04:00:59,652 - INFO -    ✅ completed_sessions: 934 records
+2025-07-27 04:00:59,652 - INFO - ✅ Staging verification completed
+2025-07-27 04:00:59,652 - INFO - 
+🎉 Production to Staging copy completed successfully!
+2025-07-27 04:00:59,652 - INFO - ============================================================
+2025-07-27 04:00:59,652 - INFO - 📱 Your staging database now contains exact copy of production
+2025-07-27 04:00:59,652 - INFO - 🔧 Next steps:
+2025-07-27 04:00:59,652 - INFO -    1. Run complete_v2_migration.py --skip-data-import
+2025-07-27 04:00:59,653 - INFO -    2. Test your Flutter app with staging
+2025-07-27 04:00:59,653 - INFO -    3. Apply same migration to production when ready
+2025-07-27 04:00:59,654 - INFO - 🧹 Cleaned up dump file: /Users/jordan/Desktop/bravoball/BravoBall_Backend/migrations/v2-1/backups/production_data_dump_20250727_040024.sql

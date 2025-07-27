@@ -24,7 +24,7 @@ def get_drills(
     difficulty: Optional[str] = None,
     equipment: Optional[List[str]] = None,
     page: int = 1,
-    limit: int = 10,
+    limit: int = 20,
     db: Session = Depends(get_db)
 ):
     """Get drills with optional filtering and pagination"""
@@ -128,8 +128,10 @@ async def search_drills(
         
         # Apply category filter to default drills if provided
         if category:
+            # ✅ FIXED: Map frontend category to backend and use exact matching
+            backend_category = map_frontend_category_to_backend(category)
             default_drill_query = default_drill_query.join(DrillCategory).filter(
-                DrillCategory.name.ilike(f"%{category}%")
+                DrillCategory.name == backend_category
             )
         
         # Apply difficulty filter to default drills if provided
@@ -138,8 +140,8 @@ async def search_drills(
                 func.lower(Drill.difficulty) == difficulty.lower()
             )
         
-        # Get default drills
-        default_drills = default_drill_query.all()
+        # ✅ FIXED: Get total counts first for proper pagination
+        default_drill_count = default_drill_query.count()
         
         # Now search custom drills (only for the current user)
         custom_drill_query = db.query(CustomDrill).filter(CustomDrill.user_id == current_user.id)
@@ -168,41 +170,56 @@ async def search_drills(
                 func.cast(CustomDrill.primary_skill, JSONB)['category'].astext == backend_category
             )
         
-        # Get custom drills
-        custom_drills = custom_drill_query.all()
+        # ✅ FIXED: Get custom drill count for pagination
+        custom_drill_count = custom_drill_query.count()
+        total = default_drill_count + custom_drill_count
         
-        # Combine and convert to response format
+        # ✅ FIXED: Apply proper database pagination
+        # Calculate offset and limit for this page
+        offset = (page - 1) * limit
+        
+        # Get paginated results from both tables
         all_drills = []
         
-        # Add default drills
-        for drill in default_drills:
-            drill_response = drill_to_response(drill, db)
-            all_drills.append(drill_response)
+        # First, get default drills with pagination
+        remaining_limit = limit
+        if offset < default_drill_count and remaining_limit > 0:
+            default_offset = offset
+            default_limit = min(remaining_limit, default_drill_count - default_offset)
+            default_drills = default_drill_query.offset(default_offset).limit(default_limit).all()
+            
+            for drill in default_drills:
+                drill_response = drill_to_response(drill, db)
+                all_drills.append(drill_response)
+            
+            remaining_limit -= len(default_drills)
         
-        # Add custom drills
-        for custom_drill in custom_drills:
-            from routers.router_utils import custom_drill_to_response
-            drill_response = custom_drill_to_response(custom_drill)
-            all_drills.append(drill_response)
+        # Then, get custom drills if we still need more results
+        if remaining_limit > 0 and custom_drill_count > 0:
+            custom_offset = max(0, offset - default_drill_count)
+            custom_drills = custom_drill_query.offset(custom_offset).limit(remaining_limit).all()
+            
+            for custom_drill in custom_drills:
+                from routers.router_utils import custom_drill_to_response
+                drill_response = custom_drill_to_response(custom_drill)
+                all_drills.append(drill_response)
         
         # Sort by title for consistent ordering
         all_drills.sort(key=lambda x: x.get('title', ''))
         
-        # Get total count
-        total = len(all_drills)
+        paginated_drills = all_drills
         
-        # Apply pagination manually since we have a list
-        start_idx = (page - 1) * limit
-        end_idx = start_idx + limit
-        paginated_drills = all_drills[start_idx:end_idx]
+        # ✅ FIXED: Include proper pagination metadata
+        total_pages = (total + limit - 1) // limit
+        has_next_page = page < total_pages
         
-        # Include pagination metadata
         response = {
             "items": paginated_drills,
             "total": total,
             "page": page,
             "page_size": limit,
-            "total_pages": (total + limit - 1) // limit
+            "total_pages": total_pages,
+            "has_next_page": has_next_page
         }
         
         return response
@@ -211,10 +228,11 @@ async def search_drills(
         raise HTTPException(status_code=500, detail=f"Failed to search drills: {str(e)}")
 
 
-# ✅ NEW: Helper function to map frontend category names to backend database category names
+# ✅ UPDATED: Helper function to map frontend category names to backend database category names
 def map_frontend_category_to_backend(frontend_category: str) -> str:
     """
-    Map frontend category names (with spaces) to backend database category names (with underscores)
+    Map frontend category names (with spaces) to backend database category names.
+    Handles multiple variations to ensure consistent searching.
     """
     category_mapping = {
         "Passing": "passing",
@@ -222,7 +240,8 @@ def map_frontend_category_to_backend(frontend_category: str) -> str:
         "Dribbling": "dribbling",
         "First Touch": "first_touch",  # ✅ CRITICAL: Map "First Touch" to "first_touch"
         "Defending": "defending",
-        "Goalkeeping": "goalkeeping",  # ✅ NEW: Add goalkeeping mapping
+        "Goalkeeping": "goalkeeping",  # ✅ Primary goalkeeping mapping
+        "Goalkeeper": "goalkeeping",   # ✅ Handle goalkeeper variation
         "Fitness": "fitness",
     }
     
@@ -234,7 +253,7 @@ def map_frontend_category_to_backend(frontend_category: str) -> str:
 async def get_limited_drills_for_guests(db: Session = Depends(get_db)):
     """
     Get a limited, curated set of drills for guest users to try the app.
-    Returns 7 drills each from key categories: Passing, Dribbling, Shooting, First Touch, Defending, Goalkeeping, Fitness.
+    Returns 4 drills each from key categories: Passing, Dribbling, Shooting, First Touch, Defending, Goalkeeping, Fitness.
     No authentication required.
     """
     try:
@@ -249,21 +268,21 @@ async def get_limited_drills_for_guests(db: Session = Depends(get_db)):
             # ✅ UPDATED: Map frontend category name to backend database name
             backend_category = map_frontend_category_to_backend(category_name)
             
-            # Get drills for this category - reduced to 7 per category
+            # Get drills for this category - limited to 4 per category for guests
             category_drills = db.query(Drill).join(DrillCategory).filter(
                 DrillCategory.name.ilike(f"%{backend_category}%")
-            ).limit(7).all()
+            ).limit(4).all()
             
             # Convert to response format
             for drill in category_drills:
                 drill_response = drill_to_response(drill, db)
                 all_guest_drills.append(drill_response)
         
-        # Also add some general drills if we don't have enough (max 49 total - 7 categories * 7 drills)
-        if len(all_guest_drills) < 49:
+        # Also add some general drills if we don't have enough (max 28 total - 7 categories * 4 drills)
+        if len(all_guest_drills) < 28:
             general_drills = db.query(Drill).filter(
                 ~Drill.id.in_([d["backend_id"] for d in all_guest_drills if "backend_id" in d])
-            ).limit(7).all()
+            ).limit(4).all()
             
             for drill in general_drills:
                 drill_response = drill_to_response(drill, db)
@@ -275,7 +294,7 @@ async def get_limited_drills_for_guests(db: Session = Depends(get_db)):
             "drills": all_guest_drills,
             "total_count": len(all_guest_drills),
             "categories_included": featured_categories,
-            "message": f"Limited drill selection for guest users - {len(all_guest_drills)} drills available. Sign up for access to 100+ drills!"
+            "message": f"Limited drill selection for guest users - {len(all_guest_drills)} drills available (4 per category). Sign up for access to 100+ drills!"
         }
         
     except Exception as e:
@@ -290,7 +309,7 @@ async def search_drills_for_guests(
     category: Optional[str] = None,
     difficulty: Optional[str] = None,
     page: int = 1,
-    limit: int = 10,  # Reduced limit for guests
+    limit: int = 20,  # Updated limit for guests  
     db: Session = Depends(get_db)
 ):
     """
@@ -314,7 +333,7 @@ async def search_drills_for_guests(
                 
                 category_drills = db.query(Drill).join(DrillCategory).filter(
                     DrillCategory.name.ilike(f"%{backend_category}%")
-                ).limit(7).all()
+                ).limit(4).all()
                 
                 for drill in category_drills:
                     drill_response = drill_to_response(drill, db)
@@ -453,10 +472,10 @@ async def public_search_drills(
         
         # Apply category filter if provided
         if category:
-            # ✅ UPDATED: Map frontend category name to backend database name
+            # ✅ FIXED: Map frontend category name to backend database name and use exact matching
             backend_category = map_frontend_category_to_backend(category)
             drill_query = drill_query.join(DrillCategory).filter(
-                DrillCategory.name.ilike(f"%{backend_category}%")
+                DrillCategory.name == backend_category
             )
         
         # Apply difficulty filter if provided
@@ -476,13 +495,17 @@ async def public_search_drills(
         for drill in drills:
             drill_responses.append(drill_to_response(drill, db))
         
-        # Include pagination metadata
+        # ✅ FIXED: Include proper pagination metadata
+        total_pages = (total + limit - 1) // limit
+        has_next_page = page < total_pages
+        
         response = {
             "items": drill_responses,
             "total": total,
             "page": page,
             "page_size": limit,
-            "total_pages": (total + limit - 1) // limit
+            "total_pages": total_pages,
+            "has_next_page": has_next_page
         }
         
         return response

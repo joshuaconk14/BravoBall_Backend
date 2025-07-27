@@ -12,6 +12,9 @@ Purpose:
 Commands:
     python migrations/v2-1/simple_production_to_staging.py              # Copy production db to staging db
     python migrations/v2-1/complete_v2_migration.py --skip-data-import  # Schema and data migration
+    
+To run everything at once in a new terminal while in project root:
+    source venv/bin/activate && python migrations/v2-1/simple_production_to_staging.py && python migrations/v2-1/complete_v2_migration.py --skip-data-import
 """
 
 import json
@@ -1042,11 +1045,16 @@ def fix_multi_drill_sessions_logic(conn):
     """))
     
     sessions = result.fetchall()
-    logging.info(f"📋 Found {len(sessions)} multi-drill sessions to process")
+    total_sessions = len(sessions)
+    logging.info(f"📋 Found {total_sessions} multi-drill sessions to process")
     
     if not sessions:
         logging.info("✅ No multi-drill sessions need fixing")
         return True
+    
+    # Progress tracking variables
+    processed_count = 0
+    progress_interval = 10 if total_sessions <= 100 else 20  # Use 10 for smaller batches, 20 for larger
     
     for session in sessions:
         session_id = session[0]
@@ -1087,6 +1095,12 @@ def fix_multi_drill_sessions_logic(conn):
                 'session_id': session_id
             })
             fixed_sessions += 1
+        
+        # Progress indicator
+        processed_count += 1
+        if processed_count % progress_interval == 0 or processed_count == total_sessions:
+            percentage = (processed_count / total_sessions * 100)
+            logging.info(f"   🔄 Progress: {processed_count}/{total_sessions} sessions processed ({percentage:.1f}%)")
     
     logging.info(f"✅ Fixed {fixed_sessions} sessions with {fixed_positions} drill positions")
     return True
@@ -1183,6 +1197,151 @@ def migrate_video_urls_logic(conn, old_bucket_url, new_bucket_url):
     logging.info(f"✅ Video URL migration completed successfully!")
     return True
 
+def phase_9_fix_drill_categories(staging_engine, dry_run=False, conn=None):
+    """Phase 9: Fix missing drill categories and assign drills to proper categories"""
+    logging.info("🚀 PHASE 9: Fixing Drill Categories & Assignments")
+    logging.info("=" * 50)
+    
+    if dry_run:
+        logging.info("🔍 DRY RUN: Would fix drill categories and assignments")
+        return True
+    
+    # Use provided connection or create a new one
+    if conn is not None:
+        # Running as part of larger transaction
+        return fix_drill_categories_logic(conn)
+    else:
+        # Running individually - create own transaction
+        try:
+            with staging_engine.begin() as individual_conn:
+                return fix_drill_categories_logic(individual_conn)
+        except Exception as e:
+            logging.error(f"💥 Phase 9 failed: {e}")
+            raise
+
+def fix_drill_categories_logic(conn):
+    """The actual logic for fixing drill categories"""
+    
+    # Step 1: Create missing drill categories
+    logging.info("📋 Step 1: Creating missing drill categories...")
+    
+    missing_categories = [
+        ('defending', 'Drills focusing on defending skills'),
+        ('goalkeeping', 'Drills focusing on goalkeeping skills'),
+        ('fitness', 'Drills focusing on fitness skills')
+    ]
+    
+    for category_name, description in missing_categories:
+        result = conn.execute(text("""
+            INSERT INTO drill_categories (name, description) 
+            VALUES (:name, :description) 
+            ON CONFLICT (name) DO NOTHING
+            RETURNING id
+        """), {'name': category_name, 'description': description})
+        
+        if result.rowcount > 0:
+            logging.info(f"   ✅ Created category: {category_name}")
+        else:
+            logging.info(f"   ℹ️ Category already exists: {category_name}")
+    
+    # Step 2: Get category IDs
+    result = conn.execute(text("SELECT id, name FROM drill_categories"))
+    categories = {row[1]: row[0] for row in result.fetchall()}
+    logging.info(f"📋 Available categories: {list(categories.keys())}")
+    
+    # Step 3: Check drills without categories
+    result = conn.execute(text("SELECT COUNT(*) FROM drills WHERE category_id IS NULL"))
+    uncategorized_count = result.fetchone()[0]
+    logging.info(f"📋 Found {uncategorized_count} drills without categories")
+    
+    if uncategorized_count == 0:
+        logging.info("✅ All drills already have categories assigned!")
+        return True
+    
+    # Step 4: Get uncategorized drills and check their skill focus
+    result = conn.execute(text("""
+        SELECT d.id, d.title, sf.category as skill_category 
+        FROM drills d 
+        LEFT JOIN drill_skill_focus sf ON d.uuid = sf.drill_uuid AND sf.is_primary = true
+        WHERE d.category_id IS NULL
+        LIMIT 20
+    """))
+    
+    uncategorized_drills = result.fetchall()
+    
+    # Step 5: Assign categories based on skill focus
+    assignments_made = 0
+    
+    for drill_id, title, skill_category in uncategorized_drills:
+        target_category = None
+        
+        if skill_category:
+            # Use the skill category if available
+            target_category = skill_category.lower()
+        else:
+            # Try to infer from title
+            title_lower = title.lower()
+            if any(word in title_lower for word in ['pass', 'passing']):
+                target_category = 'passing'
+            elif any(word in title_lower for word in ['shoot', 'shooting', 'goal', 'finish']):
+                target_category = 'shooting'
+            elif any(word in title_lower for word in ['dribble', 'dribbling', 'ball control']):
+                target_category = 'dribbling'
+            elif any(word in title_lower for word in ['first touch', 'touch', 'control']):
+                target_category = 'first_touch'
+            elif any(word in title_lower for word in ['defend', 'defending', 'tackle', 'marking']):
+                target_category = 'defending'
+            elif any(word in title_lower for word in ['goalkeeper', 'goalkeeping', 'keeper', 'save']):
+                target_category = 'goalkeeping'
+            elif any(word in title_lower for word in ['fitness', 'conditioning', 'sprint', 'run', 'endurance']):
+                target_category = 'fitness'
+        
+        if target_category and target_category in categories:
+            category_id = categories[target_category]
+            conn.execute(text("""
+                UPDATE drills 
+                SET category_id = :category_id 
+                WHERE id = :drill_id
+            """), {'category_id': category_id, 'drill_id': drill_id})
+            
+            assignments_made += 1
+            logging.info(f"   ✅ Assigned '{title}' to {target_category}")
+        else:
+            logging.info(f"   ⚠️ Could not categorize '{title}' (skill: {skill_category})")
+    
+    # Step 6: Handle remaining uncategorized drills by assigning to a default category
+    result = conn.execute(text("SELECT COUNT(*) FROM drills WHERE category_id IS NULL"))
+    remaining_count = result.fetchone()[0]
+    
+    if remaining_count > 0:
+        # Assign remaining drills to 'fitness' as a safe default
+        default_category_id = categories.get('fitness')
+        if default_category_id:
+            conn.execute(text("""
+                UPDATE drills 
+                SET category_id = :category_id 
+                WHERE category_id IS NULL
+            """), {'category_id': default_category_id})
+            
+            logging.info(f"   ✅ Assigned {remaining_count} remaining drills to 'fitness' category")
+            assignments_made += remaining_count
+    
+    # Step 7: Verify results
+    result = conn.execute(text("""
+        SELECT dc.name, COUNT(d.id) as drill_count 
+        FROM drill_categories dc 
+        LEFT JOIN drills d ON dc.id = d.category_id 
+        GROUP BY dc.name 
+        ORDER BY dc.name
+    """))
+    
+    logging.info("📊 Final category distribution:")
+    for category_name, drill_count in result.fetchall():
+        logging.info(f"   {category_name}: {drill_count} drills")
+    
+    logging.info(f"✅ Category assignment completed! Made {assignments_made} assignments.")
+    return True
+
 def main():
     """Main migration function"""
     import argparse
@@ -1192,7 +1351,7 @@ def main():
     parser.add_argument('--skip-backup', action='store_true', help='Skip backup creation')
     parser.add_argument('--skip-data-import', action='store_true', help='Skip Phase 1 data import (use when data already copied)')
     parser.add_argument('--staging-url', default=STAGING_URL, help='Staging database URL')
-    parser.add_argument('--phase', type=int, choices=[1,2,3,4,5,6,7,8], help='Run specific phase only')
+    parser.add_argument('--phase', type=int, choices=[1,2,3,4,5,6,7,8,9], help='Run specific phase only')
     
     args = parser.parse_args()
     
@@ -1226,6 +1385,7 @@ def main():
             6: ("Fix Completed Session Drill IDs", phase_6_fix_drill_ids),
             7: ("Fix Multi-Drill Sessions", phase_7_fix_multi_drill_sessions),
             8: ("Migrate Video URLs to H264", phase_8_migrate_video_urls),
+            9: ("Fix Drill Categories & Assignments", phase_9_fix_drill_categories),
         }
         
         if args.phase:
@@ -1236,7 +1396,7 @@ def main():
             
             if phase_num == 5:
                 success = phase_func(staging_engine)
-            elif phase_num in [6, 7, 8]:
+            elif phase_num in [6, 7, 8, 9]:
                 # Phases that support connection parameter
                 success = phase_func(staging_engine, args.dry_run)
             else:
@@ -1271,12 +1431,12 @@ def main():
                         
                     logging.info(f"✅ Phase {phase_num} completed successfully")
             
-            # Phases 3-8 run with shared transaction to avoid conflicts
+            # Phases 3-9 run with shared transaction to avoid conflicts
             if all_success and not args.dry_run:
-                logging.info("\n🔗 Running Phases 3-8 with shared transaction...")
+                logging.info("\n🔗 Running Phases 3-9 with shared transaction...")
                 try:
                     with staging_engine.begin() as shared_conn:
-                        for phase_num in [3, 4, 5, 6, 7, 8]:
+                        for phase_num in [3, 4, 5, 6, 7, 8, 9]:
                             if phase_num in phases:
                                 phase_name, phase_func = phases[phase_num]
                                 logging.info(f"\n🎯 Phase {phase_num}: {phase_name}")
@@ -1292,7 +1452,7 @@ def main():
                                     success = phase_func(staging_engine, False)  # phase_4 doesn't support conn param yet
                                 elif phase_num == 5:
                                     success = phase_func(staging_engine)  # phase_5 is read-only
-                                elif phase_num in [6, 7, 8]:
+                                elif phase_num in [6, 7, 8, 9]:
                                     success = phase_func(staging_engine, False, shared_conn)  # Use shared connection
                                 
                                 if not success:
@@ -1309,8 +1469,8 @@ def main():
                     logging.error(f"❌ Shared transaction failed: {e}")
                     all_success = False
             elif all_success and args.dry_run:
-                # In dry run mode, run phases 3-8 without shared transaction
-                for phase_num in [3, 4, 5, 6, 7, 8]:
+                # In dry run mode, run phases 3-9 without shared transaction
+                for phase_num in [3, 4, 5, 6, 7, 8, 9]:
                     if phase_num in phases:
                         phase_name, phase_func = phases[phase_num]
                         logging.info(f"\n🎯 Phase {phase_num}: {phase_name}")
@@ -1319,7 +1479,7 @@ def main():
                         if phase_num == 5:
                             logging.info("🔍 DRY RUN: Would verify migration")
                             success = True  # Skip verification in dry run
-                        elif phase_num in [6, 7, 8]:
+                        elif phase_num in [6, 7, 8, 9]:
                             success = phase_func(staging_engine, True)  # dry_run=True
                         else:
                             success = phase_func(staging_engine, True)  # dry_run=True
@@ -1347,6 +1507,7 @@ def main():
             logging.info("   ✅ Drill ID mismatches fixed")
             logging.info("   ✅ Multi-drill sessions fixed")
             logging.info("   ✅ Video URLs migrated to H264 bucket")
+            logging.info("   ✅ Drill categories fixed and assignments completed")
             logging.info("🚀 Ready for Flutter app testing!")
         else:
             logging.error("\n💥 Migration completed with errors!")
