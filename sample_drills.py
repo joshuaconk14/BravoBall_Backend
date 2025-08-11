@@ -22,7 +22,7 @@ sample_drills = [
             "backyard"
         )
         .with_intensity("medium")
-        .with_training_styles("beginner")
+        .with_training_styles(TrainingStyle.LOW_INTENSITY.value)
         .with_difficulty("beginner")
         .with_primary_skill(SkillCategory.PASSING, PassingSubSkill.SHORT_PASSING)
         .with_secondary_skills(
@@ -65,7 +65,7 @@ sample_drills = [
             TrainingLocation.SMALL_FIELD.value
         )
         .with_intensity("high")
-        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.PASSING, PassingSubSkill.LONG_PASSING)
         .with_secondary_skills(
@@ -161,7 +161,7 @@ sample_drills = [
             TrainingLocation.SMALL_FIELD.value
         )
         .with_intensity("medium")
-        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.BEGINNER.value)
         .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.FINISHING)
         .with_secondary_skills(
@@ -226,7 +226,7 @@ sample_drills = [
             TrainingLocation.SMALL_FIELD.value
         )
         .with_intensity("high")
-        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.SHOOTING, ShootingSubSkill.LONG_SHOTS)
         .with_secondary_skills(
@@ -363,7 +363,7 @@ sample_drills = [
             TrainingLocation.FULL_FIELD.value
         )
         .with_intensity("high")
-        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.DRIBBLING, DribblingSubSkill.ONE_V_ONE_MOVES)
         .with_secondary_skills(
@@ -433,7 +433,7 @@ sample_drills = [
             TrainingLocation.BACKYARD.value
         )
         .with_intensity("medium")
-        .with_training_styles(TrainingStyle.GAME_PREP.value)
+        .with_training_styles(TrainingStyle.HIGH_INTENSITY.value)
         .with_difficulty(Difficulty.ADVANCED.value)
         .with_primary_skill(SkillCategory.FIRST_TOUCH, FirstTouchSubSkill.AERIAL_CONTROL)
         .with_secondary_skills(

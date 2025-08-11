@@ -13,6 +13,7 @@ import jwt
 from datetime import datetime, timedelta
 from typing import Dict, Generator
 import json
+import uuid
 
 # Add the parent directory to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -167,6 +168,7 @@ def test_drill_category(db):
 def test_drill(db, test_drill_category):
     """Create a test drill."""
     drill = Drill(
+        uuid=str(uuid.uuid4()),  # Generate UUID for test drill
         title="Test Dribbling Drill",
         description="A drill to practice dribbling",
         category_id=test_drill_category.id,
@@ -194,7 +196,7 @@ def test_drill(db, test_drill_category):
     
     # Add skill focus
     primary_skill = DrillSkillFocus(
-        drill_id=drill.id,
+        drill_uuid=drill.uuid,
         category="dribbling",
         sub_skill="close_control",
         is_primary=True
@@ -202,7 +204,7 @@ def test_drill(db, test_drill_category):
     db.add(primary_skill)
     
     secondary_skill = DrillSkillFocus(
-        drill_id=drill.id,
+        drill_uuid=drill.uuid,
         category="dribbling",
         sub_skill="ball_mastery",
         is_primary=False

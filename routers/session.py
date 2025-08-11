@@ -6,6 +6,7 @@ from db import get_db
 from auth import get_current_user
 from services.session_generator import SessionGenerator
 from utils.skill_mapper import map_frontend_to_backend, format_skills_for_session, REVERSE_SKILL_MAP
+from routers.drill_groups import find_drill_by_uuid
 import logging
 
 # Configure logging
@@ -132,7 +133,7 @@ async def update_session_preferences(
         return {
             "status": "success",
             "message": message,
-            "data": format_session_for_frontend(session)
+            "data": format_session_for_frontend(session, db, current_user.id)
         }
     except Exception as e:
         logger.error(f"Error updating session preferences: {str(e)}")
@@ -151,8 +152,8 @@ def create_default_preferences(db: Session, user: User) -> SessionPreferences:
         
         # Map training style
         style_map = {
-            "beginner": "medium_intensity",
-            "intermediate": "medium_intensity",
+            "beginner": "low_intensity",
+            "intermediate": "medium_intensity", 
             "advanced": "high_intensity",
             "professional": "high_intensity"
         }
@@ -197,7 +198,7 @@ def create_default_preferences(db: Session, user: User) -> SessionPreferences:
         db.rollback()
         raise
 
-def format_session_for_frontend(session) -> Dict[str, Any]:
+def format_session_for_frontend(session, db: Session, user_id: int) -> Dict[str, Any]:
     """Format training session for frontend consumption using OrderedSessionDrill."""
     drills = []
 
@@ -211,31 +212,51 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
         }
 
     for osd in sorted(session.ordered_drills, key=lambda x: x.position):
-        drill = osd.drill
-        # Merge per-session and static fields
-        drill_data = {
-            "id": drill.id,
-            "title": drill.title,
-            "description": drill.description,
-            "duration": osd.duration if osd.duration is not None else drill.duration,
-            "intensity": drill.intensity,
-            "difficulty": drill.difficulty,
-            "equipment": drill.equipment,
-            "suitable_locations": drill.suitable_locations,
-            "instructions": drill.instructions,
-            "tips": drill.tips,
-            "type": drill.type,
-            "sets": osd.sets if osd.sets is not None else drill.sets,
-            "reps": osd.reps if osd.reps is not None else drill.reps,
-            "rest": osd.rest if osd.rest is not None else drill.rest,
-            "training_styles": drill.training_styles or [],
-            "primary_skill": {
-                "category": drill.skill_focus[0].category if drill.skill_focus else "general",
-                "sub_skill": drill.skill_focus[0].sub_skill if drill.skill_focus else "general"
-            },
-            "video_url": drill.video_url
-        }
-        drills.append(drill_data)
+        # ✅ UPDATED: Use find_drill_by_uuid to get drill from either table
+        drill = None
+        is_custom = False
+        if osd.drill_uuid:
+            drill, is_custom = find_drill_by_uuid(db, str(osd.drill_uuid), user_id)
+        
+        if drill:
+            # ✅ UPDATED: Handle skill focus differently for Drill vs CustomDrill
+            if is_custom:
+                # CustomDrill uses primary_skill JSON field
+                primary_skill_data = drill.primary_skill or {}
+                main_skill = primary_skill_data.get('category', 'general')
+                sub_skill = primary_skill_data.get('sub_skill', 'general')
+            else:
+                # Regular Drill uses skill_focus relationship
+                skill_focus = drill.skill_focus
+                primary_skill = next((sf for sf in skill_focus if sf.is_primary), None) if skill_focus else None
+                main_skill = primary_skill.category if primary_skill else "general"
+                sub_skill = primary_skill.sub_skill if primary_skill else "general"
+            
+            # Merge per-session and static fields
+            drill_data = {
+                "uuid": str(drill.uuid),  # Use UUID as primary identifier
+                "title": drill.title,
+                "description": drill.description,
+                "duration": osd.duration if osd.duration is not None else drill.duration,
+                "intensity": drill.intensity,
+                "difficulty": drill.difficulty,
+                "equipment": drill.equipment,
+                "suitable_locations": drill.suitable_locations,
+                "instructions": drill.instructions,
+                "tips": drill.tips,
+                "type": drill.type,
+                "sets": osd.sets if osd.sets is not None else drill.sets,
+                "reps": osd.reps if osd.reps is not None else drill.reps,
+                "rest": osd.rest if osd.rest is not None else drill.rest,
+                "training_styles": drill.training_styles or [],
+                "primary_skill": {
+                    "category": main_skill,
+                    "sub_skill": sub_skill
+                },
+                "video_url": drill.video_url,
+                "is_custom": is_custom  # ✅ Add is_custom field
+            }
+            drills.append(drill_data)
 
     # Format focus areas as a list of sub-skills
     focus_areas = []
@@ -255,3 +276,93 @@ def format_session_for_frontend(session) -> Dict[str, Any]:
         "focus_areas": focus_areas,
         "drills": drills
     }
+
+# ✅ NEW: Public session generation for guest users
+@router.post("/public/session/generate")
+async def generate_public_session(
+    session_request: dict,
+    db: Session = Depends(get_db)
+):
+    """
+    Generate a training session for guest users without requiring authentication.
+    This allows guests to test the session generator functionality.
+    """
+    try:
+        logger.info(f"Generating public session for guest user with preferences: {session_request}")
+        
+        # Extract preferences from request
+        preferences_data = session_request.get('preferences', {})
+        
+        # Map training experience to difficulty if not provided
+        difficulty_map = {
+            "Beginner": "beginner",
+            "Intermediate": "intermediate", 
+            "Advanced": "advanced",
+            "Professional": "advanced"
+        }
+        
+        # Map training style
+        style_map = {
+            "Beginner": "low_intensity",
+            "Intermediate": "medium_intensity",
+            "Advanced": "high_intensity",
+            "Professional": "high_intensity"
+        }
+        
+        # Create temporary session preferences object
+        duration = preferences_data.get("duration", 30)
+        available_equipment = preferences_data.get("available_equipment", ["ball"])
+        training_style = preferences_data.get("training_style", "medium_intensity")
+        training_location = preferences_data.get("training_location", "full_field")
+        difficulty = preferences_data.get("difficulty", "beginner")
+        target_skills = preferences_data.get("target_skills", [])
+        
+        # ✅ Map frontend skills to backend format if provided
+        if target_skills and isinstance(target_skills, list):
+            # Convert frontend skills to backend format
+            backend_skills = map_frontend_to_backend(set(target_skills))
+            # Format skills for session preferences
+            formatted_skills = format_skills_for_session(backend_skills)
+        else:
+            formatted_skills = []
+        
+        logger.info(f"Mapped skills for public session: {target_skills} -> {formatted_skills}")
+        
+        # Create a temporary SessionPreferences-like object
+        class TempPreferences:
+            def __init__(self):
+                self.user_id = None  # No user for guest
+                self.duration = duration
+                self.available_equipment = available_equipment
+                self.training_style = training_style
+                self.training_location = training_location
+                self.difficulty = difficulty
+                self.target_skills = formatted_skills
+        
+        temp_preferences = TempPreferences()
+        
+        # Generate session using the session generator
+        session_generator = SessionGenerator(db)
+        session = await session_generator.generate_session(temp_preferences)
+        
+        if not session:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to generate session with provided preferences"
+            )
+        
+        # Format response for frontend
+        session_response = format_session_for_frontend(session, db, None) # Pass None for user_id in guest mode
+        
+        logger.info(f"Generated public session with {len(session_response.get('drills', []))} drills")
+        
+        return {
+            "status": "success",
+            "message": f"Session generated successfully with {len(session_response.get('drills', []))} drills",
+            "data": session_response,
+            "guest_mode": True
+        }
+        
+    except Exception as e:
+        logger.error(f"Error generating public session: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate session: {str(e)}")

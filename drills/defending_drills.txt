@@ -1,0 +1,632 @@
+[
+    {
+        "title": "Triangle Shuffle",
+        "description": "A defensive footwork drill that improves lateral movement and agility while maintaining proper defensive positioning around a triangular course.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 4,
+        "reps": 3,
+        "equipment": [
+            "cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "small_space"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "agility"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Place 3 cones in a triangle shape, with each side measuring 3-5 yards long.",
+            "Start at one cone in a defensive stance with knees bent and arms ready.",
+            "Shuffle in a V-shaped direction to the next cone while maintaining a low stance.",
+            "Pivot your hips and continue shuffling around the triangle.",
+            "Keep your feet shoulder-width apart and avoid crossing your feet.",
+            "Complete 3 rounds clockwise, then reverse direction for 3 more rounds."
+        ],
+        "tips": [
+            "Maintain a low, athletic stance throughout the drill.",
+            "Keep your arms in a ready position for balance and quick reactions.",
+            "Focus on smooth transitions when pivoting at each cone.",
+            "Stay on the balls of your feet for quick directional changes."
+        ],
+        "common_mistakes": [
+            "Crossing your feet during lateral movement.",
+            "Standing too upright, reducing defensive effectiveness.",
+            "Not pivoting properly at the cones, causing awkward transitions.",
+            "Moving too quickly and losing control of the movement."
+        ],
+        "progression_steps": [
+            "Start with slower movements to perfect the technique.",
+            "Increase speed while maintaining proper form.",
+            "Add a ball to simulate defending against an attacker.",
+            "Incorporate different defensive stances at each cone."
+        ],
+        "rest": 30,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/triangle-shuffle.mp4",
+        "thumbnail_url": "https://example.com/triangle-shuffle-thumbnail.jpg"
+    },
+    {
+        "title": "Shadow Defending",
+        "description": "A defensive drill that improves reactive movement and body orientation while mirroring an opponent's movements.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": 1,
+        "equipment": [
+            "soccer_ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "small_space"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "marking"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up a 5x5 yard grid or use an open space.",
+            "If with a partner, they dribble slowly in random directions.",
+            "Mirror their movements defensively, always facing them.",
+            "Constantly shift direction to maintain proper defensive positioning.",
+            "Every few seconds, your partner switches direction, requiring you to pivot and continue shadowing.",
+            "If solo, mimic direction changes yourself (forward, backpedal, lateral, diagonal)."
+        ],
+        "tips": [
+            "Stay in a low, athletic stance throughout the drill.",
+            "Keep your eyes on the opponent's hips to anticipate movement.",
+            "Maintain proper distance (arm's length) from the attacker.",
+            "Use quick, explosive movements to change direction."
+        ],
+        "common_mistakes": [
+            "Not staying square to the opponent.",
+            "Moving too slowly to react to direction changes.",
+            "Getting too close or too far from the attacker.",
+            "Losing balance during quick direction changes."
+        ],
+        "progression_steps": [
+            "Start with slow, controlled movements.",
+            "Increase the speed and unpredictability of direction changes.",
+            "Add feints and fakes to make the drill more challenging.",
+            "Incorporate tackling attempts at the end of each session."
+        ],
+        "rest": 45,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/advanced-shadow-defending.mp4",
+        "thumbnail_url": "https://example.com/advanced-shadow-defending-thumbnail.jpg"
+    },
+    {
+        "title": "Crossover Recovery Runs",
+        "description": "A defensive drill that focuses on transitioning between defensive footwork and sprinting to recover position.",
+        "type": "set_based",
+        "duration": 6,
+        "sets": 5,
+        "reps": 3,
+        "equipment": [
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "intercepting"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "agility"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Place a cone 10-15 yards in front of you.",
+            "Begin in a defensive shuffle stance, facing forward.",
+            "Transition into crossover steps moving backward as if an attacker is dribbling at you.",
+            "Move side-on and maintain a low defensive stance.",
+            "At a signal (or self-determined point), break into a full sprint past the cone.",
+            "Simulate chasing down the play and recovering defensive position."
+        ],
+        "tips": [
+            "Keep your hips square to the opponent during backward movement.",
+            "Stay on the balls of your feet for quick transitions.",
+            "Explode forward with maximum effort when transitioning to sprint.",
+            "Maintain proper running form during the recovery sprint."
+        ],
+        "common_mistakes": [
+            "Not staying square during backward movement.",
+            "Transitioning too slowly from defensive stance to sprint.",
+            "Losing balance during crossover steps.",
+            "Not maintaining proper running technique during recovery."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect the technique.",
+            "Increase the distance and speed of the recovery run.",
+            "Add a ball to simulate actual game scenarios.",
+            "Incorporate different defensive techniques at the end of the recovery."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/crossover-recovery-runs.mp4",
+        "thumbnail_url": "https://example.com/crossover-recovery-runs-thumbnail.jpg"
+    },
+    {
+        "title": "Recovery Sprint with Hip Turn",
+        "description": "A defensive drill that improves retreating footwork, sharp turning, and explosive forward recovery.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 4,
+        "reps": 4,
+        "equipment": [
+            "cones",
+            "soccer_ball"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "tackling"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "agility"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Place two cones 5-10 yards apart, one behind you and one in front.",
+            "Start in a defensive stance facing one direction.",
+            "Shuffle or retreat backward while maintaining forward-facing position.",
+            "At the rear cone, turn your hips sharply and explosively.",
+            "Sprint forward past the second cone with maximum effort.",
+            "Add a ball at the finish line (optional partner dribble) to simulate a chase."
+        ],
+        "tips": [
+            "Keep your center of gravity low during backward movement.",
+            "Use your arms for balance and momentum during the hip turn.",
+            "Explode forward with maximum power after the turn.",
+            "Maintain proper running form throughout the sprint."
+        ],
+        "common_mistakes": [
+            "Not turning the hips sharply enough, causing slow transitions.",
+            "Losing balance during the backward retreat.",
+            "Not generating enough power in the forward sprint.",
+            "Poor running technique during the recovery phase."
+        ],
+        "progression_steps": [
+            "Start with shorter distances to perfect the technique.",
+            "Increase the distance between cones for greater challenge.",
+            "Add a partner with a ball to simulate game pressure.",
+            "Incorporate defensive techniques at the end of the recovery."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/recovery-sprint-with-hip-turn.mp4",
+        "thumbnail_url": "https://example.com/recovery-sprint-hip-turn-thumbnail.jpg"
+    },
+    {
+        "title": "Shuffle to Header Drill",
+        "description": "A defensive drill that improves lateral movement, aerial ability, and timing for winning headers in defensive situations.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 3,
+        "reps": 8,
+        "equipment": [
+            "soccer_ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "small_space"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "aerial_defending"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "agility"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Set up a line of cones or markers spaced laterally apart.",
+            "Start in the center in a defensive stance.",
+            "Shuffle to one cone, then jump straight up as your partner tosses the ball for a simulated header.",
+            "Land safely and immediately shuffle to the opposite cone.",
+            "Repeat the jumping motion at the opposite cone.",
+            "Continue alternating between cones for the designated number of reps."
+        ],
+        "tips": [
+            "Maintain proper jumping technique with both feet.",
+            "Keep your eyes on the ball throughout the movement.",
+            "Land softly and immediately prepare for the next movement.",
+            "Use your arms for balance and momentum during jumps."
+        ],
+        "common_mistakes": [
+            "Not jumping high enough to simulate a header.",
+            "Landing awkwardly and losing balance.",
+            "Moving too slowly between cones.",
+            "Not maintaining proper defensive positioning."
+        ],
+        "progression_steps": [
+            "Start with lower jumps to perfect the technique.",
+            "Increase the height and intensity of the jumps.",
+            "Add actual header attempts with a partner.",
+            "Incorporate different defensive techniques after landing."
+        ],
+        "rest": 45,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/shuffle-to-header-drill.mp4",
+        "thumbnail_url": "https://example.com/shuffle-to-header-drill-thumbnail.jpg"
+    },
+    {
+        "title": "Defensive Stance Progression",
+        "description": "A foundational drill that builds proper defensive positioning, balance, and reactive movement through progressive stance variations.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 3,
+        "reps": 5,
+        "equipment": [
+            "cones"
+        ],
+        "suitable_locations": [
+            "small_space",
+            "medium_field"
+        ],
+        "intensity": "low",
+        "training_styles": [
+            "low_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "positioning"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones in a square pattern, 3-4 yards apart.",
+            "Start at one cone in a proper defensive stance: feet shoulder-width, knees bent, arms ready.",
+            "Hold the stance for 5 seconds, focusing on balance and positioning.",
+            "Shuffle to the next cone while maintaining the defensive stance.",
+            "At each cone, perform a different defensive variation: side-on, square, retreating, advancing.",
+            "Complete the square pattern, then reverse direction for the next set."
+        ],
+        "tips": [
+            "Keep your center of gravity low and centered between your feet.",
+            "Maintain proper arm position for balance and quick reactions.",
+            "Focus on smooth transitions between different defensive stances.",
+            "Breathe steadily and stay relaxed while maintaining tension in your core."
+        ],
+        "common_mistakes": [
+            "Standing too upright, reducing defensive effectiveness.",
+            "Not maintaining consistent stance throughout the movement.",
+            "Moving too quickly and losing proper form.",
+            "Not keeping the arms in a ready position."
+        ],
+        "progression_steps": [
+            "Start with longer holds at each stance to build endurance.",
+            "Add quick direction changes at each cone.",
+            "Incorporate arm movements to simulate defensive actions.",
+            "Add a partner to provide visual cues for stance changes."
+        ],
+        "rest": 40,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/defensive-stance-progression.mp4",
+        "thumbnail_url": "https://example.com/defensive-stance-progression-thumbnail.jpg"
+    },
+    {
+        "title": "Lateral Slide Defense",
+        "description": "A fundamental drill that develops proper lateral movement, defensive positioning, and the ability to maintain balance while sliding side-to-side.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 4,
+        "reps": 6,
+        "equipment": [
+            "cones"
+        ],
+        "suitable_locations": [
+            "small_space",
+            "medium_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "agility"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Set up 3 cones in a straight line, 2-3 yards apart.",
+            "Start at the center cone in a defensive stance, facing forward.",
+            "Slide laterally to the left cone using proper defensive footwork.",
+            "Hold the position for 3 seconds, then slide back to center.",
+            "Slide to the right cone and hold for 3 seconds.",
+            "Return to center and repeat the pattern for the designated number of reps."
+        ],
+        "tips": [
+            "Keep your feet shoulder-width apart and avoid crossing them.",
+            "Maintain a low, athletic stance throughout the movement.",
+            "Use your arms for balance and to simulate defensive positioning.",
+            "Stay on the balls of your feet for quick directional changes."
+        ],
+        "common_mistakes": [
+            "Crossing your feet during lateral movement.",
+            "Rising up during the slide, losing defensive effectiveness.",
+            "Moving too quickly and losing control.",
+            "Not maintaining proper arm position for balance."
+        ],
+        "progression_steps": [
+            "Start with slower movements to perfect the technique.",
+            "Increase the distance between cones for greater challenge.",
+            "Add quick direction changes without stopping at cones.",
+            "Incorporate defensive hand movements and positioning cues."
+        ],
+        "rest": 35,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/lateral-slide-defense.mp4",
+        "thumbnail_url": "https://example.com/lateral-slide-defense-thumbnail.jpg"
+    },
+    {
+        "title": "Cone-to-Cone Shadow Defense",
+        "description": "An intermediate defensive drill that improves tracking, mirroring, and maintaining close defensive pressure while following an attacker's movements between two target cones.",
+        "type": "time_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 1,
+        "equipment": [
+            "soccer_ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "intermediate",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "marking"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up two cones exactly 10 yards apart from each other.",
+            "Stand in the center between the cones, facing your partner who is positioned across from you.",
+            "Your partner starts dribbling the ball and attempts to reach either of the two cones by moving in multiple directions.",
+            "Mirror your partner's movements defensively, staying as close as possible while maintaining proper defensive positioning.",
+            "Your goal is to be within touching distance of your partner when they reach either cone.",
+            "Focus on reading their body language and anticipating their direction changes to maintain close pressure."
+        ],
+        "tips": [
+            "Stay in a low, athletic stance throughout the drill to maintain quick reactions.",
+            "Keep your eyes on the opponent's hips and feet to read their movement intentions.",
+            "Maintain proper defensive distance - close enough to pressure, far enough to react to sudden changes.",
+            "Use quick, explosive movements to match your partner's direction changes.",
+            "Stay on the balls of your feet for immediate directional changes."
+        ],
+        "common_mistakes": [
+            "Getting too close and allowing the attacker to turn past you easily.",
+            "Not reading the opponent's body language effectively.",
+            "Moving too slowly to match the attacker's pace.",
+            "Losing balance during quick direction changes.",
+            "Not maintaining proper defensive positioning when reaching the cones."
+        ],
+        "progression_steps": [
+            "Start with slower, more predictable movements to understand the concept.",
+            "Increase the speed and unpredictability of the attacker's movements.",
+            "Add feints and fakes to make the drill more challenging.",
+            "Incorporate tackling attempts when the attacker reaches the cones.",
+            "Increase the distance between cones for greater challenge."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/cone-to-cone-shadow-defense.mp4",
+        "thumbnail_url": "https://example.com/cone-to-cone-shadow-defense-thumbnail.jpg"
+    },
+    {
+        "title": "Multi-Directional Recovery Challenge",
+        "description": "An advanced defensive drill that combines multiple recovery movements, rapid direction changes, and game-like scenarios to develop elite defensive reactions and positioning.",
+        "type": "set_based",
+        "duration": 20,
+        "sets": 3,
+        "reps": 2,
+        "equipment": [
+            "cones",
+            "soccer_ball"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "intercepting"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "agility"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "positioning"
+            }
+        ],
+        "instructions": [
+            "Set up a complex course with cones in various patterns: forward, backward, lateral, and diagonal.",
+            "Start in the center with a partner or coach calling out directions.",
+            "React to their commands by sprinting to the designated cone.",
+            "Upon reaching the cone, immediately transition into a defensive stance.",
+            "Perform a quick defensive movement (shuffle, backpedal, or pivot) before returning to center.",
+            "Repeat with different directions and movements, maintaining high intensity throughout."
+        ],
+        "tips": [
+            "Stay mentally focused and ready to react to any direction.",
+            "Maintain proper running form during sprints and transitions.",
+            "Keep your center of gravity low during defensive movements.",
+            "Use your arms for balance and momentum during direction changes."
+        ],
+        "common_mistakes": [
+            "Not maintaining proper form during high-intensity movements.",
+            "Reacting too slowly to direction changes.",
+            "Losing balance during rapid transitions.",
+            "Not staying mentally engaged throughout the drill."
+        ],
+        "progression_steps": [
+            "Start with fewer cones and slower pace to perfect technique.",
+            "Increase the number of cones and complexity of the course.",
+            "Add a ball to simulate actual game scenarios.",
+            "Incorporate tackling and intercepting techniques at the end of each recovery."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/multi-directional-recovery-challenge.mp4",
+        "thumbnail_url": "https://example.com/multi-directional-recovery-challenge-thumbnail.jpg"
+    },
+    {
+        "title": "Pressure and Contain Drill",
+        "description": "An advanced defensive drill that teaches proper defensive pressure, containment techniques, and the balance between aggressive defending and maintaining position under game-like conditions.",
+        "type": "time_based",
+        "duration": 25,
+        "sets": 2,
+        "reps": 1,
+        "equipment": [
+            "soccer_ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "marking"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "agility"
+            }
+        ],
+        "instructions": [
+            "Set up a 15x15 yard grid with a partner or coach.",
+            "Your partner dribbles within the grid, changing direction frequently and unpredictably.",
+            "Apply defensive pressure by closing the distance when they face you directly.",
+            "Contain them by maintaining proper defensive positioning when they try to turn or change direction.",
+            "Alternate between applying aggressive pressure and containing based on their movement patterns.",
+            "Focus on reading their body language and foot positioning to anticipate their next move.",
+            "Maintain high intensity throughout the drill while making smart defensive decisions."
+        ],
+        "tips": [
+            "Stay in a low, athletic stance throughout the drill to maintain quick reactions.",
+            "Keep your eyes on the opponent's hips and feet to read their intentions.",
+            "Maintain proper distance - close enough to pressure, far enough to react to sudden changes.",
+            "Use your arms and body positioning to guide them where you want them to go.",
+            "Stay mentally focused and make quick decisions about when to pressure vs. contain."
+        ],
+        "common_mistakes": [
+            "Getting too close and allowing the attacker to turn past you easily.",
+            "Not reading the opponent's body language effectively.",
+            "Applying pressure at the wrong times, leaving yourself vulnerable.",
+            "Losing balance when the attacker changes direction quickly.",
+            "Not maintaining proper defensive positioning during high-intensity movements."
+        ],
+        "progression_steps": [
+            "Start with slow, controlled movements to understand the concept.",
+            "Increase the speed and unpredictability of the attacker's movements.",
+            "Add multiple attackers to practice switching between targets.",
+            "Incorporate tackling attempts when the opportunity presents itself.",
+            "Add time pressure and specific defensive objectives."
+        ],
+        "rest": 120,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/pressure-and-contain-drill.mp4",
+        "thumbnail_url": "https://example.com/pressure-and-contain-drill-thumbnail.jpg"
+    }
+] 

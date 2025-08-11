@@ -151,7 +151,7 @@ def create_test_drills(db: Session, num_drills: int = 10):
         
         # Add primary skill focus
         primary_skill = DrillSkillFocus(
-            drill_id=drill.id,
+            drill_uuid=drill.uuid,
             category=drill_data["primary_skill"]["category"],
             sub_skill=drill_data["primary_skill"]["sub_skill"],
             is_primary=True

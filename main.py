@@ -4,7 +4,7 @@ Main entry point of application that initializes the FastAPI app and includes al
 """
 
 from fastapi import FastAPI
-from routers import login, delete_account, onboarding, drills, session, drill_groups, data_sync_updates, saved_filters, profile
+from routers import login, delete_account, onboarding, drills, session, drill_groups, data_sync_updates, saved_filters, profile, mental_training, custom_drills
 
 # Initialize FastAPI app and router for endpoints
 app = FastAPI()
@@ -19,6 +19,8 @@ app.include_router(session.router)
 app.include_router(drill_groups.router)
 app.include_router(saved_filters.router)
 app.include_router(profile.router)
+app.include_router(mental_training.router)
+app.include_router(custom_drills.router)
 
 
 # Run FastAPI on local host
@@ -26,5 +28,6 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
     
-    # uvicorn main:app --host 0.0.0.0 --port 8000   # in terminal for iphone testing
+    # USE THIS IN TERMINAL FOR IPHONE TESTING
+    # uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     

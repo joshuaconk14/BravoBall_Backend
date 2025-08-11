@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from typing import List
 from datetime import datetime, timedelta
-from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory, TrainingSession
+from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory, TrainingSession, CustomDrill
 from schemas import (
     CompletedSession as CompletedSessionSchema,
     CompletedSessionCreate,
@@ -15,8 +15,164 @@ from schemas import (
 )
 from db import get_db
 from auth import get_current_user
+from collections import Counter
+from routers.drill_groups import find_drill_by_uuid
 
 router = APIRouter()
+
+def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSession], user_position: str = None) -> dict:
+    """
+    Calculate enhanced progress metrics based on completed sessions.
+    Now supports both drill training and mental training sessions.
+    
+    Args:
+        completed_sessions: List of completed sessions for the user (both drill and mental training)
+        user_position: User's position (optional, for position-specific metrics)
+    
+    Returns:
+        Dictionary containing all calculated metrics
+    """
+    if not completed_sessions:
+        return {
+            'favorite_drill': '',
+            'drills_per_session': 0.0,
+            'minutes_per_session': 0.0,
+            'total_time_all_sessions': 0,
+            'dribbling_drills_completed': 0,
+            'first_touch_drills_completed': 0,
+            'passing_drills_completed': 0,
+            'shooting_drills_completed': 0,
+            'defending_drills_completed': 0,
+            'goalkeeping_drills_completed': 0,
+            'fitness_drills_completed': 0,  # ✅ NEW: Add fitness drills completed
+            'most_improved_skill': '',
+            'unique_drills_completed': 0,
+            'beginner_drills_completed': 0,
+            'intermediate_drills_completed': 0,
+            'advanced_drills_completed': 0,
+            # ✅ NEW: Mental training metrics
+            'mental_training_sessions': 0,
+            'total_mental_training_minutes': 0
+        }
+    
+    # Initialize counters
+    drill_counts = Counter()  # Track drill frequency
+    unique_drills = set()  # Track unique drills completed
+    total_drills = 0
+    total_time = 0
+    
+    # ✅ NEW: Mental training counters
+    mental_training_sessions = 0
+    total_mental_training_minutes = 0
+    
+    # Skill-specific counters
+    skill_counters = {
+        'dribbling': 0,
+        'first_touch': 0,
+        'passing': 0,
+        'shooting': 0,
+        'defending': 0,
+        'goalkeeping': 0,  # ✅ NEW: Add goalkeeping counter
+        'fitness': 0,  # ✅ NEW: Add fitness counter
+        'mental_training': 0  # ✅ NEW: Add mental training counter
+    }
+    
+    # Difficulty counters
+    difficulty_counters = {
+        'beginner': 0,
+        'intermediate': 0,
+        'advanced': 0
+    }
+    
+    # Process each completed session
+    for session in completed_sessions:
+        # Handle drill training sessions (existing logic)
+        if not session.drills:
+            continue
+            
+        session_drill_count = len(session.drills)
+        total_drills += session_drill_count
+        
+        # Calculate estimated session time (if not provided)
+        estimated_session_time = 0
+        session_has_mental_training = False
+        
+        for drill_data in session.drills:
+            drill_info = drill_data.get('drill', {})
+            drill_title = drill_info.get('title', 'Unknown')
+            drill_skill = drill_info.get('skill', '').lower()
+            drill_difficulty = drill_info.get('difficulty', '').lower()
+            
+            # Count drill occurrences for favorite drill calculation
+            drill_counts[drill_title] += 1
+            unique_drills.add(drill_title)
+            
+            # Count by skill
+            if drill_skill in skill_counters:
+                skill_counters[drill_skill] += 1
+            
+            # Count by difficulty
+            if drill_difficulty in difficulty_counters:
+                difficulty_counters[drill_difficulty] += 1
+            
+            # ✅ NEW: Handle mental training drills specifically
+            if session.session_type == 'mental_training':
+                session_has_mental_training = True
+                # Use the drill's totalDuration for mental training time
+                drill_duration = drill_data.get('totalDuration')
+                if drill_duration:
+                    total_mental_training_minutes += drill_duration
+                    estimated_session_time += drill_duration
+            else:
+                # Estimate time for non-mental training drills
+                drill_duration = drill_data.get('totalDuration')
+                if drill_duration:
+                    estimated_session_time += drill_duration
+        
+        # ✅ NEW: Count mental training sessions
+        if session_has_mental_training:
+            mental_training_sessions += 1
+        
+        total_time += estimated_session_time
+    
+    # Calculate metrics
+    drill_sessions_count = len(completed_sessions)  # All sessions are drill sessions now
+    total_sessions_count = len(completed_sessions)
+    
+    # Favorite drill (most frequent drill)
+    favorite_drill = drill_counts.most_common(1)[0][0] if drill_counts else ''
+    
+    # Average drills per session (only counting drill sessions)
+    drills_per_session = total_drills / drill_sessions_count if drill_sessions_count > 0 else 0.0
+    
+    # Average minutes per session (including mental training)
+    minutes_per_session = total_time / total_sessions_count if total_sessions_count > 0 else 0.0
+    
+    # Most improved skill (skill with most drills completed)
+    most_improved_skill = max(skill_counters, key=skill_counters.get) if any(skill_counters.values()) else ''
+    
+    return {
+        'favorite_drill': favorite_drill,
+        'drills_per_session': round(drills_per_session, 1),
+        'minutes_per_session': round(minutes_per_session, 1),
+        'total_time_all_sessions': total_time,
+        'dribbling_drills_completed': skill_counters['dribbling'],
+        'first_touch_drills_completed': skill_counters['first_touch'],
+        'passing_drills_completed': skill_counters['passing'],
+        'shooting_drills_completed': skill_counters['shooting'],
+        'defending_drills_completed': skill_counters['defending'],
+        'goalkeeping_drills_completed': skill_counters['goalkeeping'],
+        'fitness_drills_completed': skill_counters['fitness'],  # ✅ NEW: Add fitness drills completed
+        'mental_training_drills_completed': skill_counters['mental_training'],  # ✅ NEW: Add mental training drills completed
+        'most_improved_skill': most_improved_skill,
+        'unique_drills_completed': len(unique_drills),
+        'beginner_drills_completed': difficulty_counters['beginner'],
+        'intermediate_drills_completed': difficulty_counters['intermediate'],
+        'advanced_drills_completed': difficulty_counters['advanced'],
+        # ✅ NEW: Mental training metrics
+        'mental_training_sessions': mental_training_sessions,
+        'total_mental_training_minutes': total_mental_training_minutes
+    }
 
 # ordered drills endpoint
 @router.get("/api/sessions/ordered_drills/")
@@ -31,30 +187,41 @@ async def get_ordered_session_drills(
         # Join OrderedSessionDrill with TrainingSession to filter by user
         ordered_drills = db.query(OrderedSessionDrill).join(OrderedSessionDrill.session).filter(
             TrainingSession.user_id == current_user.id
-        ).options(joinedload(OrderedSessionDrill.drill)).order_by(OrderedSessionDrill.position).all()
+        ).order_by(OrderedSessionDrill.position).all()
 
         # Include the associated drill data for each ordered drill
         result = []
         for ordered_drill in ordered_drills:
-            drill = ordered_drill.drill
+            # ✅ UPDATED: Use find_drill_by_uuid to get drill from either table
+            drill = None
+            if ordered_drill.drill_uuid:
+                drill, is_custom = find_drill_by_uuid(db, str(ordered_drill.drill_uuid), current_user.id)
+            
             if drill:
-                # Get skill focus data
-                skill_focus = drill.skill_focus
-                primary_skill = next((sf for sf in skill_focus if sf.is_primary), None) if skill_focus else None
-                secondary_skills = [sf for sf in skill_focus if not sf.is_primary] if skill_focus else []
-                
-                # Collect all sub-skills (primary + secondary)
-                sub_skills = []
-                if primary_skill:
-                    sub_skills.append(primary_skill.sub_skill)
-                sub_skills.extend([skill.sub_skill for skill in secondary_skills])
-                
-                # Get the main skill category (from primary skill)
-                main_skill = primary_skill.category if primary_skill else "general"
+                # ✅ UPDATED: Handle skill focus differently for Drill vs CustomDrill
+                if is_custom:
+                    # CustomDrill uses primary_skill JSON field
+                    primary_skill_data = drill.primary_skill or {}
+                    main_skill = primary_skill_data.get('category', 'general')
+                    sub_skills = [primary_skill_data.get('sub_skill', '')] if primary_skill_data.get('sub_skill') else []
+                else:
+                    # Regular Drill uses skill_focus relationship
+                    skill_focus = drill.skill_focus
+                    primary_skill = next((sf for sf in skill_focus if sf.is_primary), None) if skill_focus else None
+                    secondary_skills = [sf for sf in skill_focus if not sf.is_primary] if skill_focus else []
+                    
+                    # Collect all sub-skills (primary + secondary)
+                    sub_skills = []
+                    if primary_skill:
+                        sub_skills.append(primary_skill.sub_skill)
+                    sub_skills.extend([skill.sub_skill for skill in secondary_skills])
+                    
+                    # Get the main skill category (from primary skill)
+                    main_skill = primary_skill.category if primary_skill else "general"
                 
                 result.append({
                     "drill": {
-                        "backend_id": drill.id,
+                        "uuid": str(drill.uuid),  # Keep UUID field, remove backend_id
                         "title": drill.title,
                         "skill": main_skill,
                         "subSkills": sub_skills,
@@ -65,9 +232,10 @@ async def get_ordered_session_drills(
                         "instructions": drill.instructions,
                         "tips": drill.tips,
                         "equipment": drill.equipment,
-                        "trainingStyle": drill.training_styles[0],
+                        "trainingStyle": drill.training_styles[0] if drill.training_styles else None,
                         "difficulty": drill.difficulty,
-                        "videoUrl": drill.video_url
+                        "videoUrl": drill.video_url,
+                        "is_custom": is_custom  # ✅ Use the is_custom flag from find_drill_by_uuid
                     },
                     # Add per-session fields as needed
                     "sets_done": ordered_drill.sets_done,
@@ -117,24 +285,29 @@ async def sync_ordered_session_drills(
         
         # Get existing ordered drills for this user's session
         existing_drills = {
-            drill.drill_id: drill
+            drill.drill_uuid: drill
             for drill in db.query(OrderedSessionDrill).filter(
                 OrderedSessionDrill.session_id == session_id
             ).all()
         }
-        processed_drill_ids = set()
+        processed_drill_uuids = set()
         
         # Add or update ordered drills
         for position, drill_data in enumerate(ordered_drills.ordered_drills):
-            drill = db.query(Drill).filter(Drill.id == drill_data.drill.backend_id).first()
-            if not drill and drill_data.drill.backend_id:
-                raise HTTPException(status_code=404, detail=f"Drill with id {drill_data.drill.backend_id} not found")
-            drill_id = drill.id if drill else None
-            processed_drill_ids.add(drill_id)
+            # ✅ UPDATED: Use is_custom field for efficient drill lookup
+            drill = None
+            if drill_data.drill.uuid:
+                drill, _ = find_drill_by_uuid(db, drill_data.drill.uuid, current_user.id, drill_data.drill.is_custom)
+
+            if not drill:
+                raise HTTPException(status_code=404, detail=f"Drill not found with uuid {drill_data.drill.uuid}")
             
-            if drill_id in existing_drills:
+            drill_uuid = drill.uuid if drill else None
+            processed_drill_uuids.add(drill_uuid)
+            
+            if drill_uuid in existing_drills:
                 # Update existing drill
-                existing_drill = existing_drills[drill_id]
+                existing_drill = existing_drills[drill_uuid]
                 existing_drill.position = position
                 existing_drill.sets_done = drill_data.sets_done
                 existing_drill.sets = drill_data.sets
@@ -145,7 +318,7 @@ async def sync_ordered_session_drills(
                 # Add new drill
                 ordered_drill = OrderedSessionDrill(
                     session_id=session_id,
-                    drill_id=drill_id,
+                    drill_uuid=drill_uuid,
                     position=position,
                     sets_done = drill_data.sets_done,
                     sets=drill_data.sets,
@@ -156,8 +329,8 @@ async def sync_ordered_session_drills(
                 db.add(ordered_drill)
         
         # Delete drills that were removed
-        for drill_id, drill in existing_drills.items():
-            if drill_id not in processed_drill_ids:
+        for drill_uuid, drill in existing_drills.items():
+            if drill_uuid not in processed_drill_uuids:
                 db.delete(drill)
         
         db.commit()
@@ -188,7 +361,8 @@ def create_completed_session(session: CompletedSessionCreate,
             CompletedSession.user_id == current_user.id,
             CompletedSession.date == session_date,
             CompletedSession.total_drills == session.total_drills,
-            CompletedSession.total_completed_drills == session.total_completed_drills
+            CompletedSession.total_completed_drills == session.total_completed_drills,
+            CompletedSession.session_type == session.session_type
         ).first()
         
         if existing_session:
@@ -201,9 +375,10 @@ def create_completed_session(session: CompletedSessionCreate,
             date=session_date,
             total_completed_drills=session.total_completed_drills,
             total_drills=session.total_drills,
+            session_type=session.session_type,
             drills=[{
                 "drill": {
-                    "id": drill.drill.id,
+                    "uuid": drill.drill.uuid,  # Use UUID as primary identifier
                     "title": drill.drill.title,
                     "skill": drill.drill.skill,
                     "subSkills": drill.drill.subSkills,
@@ -223,7 +398,8 @@ def create_completed_session(session: CompletedSessionCreate,
                 "totalReps": drill.totalReps,
                 "totalDuration": drill.totalDuration,
                 "isCompleted": drill.isCompleted
-            } for drill in session.drills]
+            } for drill in session.drills] if session.drills else None,
+            duration_minutes=session.duration_minutes
         )
         db.add(db_session)
         
@@ -244,55 +420,7 @@ def get_completed_sessions(current_user: User = Depends(get_current_user),
     return db.query(CompletedSession).filter(CompletedSession.user_id == current_user.id).all()
 
 
-# Drill Groups Endpoints
-@router.post("/api/drills/groups/", response_model=DrillGroupSchema)
-def create_drill_group(group: DrillGroupCreate,
-                      current_user: User = Depends(get_current_user),
-                      db: Session = Depends(get_db)):
-    db_group = DrillGroup(**group.dict(), user_id=current_user.id)
-    db.add(db_group)
-    db.commit()
-    db.refresh(db_group)
-    return db_group
 
-@router.get("/api/drills/groups/", response_model=List[DrillGroupSchema])
-def get_drill_groups(current_user: User = Depends(get_current_user),
-                    db: Session = Depends(get_db)):
-    return db.query(DrillGroup).filter(DrillGroup.user_id == current_user.id).all()
-
-@router.put("/api/drills/groups/{group_id}", response_model=DrillGroupSchema)
-def update_drill_group(group_id: int,
-                      group: DrillGroupUpdate,
-                      current_user: User = Depends(get_current_user),
-                      db: Session = Depends(get_db)):
-    db_group = db.query(DrillGroup).filter(
-        DrillGroup.id == group_id,
-        DrillGroup.user_id == current_user.id
-    ).first()
-    if not db_group:
-        raise HTTPException(status_code=404, detail="Drill group not found")
-    
-    for field, value in group.dict(exclude_unset=True).items():
-        setattr(db_group, field, value)
-    
-    db.commit()
-    db.refresh(db_group)
-    return db_group
-
-@router.delete("/api/drills/groups/{group_id}")
-def delete_drill_group(group_id: int,
-                      current_user: User = Depends(get_current_user),
-                      db: Session = Depends(get_db)):
-    db_group = db.query(DrillGroup).filter(
-        DrillGroup.id == group_id,
-        DrillGroup.user_id == current_user.id
-    ).first()
-    if not db_group:
-        raise HTTPException(status_code=404, detail="Drill group not found")
-    
-    db.delete(db_group)
-    db.commit()
-    return {"message": "Drill group deleted"}
 
 # Progress History Endpoints
 @router.get("/api/progress_history/", response_model=ProgressHistoryResponse)
@@ -308,41 +436,111 @@ async def get_progress_history(
             ProgressHistory.user_id == current_user.id
         ).first()
 
+        # Fetch all completed sessions for the user, ordered by date ascending
+        completed_sessions = db.query(CompletedSession).filter(
+            CompletedSession.user_id == current_user.id
+        ).order_by(CompletedSession.date.asc()).all()
+        completed_sessions_count = len(completed_sessions)
+
+
+        # Calculate enhanced progress metrics
+        enhanced_metrics = calculate_enhanced_progress_metrics(completed_sessions, current_user.position)
+
+
+        # Calculate streaks
+        streak = 0
+        highest_streak = 0
+        previous_streak = progress_history.current_streak if progress_history else 0
+        today = datetime.now().date()
+        last_session_date = None
+
+        for session in completed_sessions:
+            session_date = session.date.date() if hasattr(session.date, 'date') else session.date
+            if last_session_date is None:
+                # First session in completed sessions loop is set to 1
+                streak = 1
+            else:
+                days_diff = (session_date - last_session_date).days
+                if days_diff == 1:
+                    # Sessions have diff date, increment streak
+                    streak += 1
+                elif days_diff == 0:
+                    # Same day, don't increment streak
+                    pass
+                else:
+                    streak = 1
+            highest_streak = max(highest_streak, streak)
+            last_session_date = session_date
+
+        # Check if the last session was today or yesterday
+        streak_should_reset = True
+        if last_session_date:
+            if (today - last_session_date).days in [0, 1]:
+                streak_should_reset = False
+
+        if streak_should_reset:
+            previous_streak = streak
+            streak = 0
+
         if not progress_history:
             # Create default progress history if none exists
             progress_history = ProgressHistory(
                 user_id=current_user.id,
-                current_streak=0,
-                highest_streak=0,
-                completed_sessions_count=0
+                current_streak=streak,
+                previous_streak=previous_streak,
+                highest_streak=highest_streak,
+                completed_sessions_count=completed_sessions_count,
+                # ✅ NEW: Enhanced progress metrics
+                favorite_drill=enhanced_metrics['favorite_drill'],
+                drills_per_session=enhanced_metrics['drills_per_session'],
+                minutes_per_session=enhanced_metrics['minutes_per_session'],
+                total_time_all_sessions=enhanced_metrics['total_time_all_sessions'],
+                dribbling_drills_completed=enhanced_metrics['dribbling_drills_completed'],
+                first_touch_drills_completed=enhanced_metrics['first_touch_drills_completed'],
+                passing_drills_completed=enhanced_metrics['passing_drills_completed'],
+                shooting_drills_completed=enhanced_metrics['shooting_drills_completed'],
+                defending_drills_completed=enhanced_metrics['defending_drills_completed'],
+                goalkeeping_drills_completed=enhanced_metrics['goalkeeping_drills_completed'],
+                fitness_drills_completed=enhanced_metrics['fitness_drills_completed'],  # ✅ NEW: Add fitness drills completed
+                most_improved_skill=enhanced_metrics['most_improved_skill'],
+                unique_drills_completed=enhanced_metrics['unique_drills_completed'],
+                beginner_drills_completed=enhanced_metrics['beginner_drills_completed'],
+                intermediate_drills_completed=enhanced_metrics['intermediate_drills_completed'],
+                advanced_drills_completed=enhanced_metrics['advanced_drills_completed'],
+                # ✅ NEW: Mental training metrics
+                mental_training_sessions=enhanced_metrics['mental_training_sessions'],
+                total_mental_training_minutes=enhanced_metrics['total_mental_training_minutes']
             )
             db.add(progress_history)
             db.commit()
             db.refresh(progress_history)
         else:
-            # Check if there was a completed session today or yesterday
-            today = datetime.now().date()
-            yesterday = today - timedelta(days=1)
-            
-            # Check for sessions completed today
-            today_session = db.query(CompletedSession).filter(
-                CompletedSession.user_id == current_user.id,
-                CompletedSession.date >= today,
-                CompletedSession.date < today + timedelta(days=1)
-            ).first()
-            
-            # Check for sessions completed yesterday
-            yesterday_session = db.query(CompletedSession).filter(
-                CompletedSession.user_id == current_user.id,
-                CompletedSession.date >= yesterday,
-                CompletedSession.date < yesterday + timedelta(days=1)
-            ).first()
-            
-            # If no session was completed today or yesterday, reset current streak to 0
-            if not today_session and not yesterday_session and progress_history.current_streak > 0:
-                progress_history.current_streak = 0
-                db.commit()
-                db.refresh(progress_history)
+            progress_history.previous_streak = previous_streak
+            progress_history.current_streak = streak
+            progress_history.highest_streak = highest_streak
+            progress_history.completed_sessions_count = completed_sessions_count
+            # ✅ NEW: Update enhanced progress metrics
+            progress_history.favorite_drill = enhanced_metrics['favorite_drill']
+            progress_history.drills_per_session = enhanced_metrics['drills_per_session']
+            progress_history.minutes_per_session = enhanced_metrics['minutes_per_session']
+            progress_history.total_time_all_sessions = enhanced_metrics['total_time_all_sessions']
+            progress_history.dribbling_drills_completed = enhanced_metrics['dribbling_drills_completed']
+            progress_history.first_touch_drills_completed = enhanced_metrics['first_touch_drills_completed']
+            progress_history.passing_drills_completed = enhanced_metrics['passing_drills_completed']
+            progress_history.shooting_drills_completed = enhanced_metrics['shooting_drills_completed']
+            progress_history.defending_drills_completed = enhanced_metrics['defending_drills_completed']
+            progress_history.goalkeeping_drills_completed = enhanced_metrics['goalkeeping_drills_completed']
+            progress_history.fitness_drills_completed = enhanced_metrics['fitness_drills_completed']
+            progress_history.most_improved_skill = enhanced_metrics['most_improved_skill']
+            progress_history.unique_drills_completed = enhanced_metrics['unique_drills_completed']
+            progress_history.beginner_drills_completed = enhanced_metrics['beginner_drills_completed']
+            progress_history.intermediate_drills_completed = enhanced_metrics['intermediate_drills_completed']
+            progress_history.advanced_drills_completed = enhanced_metrics['advanced_drills_completed']
+            # ✅ NEW: Update mental training metrics
+            progress_history.mental_training_sessions = enhanced_metrics['mental_training_sessions']
+            progress_history.total_mental_training_minutes = enhanced_metrics['total_mental_training_minutes']
+            db.commit()
+            db.refresh(progress_history)
 
         return progress_history
 
@@ -350,45 +548,4 @@ async def get_progress_history(
         raise HTTPException(
             status_code=500,
             detail=f"Failed to get progress history: {str(e)}"
-        )
-
-@router.put("/api/progress_history/", response_model=ProgressHistoryResponse)
-async def sync_progress_history(
-    progress: ProgressHistoryUpdate,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """
-    Sync the user's progress history (streaks and completed sessions count)
-    """
-    try:
-        # Get or create progress history for the user
-        progress_history = db.query(ProgressHistory).filter(
-            ProgressHistory.user_id == current_user.id
-        ).first()
-
-        if not progress_history:
-            progress_history = ProgressHistory(
-                user_id=current_user.id,
-                current_streak=progress.current_streak,
-                highest_streak=progress.highest_streak,
-                completed_sessions_count=progress.completed_sessions_count
-            )
-            db.add(progress_history)
-        else:
-            # Update existing progress history
-            progress_history.current_streak = progress.current_streak
-            progress_history.highest_streak = progress.highest_streak
-            progress_history.completed_sessions_count = progress.completed_sessions_count
-
-        db.commit()
-        db.refresh(progress_history)
-        
-        return progress_history
-        
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to sync progress history: {str(e)}"
         )

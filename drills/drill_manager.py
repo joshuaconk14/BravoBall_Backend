@@ -27,7 +27,7 @@ logger = get_logger(__name__)
 @dataclass
 class DrillUpdate:
     """Represents a drill update operation"""
-    drill_id: Optional[int] = None
+    drill_uuid: Optional[str] = None  # Changed from drill_id to drill_uuid
     title: Optional[str] = None
     fields_to_update: Dict[str, Any] = None
 
@@ -42,8 +42,12 @@ class DrillRepository:
         return self.db.query(Drill).filter(Drill.title == title).first()
     
     def get_drill_by_id(self, drill_id: int) -> Optional[Drill]:
-        """Get a drill by its ID"""
+        """Get a drill by its ID (for backward compatibility)"""
         return self.db.query(Drill).filter(Drill.id == drill_id).first()
+    
+    def get_drill_by_uuid(self, drill_uuid: str) -> Optional[Drill]:
+        """Get a drill by its UUID"""
+        return self.db.query(Drill).filter(Drill.uuid == drill_uuid).first()
     
     def update_drill(self, drill: Drill, update_data: Dict[str, Any]) -> Drill:
         """Update specific fields of a drill"""
@@ -52,15 +56,21 @@ class DrillRepository:
                 setattr(drill, field, value)
         return drill
     
-    def update_skill_focus(self, drill_id: int, primary_skill: Dict[str, str], 
+    def update_skill_focus(self, drill_uuid: str, primary_skill: Dict[str, str], 
                           secondary_skills: List[Dict[str, str]]) -> None:
-        """Update skill focus for a drill"""
+        """Update skill focus for a drill using UUID"""
+        # Get drill by UUID
+        drill = self.get_drill_by_uuid(drill_uuid)
+        if not drill:
+            logger.error(f"Drill not found with UUID: {drill_uuid}")
+            return
+        
         # Delete existing skill focus
-        self.db.query(DrillSkillFocus).filter(DrillSkillFocus.drill_id == drill_id).delete()
+        self.db.query(DrillSkillFocus).filter(DrillSkillFocus.drill_uuid == drill_uuid).delete()
         
         # Add primary skill
         primary_skill_focus = DrillSkillFocus(
-            drill_id=drill_id,
+            drill_uuid=drill_uuid,
             category=primary_skill["category"],
             sub_skill=primary_skill["sub_skill"],
             is_primary=True
@@ -72,7 +82,7 @@ class DrillRepository:
             if isinstance(skill["sub_skill"], list):
                 for sub_skill in skill["sub_skill"]:
                     secondary_skill_focus = DrillSkillFocus(
-                        drill_id=drill_id,
+                        drill_uuid=drill_uuid,
                         category=skill["category"],
                         sub_skill=sub_skill,
                         is_primary=False
@@ -80,7 +90,7 @@ class DrillRepository:
                     self.db.add(secondary_skill_focus)
             else:
                 secondary_skill_focus = DrillSkillFocus(
-                    drill_id=drill_id,
+                    drill_uuid=drill_uuid,
                     category=skill["category"],
                     sub_skill=skill["sub_skill"],
                     is_primary=False
@@ -131,7 +141,7 @@ class DrillUpdateManager:
                     fields_to_update[field] = new_value
         
         return DrillUpdate(
-            drill_id=existing_drill.id,
+            drill_uuid=existing_drill.uuid, # Changed from drill_id to drill_uuid
             title=drill_data["title"],
             fields_to_update=fields_to_update
         )
@@ -141,7 +151,7 @@ class DrillUpdateManager:
         if not update or not update.fields_to_update:
             return
         
-        drill = self.repository.get_drill_by_id(update.drill_id)
+        drill = self.repository.get_drill_by_uuid(update.drill_uuid) # Changed from drill_id to drill_uuid
         if not drill:
             logger.warning(f"Drill not found for update: {update.title}")
             return
@@ -152,7 +162,7 @@ class DrillUpdateManager:
         # Update skill focus if needed
         if "primary_skill" in update.fields_to_update or "secondary_skills" in update.fields_to_update:
             self.repository.update_skill_focus(
-                drill.id,
+                drill.uuid, # Changed from drill.id to drill.uuid
                 update.fields_to_update.get("primary_skill", drill.primary_skill),
                 update.fields_to_update.get("secondary_skills", drill.secondary_skills)
             )

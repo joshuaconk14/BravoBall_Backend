@@ -52,7 +52,7 @@
         "Try juggling without catching for an extended period."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/inside-foot-juggle-with-catch.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/inside-foot-juggle-with-catch.mp4",
       "thumbnail_url": "https://example.com/inside-foot-juggle-thumbnail.jpg"
     },
     {
@@ -108,7 +108,7 @@
         "Try juggling without catching for an extended period."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/lace-juggle-with-catch.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/lace-juggle-with-catch.mp4",
       "thumbnail_url": "https://example.com/lace-juggle-with-catch-thumbnail.jpg"
     },
     {
@@ -164,7 +164,7 @@
         "Try juggling with fewer bounces."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/inside-foot-juggle-with-bounce.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/inside-foot-juggle-with-bounce.mp4",
       "thumbnail_url": "https://example.com/inside-foot-juggle-with-bounce-thumbnail.jpg"
     },
     {
@@ -220,7 +220,7 @@
         "Try juggling with fewer bounces."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/lace-juggle-with-bounce.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/lace-juggle-with-bounce.mp4",
       "thumbnail_url": "https://example.com/lace-juggle-with-bounce-thumbnail.jpg"
     },
     {
@@ -276,7 +276,7 @@
         "Try performing the drill while moving slightly."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/juggle-knee-height.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/juggle-knee-height.mp4",
       "thumbnail_url": "https://example.com/juggle-knee-height-thumbnail.jpg"
     },
     {
@@ -332,7 +332,7 @@
         "Add movement while maintaining waist-height control."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/juggle-waste-height.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/juggle-waste-height.mp4",
       "thumbnail_url": "https://example.com/juggle-waist-height-thumbnail.jpg"
     },
     {
@@ -388,7 +388,7 @@
         "Add movement to simulate real-game scenarios."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/juggle-head-height.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/juggle-head-height.mp4",
       "thumbnail_url": "https://example.com/juggle-head-height-thumbnail.jpg"
     },
     {
@@ -441,7 +441,7 @@
         "Add movement to simulate real-game scenarios."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/knee-juggles.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/knee-juggles.mp4",
       "thumbnail_url": "https://example.com/knee-juggles-thumbnail.jpg"
     },
     {
@@ -503,7 +503,7 @@
         "Try receiving the ball with different surfaces of the foot."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/wall-pass-to-open-body-touch.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/wall-pass-to-open-body-touch.mp4",
       "thumbnail_url": "https://example.com/wall-pass-open-body-touch-thumbnail.jpg"
     },
     {
@@ -565,7 +565,7 @@
         "Incorporate movement after each touch."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/wall-pass-to-outside-foot-touch.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/wall-pass-to-outside-foot-touch.mp4",
       "thumbnail_url": "https://example.com/wall-pass-outside-foot-touch-thumbnail.jpg"
     },
     {
@@ -627,7 +627,7 @@
         "Incorporate dribbling or shooting after the turn."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/wall-pass-to-open-body-turn.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/wall-pass-to-open-body-turn.mp4",
       "thumbnail_url": "https://example.com/wall-pass-open-body-turn-thumbnail.jpg"
     },
     {
@@ -684,7 +684,7 @@
         "Perform the drill without dropping the ball."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/knee-height-juggles-across-line.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/knee-height-juggles-across-line.mp4",
       "thumbnail_url": "https://example.com/knee-height-juggles-thumbnail.jpg"
     },
     {
@@ -741,7 +741,7 @@
         "Perform the drill without dropping the ball."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/waste-height-juggles-across-line.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/waste-height-juggles-across-line.mp4",
       "thumbnail_url": "https://example.com/waist-height-juggles-thumbnail.jpg"
     },
     {
@@ -798,7 +798,7 @@
         "Complete the drill without dropping the ball."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/head-height-juggles-across-line.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/head-height-juggles-across-line.mp4",
       "thumbnail_url": "https://example.com/head-height-juggles-thumbnail.jpg"
     },
     {
@@ -856,7 +856,7 @@
         "Try moving around the box while juggling."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/high-ball-juggles.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/high-ball-juggles.mp4",
       "thumbnail_url": "https://example.com/high-ball-juggle-thumbnail.jpg"
     },
     {
@@ -915,7 +915,7 @@
         "Try juggling continuously without breaks."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/wall-juggles.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/wall-juggles.mp4",
       "thumbnail_url": "https://example.com/wall-juggles-thumbnail.jpg"
     },
     {
@@ -977,7 +977,7 @@
         "Try to complete the drill without dropping the ball at all."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/high-ball-to-touch-across-gate.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/high-ball-to-touch-across-gate.mp4",
       "thumbnail_url": "https://example.com/high-ball-touch-gate-thumbnail.jpg"
     },
     {
@@ -1043,7 +1043,7 @@
         "Juggle with a partner."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/two-touch-wall-juggles.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/two-touch-wall-juggles.mp4",
       "thumbnail_url": "https://example.com/two-touch-wall-juggles-thumbnail.jpg"
     },
     {
@@ -1108,7 +1108,7 @@
         "Juggle with a partner."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/one-touch-wall-juggles.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/one-touch-wall-juggles.mp4",
       "thumbnail_url": "https://example.com/one-touch-wall-juggles-thumbnail.jpg"
     },
     {
@@ -1173,7 +1173,7 @@
         "Perform the drill under time constraints for added difficulty."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/touch-from-wall-to-skill.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/touch-from-wall-to-skill.mp4",
       "thumbnail_url": "https://example.com/touch-from-wall-to-skill-thumbnail.jpg"
     },
     {
@@ -1229,7 +1229,7 @@
         "Increase your juggling time without dropping the ball."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/freestyle-juggling-with-wall.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/freestyle-juggling-with-wall.mp4",
       "thumbnail_url": "https://example.com/freestyle-juggling-thumbnail.jpg"
     },
     {
@@ -1293,7 +1293,7 @@
         "Use only one foot to perform the entire drill."
       ],
       "rest": null,
-      "video_url": "https://bravoball-drills.s3.us-east-2.amazonaws.com/first-touch-drills/wall-pass-to-clockwise-square-touches.mp4",
+      "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/first-touch-drills/wall-pass-to-clockwise-square-touches.mp4",
       "thumbnail_url": "https://example.com/wall-pass-clockwise-square-thumbnail.jpg"
     }
 ]

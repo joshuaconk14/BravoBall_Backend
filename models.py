@@ -5,14 +5,15 @@ This defines all models used in chatbot app
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional, Dict, Any, Union
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table, Float
+from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
 from sqlalchemy.orm import relationship
 from db import Base
 from enum import Enum
 from sqlalchemy.sql import func
 from datetime import datetime
 from uuid import UUID
+import uuid
 
 # *** AUTH MODELS ***
 class LoginRequest(BaseModel):
@@ -43,6 +44,29 @@ class UserInfoDisplay(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
+# *** MENTAL TRAINING MODELS ***
+class MentalTrainingQuote(Base):
+    __tablename__ = "mental_training_quotes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    content = Column(String, nullable=False)
+    author = Column(String, nullable=False)
+    type = Column(String, nullable=False)  # 'motivational', 'soccer_tip', 'mental_training'
+    display_duration = Column(Integer, default=8)  # seconds to display
+    created_at = Column(DateTime, server_default=func.now())
+
+class MentalTrainingSession(Base):
+    __tablename__ = "mental_training_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    date = Column(DateTime, server_default=func.now())
+    duration_minutes = Column(Integer, nullable=False)
+    session_type = Column(String, default="mental_training")
+    
+    # Relationship
+    user = relationship("User", backref="mental_training_sessions")
 
 # *** USER AND USER DATA MODELS ***
 
@@ -79,6 +103,7 @@ class User(Base):
     saved_filters = relationship("SavedFilter", back_populates="user")
     refresh_tokens = relationship("RefreshToken", back_populates="user")
     password_reset_codes = relationship("PasswordResetCode", back_populates="user")
+    email_verification_codes = relationship("EmailVerificationCode", back_populates="user")
 
 
 class CompletedSession(Base):
@@ -87,14 +112,24 @@ class CompletedSession(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     date = Column(DateTime)
-    total_completed_drills = Column(Integer)
-    total_drills = Column(Integer)
     
-    # Store the completed drills data as JSON
-    drills = Column(JSON)  # Will store array of DrillResponse data
+    # ✅ NEW: Session type for polymorphic sessions
+    session_type = Column(String, default='drill_training')  # 'drill_training', 'mental_training', etc.
+    
+    # ✅ UPDATED: Make drill-specific fields nullable for mental training sessions
+    total_completed_drills = Column(Integer, nullable=True)  # Null for mental training
+    total_drills = Column(Integer, nullable=True)  # Null for mental training
+    
+    # ✅ UPDATED: Store session data as JSON (flexible for different session types)
+    drills = Column(JSON, nullable=True)  # Null for mental training
+    
+    # ✅ NEW: Mental training specific fields (nullable for drill sessions)
+    duration_minutes = Column(Integer, nullable=True)  # For mental training sessions
+    mental_training_session_id = Column(Integer, ForeignKey("mental_training_sessions.id"), nullable=True)
     
     # Relationship
     user = relationship("User", back_populates="completed_sessions")
+    mental_training_session = relationship("MentalTrainingSession", backref="completed_session")
 
 
 
@@ -103,7 +138,7 @@ class OrderedSessionDrill(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     session_id = Column(Integer, ForeignKey("training_sessions.id"))  # Link to session
-    drill_id = Column(Integer, ForeignKey("drills.id"))
+    drill_uuid = Column(PG_UUID(as_uuid=True), nullable=False)  # ✅ CHANGED: Use UUID instead of drill_id
     position = Column(Integer)  # Order in the session
     sets_done = Column(Integer)
     sets = Column(Integer, nullable=True)
@@ -113,7 +148,6 @@ class OrderedSessionDrill(Base):
     is_completed = Column(Boolean, default=False)
 
     # Relationships
-    drill = relationship("Drill")
     session = relationship("TrainingSession", back_populates="ordered_drills")
 
 # Remove direct relationship from User to OrderedSessionDrill
@@ -149,11 +183,52 @@ class DrillGroup(Base):
     
     # Relationships
     user = relationship("User", back_populates="drill_groups")
-    drills = relationship(
-        "Drill",
-        secondary="drill_group_items",
-        backref="drill_groups"
-    )
+    drill_items = relationship("DrillGroupItem", back_populates="drill_group", cascade="all, delete-orphan")
+    
+    # ✅ UPDATED: Property to get drills using is_custom field for efficiency
+    @property
+    def drills(self):
+        """
+        Get all drills for this group by looking up UUIDs using the is_custom field.
+        This is more efficient than checking both tables.
+        """
+        from sqlalchemy.orm import object_session
+        from sqlalchemy import union_all, select, literal_column
+        
+        session = object_session(self)
+        if not session:
+            return []
+        
+        if not self.drill_items:
+            return []
+        
+        # Get all UUIDs from drill items
+        drill_uuids = [item.drill_uuid for item in self.drill_items if item.drill_uuid]
+        
+        if not drill_uuids:
+            return []
+        
+        # Query both tables efficiently using UNION
+        from models import Drill, CustomDrill
+        
+        # Query regular drills
+        regular_drills = session.query(Drill).filter(Drill.uuid.in_(drill_uuids)).all()
+        
+        # Query custom drills
+        custom_drills = session.query(CustomDrill).filter(CustomDrill.uuid.in_(drill_uuids)).all()
+        
+        # Combine results
+        all_drills = regular_drills + custom_drills
+        
+        # Sort by the order in drill_items
+        uuid_to_drill = {str(drill.uuid): drill for drill in all_drills}
+        ordered_drills = []
+        
+        for item in self.drill_items:
+            if item.drill_uuid and str(item.drill_uuid) in uuid_to_drill:
+                ordered_drills.append(uuid_to_drill[str(item.drill_uuid)])
+        
+        return ordered_drills
 
 
 # New junction table for many-to-many relationship between drill groups and drills
@@ -162,9 +237,13 @@ class DrillGroupItem(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     drill_group_id = Column(Integer, ForeignKey("drill_groups.id", ondelete="CASCADE"))
-    drill_id = Column(Integer, ForeignKey("drills.id", ondelete="CASCADE"))
+    drill_uuid = Column(PG_UUID(as_uuid=True), ForeignKey("drills.uuid", ondelete="CASCADE"))  # Changed from drill_id to drill_uuid
     position = Column(Integer)  # To maintain order of drills in a group
     created_at = Column(DateTime, server_default=func.now())
+    
+    # Relationships
+    drill_group = relationship("DrillGroup", back_populates="drill_items")
+    drill = relationship("Drill", foreign_keys=[drill_uuid])
 
 
 # *** DRILL AND SESSION MODELS ***
@@ -181,7 +260,7 @@ class DrillSkillFocus(Base):
     __tablename__ = "drill_skill_focus"
     
     id = Column(Integer, primary_key=True, index=True)
-    drill_id = Column(Integer, ForeignKey("drills.id"))
+    drill_uuid = Column(PG_UUID(as_uuid=True), ForeignKey("drills.uuid"))
     category = Column(String)  # SkillCategory enum value
     sub_skill = Column(String)  # Corresponding SubSkill enum value
     is_primary = Column(Boolean, default=True)  # Whether this is a primary or secondary skill focus
@@ -191,6 +270,7 @@ class Drill(Base):
     __tablename__ = "drills"
 
     id = Column(Integer, primary_key=True, index=True)
+    uuid = Column(PG_UUID(as_uuid=True), unique=True, index=True, default=uuid.uuid4, nullable=False)
     title = Column(String)
     description = Column(String)
     category_id = Column(Integer, ForeignKey("drill_categories.id"))
@@ -221,10 +301,64 @@ class Drill(Base):
     variations = Column(JSON)  # Alternative versions
     video_url = Column(String, nullable=True)
     thumbnail_url = Column(String, nullable=True)
+    
+    # ✅ NEW: Custom drill identifier
+    is_custom = Column(Boolean, default=False)  # False for default drills, True for custom drills
 
     # Relationships
     category = relationship("DrillCategory", backref="drills")
-    skill_focus = relationship("DrillSkillFocus", backref="drill")  # Relationship to skill focus
+    skill_focus = relationship("DrillSkillFocus", foreign_keys="DrillSkillFocus.drill_uuid", primaryjoin="Drill.uuid == DrillSkillFocus.drill_uuid", backref="drill")  # Relationship to skill focus
+
+
+class CustomDrill(Base):
+    __tablename__ = "custom_drills"
+
+    id = Column(Integer, primary_key=True, index=True)
+    uuid = Column(PG_UUID(as_uuid=True), unique=True, index=True, default=uuid.uuid4, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)  # Creator of the drill
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    
+    # Time and Intensity
+    duration = Column(Integer, nullable=True)  # in minutes, can be null for rep-based drills
+    intensity = Column(String, nullable=True)  # high, medium, low
+    training_styles = Column(JSON, nullable=True)  # List of TrainingStyle
+    
+    # Structure
+    type = Column(String, nullable=True)  # DrillType enum
+    sets = Column(Integer, nullable=True)
+    reps = Column(Integer, nullable=True)
+    rest = Column(Integer, nullable=True)  # in seconds
+    
+    # Requirements
+    equipment = Column(JSON, nullable=True)  # List of Equipment
+    suitable_locations = Column(JSON, nullable=True)  # List of Location
+    
+    # Technical
+    difficulty = Column(String, nullable=True)
+    
+    # Content
+    instructions = Column(JSON, nullable=True)  # List of steps
+    tips = Column(JSON, nullable=True)  # List of coaching tips
+    common_mistakes = Column(JSON, nullable=True)  # Things to watch out for
+    progression_steps = Column(JSON, nullable=True)  # How to make it harder/easier
+    variations = Column(JSON, nullable=True)  # Alternative versions
+    video_url = Column(String, nullable=True)
+    thumbnail_url = Column(String, nullable=True)
+    
+    # Skill focus (stored as JSON for simplicity)
+    primary_skill = Column(JSON, nullable=True)  # {"category": "...", "sub_skill": "..."}
+    # ✅ REMOVED: secondary_skills field since it's not being used
+    
+    # Metadata
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+    
+    # ✅ NEW: Custom drill identifier
+    is_custom = Column(Boolean, default=True)  # "default" or "custom"
+    
+    # Relationships
+    user = relationship("User", backref="custom_drills")
 
 
 class TrainingSession(Base):
@@ -237,26 +371,10 @@ class TrainingSession(Base):
     created_at = Column(DateTime, server_default=func.now())
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Optional user association
 
-    # Many-to-many relationship with drills
-    drills = relationship(
-        "Drill",
-        secondary="session_drills",
-        backref="training_sessions"
-    )
-
     user = relationship("User", backref="training_sessions")
 
     # Add ordered_drills relationship
     ordered_drills = relationship("OrderedSessionDrill", back_populates="session")
-
-
-# Association table for many-to-many relationship between sessions and drills
-session_drills = Table(
-    "session_drills",
-    Base.metadata,
-    Column("session_id", Integer, ForeignKey("training_sessions.id")),
-    Column("drill_id", Integer, ForeignKey("drills.id")),
-)
 
 
 # *** PYDANTIC MODELS FOR API REQUESTS/RESPONSES ***
@@ -333,7 +451,7 @@ class DrillRequest(BaseModel):
 
 
 class DrillResponse(BaseModel):
-    id: int
+    uuid: str  # Use UUID instead of id
     title: str
     description: str
     type: str
@@ -355,6 +473,63 @@ class DrillResponse(BaseModel):
     variations: List[str] = []
     video_url: Optional[str] = None
     thumbnail_url: Optional[str] = None
+    is_custom: bool = False  # ✅ NEW: Custom drill identifier
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CustomDrillCreate(BaseModel):
+    title: str
+    description: str
+    type: Optional[str] = None
+    duration: Optional[int] = None
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    rest: Optional[int] = None
+    equipment: Optional[List[str]] = None
+    suitable_locations: Optional[List[str]] = None
+    intensity: Optional[str] = None
+    training_styles: Optional[List[str]] = None
+    difficulty: Optional[str] = None
+    primary_skill: Optional[Dict[str, str]] = None  # {"category": "...", "sub_skill": "..."}
+    # ✅ REMOVED: secondary_skills field since it's not being used
+    instructions: Optional[List[str]] = []
+    tips: Optional[List[str]] = None
+    common_mistakes: Optional[List[str]] = None
+    progression_steps: Optional[List[str]] = None
+    variations: Optional[List[str]] = None
+    video_url: Optional[str] = None
+    thumbnail_url: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CustomDrillResponse(BaseModel):
+    uuid: str
+    title: str
+    description: str
+    type: Optional[str] = None
+    duration: Optional[int] = None
+    sets: Optional[int] = None
+    reps: Optional[int] = None
+    rest: Optional[int] = None
+    equipment: Optional[List[str]] = None
+    suitable_locations: Optional[List[str]] = None
+    intensity: Optional[str] = None
+    training_styles: Optional[List[str]] = None
+    difficulty: Optional[str] = None
+    primary_skill: Optional[Dict[str, str]] = None
+    # ✅ REMOVED: secondary_skills field since it's not being used
+    instructions: Optional[List[str]] = []
+    tips: Optional[List[str]] = None
+    common_mistakes: Optional[List[str]] = None
+    progression_steps: Optional[List[str]] = None
+    variations: Optional[List[str]] = None
+    video_url: Optional[str] = None
+    thumbnail_url: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    is_custom: bool = True  # ✅ NEW: Custom drill identifier
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -400,7 +575,7 @@ class CompletedSessionResponse(BaseModel):
 class DrillGroupRequest(BaseModel):
     name: str
     description: str
-    drill_ids: List[int] = []
+    drill_uuids: List[str] = []  # Changed from drill_ids to drill_uuids
     is_liked_group: bool = False
 
     model_config = ConfigDict(from_attributes=True)
@@ -491,11 +666,9 @@ class TrainingFrequency(str, Enum):
     INTENSE = "intense"
 
 class TrainingStyle(str, Enum):
+    LOW_INTENSITY = "low_intensity"
     MEDIUM_INTENSITY = "medium_intensity"
     HIGH_INTENSITY = "high_intensity"
-    GAME_PREP = "game_prep"
-    GAME_RECOVERY = "game_recovery"
-    REST_DAY = "rest_day"
 
 class Difficulty(str, Enum):
     BEGINNER = "beginner"
@@ -508,6 +681,8 @@ class SkillCategory(str, Enum):
     SHOOTING = "shooting"
     DRIBBLING = "dribbling"
     FIRST_TOUCH = "first_touch"
+    DEFENDING = "defending"
+    GOALKEEPING = "goalkeeping"
     FITNESS = "fitness"
 
 class PassingSubSkill(str, Enum):
@@ -535,6 +710,22 @@ class FirstTouchSubSkill(str, Enum):
     TURNING_WITH_BALL = "turning_with_ball"
     ONE_TOUCH_CONTROL = "one_touch_control"
 
+class DefendingSubSkill(str, Enum):
+    TACKLING = "tackling"
+    MARKING = "marking"
+    INTERCEPTING = "intercepting"
+    POSITIONING = "positioning"
+    AGILITY = "agility"
+    AERIAL_DEFENDING = "aerial_defending"
+
+class GoalkeepingSubSkill(str, Enum):
+    HAND_EYE_COORDINATION = "hand_eye_coordination"
+    DIVING = "diving"
+    REFLEXES = "reflexes"
+    SHOT_STOPPING = "shot_stopping"
+    POSITIONING = "positioning"
+    CATCHING = "catching"
+
 class FitnessSubSkill(str, Enum):
     SPEED = "speed"
     AGILITY = "agility"
@@ -552,8 +743,30 @@ class ProgressHistory(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
     current_streak = Column(Integer, default=0)
+    previous_streak = Column(Integer, default=0)  # Add previous_streak field
     highest_streak = Column(Integer, default=0)
     completed_sessions_count = Column(Integer, default=0)
+    # ✅ NEW: Enhanced progress metrics
+    favorite_drill = Column(String, default='', nullable=True)
+    drills_per_session = Column(Float, default=0.0)
+    minutes_per_session = Column(Float, default=0.0)
+    total_time_all_sessions = Column(Integer, default=0)
+    dribbling_drills_completed = Column(Integer, default=0)
+    first_touch_drills_completed = Column(Integer, default=0)
+    passing_drills_completed = Column(Integer, default=0)
+    shooting_drills_completed = Column(Integer, default=0)
+    defending_drills_completed = Column(Integer, default=0)
+    goalkeeping_drills_completed = Column(Integer, default=0)
+    fitness_drills_completed = Column(Integer, default=0)  # ✅ NEW: Add fitness drills completed
+    # ✅ NEW: Additional progress metrics
+    most_improved_skill = Column(String, default='', nullable=True)
+    unique_drills_completed = Column(Integer, default=0)
+    beginner_drills_completed = Column(Integer, default=0)
+    intermediate_drills_completed = Column(Integer, default=0)
+    advanced_drills_completed = Column(Integer, default=0)
+    # ✅ NEW: Mental training metrics
+    mental_training_sessions = Column(Integer, default=0)
+    total_mental_training_minutes = Column(Integer, default=0)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     # Relationship
@@ -676,3 +889,47 @@ class PasswordResetCode(Base):
     is_used = Column(Boolean, default=False)
 
     user = relationship("User", back_populates="password_reset_codes")
+
+
+class EmailVerificationCode(Base):
+    __tablename__ = "email_verification_codes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    new_email = Column(String, index=True)  # The new email address being verified
+    code = Column(String, index=True)
+    expires_at = Column(DateTime)
+    created_at = Column(DateTime, default=func.now())
+    is_used = Column(Boolean, default=False)
+
+    user = relationship("User", back_populates="email_verification_codes")
+
+
+# Email Verification Request/Response Models
+class EmailVerificationRequest(BaseModel):
+    new_email: str
+    model_config = ConfigDict(from_attributes=True)
+
+
+class EmailVerificationCodeRequest(BaseModel):
+    new_email: str
+    code: str
+    model_config = ConfigDict(from_attributes=True)
+
+
+class EmailVerificationResponse(BaseModel):
+    message: str
+    success: bool
+    model_config = ConfigDict(from_attributes=True)
+
+
+# *** MENTAL TRAINING PYDANTIC MODELS ***
+
+class MentalTrainingQuoteResponse(BaseModel):
+    id: int
+    content: str
+    author: str
+    type: str
+    display_duration: int
+
+    model_config = ConfigDict(from_attributes=True)

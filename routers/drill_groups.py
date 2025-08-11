@@ -1,13 +1,65 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from models import User, DrillGroup, DrillResponse, DrillGroupRequest, DrillGroupResponse, DrillGroupItem, Drill, DrillSkillFocus
+from models import User, DrillGroup, DrillResponse, DrillGroupRequest, DrillGroupResponse, DrillGroupItem, Drill, DrillSkillFocus, CustomDrill
 from db import get_db
 from auth import get_current_user
 import logging
-from routers.router_utils import drill_to_response
+from routers.router_utils import drill_to_response, any_drill_to_response
 
 router = APIRouter()
+
+# ✅ UPDATED: Efficient drill lookup using is_custom field
+def find_drill_by_uuid(db: Session, drill_uuid: str, user_id: int = None, is_custom: bool = None):
+    """
+    Find a drill by UUID using the is_custom field to determine which table to search.
+    This is more efficient than checking both tables.
+    
+    Args:
+        db: Database session
+        drill_uuid: UUID of the drill to find
+        user_id: User ID for security (required for custom drills)
+        is_custom: Boolean indicating if this is a custom drill (True) or default drill (False)
+    
+    Returns:
+        tuple: (drill_object, is_custom_drill)
+    """
+    if is_custom is not None:
+        # Use is_custom to determine which table to search (most efficient)
+        if is_custom:
+            # Search custom drills table
+            custom_drill_query = db.query(CustomDrill).filter(CustomDrill.uuid == drill_uuid)
+            
+            # If user_id provided, filter by user (for security)
+            if user_id is not None:
+                custom_drill_query = custom_drill_query.filter(CustomDrill.user_id == user_id)
+            
+            custom_drill = custom_drill_query.first()
+            return custom_drill, True if custom_drill else None
+        else:
+            # Search regular drills table
+            drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
+            return drill, False if drill else None
+    
+    else:
+        # If is_custom is not provided, check both tables (fallback)
+        # First check regular drills table (more common)
+        drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
+        if drill:
+            return drill, False
+        
+        # Then check custom drills table
+        custom_drill_query = db.query(CustomDrill).filter(CustomDrill.uuid == drill_uuid)
+        
+        # If user_id provided, filter by user (for security - users can only access their own custom drills)
+        if user_id is not None:
+            custom_drill_query = custom_drill_query.filter(CustomDrill.user_id == user_id)
+        
+        custom_drill = custom_drill_query.first()
+        if custom_drill:
+            return custom_drill, True
+            
+        return None, False
 
 
 # Get all drill groups for the current user
@@ -25,8 +77,13 @@ async def get_user_drill_groups(
         # Convert to response format with drills array
         result = []
         for group in drill_groups:
-            # Convert SQLAlchemy objects to DrillResponse format
-            drills_data = [drill_to_response(drill, db) for drill in group.drills]
+            # ✅ UPDATED: Convert drills to response format handling both Drill and CustomDrill objects
+            drills_data = []
+            for drill in group.drills:
+                # Check if this is a CustomDrill or regular Drill
+                is_custom_drill = hasattr(drill, 'user_id') and hasattr(drill, 'primary_skill')
+                drill_response = any_drill_to_response(drill, is_custom_drill, db)
+                drills_data.append(drill_response)
             
             # Create a copy of the group with drills added
             group_dict = {
@@ -112,23 +169,28 @@ async def create_drill_group(
         
         # Add drills if provided
         position = 0
-        for drill_id in group_data.drill_ids:
-            drill = db.query(Drill).filter(Drill.id == drill_id).first()
+        for drill_uuid in group_data.drill_uuids:
+            # ✅ UPDATED: Find drill in either drills or custom_drills table
+            drill, is_custom_drill = find_drill_by_uuid(db, drill_uuid, current_user.id)
             if drill:
-                # Add to junction table
+                # Add to junction table using UUID
                 drill_item = DrillGroupItem(
                     drill_group_id=new_group.id,
-                    drill_id=drill_id,
+                    drill_uuid=drill_uuid,  # Use UUID directly
                     position=position
                 )
                 db.add(drill_item)
                 position += 1
-        
         db.commit()
         db.refresh(new_group)
         
-        # Convert to response format
-        drills_data = [drill_to_response(drill, db) for drill in new_group.drills]
+        # ✅ UPDATED: Convert to response format handling both Drill and CustomDrill objects
+        drills_data = []
+        for drill in new_group.drills:
+            # Check if this is a CustomDrill or regular Drill
+            is_custom_drill = hasattr(drill, 'user_id') and hasattr(drill, 'primary_skill')
+            drill_response = any_drill_to_response(drill, is_custom_drill, db)
+            drills_data.append(drill_response)
         
         # Create response dict
         response = {
@@ -191,24 +253,29 @@ async def update_drill_group(
         # Remove all existing drill items
         db.query(DrillGroupItem).filter(DrillGroupItem.drill_group_id == existing_group.id).delete()
         
-        # Add new drill items
+        # Add new drill items using UUIDs
         position = 0
-        for drill_id in group_data.drill_ids:
-            drill = db.query(Drill).filter(Drill.id == drill_id).first()
+        for drill_uuid in group_data.drill_uuids:
+            # ✅ UPDATED: Find drill in either drills or custom_drills table
+            drill, is_custom_drill = find_drill_by_uuid(db, drill_uuid, current_user.id)
             if drill:
                 drill_item = DrillGroupItem(
                     drill_group_id=existing_group.id,
-                    drill_id=drill_id,
+                    drill_uuid=drill_uuid,  # Use UUID directly
                     position=position
                 )
                 db.add(drill_item)
                 position += 1
-        
         db.commit()
         db.refresh(existing_group)
         
-        # Convert to response format
-        drills_data = [drill_to_response(drill, db) for drill in existing_group.drills]
+        # ✅ UPDATED: Convert to response format handling both Drill and CustomDrill objects
+        drills_data = []
+        for drill in existing_group.drills:
+            # Check if this is a CustomDrill or regular Drill
+            is_custom_drill = hasattr(drill, 'user_id') and hasattr(drill, 'primary_skill')
+            drill_response = any_drill_to_response(drill, is_custom_drill, db)
+            drills_data.append(drill_response)
         
         # Create response dict
         response = {
@@ -262,10 +329,10 @@ async def delete_drill_group(
         raise HTTPException(status_code=500, detail=f"Failed to delete drill group: {str(e)}")
 
 # Add a drill to a group
-@router.post("/api/drill-groups/{group_id}/drills/{drill_id}")
+@router.post("/api/drill-groups/{group_id}/drills/{drill_uuid}")
 async def add_drill_to_group(
     group_id: int,
-    drill_id: int,
+    drill_uuid: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -282,16 +349,16 @@ async def add_drill_to_group(
         if not group:
             raise HTTPException(status_code=404, detail="Drill group not found")
         
-        # Get the drill from the database
-        drill = db.query(Drill).filter(Drill.id == drill_id).first()
+        # ✅ UPDATED: Find drill in either drills or custom_drills table
+        drill, is_custom_drill = find_drill_by_uuid(db, drill_uuid, current_user.id)
         
         if not drill:
             raise HTTPException(status_code=404, detail="Drill not found")
         
-        # Check if drill already in group
+        # Check if drill already in group using UUID
         existing_item = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == group_id,
-            DrillGroupItem.drill_id == drill_id
+            DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
         ).first()
         
         if existing_item:
@@ -302,10 +369,10 @@ async def add_drill_to_group(
             DrillGroupItem.drill_group_id == group_id
         ).count()
         
-        # Add drill to group
+        # Add drill to group using UUID
         drill_item = DrillGroupItem(
             drill_group_id=group_id,
-            drill_id=drill_id,
+            drill_uuid=drill_uuid,  # Use UUID directly
             position=max_position
         )
         db.add(drill_item)
@@ -320,10 +387,10 @@ async def add_drill_to_group(
         raise HTTPException(status_code=500, detail=f"Failed to add drill to group: {str(e)}")
 
 # Remove a drill from a group
-@router.delete("/api/drill-groups/{group_id}/drills/{drill_id}")
+@router.delete("/api/drill-groups/{group_id}/drills/{drill_uuid}")
 async def remove_drill_from_group(
     group_id: int,
-    drill_id: int,
+    drill_uuid: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -340,23 +407,22 @@ async def remove_drill_from_group(
         if not group:
             raise HTTPException(status_code=404, detail="Drill group not found")
         
-        # Delete the drill group item
-        result = db.query(DrillGroupItem).filter(
+        # ✅ UPDATED: Find drill in either drills or custom_drills table
+        drill, is_custom_drill = find_drill_by_uuid(db, drill_uuid, current_user.id)
+        
+        if not drill:
+            raise HTTPException(status_code=404, detail="Drill not found")
+        
+        # Find and remove the drill from the group using UUID
+        drill_item = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == group_id,
-            DrillGroupItem.drill_id == drill_id
-        ).delete()
+            DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
+        ).first()
         
-        if result == 0:
-            raise HTTPException(status_code=404, detail="Drill not found in this group")
+        if not drill_item:
+            raise HTTPException(status_code=404, detail="Drill not found in group")
         
-        # Re-order remaining items
-        items = db.query(DrillGroupItem).filter(
-            DrillGroupItem.drill_group_id == group_id
-        ).order_by(DrillGroupItem.position).all()
-        
-        for i, item in enumerate(items):
-            item.position = i
-        
+        db.delete(drill_item)
         db.commit()
         
         return {"message": "Drill removed from group successfully"}
@@ -413,66 +479,73 @@ async def get_liked_drills_group(
         logging.error(f"Error getting liked drills group: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to get liked drills group: {str(e)}")
 
-# Like/unlike a drill (add to or remove from Liked Drills)
-@router.post("/api/drills/{drill_id}/like")
+# Toggle like status for a drill
+@router.post("/api/drills/{drill_uuid}/like")
 async def toggle_drill_like(
-    drill_id: int,
+    drill_uuid: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
-    Toggle a drill as liked/unliked. Adds or removes it from the Liked Drills group.
+    Toggle the like status of a drill (add/remove from liked drills).
     """
     try:
-        # Get or create the Liked Drills group
+        # ✅ UPDATED: Find drill in either drills or custom_drills table
+        drill, is_custom_drill = find_drill_by_uuid(db, drill_uuid, current_user.id)
+        
+        if not drill:
+            raise HTTPException(status_code=404, detail="Drill not found")
+        
+        # Get or create the user's liked drills group
         liked_group = db.query(DrillGroup).filter(
             DrillGroup.user_id == current_user.id,
             DrillGroup.is_liked_group == True
         ).first()
         
         if not liked_group:
+            # Create liked drills group if it doesn't exist
             liked_group = DrillGroup(
                 user_id=current_user.id,
                 name="Liked Drills",
-                description="Your collection of favorite drills",
+                description="Drills you've liked",
                 is_liked_group=True
             )
             db.add(liked_group)
-            db.commit()
-            db.refresh(liked_group)
+            db.flush()  # Get the ID without committing
         
-        # Check if drill exists
-        drill = db.query(Drill).filter(Drill.id == drill_id).first()
-        if not drill:
-            raise HTTPException(status_code=404, detail="Drill not found")
-        
-        # Check if drill already in liked group
+        # Check if drill is already in liked group using UUID
         existing_item = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == liked_group.id,
-            DrillGroupItem.drill_id == drill_id
+            DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
         ).first()
         
         if existing_item:
-            # Drill is already liked, so unlike it
+            # Remove from liked group (unlike)
             db.delete(existing_item)
-            db.commit()
-            return {"message": "Drill unliked successfully", "is_liked": False}
+            message = "Drill unliked successfully"
+            is_liked = False
+        else:
+            # Add to liked group (like)
+            # Get highest position
+            max_position = db.query(DrillGroupItem).filter(
+                DrillGroupItem.drill_group_id == liked_group.id
+            ).count()
+            
+            drill_item = DrillGroupItem(
+                drill_group_id=liked_group.id,
+                drill_uuid=drill_uuid,  # Use UUID directly
+                position=max_position
+            )
+            db.add(drill_item)
+            message = "Drill liked successfully"
+            is_liked = True
         
-        # Get highest position
-        max_position = db.query(DrillGroupItem).filter(
-            DrillGroupItem.drill_group_id == liked_group.id
-        ).count()
-        
-        # Add drill to liked group
-        drill_item = DrillGroupItem(
-            drill_group_id=liked_group.id,
-            drill_id=drill_id,
-            position=max_position
-        )
-        db.add(drill_item)
         db.commit()
         
-        return {"message": "Drill liked successfully", "is_liked": True}
+        return {
+            "message": message,
+            "is_liked": is_liked
+        }
     except HTTPException:
         raise
     except Exception as e:
@@ -481,48 +554,54 @@ async def toggle_drill_like(
         raise HTTPException(status_code=500, detail=f"Failed to toggle drill like: {str(e)}")
 
 # Check if a drill is liked
-@router.get("/api/drills/{drill_id}/like")
+@router.get("/api/drills/{drill_uuid}/like")
 async def check_drill_liked(
-    drill_id: int,
+    drill_uuid: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
-    Check if a drill is in the user's Liked Drills collection.
+    Check if a drill is in the user's liked drills group.
     """
     try:
-        # Get the Liked Drills group
+        # Get the drill from the database using UUID
+        drill = db.query(Drill).filter(Drill.uuid == drill_uuid).first()
+        
+        if not drill:
+            raise HTTPException(status_code=404, detail="Drill not found")
+        
+        # Get the user's liked drills group
         liked_group = db.query(DrillGroup).filter(
             DrillGroup.user_id == current_user.id,
             DrillGroup.is_liked_group == True
         ).first()
         
-        # If liked group doesn't exist, drill is not liked
         if not liked_group:
             return {"is_liked": False}
         
-        # Check if drill is in liked group
-        is_liked = db.query(DrillGroupItem).filter(
+        # Check if drill is in liked group using UUID
+        existing_item = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == liked_group.id,
-            DrillGroupItem.drill_id == drill_id
-        ).first() is not None
+            DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
+        ).first()
         
-        return {"is_liked": is_liked}
+        return {"is_liked": existing_item is not None}
+    except HTTPException:
+        raise
     except Exception as e:
-        logging.error(f"Error checking if drill is liked: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to check if drill is liked: {str(e)}")
+        logging.error(f"Error checking drill like status: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to check drill like status: {str(e)}")
 
 # Add multiple drills to a group at once
 @router.post("/api/drill-groups/{group_id}/drills")
 async def add_multiple_drills_to_group(
     group_id: int,
-    drill_ids: List[int],
+    drill_uuids: List[str],  # Changed from drill_ids to drill_uuids
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
     Add multiple drills to a drill group at once.
-    This is useful when users select multiple drills from search results.
     """
     try:
         # Get the drill group
@@ -534,51 +613,43 @@ async def add_multiple_drills_to_group(
         if not group:
             raise HTTPException(status_code=404, detail="Drill group not found")
         
-        # Get highest position to start adding at the end
+        # Get highest position
         max_position = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == group_id
         ).count()
         
-        position = max_position
-        added_drills = 0
-        
-        for drill_id in drill_ids:
-            # Verify drill exists
-            drill = db.query(Drill).filter(Drill.id == drill_id).first()
-            if not drill:
-                continue  # Skip if drill doesn't exist
+        added_count = 0
+        for drill_uuid in drill_uuids:
+            # ✅ UPDATED: Find drill in either drills or custom_drills table
+            drill, is_custom_drill = find_drill_by_uuid(db, drill_uuid, current_user.id)
             
-            # Check if drill already in group
-            existing_item = db.query(DrillGroupItem).filter(
-                DrillGroupItem.drill_group_id == group_id,
-                DrillGroupItem.drill_id == drill_id
-            ).first()
-            
-            if existing_item:
-                continue  # Skip if already in group
-            
-            # Add drill to group
-            drill_item = DrillGroupItem(
-                drill_group_id=group_id,
-                drill_id=drill_id,
-                position=position
-            )
-            db.add(drill_item)
-            position += 1
-            added_drills += 1
-        
+            if drill:
+                # Check if drill already in group using UUID
+                existing_item = db.query(DrillGroupItem).filter(
+                    DrillGroupItem.drill_group_id == group_id,
+                    DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
+                ).first()
+                
+                if not existing_item:
+                    # Add drill to group using UUID
+                    drill_item = DrillGroupItem(
+                        drill_group_id=group_id,
+                        drill_uuid=drill_uuid,  # Use UUID directly
+                        position=max_position + added_count
+                    )
+                    db.add(drill_item)
+                    added_count += 1
         db.commit()
         
         return {
-            "message": f"{added_drills} drills added to group successfully",
-            "added_count": added_drills,
-            "group_id": group_id
+            "message": f"Added {added_count} drills to group successfully",
+            "added_count": added_count
         }
     except HTTPException:
         raise
     except Exception as e:
         db.rollback()
-        logging.error(f"Error adding drills to group: {str(e)}")
+        logging.error(f"Error adding multiple drills to group: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to add drills to group: {str(e)}")
 
 # Also add a public endpoint to get all drill groups (without authentication)
@@ -615,85 +686,69 @@ async def get_public_drill_groups(
         logging.error(f"Error retrieving drill groups: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to retrieve drill groups: {str(e)}")
 
-# Add multiple drills to the liked drills group
+# Add multiple drills to liked drills at once
 @router.post("/api/liked-drills/add")
 async def add_multiple_drills_to_liked(
-    drill_ids: List[int],
+    drill_uuids: List[str],  # Changed from drill_ids to drill_uuids
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
-    Add multiple drills to the user's Liked Drills collection at once.
-    This is useful when selecting multiple drills from search results.
-    
-    Request body should be a JSON object with drill_ids field:
-    {
-        "drill_ids": [1, 2, 3]
-    }
-    
-    To send a raw JSON array instead, use the /api/liked-drills/add/batch endpoint.
+    Add multiple drills to the user's liked drills group at once.
     """
     try:
-        # Get or create the Liked Drills group
+        # Get or create the user's liked drills group
         liked_group = db.query(DrillGroup).filter(
             DrillGroup.user_id == current_user.id,
             DrillGroup.is_liked_group == True
         ).first()
         
         if not liked_group:
+            # Create liked drills group if it doesn't exist
             liked_group = DrillGroup(
                 user_id=current_user.id,
                 name="Liked Drills",
-                description="Your collection of favorite drills",
+                description="Drills you've liked",
                 is_liked_group=True
             )
             db.add(liked_group)
-            db.commit()
-            db.refresh(liked_group)
+            db.flush()  # Get the ID without committing
         
-        # Get highest position to start adding at the end
+        # Get highest position
         max_position = db.query(DrillGroupItem).filter(
             DrillGroupItem.drill_group_id == liked_group.id
         ).count()
         
-        position = max_position
-        added_drills = 0
-        
-        for drill_id in drill_ids:
-            # Verify drill exists
-            drill = db.query(Drill).filter(Drill.id == drill_id).first()
-            if not drill:
-                continue  # Skip if drill doesn't exist
+        added_count = 0
+        for drill_uuid in drill_uuids:
+            # ✅ UPDATED: Find drill in either drills or custom_drills table
+            drill, is_custom_drill = find_drill_by_uuid(db, drill_uuid, current_user.id)
             
-            # Check if drill already in liked group
-            existing_item = db.query(DrillGroupItem).filter(
-                DrillGroupItem.drill_group_id == liked_group.id,
-                DrillGroupItem.drill_id == drill_id
-            ).first()
-            
-            if existing_item:
-                continue  # Skip if already in liked group
-            
-            # Add drill to liked group
-            drill_item = DrillGroupItem(
-                drill_group_id=liked_group.id,
-                drill_id=drill_id,
-                position=position
-            )
-            db.add(drill_item)
-            position += 1
-            added_drills += 1
-        
+            if drill:
+                # Check if drill already in liked group using UUID
+                existing_item = db.query(DrillGroupItem).filter(
+                    DrillGroupItem.drill_group_id == liked_group.id,
+                    DrillGroupItem.drill_uuid == drill_uuid  # Use UUID instead of drill.id
+                ).first()
+                
+                if not existing_item:
+                    # Add drill to liked group using UUID
+                    drill_item = DrillGroupItem(
+                        drill_group_id=liked_group.id,
+                        drill_uuid=drill_uuid,  # Use UUID directly
+                        position=max_position + added_count
+                    )
+                    db.add(drill_item)
+                    added_count += 1
         db.commit()
         
         return {
-            "message": f"{added_drills} drills added to liked drills successfully",
-            "added_count": added_drills,
-            "group_id": liked_group.id
+            "message": f"Added {added_count} drills to liked drills successfully",
+            "added_count": added_count
         }
     except HTTPException:
         raise
     except Exception as e:
         db.rollback()
-        logging.error(f"Error adding drills to liked group: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to add drills to liked group: {str(e)}") 
+        logging.error(f"Error adding multiple drills to liked: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to add drills to liked: {str(e)}") 

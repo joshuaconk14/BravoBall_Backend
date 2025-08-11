@@ -8,8 +8,8 @@ class PreferenceService:
         """Convert onboarding data into initial session preferences"""
         
         # Map experience level to training style
-        training_style_map = {
-            ExperienceLevel.BEGINNER: TrainingStyle.MEDIUM_INTENSITY,
+        experience_to_training_style = {
+            ExperienceLevel.BEGINNER: TrainingStyle.LOW_INTENSITY,
             ExperienceLevel.INTERMEDIATE: TrainingStyle.MEDIUM_INTENSITY,
             ExperienceLevel.ADVANCED: TrainingStyle.HIGH_INTENSITY,
             ExperienceLevel.PROFESSIONAL: TrainingStyle.HIGH_INTENSITY
@@ -29,7 +29,7 @@ class PreferenceService:
             user_id=user_id,
             duration=duration_map[onboarding_data.daily_training_time],
             equipment=[eq.value for eq in onboarding_data.available_equipment],
-            training_style=training_style_map[onboarding_data.experience_level].value,
+            training_style=experience_to_training_style[onboarding_data.experience_level].value,
             training_location=onboarding_data.training_location.value,
             difficulty=onboarding_data.experience_level.value,
             target_skills=[skill.value for skill in onboarding_data.areas_to_improve],
