@@ -1,6 +1,104 @@
 from pydantic import BaseModel, ConfigDict
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
+from enum import Enum
+
+
+# *** PREMIUM SUBSCRIPTION ENUMS ***
+class PremiumStatus(str, Enum):
+    free = "free"
+    premium = "premium"
+    trial = "trial"
+    expired = "expired"
+
+class SubscriptionPlan(str, Enum):
+    free = "free"
+    monthly = "monthly"
+    yearly = "yearly"
+    lifetime = "lifetime"
+
+class PremiumFeature(str, Enum):
+    noAds = "noAds"
+    unlimitedDrills = "unlimitedDrills"
+    unlimitedCustomDrills = "unlimitedCustomDrills"
+    unlimitedSessions = "unlimitedSessions"
+    advancedAnalytics = "advancedAnalytics"
+    basicDrills = "basicDrills"
+    weeklySummaries = "weeklySummaries"
+    monthlySummaries = "monthlySummaries"
+
+
+# *** PREMIUM SUBSCRIPTION SCHEMAS ***
+class PremiumStatusResponse(BaseModel):
+    success: bool
+    data: Dict[str, Any]
+
+class PremiumSubscriptionBase(BaseModel):
+    status: PremiumStatus
+    plan: SubscriptionPlan
+    startDate: datetime
+    endDate: Optional[datetime] = None
+    trialEndDate: Optional[datetime] = None
+    isActive: bool
+    features: List[str]
+
+class PremiumStatusRequest(BaseModel):
+    timestamp: int
+    deviceId: str
+    appVersion: str
+
+class ReceiptVerificationRequest(BaseModel):
+    platform: str  # 'ios' or 'android'
+    receiptData: str
+    productId: str
+    transactionId: str
+
+class ReceiptVerificationResponse(BaseModel):
+    success: bool
+    data: Dict[str, Any]
+
+class UsageTrackingRequest(BaseModel):
+    featureType: str  # 'custom_drill', 'session', 'premium_feature'
+    usageDate: str  # ISO date string
+    metadata: Optional[Dict[str, Any]] = None
+
+class FeatureAccessRequest(BaseModel):
+    feature: str
+
+class FeatureAccessResponse(BaseModel):
+    success: bool
+    data: Dict[str, Any]
+
+class SubscriptionPlanDetails(BaseModel):
+    plan: SubscriptionPlan
+    name: str
+    price: float
+    currency: str
+    durationDays: int
+    description: Optional[str] = None
+    features: List[str]
+    isPopular: bool
+    originalPrice: Optional[float] = None
+
+class FreeFeatureUsage(BaseModel):
+    customDrillsRemaining: int
+    sessionsRemaining: int
+    customDrillsUsed: int
+    sessionsUsed: int
+
+class PremiumSubscriptionDetails(BaseModel):
+    id: int
+    status: PremiumStatus
+    plan: SubscriptionPlan
+    startDate: datetime
+    endDate: Optional[datetime] = None
+    trialEndDate: Optional[datetime] = None
+    isActive: bool
+    isTrial: bool
+    platform: Optional[str] = None
+    receiptData: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Completed Session Schemas

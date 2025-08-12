@@ -5,7 +5,7 @@ This defines all models used in chatbot app
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional, Dict, Any, Union
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table, Float
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table, Float, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
 from sqlalchemy.orm import relationship
 from db import Base
@@ -43,6 +43,41 @@ class UserInfoDisplay(BaseModel):
     email: str
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# *** PREMIUM SUBSCRIPTION MODELS ***
+class PremiumSubscription(Base):
+    __tablename__ = "premium_subscriptions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    status = Column(String(50), nullable=False, default="free")  # 'free', 'premium', 'trial', 'expired'
+    plan_type = Column(String(50), nullable=False, default="free")  # 'free', 'monthly', 'yearly', 'lifetime'
+    start_date = Column(DateTime, nullable=False, server_default=func.now())
+    end_date = Column(DateTime, nullable=True)
+    trial_end_date = Column(DateTime, nullable=True)
+    is_active = Column(Boolean, default=True)
+    platform = Column(String(20), nullable=True)  # 'ios', 'android', 'web'
+    receipt_data = Column(Text, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+
+    # Relationships
+    user = relationship("User", back_populates="premium_subscription")
+
+class UsageTracking(Base):
+    __tablename__ = "usage_tracking"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    feature_type = Column(String(50), nullable=False)  # 'custom_drill', 'session', 'premium_feature'
+    usage_count = Column(Integer, default=1)
+    usage_date = Column(DateTime, nullable=False, server_default=func.now())
+    usage_metadata = Column(JSONB, nullable=True)  # Store additional usage data
+    created_at = Column(DateTime, server_default=func.now())
+
+    # Relationships
+    user = relationship("User", back_populates="usage_tracking")
 
 
 # *** MENTAL TRAINING MODELS ***
@@ -104,6 +139,8 @@ class User(Base):
     refresh_tokens = relationship("RefreshToken", back_populates="user")
     password_reset_codes = relationship("PasswordResetCode", back_populates="user")
     email_verification_codes = relationship("EmailVerificationCode", back_populates="user")
+    premium_subscription = relationship("PremiumSubscription", back_populates="user")
+    usage_tracking = relationship("UsageTracking", back_populates="user")
 
 
 class CompletedSession(Base):
