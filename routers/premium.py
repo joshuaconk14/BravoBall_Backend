@@ -17,7 +17,7 @@ from schemas import (
     ReceiptVerificationResponse, UsageTrackingRequest, FeatureAccessRequest,
     FeatureAccessResponse, PremiumStatus, SubscriptionPlan, PremiumFeature
 )
-from routers.router_utils import get_current_user
+from auth import get_current_user
 
 router = APIRouter(prefix="/api/premium", tags=["Premium"])
 

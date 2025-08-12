@@ -43,7 +43,7 @@ def create_premium_tables():
                     feature_type VARCHAR(50) NOT NULL,
                     usage_count INTEGER DEFAULT 1,
                     usage_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                    metadata JSONB,
+                    usage_metadata JSONB,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             """))

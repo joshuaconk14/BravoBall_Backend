@@ -162,7 +162,7 @@ class PremiumService:
                 user_id=user_id,
                 feature_type=feature_type,
                 usage_date=parsed_date,
-                metadata=metadata
+                usage_metadata=metadata
             )
             
             db.add(usage_record)
