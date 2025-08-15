@@ -5,16 +5,17 @@ Premium subscription management endpoints for BravoBall
 
 from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import Optional, Dict, Any
 from datetime import datetime, timedelta
 import json
 import logging
 
 from db import get_db
-from models import User, PremiumSubscription, UsageTracking
+from models import User, PremiumSubscription, CustomDrill, CompletedSession
 from schemas import (
     PremiumStatusResponse, PremiumStatusRequest, ReceiptVerificationRequest,
-    ReceiptVerificationResponse, UsageTrackingRequest, FeatureAccessRequest,
+    ReceiptVerificationResponse, FeatureAccessRequest,
     FeatureAccessResponse, PremiumStatus, SubscriptionPlan, PremiumFeature
 )
 from auth import get_current_user
@@ -230,38 +231,7 @@ async def verify_app_store(
     request.platform = "ios"
     return await verify_receipt(request, current_user, db)
 
-@router.post("/track-usage")
-async def track_usage(
-    request: UsageTrackingRequest,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """Track feature usage for analytics and limits"""
-    try:
-        # Parse usage date
-        try:
-            usage_date = datetime.fromisoformat(request.usageDate.replace('Z', '+00:00'))
-        except ValueError:
-            usage_date = datetime.utcnow()
-        
-        # Create usage tracking record
-        usage_record = UsageTracking(
-            user_id=current_user.id,
-            feature_type=request.featureType,
-            usage_date=usage_date,
-            metadata=request.metadata
-        )
-        
-        db.add(usage_record)
-        db.commit()
-        
-        logger.info(f"Usage tracked for user {current_user.id}: {request.featureType}")
-        
-        return {"success": True, "message": "Usage tracked successfully"}
-        
-    except Exception as e:
-        logger.error(f"Error tracking usage for user {current_user.id}: {str(e)}")
-        raise HTTPException(status_code=500, detail="Failed to track usage")
+
 
 @router.get("/usage-stats")
 async def get_usage_stats(
@@ -271,21 +241,19 @@ async def get_usage_stats(
     """Get usage statistics for the current user"""
     try:
         # Get current month usage
-        current_month = datetime.utcnow().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
         
         # Get custom drills used this month
-        custom_drills_used = db.query(UsageTracking).filter(
-            UsageTracking.user_id == current_user.id,
-            UsageTracking.feature_type == "custom_drill",
-            UsageTracking.usage_date >= current_month
+        custom_drills_used = db.query(CustomDrill).filter(
+            CustomDrill.user_id == current_user.id,
+            CustomDrill.created_at >= current_month
         ).count()
         
         # Get sessions used today
-        today = datetime.utcnow().date()
-        sessions_used = db.query(UsageTracking).filter(
-            UsageTracking.user_id == current_user.id,
-            UsageTracking.feature_type == "session",
-            UsageTracking.usage_date >= today
+        today = datetime.now().date()
+        sessions_used = db.query(CompletedSession).filter(
+            CompletedSession.user_id == current_user.id,
+            func.date(CompletedSession.date) == today
         ).count()
         
         # Get subscription status
@@ -356,29 +324,63 @@ async def check_feature_access(
         else:
             # Check specific limits for free users
             if feature == "unlimitedCustomDrills":
-                current_month = datetime.utcnow().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-                used = db.query(UsageTracking).filter(
-                    UsageTracking.user_id == current_user.id,
-                    UsageTracking.feature_type == "custom_drill",
-                    UsageTracking.usage_date >= current_month
+                current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+                print(f"🔍 DEBUG: === Checking custom drills for user {current_user.id} ===")
+                print(f"🔍 DEBUG: Feature requested: {feature}")
+                print(f"🔍 DEBUG: Current month start: {current_month}")
+                print(f"🔍 DEBUG: Current local time: {datetime.now()}")
+                print(f"🔍 DEBUG: Current local date: {datetime.now().date()}")
+                
+                # Get all custom drills for this user to see what we're working with
+                all_drills = db.query(CustomDrill).filter(CustomDrill.user_id == current_user.id).all()
+                print(f"🔍 DEBUG: Total custom drills for user {current_user.id}: {len(all_drills)}")
+                for drill in all_drills:
+                    print(f"  🔍 DEBUG: Drill '{drill.title}' created at: {drill.created_at}")
+                
+                # Now check monthly limit
+                used = db.query(CustomDrill).filter(
+                    CustomDrill.user_id == current_user.id,
+                    CustomDrill.created_at >= current_month
                 ).count()
+                print(f"🔍 DEBUG: Drills created this month (>= {current_month}): {used}")
+                
                 remaining_uses = max(0, FREE_TIER_LIMITS["custom_drills_per_month"] - used)
                 can_access = remaining_uses > 0
                 limit = f"{FREE_TIER_LIMITS['custom_drills_per_month']} per month"
+                print(f"🔍 DEBUG: Remaining uses: {remaining_uses}, Can access: {can_access}")
+                print(f"🔍 DEBUG: === End custom drills check ===\n")
             elif feature == "unlimitedSessions":
-                today = datetime.utcnow().date()
-                used = db.query(UsageTracking).filter(
-                    UsageTracking.user_id == current_user.id,
-                    UsageTracking.feature_type == "session",
-                    UsageTracking.usage_date >= today
+                today = datetime.now().date()
+                print(f"🔍 DEBUG: === Checking sessions for user {current_user.id} ===")
+                print(f"🔍 DEBUG: Feature requested: {feature}")
+                print(f"🔍 DEBUG: Today's date: {today}")
+                print(f"🔍 DEBUG: Current local time: {datetime.now()}")
+                
+                # Get all sessions for this user to see what we're working with
+                all_sessions = db.query(CompletedSession).filter(CompletedSession.user_id == current_user.id).all()
+                print(f"🔍 DEBUG: Total sessions for user {current_user.id}: {len(all_sessions)}")
+                for session in all_sessions:
+                    print(f"  🔍 DEBUG: Session on {session.date} (type: {session.session_type})")
+                
+                # Now check daily limit
+                used = db.query(CompletedSession).filter(
+                    CompletedSession.user_id == current_user.id,
+                    func.date(CompletedSession.date) == today
                 ).count()
+                print(f"🔍 DEBUG: Sessions completed today ({today}): {used}")
+                
                 remaining_uses = max(0, FREE_TIER_LIMITS["sessions_per_day"] - used)
                 can_access = remaining_uses > 0
                 limit = f"{FREE_TIER_LIMITS['sessions_per_day']} per day"
+                print(f"🔍 DEBUG: Remaining uses: {remaining_uses}, Can access: {can_access}")
+                print(f"🔍 DEBUG: === End sessions check ===\n")
             else:
                 can_access = False
                 remaining_uses = 0
                 limit = "premium_only"
+        
+        print(f"🔍 DEBUG: Final result: canAccess={can_access}, remainingUses={remaining_uses}, limit={limit}")
+        print(f"🔍 DEBUG: === End feature access check ===\n")
         
         response_data = {
             "canAccess": can_access,

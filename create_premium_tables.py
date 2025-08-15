@@ -35,18 +35,7 @@ def create_premium_tables():
                 );
             """))
             
-            # Create usage_tracking table
-            connection.execute(text("""
-                CREATE TABLE IF NOT EXISTS usage_tracking (
-                    id SERIAL PRIMARY KEY,
-                    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-                    feature_type VARCHAR(50) NOT NULL,
-                    usage_count INTEGER DEFAULT 1,
-                    usage_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                    usage_metadata JSONB,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                );
-            """))
+
             
             # Create indexes for better performance
             connection.execute(text("""
@@ -59,15 +48,7 @@ def create_premium_tables():
                 ON premium_subscriptions(status);
             """))
             
-            connection.execute(text("""
-                CREATE INDEX IF NOT EXISTS idx_usage_tracking_user_id 
-                ON usage_tracking(user_id);
-            """))
-            
-            connection.execute(text("""
-                CREATE INDEX IF NOT EXISTS idx_usage_tracking_feature_date 
-                ON usage_tracking(user_id, feature_type, usage_date);
-            """))
+
             
             # Commit the changes
             connection.commit()
@@ -78,8 +59,7 @@ def create_premium_tables():
             result = connection.execute(text("""
                 SELECT table_name 
                 FROM information_schema.tables 
-                WHERE table_name IN ('premium_subscriptions', 'usage_tracking')
-                ORDER BY table_name;
+                WHERE table_name = 'premium_subscriptions'
             """))
             
             tables = [row[0] for row in result]

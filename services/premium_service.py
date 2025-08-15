@@ -4,11 +4,12 @@ Premium subscription business logic and service functions
 """
 
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import Dict, Any, Optional, List
 from datetime import datetime, timedelta
 import logging
 
-from models import User, PremiumSubscription, UsageTracking
+from models import User, PremiumSubscription, CustomDrill, CompletedSession
 from schemas import PremiumStatus, SubscriptionPlan, PremiumFeature
 
 logger = logging.getLogger(__name__)
@@ -115,21 +116,19 @@ class PremiumService:
         else:
             # Check specific limits for free users
             if feature == "unlimitedCustomDrills":
-                current_month = datetime.utcnow().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-                used = db.query(UsageTracking).filter(
-                    UsageTracking.user_id == user_id,
-                    UsageTracking.feature_type == "custom_drill",
-                    UsageTracking.usage_date >= current_month
+                current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+                used = db.query(CustomDrill).filter(
+                    CustomDrill.user_id == user_id,
+                    CustomDrill.created_at >= current_month
                 ).count()
                 remaining_uses = max(0, PremiumService.FREE_TIER_LIMITS["custom_drills_per_month"] - used)
                 can_access = remaining_uses > 0
                 limit = f"{PremiumService.FREE_TIER_LIMITS['custom_drills_per_month']} per month"
             elif feature == "unlimitedSessions":
-                today = datetime.utcnow().date()
-                used = db.query(UsageTracking).filter(
-                    UsageTracking.user_id == user_id,
-                    UsageTracking.feature_type == "session",
-                    UsageTracking.usage_date >= today
+                today = datetime.now().date()
+                used = db.query(CompletedSession).filter(
+                    CompletedSession.user_id == user_id,
+                    func.date(CompletedSession.date) == today
                 ).count()
                 remaining_uses = max(0, PremiumService.FREE_TIER_LIMITS["sessions_per_day"] - used)
                 can_access = remaining_uses > 0
@@ -146,56 +145,26 @@ class PremiumService:
                 "limit": limit
             }
     
-    @staticmethod
-    def track_feature_usage(db: Session, user_id: int, feature_type: str, 
-                           usage_date: str, metadata: Optional[Dict[str, Any]] = None) -> bool:
-        """Track feature usage for analytics and limits"""
-        try:
-            # Parse usage date
-            try:
-                parsed_date = datetime.fromisoformat(usage_date.replace('Z', '+00:00'))
-            except ValueError:
-                parsed_date = datetime.utcnow()
-            
-            # Create usage tracking record
-            usage_record = UsageTracking(
-                user_id=user_id,
-                feature_type=feature_type,
-                usage_date=parsed_date,
-                usage_metadata=metadata
-            )
-            
-            db.add(usage_record)
-            db.commit()
-            
-            logger.info(f"Usage tracked for user {user_id}: {feature_type}")
-            return True
-            
-        except Exception as e:
-            logger.error(f"Error tracking usage for user {user_id}: {str(e)}")
-            db.rollback()
-            return False
+
     
     @staticmethod
     def get_usage_stats(db: Session, user_id: int) -> Dict[str, Any]:
         """Get usage statistics for the current user"""
         try:
             # Get current month usage
-            current_month = datetime.utcnow().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+            current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
             
             # Get custom drills used this month
-            custom_drills_used = db.query(UsageTracking).filter(
-                UsageTracking.user_id == user_id,
-                UsageTracking.feature_type == "custom_drill",
-                UsageTracking.usage_date >= current_month
+            custom_drills_used = db.query(CustomDrill).filter(
+                CustomDrill.user_id == user_id,
+                CustomDrill.created_at >= current_month
             ).count()
             
             # Get sessions used today
-            today = datetime.utcnow().date()
-            sessions_used = db.query(UsageTracking).filter(
-                UsageTracking.user_id == user_id,
-                UsageTracking.feature_type == "session",
-                UsageTracking.usage_date >= today
+            today = datetime.now().date()
+            sessions_used = db.query(CompletedSession).filter(
+                CompletedSession.user_id == user_id,
+                func.date(CompletedSession.date) == today
             ).count()
             
             # Get subscription status

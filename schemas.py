@@ -57,10 +57,7 @@ class ReceiptVerificationResponse(BaseModel):
     success: bool
     data: Dict[str, Any]
 
-class UsageTrackingRequest(BaseModel):
-    featureType: str  # 'custom_drill', 'session', 'premium_feature'
-    usageDate: str  # ISO date string
-    metadata: Optional[Dict[str, Any]] = None
+
 
 class FeatureAccessRequest(BaseModel):
     feature: str

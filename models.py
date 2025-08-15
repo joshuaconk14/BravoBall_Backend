@@ -65,19 +65,7 @@ class PremiumSubscription(Base):
     # Relationships
     user = relationship("User", back_populates="premium_subscription")
 
-class UsageTracking(Base):
-    __tablename__ = "usage_tracking"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    feature_type = Column(String(50), nullable=False)  # 'custom_drill', 'session', 'premium_feature'
-    usage_count = Column(Integer, default=1)
-    usage_date = Column(DateTime, nullable=False, server_default=func.now())
-    usage_metadata = Column(JSONB, nullable=True)  # Store additional usage data
-    created_at = Column(DateTime, server_default=func.now())
-
-    # Relationships
-    user = relationship("User", back_populates="usage_tracking")
 
 
 # *** MENTAL TRAINING MODELS ***
@@ -140,7 +128,7 @@ class User(Base):
     password_reset_codes = relationship("PasswordResetCode", back_populates="user")
     email_verification_codes = relationship("EmailVerificationCode", back_populates="user")
     premium_subscription = relationship("PremiumSubscription", back_populates="user")
-    usage_tracking = relationship("UsageTracking", back_populates="user")
+
 
 
 class CompletedSession(Base):
