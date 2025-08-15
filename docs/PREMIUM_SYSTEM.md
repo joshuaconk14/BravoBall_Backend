@@ -22,14 +22,7 @@ This document describes the implementation of the premium subscription system fo
 - **created_at**: Record creation timestamp
 - **updated_at**: Last update timestamp
 
-#### UsageTracking
-- **id**: Primary key
-- **user_id**: Foreign key to users table
-- **feature_type**: Type of feature used
-- **usage_count**: Number of times used
-- **usage_date**: Date of usage
-- **metadata**: Additional usage data (JSONB)
-- **created_at**: Record creation timestamp
+
 
 ### API Endpoints
 
@@ -48,8 +41,7 @@ This document describes the implementation of the premium subscription system fo
 - `POST /api/premium/verify-app-store` - iOS receipt verification
 - `POST /api/premium/verify-google-play` - Android receipt verification
 
-#### Usage Tracking
-- `POST /api/premium/track-usage` - Track feature usage
+#### Usage Management
 - `GET /api/premium/usage-stats` - Get usage statistics
 - `POST /api/premium/check-feature` - Check feature access
 
@@ -85,7 +77,6 @@ python create_premium_tables.py
 
 This will:
 - Create the `premium_subscriptions` table
-- Create the `usage_tracking` table
 - Create necessary indexes
 - Create default free subscriptions for existing users
 
