@@ -57,6 +57,13 @@ class ReceiptVerificationResponse(BaseModel):
     success: bool
     data: Dict[str, Any]
 
+class PurchaseCompletedRequest(BaseModel):
+    plan: str
+    productId: str
+    purchaseDate: str  # ISO8601 string
+    expiryDate: Optional[str] = None  # ISO8601 string
+    platform: str
+
 
 
 class FeatureAccessRequest(BaseModel):

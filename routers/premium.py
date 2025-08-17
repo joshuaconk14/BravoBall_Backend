@@ -16,7 +16,8 @@ from models import User, PremiumSubscription, CustomDrill, CompletedSession
 from schemas import (
     PremiumStatusResponse, PremiumStatusRequest, ReceiptVerificationRequest,
     ReceiptVerificationResponse, FeatureAccessRequest,
-    FeatureAccessResponse, PremiumStatus, SubscriptionPlan, PremiumFeature
+    FeatureAccessResponse, PremiumStatus, SubscriptionPlan, PremiumFeature,
+    PurchaseCompletedRequest
 )
 from auth import get_current_user
 
@@ -400,14 +401,29 @@ async def check_feature_access(
 
 @router.post("/subscribe")
 async def subscribe_user(
-    plan: str,
+    request: PurchaseCompletedRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Subscribe user to a premium plan (for testing purposes)"""
+    """Subscribe user to a premium plan with purchase details"""
     try:
+        plan = request.plan
         if plan not in ["monthly", "yearly", "lifetime"]:
             raise HTTPException(status_code=400, detail="Invalid plan")
+        
+        # Parse purchase date
+        try:
+            purchase_date = datetime.fromisoformat(request.purchaseDate.replace('Z', '+00:00'))
+        except ValueError:
+            purchase_date = datetime.utcnow()
+        
+        # Parse expiry date if provided
+        expiry_date = None
+        if request.expiryDate:
+            try:
+                expiry_date = datetime.fromisoformat(request.expiryDate.replace('Z', '+00:00'))
+            except ValueError:
+                pass
         
         # Get or create subscription
         subscription = db.query(PremiumSubscription).filter(
@@ -419,28 +435,34 @@ async def subscribe_user(
                 user_id=current_user.id,
                 status="premium",
                 plan_type=plan,
-                start_date=datetime.utcnow(),
+                start_date=purchase_date,
+                end_date=expiry_date,
+                platform=request.platform,
                 is_active=True
             )
             db.add(subscription)
         else:
             subscription.status = "premium"
             subscription.plan_type = plan
-            subscription.start_date = datetime.utcnow()
+            subscription.start_date = purchase_date
+            subscription.end_date = expiry_date
+            subscription.platform = request.platform
             subscription.is_active = True
             subscription.updated_at = datetime.utcnow()
         
-        # Set end date based on plan
-        if plan == "monthly":
-            subscription.end_date = datetime.utcnow() + timedelta(days=30)
-        elif plan == "yearly":
-            subscription.end_date = datetime.utcnow() + timedelta(days=365)
-        elif plan == "lifetime":
-            subscription.end_date = None
+        # Set end date based on plan if not provided in request
+        if not expiry_date:
+            if plan == "monthly":
+                subscription.end_date = purchase_date + timedelta(days=30)
+            elif plan == "yearly":
+                subscription.end_date = purchase_date + timedelta(days=365)
+            elif plan == "lifetime":
+                subscription.end_date = None
         
         db.commit()
         
-        logger.info(f"User {current_user.id} subscribed to {plan} plan")
+        logger.info(f"User {current_user.id} subscribed to {plan} plan via {request.platform}")
+        logger.info(f"Purchase date: {purchase_date}, Expiry: {expiry_date}")
         
         return {"success": True, "message": f"Successfully subscribed to {plan} plan"}
         
