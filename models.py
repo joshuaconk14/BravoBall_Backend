@@ -67,6 +67,23 @@ class PremiumSubscription(Base):
 
 
 
+# *** AUDIT LOG MODEL ***
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    action = Column(String(100), nullable=False)
+    endpoint = Column(String(200), nullable=False)
+    method = Column(String(10), nullable=False)
+    ip_address = Column(String(100), nullable=True)
+    user_agent = Column(Text, nullable=True)
+    device_fingerprint = Column(String(255), nullable=True)
+    status = Column(String(50), nullable=False)
+    details = Column(JSONB, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+
+
 
 # *** MENTAL TRAINING MODELS ***
 class MentalTrainingQuote(Base):

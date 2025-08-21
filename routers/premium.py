@@ -3,7 +3,7 @@ premium.py
 Premium subscription management endpoints for BravoBall
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException, Header, Request
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import Optional, Dict, Any
@@ -20,6 +20,10 @@ from schemas import (
     PurchaseCompletedRequest
 )
 from auth import get_current_user
+from services.rate_limiter import rate_limiter
+from services.audit_service import AuditService
+from services.receipt_verifier import receipt_verifier
+import os
 
 router = APIRouter(prefix="/api/premium", tags=["Premium"])
 
@@ -45,6 +49,7 @@ FREE_TIER_LIMITS = {
 
 @router.get("/status")
 async def get_premium_status(
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
     device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
@@ -52,6 +57,22 @@ async def get_premium_status(
 ):
     """Get current premium status for a user"""
     try:
+        # Enforce device fingerprint presence
+        if not device_fingerprint:
+            AuditService.log(
+                db,
+                user_id=current_user.id,
+                action="premium_status",
+                endpoint=str(request.url.path),
+                method="GET",
+                status="blocked_missing_fingerprint",
+                ip_address=request.client.host if request.client else None,
+                user_agent=request.headers.get("User-Agent"),
+                device_fingerprint=device_fingerprint,
+                details={"appVersion": app_version},
+            )
+            raise HTTPException(status_code=400, detail="Device fingerprint required")
+
         # Get or create premium subscription
         subscription = db.query(PremiumSubscription).filter(
             PremiumSubscription.user_id == current_user.id
@@ -91,7 +112,18 @@ async def get_premium_status(
             "features": features
         }
         
-        logger.info(f"Premium status retrieved for user {current_user.id}: {subscription.status}")
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="premium_status",
+            endpoint=str(request.url.path),
+            method="GET",
+            status="success",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"status": subscription.status},
+        )
         
         return PremiumStatusResponse(
             success=True,
@@ -104,7 +136,8 @@ async def get_premium_status(
 
 @router.post("/validate")
 async def validate_premium_status(
-    request: PremiumStatusRequest,
+    request: Request,
+    body: PremiumStatusRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
     device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
@@ -112,6 +145,36 @@ async def validate_premium_status(
 ):
     """Validate premium status with server-side checks"""
     try:
+        if not device_fingerprint:
+            AuditService.log(
+                db,
+                user_id=current_user.id,
+                action="premium_validate",
+                endpoint=str(request.url.path),
+                method="POST",
+                status="blocked_missing_fingerprint",
+                ip_address=request.client.host if request.client else None,
+                user_agent=request.headers.get("User-Agent"),
+                device_fingerprint=device_fingerprint,
+                details={"appVersion": app_version},
+            )
+            raise HTTPException(status_code=400, detail="Device fingerprint required")
+
+        # Rate limit: 5/min per user for validation
+        if not rate_limiter.allow(current_user.id, "/api/premium/validate", limit=5, window_seconds=60):
+            AuditService.log(
+                db,
+                user_id=current_user.id,
+                action="premium_validate",
+                endpoint=str(request.url.path),
+                method="POST",
+                status="rate_limited",
+                ip_address=request.client.host if request.client else None,
+                user_agent=request.headers.get("User-Agent"),
+                device_fingerprint=device_fingerprint,
+            )
+            raise HTTPException(status_code=429, detail="Too many validation requests")
+
         # Get current subscription
         subscription = db.query(PremiumSubscription).filter(
             PremiumSubscription.user_id == current_user.id
@@ -135,7 +198,18 @@ async def validate_premium_status(
             "nextValidation": next_validation.isoformat() + "Z"
         }
         
-        logger.info(f"Premium status validated for user {current_user.id}: {subscription.status}")
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="premium_validate",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="success",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"status": subscription.status},
+        )
         
         return PremiumStatusResponse(
             success=True,
@@ -148,23 +222,52 @@ async def validate_premium_status(
 
 @router.post("/verify-receipt")
 async def verify_receipt(
-    request: ReceiptVerificationRequest,
+    request: Request,
+    body: ReceiptVerificationRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Verify in-app purchase receipt"""
     try:
-        # This is a placeholder implementation
-        # In production, you would integrate with App Store Server API or Google Play Developer API
-        
-        if request.platform not in ["ios", "android"]:
+        # Enforce rate limiting: 5/min per user
+        if not rate_limiter.allow(current_user.id, "/api/premium/verify-receipt", limit=5, window_seconds=60):
+            AuditService.log(
+                db,
+                user_id=current_user.id,
+                action="verify_receipt",
+                endpoint=str(request.url.path),
+                method="POST",
+                status="rate_limited",
+                ip_address=request.client.host if request.client else None,
+                user_agent=request.headers.get("User-Agent"),
+            )
+            raise HTTPException(status_code=429, detail="Too many receipt verifications")
+
+        # Restrict generic endpoint to test mode only
+        test_mode = os.getenv("PREMIUM_TEST_MODE", "false").lower() == "true"
+        if not test_mode:
+            raise HTTPException(status_code=403, detail="Generic verify endpoint disabled in production")
+
+        if body.platform not in ["ios", "android"]:
             raise HTTPException(status_code=400, detail="Invalid platform")
-        
-        # Mock verification - replace with actual platform API calls
-        verified = True  # This should come from platform verification
-        subscription_status = "active"
-        expires_at = (datetime.utcnow() + timedelta(days=365)).isoformat() + "Z"  # Mock expiry
-        
+        # Use verifier in test mode (will simulate)
+        verified, info = await receipt_verifier.verify(
+            body.platform, body.receiptData, body.productId, body.transactionId
+        )
+        if not verified:
+            AuditService.log(
+                db,
+                user_id=current_user.id,
+                action="verify_receipt",
+                endpoint=str(request.url.path),
+                method="POST",
+                status="failed",
+                ip_address=request.client.host if request.client else None,
+                user_agent=request.headers.get("User-Agent"),
+                details={"error": info},
+            )
+            raise HTTPException(status_code=400, detail="Receipt verification failed")
+
         # Update user's subscription
         subscription = db.query(PremiumSubscription).filter(
             PremiumSubscription.user_id == current_user.id
@@ -174,34 +277,44 @@ async def verify_receipt(
             subscription = PremiumSubscription(
                 user_id=current_user.id,
                 status="premium",
-                plan_type="yearly" if "yearly" in request.productId else "monthly",
+                plan_type="yearly" if "yearly" in body.productId else "monthly",
                 start_date=datetime.utcnow(),
-                end_date=datetime.utcnow() + timedelta(days=365 if "yearly" in request.productId else 30),
+                end_date=datetime.utcnow() + timedelta(days=365 if "yearly" in body.productId else 30),
                 is_active=True,
-                platform=request.platform,
-                receipt_data=request.receiptData
+                platform=body.platform,
+                receipt_data=body.receiptData
             )
             db.add(subscription)
         else:
             subscription.status = "premium"
-            subscription.plan_type = "yearly" if "yearly" in request.productId else "monthly"
+            subscription.plan_type = "yearly" if "yearly" in body.productId else "monthly"
             subscription.start_date = datetime.utcnow()
-            subscription.end_date = datetime.utcnow() + timedelta(days=365 if "yearly" in request.productId else 30)
+            subscription.end_date = datetime.utcnow() + timedelta(days=365 if "yearly" in body.productId else 30)
             subscription.is_active = True
-            subscription.platform = request.platform
-            subscription.receipt_data = request.receiptData
+            subscription.platform = body.platform
+            subscription.receipt_data = body.receiptData
             subscription.updated_at = datetime.utcnow()
         
         db.commit()
         
         response_data = {
-            "verified": verified,
-            "subscriptionStatus": subscription_status,
-            "expiresAt": expires_at,
-            "platform": request.platform
+            "verified": True,
+            "subscriptionStatus": info.get("subscriptionStatus"),
+            "expiresAt": info.get("expiresAt"),
+            "platform": body.platform
         }
         
-        logger.info(f"Receipt verified for user {current_user.id} on {request.platform}")
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="verify_receipt",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="success",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            details={"platform": body.platform},
+        )
         
         return ReceiptVerificationResponse(
             success=True,
@@ -214,23 +327,135 @@ async def verify_receipt(
 
 @router.post("/verify-google-play")
 async def verify_google_play(
-    request: ReceiptVerificationRequest,
+    request: Request,
+    body: ReceiptVerificationRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Verify Google Play purchase (alias for verify-receipt)"""
-    request.platform = "android"
-    return await verify_receipt(request, current_user, db)
+    """Verify Google Play purchase"""
+    # Rate limit
+    if not rate_limiter.allow(current_user.id, "/api/premium/verify-google-play", limit=5, window_seconds=60):
+        raise HTTPException(status_code=429, detail="Too many receipt verifications")
+
+    verified, info = await receipt_verifier.verify("android", body.receiptData, body.productId, body.transactionId)
+    if not verified:
+        raise HTTPException(status_code=400, detail="Receipt verification failed")
+
+    # Update subscription upon successful verification
+    subscription = db.query(PremiumSubscription).filter(
+        PremiumSubscription.user_id == current_user.id
+    ).first()
+
+    if not subscription:
+        subscription = PremiumSubscription(
+            user_id=current_user.id,
+            status="premium",
+            plan_type="yearly" if "yearly" in body.productId else "monthly",
+            start_date=datetime.utcnow(),
+            end_date=datetime.utcnow() + timedelta(days=365 if "yearly" in body.productId else 30),
+            is_active=True,
+            platform="android",
+            receipt_data=body.receiptData
+        )
+        db.add(subscription)
+    else:
+        subscription.status = "premium"
+        subscription.plan_type = "yearly" if "yearly" in body.productId else "monthly"
+        subscription.start_date = datetime.utcnow()
+        subscription.end_date = datetime.utcnow() + timedelta(days=365 if "yearly" in body.productId else 30)
+        subscription.is_active = True
+        subscription.platform = "android"
+        subscription.receipt_data = body.receiptData
+        subscription.updated_at = datetime.utcnow()
+
+    db.commit()
+
+    response_data = {
+        "verified": True,
+        "subscriptionStatus": info.get("subscriptionStatus"),
+        "expiresAt": info.get("expiresAt"),
+        "platform": "android"
+    }
+
+    AuditService.log(
+        db,
+        user_id=current_user.id,
+        action="verify_receipt",
+        endpoint=str(request.url.path),
+        method="POST",
+        status="success",
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("User-Agent"),
+        details={"platform": "android"},
+    )
+
+    return ReceiptVerificationResponse(success=True, data=response_data)
 
 @router.post("/verify-app-store")
 async def verify_app_store(
-    request: ReceiptVerificationRequest,
+    request: Request,
+    body: ReceiptVerificationRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Verify App Store purchase (alias for verify-receipt)"""
-    request.platform = "ios"
-    return await verify_receipt(request, current_user, db)
+    """Verify App Store purchase"""
+    # Rate limit
+    if not rate_limiter.allow(current_user.id, "/api/premium/verify-app-store", limit=5, window_seconds=60):
+        raise HTTPException(status_code=429, detail="Too many receipt verifications")
+
+    verified, info = await receipt_verifier.verify("ios", body.receiptData, body.productId, body.transactionId)
+    if not verified:
+        raise HTTPException(status_code=400, detail="Receipt verification failed")
+
+    # Update subscription upon successful verification
+    subscription = db.query(PremiumSubscription).filter(
+        PremiumSubscription.user_id == current_user.id
+    ).first()
+
+    if not subscription:
+        subscription = PremiumSubscription(
+            user_id=current_user.id,
+            status="premium",
+            plan_type="yearly" if "yearly" in body.productId else "monthly",
+            start_date=datetime.utcnow(),
+            end_date=datetime.utcnow() + timedelta(days=365 if "yearly" in body.productId else 30),
+            is_active=True,
+            platform="ios",
+            receipt_data=body.receiptData
+        )
+        db.add(subscription)
+    else:
+        subscription.status = "premium"
+        subscription.plan_type = "yearly" if "yearly" in body.productId else "monthly"
+        subscription.start_date = datetime.utcnow()
+        subscription.end_date = datetime.utcnow() + timedelta(days=365 if "yearly" in body.productId else 30)
+        subscription.is_active = True
+        subscription.platform = "ios"
+        subscription.receipt_data = body.receiptData
+        subscription.updated_at = datetime.utcnow()
+
+    db.commit()
+
+    response_data = {
+        "verified": True,
+        "subscriptionStatus": info.get("subscriptionStatus"),
+        "expiresAt": info.get("expiresAt"),
+        "platform": "ios"
+    }
+
+    AuditService.log(
+        db,
+        user_id=current_user.id,
+        action="verify_receipt",
+        endpoint=str(request.url.path),
+        method="POST",
+        status="success",
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("User-Agent"),
+        details={"platform": "ios"},
+    )
+
+    return ReceiptVerificationResponse(success=True, data=response_data)
 
 
 

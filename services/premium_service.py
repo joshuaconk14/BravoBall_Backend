@@ -5,7 +5,7 @@ Premium subscription business logic and service functions
 
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Tuple
 from datetime import datetime, timedelta
 import logging
 
