@@ -36,6 +36,6 @@ class AuditService:
             details=details or {},
         )
         db.add(audit)
-        # Intentionally not committing here; caller should commit as part of request lifecycle if needed
+        db.commit()
 
 
