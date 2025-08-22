@@ -155,22 +155,6 @@ curl -X POST "http://localhost:8000/api/premium/check-feature" \
 }
 ```
 
-### Track Usage
-
-```bash
-curl -X POST "http://localhost:8000/api/premium/track-usage" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "featureType": "custom_drill",
-    "usageDate": "2024-01-15",
-    "metadata": {
-      "drillType": "passing",
-      "difficulty": "intermediate"
-    }
-  }'
-```
-
 ### Upgrade to Premium (Test)
 
 ```bash
