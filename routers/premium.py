@@ -56,23 +56,24 @@ async def get_premium_status(
     app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Get current premium status for a user"""
-    try:
-        # Enforce device fingerprint presence
-        if not device_fingerprint:
-            AuditService.log(
-                db,
-                user_id=current_user.id,
-                action="premium_status",
-                endpoint=str(request.url.path),
-                method="GET",
-                status="blocked_missing_fingerprint",
-                ip_address=request.client.host if request.client else None,
-                user_agent=request.headers.get("User-Agent"),
-                device_fingerprint=device_fingerprint,
-                details={"appVersion": app_version},
-            )
-            raise HTTPException(status_code=400, detail="Device fingerprint required")
+    
+    # Enforce device fingerprint presence
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="premium_status",
+            endpoint=str(request.url.path),
+            method="GET",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
 
+    try:
         # Get or create premium subscription
         subscription = db.query(PremiumSubscription).filter(
             PremiumSubscription.user_id == current_user.id
@@ -144,37 +145,38 @@ async def validate_premium_status(
     app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Validate premium status with server-side checks"""
+    
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="premium_validate",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
+
+    # Rate limit: 5/min per user for validation
+    if not rate_limiter.allow(current_user.id, "/api/premium/validate", limit=5, window_seconds=60):
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="premium_validate",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="rate_limited",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+        )
+        raise HTTPException(status_code=429, detail="Too many validation requests")
+
     try:
-        if not device_fingerprint:
-            AuditService.log(
-                db,
-                user_id=current_user.id,
-                action="premium_validate",
-                endpoint=str(request.url.path),
-                method="POST",
-                status="blocked_missing_fingerprint",
-                ip_address=request.client.host if request.client else None,
-                user_agent=request.headers.get("User-Agent"),
-                device_fingerprint=device_fingerprint,
-                details={"appVersion": app_version},
-            )
-            raise HTTPException(status_code=400, detail="Device fingerprint required")
-
-        # Rate limit: 5/min per user for validation
-        if not rate_limiter.allow(current_user.id, "/api/premium/validate", limit=5, window_seconds=60):
-            AuditService.log(
-                db,
-                user_id=current_user.id,
-                action="premium_validate",
-                endpoint=str(request.url.path),
-                method="POST",
-                status="rate_limited",
-                ip_address=request.client.host if request.client else None,
-                user_agent=request.headers.get("User-Agent"),
-                device_fingerprint=device_fingerprint,
-            )
-            raise HTTPException(status_code=429, detail="Too many validation requests")
-
         # Get current subscription
         subscription = db.query(PremiumSubscription).filter(
             PremiumSubscription.user_id == current_user.id
@@ -228,28 +230,30 @@ async def verify_receipt(
     db: Session = Depends(get_db)
 ):
     """Verify in-app purchase receipt"""
+    
+    # Enforce rate limiting: 5/min per user
+    if not rate_limiter.allow(current_user.id, "/api/premium/verify-receipt", limit=5, window_seconds=60):
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="verify_receipt",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="rate_limited",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+        )
+        raise HTTPException(status_code=429, detail="Too many receipt verifications")
+
+    # Restrict generic endpoint to test mode only
+    test_mode = os.getenv("PREMIUM_TEST_MODE", "false").lower() == "true"
+    if not test_mode:
+        raise HTTPException(status_code=403, detail="Generic verify endpoint disabled in production")
+
+    if body.platform not in ["ios", "android"]:
+        raise HTTPException(status_code=400, detail="Invalid platform")
+    
     try:
-        # Enforce rate limiting: 5/min per user
-        if not rate_limiter.allow(current_user.id, "/api/premium/verify-receipt", limit=5, window_seconds=60):
-            AuditService.log(
-                db,
-                user_id=current_user.id,
-                action="verify_receipt",
-                endpoint=str(request.url.path),
-                method="POST",
-                status="rate_limited",
-                ip_address=request.client.host if request.client else None,
-                user_agent=request.headers.get("User-Agent"),
-            )
-            raise HTTPException(status_code=429, detail="Too many receipt verifications")
-
-        # Restrict generic endpoint to test mode only
-        test_mode = os.getenv("PREMIUM_TEST_MODE", "false").lower() == "true"
-        if not test_mode:
-            raise HTTPException(status_code=403, detail="Generic verify endpoint disabled in production")
-
-        if body.platform not in ["ios", "android"]:
-            raise HTTPException(status_code=400, detail="Invalid platform")
         # Use verifier in test mode (will simulate)
         verified, info = await receipt_verifier.verify(
             body.platform, body.receiptData, body.productId, body.transactionId
@@ -330,11 +334,41 @@ async def verify_google_play(
     request: Request,
     body: ReceiptVerificationRequest,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
+    app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Verify Google Play purchase"""
+    
+    # Enforce device fingerprint presence
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="verify_receipt",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"platform": "android", "appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
+
     # Rate limit
     if not rate_limiter.allow(current_user.id, "/api/premium/verify-google-play", limit=5, window_seconds=60):
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="verify_receipt",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="rate_limited",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+        )
         raise HTTPException(status_code=429, detail="Too many receipt verifications")
 
     verified, info = await receipt_verifier.verify("android", body.receiptData, body.productId, body.transactionId)
@@ -396,11 +430,41 @@ async def verify_app_store(
     request: Request,
     body: ReceiptVerificationRequest,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
+    app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Verify App Store purchase"""
+    
+    # Enforce device fingerprint presence
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="verify_receipt",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"platform": "ios", "appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
+
     # Rate limit
     if not rate_limiter.allow(current_user.id, "/api/premium/verify-app-store", limit=5, window_seconds=60):
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="verify_receipt",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="rate_limited",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+        )
         raise HTTPException(status_code=429, detail="Too many receipt verifications")
 
     verified, info = await receipt_verifier.verify("ios", body.receiptData, body.productId, body.transactionId)
@@ -461,10 +525,30 @@ async def verify_app_store(
 
 @router.get("/usage-stats")
 async def get_usage_stats(
+    request: Request,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
+    app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Get usage statistics for the current user"""
+    
+    # Enforce device fingerprint presence
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="get_usage_stats",
+            endpoint=str(request.url.path),
+            method="GET",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
+
     try:
         # Get current month usage
         current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
@@ -512,11 +596,31 @@ async def get_usage_stats(
 
 @router.post("/check-feature")
 async def check_feature_access(
-    request: FeatureAccessRequest,
+    request: Request,
+    body: FeatureAccessRequest,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
+    app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Check if user can access a specific feature"""
+    
+    # Enforce device fingerprint presence
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="check_feature_access",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
+
     try:
         # Get subscription status
         subscription = db.query(PremiumSubscription).filter(
@@ -536,7 +640,7 @@ async def check_feature_access(
             db.refresh(subscription)
         
         # Check if feature is accessible
-        feature = request.feature
+        feature = body.feature
         allowed_statuses = PREMIUM_FEATURES.get(feature, [])
         
         if not allowed_statuses:

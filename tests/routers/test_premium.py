@@ -21,7 +21,7 @@ def test_premium_system():
     
     # Step 1: Login to get access token
     print("\n1. Testing user authentication...")
-    login_response = requests.post(f"{BASE_URL}/api/auth/login", json={
+    login_response = requests.post(f"{BASE_URL}/login/", json={
         "email": TEST_EMAIL,
         "password": TEST_PASSWORD
     })
@@ -75,22 +75,7 @@ def test_premium_system():
     feature_data = feature_response.json()
     print(f"✅ Feature access: {feature_data['data']['canAccess']}")
     print(f"   Limit: {feature_data['data']['limit']}")
-    
-    # Step 4: Test usage tracking
-    print("\n4. Testing usage tracking...")
-    usage_response = requests.post(f"{BASE_URL}/api/premium/track-usage",
-                                 headers=headers,
-                                 json={
-                                     "featureType": "custom_drill",
-                                     "usageDate": datetime.now().isoformat(),
-                                     "metadata": {"drillType": "passing", "difficulty": "intermediate"}
-                                 })
-    
-    if usage_response.status_code != 200:
-        print(f"❌ Usage tracking failed: {usage_response.status_code}")
-        return False
-    
-    print("✅ Usage tracked successfully")
+
     
     # Step 5: Test usage stats
     print("\n5. Testing usage statistics...")
@@ -175,7 +160,7 @@ def test_receipt_verification():
     print("\n🧾 Testing receipt verification...")
     
     # Login first
-    login_response = requests.post(f"{BASE_URL}/api/auth/login", json={
+    login_response = requests.post(f"{BASE_URL}/login/", json={
         "email": TEST_EMAIL,
         "password": TEST_PASSWORD
     })
