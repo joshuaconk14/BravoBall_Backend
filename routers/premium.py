@@ -52,10 +52,26 @@ async def get_premium_status(
     request: Request,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
+    device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
     app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Get current premium status for a user"""
     
+    # Enforce device fingerprint presence
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="get_premium_status",
+            endpoint=str(request.url.path),
+            method="GET",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
 
     try:
         # Get or create premium subscription
@@ -559,10 +575,30 @@ async def check_feature_access(
 
 @router.post("/cancel")
 async def cancel_subscription(
+    request: Request,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
+    app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Cancel user's premium subscription"""
+    
+    # Enforce device fingerprint presence
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="cancel_subscription",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
+
     try:
         subscription = db.query(PremiumSubscription).filter(
             PremiumSubscription.user_id == current_user.id
@@ -587,10 +623,30 @@ async def cancel_subscription(
 
 @router.get("/subscription-details")
 async def get_subscription_details(
+    request: Request,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
+    app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Get detailed subscription information"""
+    
+    # Enforce device fingerprint presence
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="get_subscription_details",
+            endpoint=str(request.url.path),
+            method="GET",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
+
     try:
         subscription = db.query(PremiumSubscription).filter(
             PremiumSubscription.user_id == current_user.id
@@ -624,12 +680,32 @@ async def get_subscription_details(
 # Test endpoints for development
 @router.post("/test/set-status")
 async def test_set_status(
+    request: Request,
     status: str,
     plan: str = "monthly",
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    device_fingerprint: Optional[str] = Header(None, alias="Device-Fingerprint"),
+    app_version: Optional[str] = Header(None, alias="App-Version")
 ):
     """Test endpoint to set premium status (development only)"""
+    
+    # Enforce device fingerprint presence
+    if not device_fingerprint:
+        AuditService.log(
+            db,
+            user_id=current_user.id,
+            action="test_set_status",
+            endpoint=str(request.url.path),
+            method="POST",
+            status="blocked_missing_fingerprint",
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("User-Agent"),
+            device_fingerprint=device_fingerprint,
+            details={"appVersion": app_version},
+        )
+        raise HTTPException(status_code=400, detail="Device fingerprint required")
+
     try:
         if status not in ["free", "premium", "trial", "expired"]:
             raise HTTPException(status_code=400, detail="Invalid status")
