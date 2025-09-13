@@ -1,0 +1,3374 @@
+{
+  "test_config": {
+    "testing_mode": true,
+    "target_database": "Staging",
+    "v1_url": "postgresql://jordan:nznEGcxVZbVyX5PvYXG5LuVQ15v0Tsd5@dpg-d11nbs3ipnbc73d2e2f0-a.oregon-postgres.render.com/bravoballdb",
+    "target_url": "postgresql://bravoball_staging_db_user:u72mQKpYkjuVZJAsM2WljjtCbMA6XjFd@dpg-d30ab015pdvs73aqri2g-a.oregon-postgres.render.com/bravoball_staging_db_6jlw"
+  },
+  "user_data_accuracy": [
+    {
+      "email": "mychaelvelez@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "luckyduckypokemon@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "guest_464D020D-D44B-4E5B-86CF-5F3BCC66F2D4@bravoball.guest",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "guest_57F3922C-206F-4547-B829-1A769EF3C849@bravoball.guest",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "guest_2DE2978E-C927-4E4B-95C8-7E108DBAECD9@bravoball.guest",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "guest_01DA2B6E-8E1F-4CE2-96C0-74B1F8F28D4A@bravoball.guest",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "jordan@test.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "test@user.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "test2@user.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "dmonroy1215@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "frankjimenez151@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Frankjimenez151@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "jimenezfrank151@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "test3@user.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "test4@user.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "test5@user.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "test6@user.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "joshua.conklin@sjsu.edu",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Nathaniel.pisunyer@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Desmondyu7@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Jay@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Jaycee@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "abdullahmakonen@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "chaley2710@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "A@a.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Test@user.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Desmondyu03@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "dylanyee08@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Ubilukitaa@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Abdultoure84@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Tizzycreates@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "abdultoure84@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "finlaystuttard1@outlook.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "harsimrat911@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "teddyjoensson@email.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "edwardjamesireland@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "jakepowell20111@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "enorendal@outlook.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "colinmcmillian11@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "keller.abel@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "ethanhines20@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Jocelynbinnie@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "jaisdaoa@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Fireballsdog@gmail.con",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "auroracassells2012@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "amel1a_a@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "brennansoccer06@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "potato.sederstrom@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "jeromerojo03@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "amaru.12@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "abigail.bryant1@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Adballer@ifloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "blazejcyboron31@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "meboy5518@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "xavierloc2010@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "mikaelacano82@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "yuri.tymoschenko@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "beesanelsafadi@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "djavano.maduro@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "mnbd2012@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "martynasmargevicius10@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Quinn.bristol@outlook.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Harry_warr@yahoo.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "docilord17@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Jayden.s1@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "tylermotta3@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "stvedten@hotmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "marcus5lrd@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "lawlerkid3@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "steeljames17@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "ben.kluesner66@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "cjjsutherland@outlook.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "rioalessio7@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "sigdelharshit09@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "melinasvorono12@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Axel.e.malm@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "lucasvukichrofc11@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Lewa.rawa.2014@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "esrom.knfe11@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "lisa13012010@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "fernandes.rs2012@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Pinnaplesloveu2@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "erin.willetts27@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "hopkins_oscar@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "memegarcia111@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "pmicah336@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "messiworldcup211@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "robertisthesecond@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "alexghimis2012@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "nida.vaivade@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "ele.062013@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Mollymojo8@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "lucalecchi09@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "elliot7387@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "reylamba47@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "carter.mckay16@icloud.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "ciaranmouse84@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Celmurr30@ic.edu.lb",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "Luke.sardeson@yahoo.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    },
+    {
+      "email": "josiahballabani0@gmail.com",
+      "tests": {
+        "first_name": true,
+        "last_name": true,
+        "primary_goal": true,
+        "biggest_challenge": true,
+        "training_experience": true,
+        "position": true,
+        "age_range": true,
+        "strengths": true,
+        "areas_to_improve": true,
+        "training_location": true,
+        "available_equipment": true,
+        "daily_training_time": true,
+        "weekly_training_days": true,
+        "playstyle": true
+      },
+      "accuracy": 100.0,
+      "passed_tests": 14,
+      "total_tests": 14
+    }
+  ],
+  "session_data_accuracy": [
+    {
+      "user_email": "jordan@test.com",
+      "date": "2025-06-09 20:27:00",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "jordan@test.com",
+      "date": "2025-06-09 20:27:07",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "jordan@test.com",
+      "date": "2025-06-09 22:24:37",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "jordan@test.com",
+      "date": "2025-06-09 22:24:43",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "date": "2025-06-11 03:13:36",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "date": "2025-06-11 03:13:52",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "joshua.conklin@sjsu.edu",
+      "date": "2025-06-16 03:48:57",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "joshua.conklin@sjsu.edu",
+      "date": "2025-06-16 03:49:18",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "date": "2025-06-24 16:47:34",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Brightonjke@gmail.com",
+      "date": "2025-06-22 21:45:41",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "tobytee69@gmail.com",
+      "date": "2025-06-23 21:04:22",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "tobytee69@gmail.com",
+      "date": "2025-06-23 21:04:34",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "epichami2127@gmail.com",
+      "date": "2025-06-24 00:41:33",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "date": "2025-06-24 07:02:58",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "date": "2025-06-24 07:26:20",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "date": "2025-06-24 16:47:34",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "colindres.angel11@gmail.com",
+      "date": "2025-06-24 18:49:21",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "jamesorton12@icloud.com",
+      "date": "2025-06-25 19:33:59",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "P.horstmanshoff@gmail.com",
+      "date": "2025-06-25 20:34:37",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "faldaghither@icloud.com",
+      "date": "2025-06-26 15:44:27",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "stanley.marchant@icloud.com",
+      "date": "2025-06-27 14:13:40",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "jamesorton12@icloud.com",
+      "date": "2025-06-25 19:34:17",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "jamesorton12@icloud.com",
+      "date": "2025-06-25 19:41:39",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "jamesorton12@icloud.com",
+      "date": "2025-06-25 19:41:47",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "jamesorton12@icloud.com",
+      "date": "2025-06-25 20:30:45",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "espnoam@gmail.com",
+      "date": "2025-06-26 09:39:24",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "espnoam@gmail.com",
+      "date": "2025-06-26 09:39:39",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "date": "2025-06-26 17:18:59",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "date": "2025-06-26 17:19:15",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "rrosenblatt2@gmail.com",
+      "date": "2025-06-27 04:23:05",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Kyleedwards0904@icloud.com",
+      "date": "2025-06-27 05:55:08",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "stanley.marchant@icloud.com",
+      "date": "2025-06-27 14:13:23",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Roman.pilkington13@outlook.com",
+      "date": "2025-06-27 07:31:39",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "stanley.marchant@icloud.com",
+      "date": "2025-06-27 11:18:30",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "rasmus@sunrise.ch",
+      "date": "2025-06-27 13:07:46",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Williamsackfield@gmail.com",
+      "date": "2025-06-27 13:45:40",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "chautriet1112@gmail.com",
+      "date": "2025-06-27 08:43:11",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "quackyklod@gmail.com",
+      "date": "2025-06-27 10:28:14",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "rasmus@sunrise.ch",
+      "date": "2025-06-27 13:08:13",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "faldaghither@icloud.com",
+      "date": "2025-06-27 13:47:37",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "oscarhessels@icloud.com",
+      "date": "2025-07-22 20:17:29",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "faldaghither@icloud.com",
+      "date": "2025-06-27 13:47:53",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Ruhaangopwani@gmail.com",
+      "date": "2025-06-27 13:55:31",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "george.marchant1@icloud.com",
+      "date": "2025-06-27 14:15:54",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "baileymorgan469@gmail.com",
+      "date": "2025-06-27 14:20:36",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "johnsondalton934@gmail.com",
+      "date": "2025-06-27 14:58:14",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "johnsondalton934@gmail.com",
+      "date": "2025-06-27 14:58:31",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Toprak5292@gmail.com",
+      "date": "2025-06-27 15:27:56",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "benjamin.canuel12@gmail.com",
+      "date": "2025-06-27 15:31:13",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Jessiemaecollier@icloud.com",
+      "date": "2025-06-27 15:39:51",
+      "error": "Session not found in Staging",
+      "accuracy": 0
+    }
+  ],
+  "preference_data_accuracy": [],
+  "drill_group_data_accuracy": [
+    {
+      "user_email": "jordan@test.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "jordan@test.com",
+      "group_name": "fav",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "group_name": "ss",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test6@user.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "V0738rduranosu@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "test@user.com",
+      "group_name": "Dribbling drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "aidanastiminskas@yahoo.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Jaycee@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "bobthebiulder28@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "bobthebiulder28@gmail.com",
+      "group_name": "Winger training",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "benedictaung10@gmail.com",
+      "group_name": "ultimate",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "benedictaung10@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "benji773123@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "cjparsons2005@icloud.com",
+      "group_name": "Good drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "tiago01junsilva@gmail.com",
+      "group_name": "Keepy ups",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "danielrichards2014@icloud.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "21f34987@marling.school",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Thomas1234mk@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "astroaid28@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "mattynufc22@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "rapha12.hz@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "crewcitycastle@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "haknuts11@gmail.com",
+      "group_name": "Ball mastry/control",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "haknuts11@gmail.com",
+      "group_name": "Test",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "rvgarg123@yahoo.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "C@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "meganrichards2012@icloud.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "fredrik.thorstensen@icloud.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "newton.jacob1@icloud.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "spetakkel-luftinntak.37@icloud.com",
+      "group_name": "Midtstopper trening ",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "tallykoroleva@gmail.com",
+      "group_name": "The goats",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "ebroussard1314@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "felixnero@icloud.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "felixnero@icloud.com",
+      "group_name": "Monday and Friday ",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "felixnero@icloud.com",
+      "group_name": "Tuesday and Thursday ",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "mj10wilcox@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "penyberth@hotmail.com",
+      "group_name": "Useful drills for me\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f\u26bd\ufe0f",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "penyberth@hotmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "oscarbilly2012@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "oscarbilly2012@gmail.com",
+      "group_name": "Just kinda like them ig",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "tina.larkin07@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "palaceben22@yahoo.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "dorian@buncic.ch",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "haknuts11@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "archer_robertson09@icloud.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "raffjreid@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Olavheggelund@outlook.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "maiaheg@gmail.com",
+      "group_name": "Maia",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    },
+    {
+      "user_email": "Jnrsoulgaming@gmail.com",
+      "group_name": "Liked Drills",
+      "error": "Drill group not found in V2",
+      "accuracy": 0
+    }
+  ],
+  "progress_data_accuracy": [],
+  "relationship_integrity": [
+    {
+      "test": "user-session relationships",
+      "status": "passed",
+      "orphaned_count": 0
+    },
+    {
+      "test": "user-preference relationships",
+      "status": "passed",
+      "orphaned_count": 0
+    },
+    {
+      "test": "user-drill group relationships",
+      "status": "passed",
+      "orphaned_count": 0
+    }
+  ],
+  "authentication_data": [
+    {
+      "user_email": "mychaelvelez@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "luckyduckypokemon@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "guest_464D020D-D44B-4E5B-86CF-5F3BCC66F2D4@bravoball.guest",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "guest_57F3922C-206F-4547-B829-1A769EF3C849@bravoball.guest",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "guest_2DE2978E-C927-4E4B-95C8-7E108DBAECD9@bravoball.guest",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "guest_01DA2B6E-8E1F-4CE2-96C0-74B1F8F28D4A@bravoball.guest",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "test2@user.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "dmonroy1215@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "frankjimenez151@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Frankjimenez151@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "jimenezfrank151@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "test3@user.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "test4@user.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "test5@user.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "test6@user.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "joshua.conklin@sjsu.edu",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Nathaniel.pisunyer@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Desmondyu7@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Jay@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Jaycee@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "abdullahmakonen@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "chaley2710@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "A@a.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Test@user.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Desmondyu03@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "dylanyee08@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Ubilukitaa@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Abdultoure84@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Tizzycreates@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "abdultoure84@gmail.com",
+      "test": "password_hash",
+      "status": "failed"
+    },
+    {
+      "user_email": "finlaystuttard1@outlook.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "harsimrat911@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "teddyjoensson@email.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "edwardjamesireland@icloud.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "jakepowell20111@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "enorendal@outlook.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "colinmcmillian11@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "keller.abel@icloud.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "ethanhines20@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Jocelynbinnie@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "jaisdaoa@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "Fireballsdog@gmail.con",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "auroracassells2012@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "amel1a_a@icloud.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "brennansoccer06@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "potato.sederstrom@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "jeromerojo03@gmail.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "amaru.12@icloud.com",
+      "test": "password_hash",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "luckyduckypokemon@gmail.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "luckyduckypokemon@gmail.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "test": "refresh_token_relationship",
+      "status": "failed"
+    },
+    {
+      "test": "refresh_token_relationship",
+      "status": "failed"
+    },
+    {
+      "test": "refresh_token_relationship",
+      "status": "failed"
+    },
+    {
+      "test": "refresh_token_relationship",
+      "status": "failed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "guest_464D020D-D44B-4E5B-86CF-5F3BCC66F2D4@bravoball.guest",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "guest_2DE2978E-C927-4E4B-95C8-7E108DBAECD9@bravoball.guest",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "guest_01DA2B6E-8E1F-4CE2-96C0-74B1F8F28D4A@bravoball.guest",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "guest_57F3922C-206F-4547-B829-1A769EF3C849@bravoball.guest",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "guest_57F3922C-206F-4547-B829-1A769EF3C849@bravoball.guest",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "jordan@test.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "frankjimenez151@gmail.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    },
+    {
+      "user_email": "test2@user.com",
+      "test": "refresh_token_relationship",
+      "status": "passed"
+    }
+  ],
+  "errors": [
+    "Preference data accuracy test failed: 'SessionPreferencesV1' object has no attribute 'focus_areas'",
+    "Progress data accuracy test failed: type object 'ProgressHistory' has no attribute 'date'"
+  ],
+  "summary": {
+    "total_tests_run": 200,
+    "total_tests_passed": 100,
+    "total_tests_failed": 100,
+    "overall_accuracy": 33.333333333333336,
+    "test_categories": {
+      "user_data_accuracy": {
+        "total_tests": 100,
+        "passed_tests": 100,
+        "failed_tests": 0,
+        "average_accuracy": 100.0
+      },
+      "session_data_accuracy": {
+        "total_tests": 50,
+        "passed_tests": 0,
+        "failed_tests": 50,
+        "average_accuracy": 0.0
+      },
+      "drill_group_data_accuracy": {
+        "total_tests": 50,
+        "passed_tests": 0,
+        "failed_tests": 50,
+        "average_accuracy": 0.0
+      },
+      "relationship_integrity": {
+        "total_tests": 3,
+        "passed_tests": 3,
+        "failed_tests": 0,
+        "average_accuracy": 100.0
+      },
+      "authentication_data": {
+        "total_tests": 100,
+        "passed_tests": 95,
+        "failed_tests": 5,
+        "average_accuracy": 95.0
+      }
+    },
+    "errors": 2
+  }
+}
