@@ -1,0 +1,854 @@
+{
+  "orzeszek_010@o2.pl": {
+    "user": {
+      "id": 3724,
+      "email": "orzeszek_010@o2.pl",
+      "first_name": null,
+      "last_name": null,
+      "hashed_password": "$2b$12$0uWlsX9t5KFrLMSxG9CIB.UGeFdT0yqE6SaLhKN2PYpJy2tZN3yPO",
+      "primary_goal": "Become a professional footballer",
+      "biggest_challenge": [],
+      "training_experience": "Advanced",
+      "position": "Winger",
+      "playstyle": [],
+      "age_range": "13\u201316",
+      "strengths": [
+        "Dribbling",
+        "Passing"
+      ],
+      "areas_to_improve": [
+        "Shooting",
+        "First touch"
+      ],
+      "training_location": [],
+      "available_equipment": [
+        "Soccer ball"
+      ],
+      "daily_training_time": "30",
+      "weekly_training_days": "moderate"
+    },
+    "completed_sessions": [],
+    "session_preferences": {
+      "id": 3724,
+      "duration": 30,
+      "available_equipment": [
+        "soccer ball"
+      ],
+      "training_style": null,
+      "training_location": null,
+      "difficulty": null,
+      "target_skills": [
+        {
+          "category": "first_touch",
+          "sub_skills": [
+            "ground_control",
+            "touch_and_move"
+          ]
+        },
+        {
+          "category": "shooting",
+          "sub_skills": [
+            "finesse_shots",
+            "power_shots"
+          ]
+        }
+      ],
+      "created_at": "2025-09-05T21:20:06.784275",
+      "updated_at": "2025-09-05T21:20:15.256171"
+    },
+    "drill_groups": [
+      {
+        "id": 310,
+        "name": "Liked Drills",
+        "description": "Your favorite drills",
+        "is_liked_group": true,
+        "drill_items": []
+      }
+    ],
+    "progress_history": {
+      "id": 2063,
+      "total_sessions": 0,
+      "total_drills_completed": 0,
+      "total_training_time": 0,
+      "current_streak": 0,
+      "longest_streak": 0,
+      "previous_streak": 0,
+      "favorite_drill": "",
+      "drills_per_session": 0.0,
+      "minutes_per_session": 0.0,
+      "dribbling_drills_completed": 0,
+      "first_touch_drills_completed": 0,
+      "passing_drills_completed": 0,
+      "shooting_drills_completed": 0,
+      "defending_drills_completed": 0,
+      "goalkeeping_drills_completed": 0,
+      "fitness_drills_completed": 0,
+      "most_improved_skill": "",
+      "unique_drills_completed": 0,
+      "beginner_drills_completed": 0,
+      "intermediate_drills_completed": 0,
+      "advanced_drills_completed": 0,
+      "mental_training_sessions": 0,
+      "total_mental_training_minutes": 0,
+      "last_training_date": null,
+      "last_training_date_iso": null,
+      "created_at": null,
+      "created_at_iso": null,
+      "updated_at": "2025-09-05T21:20:06.899783"
+    },
+    "saved_filters": [],
+    "refresh_tokens": [
+      {
+        "id": 20010,
+        "token": "oeGnMNmWEe4wTVt3k0lqknsio-TLAxR6NSA0Bl83uIE",
+        "expires_at": "2025-12-04T21:20:07.243961",
+        "created_at": "2025-09-05T21:20:07.172713"
+      }
+    ],
+    "password_reset_codes": [],
+    "email_verification_codes": [],
+    "mental_training_sessions": []
+  },
+  "heinrichsandro8@gmail.com": {
+    "user": {
+      "id": 3664,
+      "email": "heinrichsandro8@gmail.com",
+      "first_name": null,
+      "last_name": null,
+      "hashed_password": "$2b$12$tWVafB/EDkDkBdKxr8KtW.1sdCpsubR56ar0wde2ZoB.daUOhvA.u",
+      "primary_goal": "Become a professional footballer",
+      "biggest_challenge": [],
+      "training_experience": "Advanced",
+      "position": "Winger",
+      "playstyle": [],
+      "age_range": "13\u201316",
+      "strengths": [
+        "Dribbling",
+        "Passing",
+        "Defending",
+        "Fitness"
+      ],
+      "areas_to_improve": [
+        "Fitness",
+        "First touch",
+        "Shooting",
+        "Passing",
+        "Dribbling",
+        "Defending"
+      ],
+      "training_location": [],
+      "available_equipment": [
+        "Soccer ball"
+      ],
+      "daily_training_time": "30",
+      "weekly_training_days": "moderate"
+    },
+    "completed_sessions": [],
+    "session_preferences": {
+      "id": 3664,
+      "duration": 30,
+      "available_equipment": [
+        "soccer ball"
+      ],
+      "training_style": null,
+      "training_location": null,
+      "difficulty": null,
+      "target_skills": [
+        {
+          "category": "dribbling",
+          "sub_skills": [
+            "close_control",
+            "1v1_moves"
+          ]
+        },
+        {
+          "category": "defending",
+          "sub_skills": [
+            "tackling"
+          ]
+        },
+        {
+          "category": "first_touch",
+          "sub_skills": [
+            "ground_control",
+            "touch_and_move"
+          ]
+        },
+        {
+          "category": "passing",
+          "sub_skills": [
+            "long_passing",
+            "short_passing"
+          ]
+        },
+        {
+          "category": "shooting",
+          "sub_skills": [
+            "finesse_shots",
+            "power_shots"
+          ]
+        },
+        {
+          "category": "goalkeeping",
+          "sub_skills": [
+            "positioning"
+          ]
+        }
+      ],
+      "created_at": "2025-09-01T13:52:37.509848",
+      "updated_at": "2025-09-01T13:52:45.019376"
+    },
+    "drill_groups": [
+      {
+        "id": 243,
+        "name": "Liked Drills",
+        "description": "Your favorite drills",
+        "is_liked_group": true,
+        "drill_items": []
+      }
+    ],
+    "progress_history": {
+      "id": 2003,
+      "total_sessions": 0,
+      "total_drills_completed": 0,
+      "total_training_time": 0,
+      "current_streak": 0,
+      "longest_streak": 0,
+      "previous_streak": 0,
+      "favorite_drill": "",
+      "drills_per_session": 0.0,
+      "minutes_per_session": 0.0,
+      "dribbling_drills_completed": 0,
+      "first_touch_drills_completed": 0,
+      "passing_drills_completed": 0,
+      "shooting_drills_completed": 0,
+      "defending_drills_completed": 0,
+      "goalkeeping_drills_completed": 0,
+      "fitness_drills_completed": 0,
+      "most_improved_skill": "",
+      "unique_drills_completed": 0,
+      "beginner_drills_completed": 0,
+      "intermediate_drills_completed": 0,
+      "advanced_drills_completed": 0,
+      "mental_training_sessions": 0,
+      "total_mental_training_minutes": 0,
+      "last_training_date": null,
+      "last_training_date_iso": null,
+      "created_at": null,
+      "created_at_iso": null,
+      "updated_at": "2025-09-01T13:52:37.652559"
+    },
+    "saved_filters": [],
+    "refresh_tokens": [
+      {
+        "id": 19533,
+        "token": "QowkLzZC_ONsZMbKL91Qo9exV-Uf8eUwHIsBKwrZ2-E",
+        "expires_at": "2025-11-30T13:56:41.997270",
+        "created_at": "2025-09-01T13:56:41.927630"
+      },
+      {
+        "id": 19532,
+        "token": "ENICW9EQwT2JNY3k7LqmDOxy7v3BXq7HmKbUr0EfP6M",
+        "expires_at": "2025-11-30T13:52:38.077804",
+        "created_at": "2025-09-01T13:52:38.006309"
+      },
+      {
+        "id": 19534,
+        "token": "Zbic9h_fDHMmcJJQ9W4u1U3-vPJ7dSfXXunwTmg9M7M",
+        "expires_at": "2025-11-30T14:03:40.436218",
+        "created_at": "2025-09-01T14:03:40.359853"
+      },
+      {
+        "id": 19535,
+        "token": "2m5sHYmLvKyDt55EyO2sz-ezpFYNbsF2bpgQg_FWlug",
+        "expires_at": "2025-11-30T14:04:12.398743",
+        "created_at": "2025-09-01T14:04:11.893508"
+      },
+      {
+        "id": 19922,
+        "token": "YeVoO1UP0_gky3jOynBw15nI5wdwKeP4tupy_eE5PI0",
+        "expires_at": "2025-12-04T11:25:48.011870",
+        "created_at": "2025-09-05T11:25:47.685378"
+      }
+    ],
+    "password_reset_codes": [],
+    "email_verification_codes": [],
+    "mental_training_sessions": []
+  },
+  "rokorudolf@gmail.com": {
+    "user": {
+      "id": 3830,
+      "email": "rokorudolf@gmail.com",
+      "first_name": null,
+      "last_name": null,
+      "hashed_password": "$2b$12$xFrWNZIRJ0plowUZ2q4FFurKBegyVaupc8ifz6R8artYTAqtZxe8q",
+      "primary_goal": "Become a professional footballer",
+      "biggest_challenge": [],
+      "training_experience": "Intermediate",
+      "position": "Fullback",
+      "playstyle": [],
+      "age_range": "13\u201316",
+      "strengths": [
+        "Defending",
+        "Passing",
+        "First touch"
+      ],
+      "areas_to_improve": [
+        "Fitness",
+        "Defending"
+      ],
+      "training_location": [],
+      "available_equipment": [
+        "Soccer ball"
+      ],
+      "daily_training_time": "30",
+      "weekly_training_days": "moderate"
+    },
+    "completed_sessions": [],
+    "session_preferences": {
+      "id": 3830,
+      "duration": 30,
+      "available_equipment": [
+        "soccer ball"
+      ],
+      "training_style": null,
+      "training_location": null,
+      "difficulty": null,
+      "target_skills": [
+        {
+          "category": "defending",
+          "sub_skills": [
+            "tackling"
+          ]
+        },
+        {
+          "category": "goalkeeping",
+          "sub_skills": [
+            "positioning"
+          ]
+        }
+      ],
+      "created_at": "2025-09-11T09:58:44.894095",
+      "updated_at": "2025-09-11T09:58:52.940856"
+    },
+    "drill_groups": [
+      {
+        "id": 433,
+        "name": "Liked Drills",
+        "description": "Your favorite drills",
+        "is_liked_group": true,
+        "drill_items": []
+      }
+    ],
+    "progress_history": {
+      "id": 2169,
+      "total_sessions": 0,
+      "total_drills_completed": 0,
+      "total_training_time": 0,
+      "current_streak": 0,
+      "longest_streak": 0,
+      "previous_streak": 0,
+      "favorite_drill": "",
+      "drills_per_session": 0.0,
+      "minutes_per_session": 0.0,
+      "dribbling_drills_completed": 0,
+      "first_touch_drills_completed": 0,
+      "passing_drills_completed": 0,
+      "shooting_drills_completed": 0,
+      "defending_drills_completed": 0,
+      "goalkeeping_drills_completed": 0,
+      "fitness_drills_completed": 0,
+      "most_improved_skill": "",
+      "unique_drills_completed": 0,
+      "beginner_drills_completed": 0,
+      "intermediate_drills_completed": 0,
+      "advanced_drills_completed": 0,
+      "mental_training_sessions": 0,
+      "total_mental_training_minutes": 0,
+      "last_training_date": null,
+      "last_training_date_iso": null,
+      "created_at": null,
+      "created_at_iso": null,
+      "updated_at": "2025-09-11T09:58:45.000657"
+    },
+    "saved_filters": [],
+    "refresh_tokens": [
+      {
+        "id": 20866,
+        "token": "rDzgtWRPwtoA1Q3uUb4pMV2wvbcq6gm2ytNSj0-FDQA",
+        "expires_at": "2025-12-10T09:58:45.348249",
+        "created_at": "2025-09-11T09:58:45.285223"
+      }
+    ],
+    "password_reset_codes": [],
+    "email_verification_codes": [],
+    "mental_training_sessions": []
+  },
+  "roqiamehmood@gmail.com": {
+    "user": {
+      "id": 3619,
+      "email": "roqiamehmood@gmail.com",
+      "first_name": null,
+      "last_name": null,
+      "hashed_password": "$2b$12$fbwIQP.Alv7HM7r2Fe/rEuHq/x3wCX2vMQcKbOx4eZswBQCHqV1uW",
+      "primary_goal": "Be the best player on my team",
+      "biggest_challenge": [],
+      "training_experience": "Intermediate",
+      "position": "Center Midfielder",
+      "playstyle": [],
+      "age_range": "13\u201316",
+      "strengths": [
+        "Passing",
+        "First touch"
+      ],
+      "areas_to_improve": [
+        "Shooting",
+        "Dribbling",
+        "Defending",
+        "Fitness"
+      ],
+      "training_location": [],
+      "available_equipment": [
+        "Soccer ball"
+      ],
+      "daily_training_time": "30",
+      "weekly_training_days": "moderate"
+    },
+    "completed_sessions": [
+      {
+        "id": 985,
+        "date": "2025-08-15T11:30:35.787596",
+        "session_type": "training",
+        "total_completed_drills": 3,
+        "total_drills": 3,
+        "drills": [
+          {
+            "drill": {
+              "uuid": "3e3b4ef2-6fa2-42e1-a3e1-96bf082fd771",
+              "title": "Still ball shot on 6 yard box",
+              "skill": "shooting",
+              "subSkills": [
+                "power_shots",
+                "first_time_shots"
+              ],
+              "sets": 4,
+              "reps": 5,
+              "duration": 8,
+              "description": "A focused shooting drill aimed at developing driven shots from the 6 yard box.",
+              "instructions": [
+                "Place the ball at the center of the 6 yard line.",
+                "Step back a few steps at an angle from the ball.",
+                "Strike the ball down the middle of the goal using your laces.",
+                "Focus on technique to ensure consistent driven shots."
+              ],
+              "tips": [
+                "Keep your non-kicking foot beside the ball for balance.",
+                "Follow through with your kicking leg for better accuracy.",
+                "Experiment with slight adjustments in your angle and distance."
+              ],
+              "equipment": [
+                "ball",
+                "goals"
+              ],
+              "trainingStyle": "medium_intensity",
+              "difficulty": "beginner",
+              "videoUrl": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/still-ball-shot-on-6-yard-box.mp4"
+            },
+            "setsDone": 4,
+            "totalSets": 4,
+            "totalReps": 5,
+            "totalDuration": 8,
+            "isCompleted": true
+          },
+          {
+            "drill": {
+              "uuid": "057cc1b6-f353-4df3-b15d-abff0c358061",
+              "title": "Box freestyle",
+              "skill": "dribbling",
+              "subSkills": [
+                "1v1_moves",
+                "ball_mastery",
+                "close_control"
+              ],
+              "sets": 5,
+              "reps": 1,
+              "duration": 7,
+              "description": "A freestyle skills drill to enhance creativity and ball control in a confined space.",
+              "instructions": [
+                "Set up a 5-by-5 yard box.",
+                "Within the time duration, perform as many skills as you can.",
+                "Be creative with your skills, and constantly change directions."
+              ],
+              "tips": [
+                "Experiment with various dribbling moves and skills.",
+                "Stay light on your feet to react quickly and change directions.",
+                "Challenge yourself with new skills each round."
+              ],
+              "equipment": [
+                "ball",
+                "training_cones"
+              ],
+              "trainingStyle": "medium_intensity",
+              "difficulty": "intermediate",
+              "videoUrl": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/box-freestyle.mp4"
+            },
+            "setsDone": 5,
+            "totalSets": 5,
+            "totalReps": 1,
+            "totalDuration": 7,
+            "isCompleted": true
+          },
+          {
+            "drill": {
+              "uuid": "7d678d6a-d21c-47ef-951b-b8f3b8b0a5e9",
+              "title": "Figure eight weave to drive",
+              "skill": "dribbling",
+              "subSkills": [
+                "close_control",
+                "1v1_moves",
+                "change_of_direction"
+              ],
+              "sets": 6,
+              "reps": 1,
+              "duration": 8,
+              "description": "A dribbling drill focusing on figure-eight weaving and driving with the ball.",
+              "instructions": [
+                "Set up 2 cones 2-3 steps apart.",
+                "Dribble around the cones in a figure-eight pattern using both feet, alternating at each cone.",
+                "After completing 2 figure 8s, drive forward about 10 yards with big touches and strides."
+              ],
+              "tips": [
+                "Keep your touches close while weaving to maintain control.",
+                "Use quick foot movements to transition smoothly between sides.",
+                "Focus on driving with the ball using larger touches once you move forward."
+              ],
+              "equipment": [
+                "cones"
+              ],
+              "trainingStyle": "medium_intensity",
+              "difficulty": "intermediate",
+              "videoUrl": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/figure-eight-weave-to-drive.mp4"
+            },
+            "setsDone": 6,
+            "totalSets": 6,
+            "totalReps": 1,
+            "totalDuration": 8,
+            "isCompleted": true
+          }
+        ],
+        "duration_minutes": null,
+        "mental_training_session_id": null
+      }
+    ],
+    "session_preferences": {
+      "id": 3619,
+      "duration": 30,
+      "available_equipment": [
+        "soccer ball"
+      ],
+      "training_style": null,
+      "training_location": null,
+      "difficulty": null,
+      "target_skills": [
+        {
+          "category": "dribbling",
+          "sub_skills": [
+            "close_control",
+            "1v1_moves"
+          ]
+        },
+        {
+          "category": "defending",
+          "sub_skills": [
+            "tackling"
+          ]
+        },
+        {
+          "category": "shooting",
+          "sub_skills": [
+            "finesse_shots",
+            "power_shots"
+          ]
+        },
+        {
+          "category": "goalkeeping",
+          "sub_skills": [
+            "positioning"
+          ]
+        }
+      ],
+      "created_at": "2025-08-10T09:23:06.928477",
+      "updated_at": "2025-08-10T09:23:14.393742"
+    },
+    "drill_groups": [
+      {
+        "id": 195,
+        "name": "Liked Drills",
+        "description": "Your favorite drills",
+        "is_liked_group": true,
+        "drill_items": []
+      },
+      {
+        "id": 197,
+        "name": "ibaf",
+        "description": "drills",
+        "is_liked_group": false,
+        "drill_items": []
+      }
+    ],
+    "progress_history": {
+      "id": 1957,
+      "total_sessions": 1,
+      "total_drills_completed": 0,
+      "total_training_time": 23,
+      "current_streak": 0,
+      "longest_streak": 1,
+      "previous_streak": 1,
+      "favorite_drill": "Still ball shot on 6 yard box",
+      "drills_per_session": 3.0,
+      "minutes_per_session": 23.0,
+      "dribbling_drills_completed": 2,
+      "first_touch_drills_completed": 0,
+      "passing_drills_completed": 0,
+      "shooting_drills_completed": 1,
+      "defending_drills_completed": 0,
+      "goalkeeping_drills_completed": 0,
+      "fitness_drills_completed": 0,
+      "most_improved_skill": "dribbling",
+      "unique_drills_completed": 3,
+      "beginner_drills_completed": 1,
+      "intermediate_drills_completed": 2,
+      "advanced_drills_completed": 0,
+      "mental_training_sessions": 0,
+      "total_mental_training_minutes": 0,
+      "last_training_date": null,
+      "last_training_date_iso": null,
+      "created_at": null,
+      "created_at_iso": null,
+      "updated_at": "2025-08-18T09:29:05.486692"
+    },
+    "saved_filters": [],
+    "refresh_tokens": [
+      {
+        "id": 19191,
+        "token": "CtA99wpNVlQ_E4SDsU9vqbO6SFfMtjJPxTZHcudIRQg",
+        "expires_at": "2025-11-13T05:53:05.090739",
+        "created_at": "2025-08-15T05:53:05.024336"
+      },
+      {
+        "id": 19193,
+        "token": "4KB0P67Xwe0osDRGZbW76BcBKFsdNsg7WK7JyMJMSe8",
+        "expires_at": "2025-11-13T05:57:01.451718",
+        "created_at": "2025-08-15T05:57:01.314094"
+      },
+      {
+        "id": 19196,
+        "token": "n7WRN5pAINU2IIZ-e3SMhecpDldmAsug2YAoV6M8sG8",
+        "expires_at": "2025-11-13T06:02:38.964082",
+        "created_at": "2025-08-15T06:02:38.895458"
+      },
+      {
+        "id": 19199,
+        "token": "8cO_6VzrglG_yktnFr_ENahUApsE2Ot9GqeSVMQaKvM",
+        "expires_at": "2025-11-13T06:22:59.163417",
+        "created_at": "2025-08-15T06:22:59.094765"
+      },
+      {
+        "id": 19202,
+        "token": "vIC8inV3PW9_dup_M5-jEzD4k-ENgPZ1TC8YAya2avg",
+        "expires_at": "2025-11-13T06:28:58.021480",
+        "created_at": "2025-08-15T06:28:57.957519"
+      },
+      {
+        "id": 19192,
+        "token": "3D2IBnrCtm8QqA1c5dkev8eMFeZ91clmN0ONC18wdrA",
+        "expires_at": "2025-11-13T05:54:54.670251",
+        "created_at": "2025-08-15T05:54:54.600459"
+      },
+      {
+        "id": 19194,
+        "token": "CQZGU51l8hnE7uDNzDydegRbJTGg4h8OvRHygJqaT94",
+        "expires_at": "2025-11-13T05:58:52.639347",
+        "created_at": "2025-08-15T05:58:52.566456"
+      },
+      {
+        "id": 19197,
+        "token": "SifndgmSDZffJTp1DiIpicLakBKGvmJlrfRMoEOVXO8",
+        "expires_at": "2025-11-13T06:11:19.719960",
+        "created_at": "2025-08-15T06:11:19.650185"
+      },
+      {
+        "id": 19200,
+        "token": "rD6Ue99vsI2mPVfgfTZOkwVsoEDSGcop_B3JDx-6ywc",
+        "expires_at": "2025-11-13T06:24:08.594680",
+        "created_at": "2025-08-15T06:24:08.524672"
+      },
+      {
+        "id": 19115,
+        "token": "tnr7i05HPyYwkfAFBT3zRBiugoPQmWzNKbS7qBVtChA",
+        "expires_at": "2025-11-08T09:23:07.388833",
+        "created_at": "2025-08-10T09:23:07.322041"
+      },
+      {
+        "id": 19195,
+        "token": "2h-1Prl_6MmBLn9GC_yvDDuEOU2NmIyeEF-PsUBS3m0",
+        "expires_at": "2025-11-13T06:00:49.726099",
+        "created_at": "2025-08-15T06:00:49.653943"
+      },
+      {
+        "id": 19198,
+        "token": "jYsNaEt4dCAe1XV2fXdzV4fkH82X3h00tIiV0yRr0aI",
+        "expires_at": "2025-11-13T06:12:56.731795",
+        "created_at": "2025-08-15T06:12:56.670148"
+      },
+      {
+        "id": 19201,
+        "token": "nPUUgghvqp0qsNOdScPyZPU560ImoMXQYMo5AqSu8y0",
+        "expires_at": "2025-11-13T06:27:05.116204",
+        "created_at": "2025-08-15T06:27:05.047444"
+      },
+      {
+        "id": 19203,
+        "token": "s858URSvjmb3CHr9nlwRNSqM8Ycw9PMGnYOHx8i9R_0",
+        "expires_at": "2025-11-13T06:30:35.087626",
+        "created_at": "2025-08-15T06:30:34.988570"
+      },
+      {
+        "id": 19277,
+        "token": "MnVksm2A3giVWlqB0zo_RqMy26z7Vx6qKP7fKlbjqVg",
+        "expires_at": "2025-11-16T09:29:04.284910",
+        "created_at": "2025-08-18T09:29:04.185784"
+      }
+    ],
+    "password_reset_codes": [],
+    "email_verification_codes": [],
+    "mental_training_sessions": []
+  },
+  "declan.m.moor@gmail.com": {
+    "user": {
+      "id": 3822,
+      "email": "declan.m.moor@gmail.com",
+      "first_name": null,
+      "last_name": null,
+      "hashed_password": "$2b$12$dj1JZ1FSsUMDdvlKV/QN3OkRcVhToRugdunBHfL7YanttpSuoOuSu",
+      "primary_goal": "Become a professional footballer",
+      "biggest_challenge": [],
+      "training_experience": "Intermediate",
+      "position": "Center-back",
+      "playstyle": [],
+      "age_range": "Under 12",
+      "strengths": [
+        "Dribbling",
+        "Defending",
+        "Passing",
+        "Shooting"
+      ],
+      "areas_to_improve": [
+        "First touch",
+        "Fitness",
+        "Shooting"
+      ],
+      "training_location": [],
+      "available_equipment": [
+        "Soccer ball"
+      ],
+      "daily_training_time": "30",
+      "weekly_training_days": "moderate"
+    },
+    "completed_sessions": [],
+    "session_preferences": {
+      "id": 3822,
+      "duration": 30,
+      "available_equipment": [
+        "soccer ball",
+        "Soccer ball"
+      ],
+      "training_style": null,
+      "training_location": null,
+      "difficulty": null,
+      "target_skills": [
+        {
+          "category": "first_touch",
+          "sub_skills": [
+            "ground_control",
+            "touch_and_move"
+          ]
+        },
+        {
+          "category": "fitness",
+          "sub_skills": [
+            "speed",
+            "agility"
+          ]
+        },
+        {
+          "category": "shooting",
+          "sub_skills": [
+            "finesse_shots",
+            "power_shots"
+          ]
+        }
+      ],
+      "created_at": "2025-09-10T20:58:04.171736",
+      "updated_at": "2025-09-10T20:58:11.487975"
+    },
+    "drill_groups": [
+      {
+        "id": 425,
+        "name": "Liked Drills",
+        "description": "Your favorite drills",
+        "is_liked_group": true,
+        "drill_items": []
+      }
+    ],
+    "progress_history": {
+      "id": 2161,
+      "total_sessions": 0,
+      "total_drills_completed": 0,
+      "total_training_time": 0,
+      "current_streak": 0,
+      "longest_streak": 0,
+      "previous_streak": 0,
+      "favorite_drill": "",
+      "drills_per_session": 0.0,
+      "minutes_per_session": 0.0,
+      "dribbling_drills_completed": 0,
+      "first_touch_drills_completed": 0,
+      "passing_drills_completed": 0,
+      "shooting_drills_completed": 0,
+      "defending_drills_completed": 0,
+      "goalkeeping_drills_completed": 0,
+      "fitness_drills_completed": 0,
+      "most_improved_skill": "",
+      "unique_drills_completed": 0,
+      "beginner_drills_completed": 0,
+      "intermediate_drills_completed": 0,
+      "advanced_drills_completed": 0,
+      "mental_training_sessions": 0,
+      "total_mental_training_minutes": 0,
+      "last_training_date": null,
+      "last_training_date_iso": null,
+      "created_at": null,
+      "created_at_iso": null,
+      "updated_at": "2025-09-10T20:58:04.332441"
+    },
+    "saved_filters": [],
+    "refresh_tokens": [
+      {
+        "id": 20829,
+        "token": "_tbxu5cgrkMlo_ZtnlszMxh1N3KM6P4YCia3aJ8hH9o",
+        "expires_at": "2025-12-09T20:58:04.717413",
+        "created_at": "2025-09-10T20:58:04.641248"
+      },
+      {
+        "id": 20831,
+        "token": "tovV3F1ExWegwq3v1FeBAXbrekOyu9Qe2Hyinhhi9wE",
+        "expires_at": "2025-12-09T21:47:43.237777",
+        "created_at": "2025-09-10T21:47:43.165525"
+      }
+    ],
+    "password_reset_codes": [],
+    "email_verification_codes": [],
+    "mental_training_sessions": []
+  }
+}
