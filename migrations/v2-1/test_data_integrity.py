@@ -45,14 +45,23 @@ class DataIntegrityTester:
         # Determine which database to test against
         self.is_testing_mode = config.is_debug_mode()
         
+        # Configure test limits for simplicity
+        self.test_user_limit = 5 if self.is_testing_mode else 100
+        self.test_session_limit = 5 if self.is_testing_mode else 50
+        self.test_preference_limit = 5 if self.is_testing_mode else 50
+        self.test_drill_group_limit = 5 if self.is_testing_mode else 50
+        self.test_progress_limit = 5 if self.is_testing_mode else 50
+        
         if self.is_testing_mode and staging_url:
             self.target_url = staging_url
             self.target_name = "Staging"
             logger.info("🧪 Testing mode: Using STAGING database for validation")
+            logger.info(f"📊 Test limits: {self.test_user_limit} users, {self.test_session_limit} sessions, {self.test_preference_limit} preferences")
         else:
             self.target_url = v2_url
             self.target_name = "V2"
             logger.info("🚀 Production mode: Using V2 database for validation")
+            logger.info(f"📊 Test limits: {self.test_user_limit} users, {self.test_session_limit} sessions, {self.test_preference_limit} preferences")
         
         # Create database connections
         self.v1_engine = create_engine(v1_url)
@@ -65,7 +74,14 @@ class DataIntegrityTester:
                 'testing_mode': self.is_testing_mode,
                 'target_database': self.target_name,
                 'v1_url': v1_url,
-                'target_url': self.target_url
+                'target_url': self.target_url,
+                'test_limits': {
+                    'users': self.test_user_limit,
+                    'sessions': self.test_session_limit,
+                    'preferences': self.test_preference_limit,
+                    'drill_groups': self.test_drill_group_limit,
+                    'progress': self.test_progress_limit
+                }
             },
             'user_data_accuracy': [],
             'session_data_accuracy': [],
@@ -122,8 +138,8 @@ class DataIntegrityTester:
         
         try:
             # Get sample users from both databases
-            v1_users = self.v1_session.query(UserV1).limit(100).all()
-            target_users = self.target_session.query(User).limit(100).all()
+            v1_users = self.v1_session.query(UserV1).limit(self.test_user_limit).all()
+            target_users = self.target_session.query(User).limit(self.test_user_limit).all()
             
             for v1_user in v1_users:
                 target_user = self.target_session.query(User).filter(User.email == v1_user.email).first()
@@ -183,7 +199,7 @@ class DataIntegrityTester:
         
         try:
             # Get sample sessions from both databases
-            v1_sessions = self.v1_session.query(CompletedSessionV1).limit(50).all()
+            v1_sessions = self.v1_session.query(CompletedSessionV1).limit(self.test_session_limit).all()
             
             for v1_session in v1_sessions:
                 # Find corresponding user in V2
@@ -245,7 +261,7 @@ class DataIntegrityTester:
         
         try:
             # Get sample preferences from both databases
-            v1_preferences = self.v1_session.query(SessionPreferencesV1).limit(50).all()
+            v1_preferences = self.v1_session.query(SessionPreferencesV1).limit(self.test_preference_limit).all()
             
             for v1_pref in v1_preferences:
                 # Find corresponding user in V2
@@ -304,7 +320,7 @@ class DataIntegrityTester:
         
         try:
             # Get sample drill groups from both databases
-            v1_groups = self.v1_session.query(DrillGroupV1).limit(50).all()
+            v1_groups = self.v1_session.query(DrillGroupV1).limit(self.test_drill_group_limit).all()
             
             for v1_group in v1_groups:
                 # Find corresponding user in V2
@@ -363,7 +379,7 @@ class DataIntegrityTester:
         
         try:
             # Get sample progress records from both databases
-            v1_progress = self.v1_session.query(ProgressHistoryV1).limit(50).all()
+            v1_progress = self.v1_session.query(ProgressHistoryV1).limit(self.test_progress_limit).all()
             
             for v1_prog in v1_progress:
                 # Find corresponding user in V2
@@ -503,7 +519,7 @@ class DataIntegrityTester:
         
         try:
             # Test password hashes
-            v1_users = self.v1_session.query(UserV1).limit(50).all()
+            v1_users = self.v1_session.query(UserV1).limit(self.test_user_limit).all()
             
             for v1_user in v1_users:
                 v2_user = self.target_session.query(User).filter(User.email == v1_user.email).first()
@@ -526,7 +542,7 @@ class DataIntegrityTester:
                         })
             
             # Test refresh tokens
-            v2_tokens = self.target_session.query(RefreshToken).limit(50).all()
+            v2_tokens = self.target_session.query(RefreshToken).limit(self.test_user_limit).all()
             
             for token in v2_tokens:
                 user = self.target_session.query(User).filter(User.id == token.user_id).first()
