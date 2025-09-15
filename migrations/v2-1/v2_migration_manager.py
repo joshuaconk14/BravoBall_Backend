@@ -496,185 +496,6 @@ class V2MigrationManager:
                 self._create_fresh_v2_session()
             return False
     
-    def _migrate_user_related_data(self, v1_user: UserV1, v2_user: User):
-        """Migrate all related data for a user"""
-        try:
-            # Clear existing related data for the V2 user (except for Android users)
-            self._clear_user_related_data(v2_user)
-            
-            # Migrate completed sessions
-            for session in v1_user.completed_sessions:
-                # Fix the drills JSON to use correct UUIDs
-                fixed_drills_json = self._fix_drills_json_uuids(session.drills)
-                
-                new_session = CompletedSession(
-                    user_id=v2_user.id,
-                    date=session.date,
-                    session_type=getattr(session, 'session_type', 'drill_training'),  # V1 might not have this column
-                    total_completed_drills=session.total_completed_drills,
-                    total_drills=session.total_drills,
-                    drills=fixed_drills_json,  # Use the fixed JSON with correct UUIDs
-                    duration_minutes=getattr(session, 'duration_minutes', None),  # V1 might not have this column
-                    mental_training_session_id=getattr(session, 'mental_training_session_id', None)  # V1 might not have this column
-                )
-                # Explicitly set id to None to force auto-generation
-                new_session.id = None
-                self.v2_session.add(new_session)
-            
-            # Migrate session preferences (V1 has one, V2 has one)
-            if v1_user.session_preferences:
-                new_prefs = SessionPreferences(
-                    user_id=v2_user.id,
-                    duration=v1_user.session_preferences.duration,
-                    available_equipment=v1_user.session_preferences.available_equipment,
-                    training_style=v1_user.session_preferences.training_style,
-                    training_location=v1_user.session_preferences.training_location,
-                    difficulty=v1_user.session_preferences.difficulty,
-                    target_skills=v1_user.session_preferences.target_skills,
-                    created_at=v1_user.session_preferences.created_at,
-                    updated_at=v1_user.session_preferences.updated_at
-                )
-                # Explicitly set id to None to force auto-generation
-                new_prefs.id = None
-                self.v2_session.add(new_prefs)
-            
-            # Migrate drill groups
-            for group in v1_user.drill_groups:
-                new_group = DrillGroup(
-                    user_id=v2_user.id,
-                    name=group.name,
-                    description=group.description,
-                    is_liked_group=group.is_liked_group
-                )
-                # Explicitly set id to None to force auto-generation
-                new_group.id = None
-                self.v2_session.add(new_group)
-                self.v2_session.flush()  # Get the new group ID
-                
-                # Migrate drill group items
-                for item in group.drill_items:
-                    new_item = DrillGroupItem(
-                        drill_group_id=new_group.id,
-                        drill_uuid=None,  # V1 doesn't have drill_uuid, will need to be set later
-                        position=item.position,
-                        created_at=item.created_at
-                    )
-                    # Explicitly set id to None to force auto-generation
-                    new_item.id = None
-                    self.v2_session.add(new_item)
-            
-            # Migrate progress history - use enhanced calculation
-            if v1_user.progress_history:
-                # First, we need to get the completed sessions we just migrated to calculate proper metrics
-                # Flush the session to ensure completed sessions are in the database
-                self.v2_session.flush()
-                
-                # Query the completed sessions we just migrated
-                migrated_completed_sessions = self.v2_session.query(CompletedSession).filter(
-                    CompletedSession.user_id == v2_user.id
-                ).all()
-                
-                # Calculate enhanced progress metrics using the actual completed sessions
-                from routers.data_sync_updates import calculate_enhanced_progress_metrics
-                enhanced_metrics = calculate_enhanced_progress_metrics(migrated_completed_sessions, v2_user.position)
-                
-                # V1 uses different column names and has fewer columns
-                new_progress = ProgressHistory(
-                    user_id=v2_user.id,
-                    completed_sessions_count=len(migrated_completed_sessions),  # Use actual count from migrated sessions
-                    current_streak=v1_user.progress_history.current_streak,  # Keep V1 streak data
-                    highest_streak=v1_user.progress_history.highest_streak,  # Keep V1 streak data
-                    previous_streak=getattr(v1_user.progress_history, 'previous_streak', 0),  # Keep V1 streak data
-                    favorite_drill=enhanced_metrics.get('favorite_drill', ''),
-                    drills_per_session=enhanced_metrics.get('drills_per_session', 0.0),
-                    minutes_per_session=enhanced_metrics.get('minutes_per_session', 0.0),
-                    total_time_all_sessions=enhanced_metrics.get('total_time_all_sessions', 0),
-                    dribbling_drills_completed=enhanced_metrics.get('dribbling_drills_completed', 0),
-                    first_touch_drills_completed=enhanced_metrics.get('first_touch_drills_completed', 0),
-                    passing_drills_completed=enhanced_metrics.get('passing_drills_completed', 0),
-                    shooting_drills_completed=enhanced_metrics.get('shooting_drills_completed', 0),
-                    defending_drills_completed=enhanced_metrics.get('defending_drills_completed', 0),
-                    goalkeeping_drills_completed=enhanced_metrics.get('goalkeeping_drills_completed', 0),
-                    fitness_drills_completed=enhanced_metrics.get('fitness_drills_completed', 0),
-                    most_improved_skill=enhanced_metrics.get('most_improved_skill', ''),
-                    unique_drills_completed=enhanced_metrics.get('unique_drills_completed', 0),
-                    beginner_drills_completed=enhanced_metrics.get('beginner_drills_completed', 0),
-                    intermediate_drills_completed=enhanced_metrics.get('intermediate_drills_completed', 0),
-                    advanced_drills_completed=enhanced_metrics.get('advanced_drills_completed', 0),
-                    mental_training_sessions=enhanced_metrics.get('mental_training_sessions', 0),
-                    total_mental_training_minutes=enhanced_metrics.get('total_mental_training_minutes', 0),
-                    updated_at=v1_user.progress_history.updated_at
-                )
-                # Explicitly set id to None to force auto-generation
-                new_progress.id = None
-                self.v2_session.add(new_progress)
-                
-                logger.info(f"Created progress history with enhanced metrics for user {v2_user.email}")
-            
-            # Migrate refresh tokens - check for duplicates first
-            for token in v1_user.refresh_tokens:
-                # Check if token already exists
-                existing_token = self.v2_session.query(RefreshToken).filter(
-                    RefreshToken.user_id == v2_user.id,
-                    RefreshToken.token == token.token
-                ).first()
-                
-                if not existing_token:
-                    new_token = RefreshToken(
-                        user_id=v2_user.id,
-                        token=token.token,
-                        expires_at=token.expires_at,
-                        created_at=token.created_at,
-                        is_revoked=getattr(token, 'is_revoked', False)  # V1 might not have this field
-                    )
-                    # Explicitly set id to None to force auto-generation
-                    new_token.id = None
-                    self.v2_session.add(new_token)
-            
-            # Migrate password reset codes - check for duplicates first
-            for code in v1_user.password_reset_codes:
-                # Check if code already exists
-                existing_code = self.v2_session.query(PasswordResetCode).filter(
-                    PasswordResetCode.user_id == v2_user.id,
-                    PasswordResetCode.code == code.code
-                ).first()
-                
-                if not existing_code:
-                    new_code = PasswordResetCode(
-                        user_id=v2_user.id,
-                        code=code.code,
-                        expires_at=code.expires_at,
-                        created_at=code.created_at,
-                        is_used=getattr(code, 'is_used', False)  # V1 might not have this field
-                    )
-                    # Explicitly set id to None to force auto-generation
-                    new_code.id = None
-                    self.v2_session.add(new_code)
-            
-            # Note: V1 doesn't have email_verification_codes table, so skip this migration
-            
-            # Migrate training sessions (V1 has training_sessions, not mental_training_sessions)
-            for session in v1_user.training_sessions:
-                new_session = TrainingSession(
-                    user_id=v2_user.id,
-                    total_duration=session.total_duration,
-                    focus_areas=session.focus_areas,
-                    created_at=getattr(session, 'created_at', None)
-                )
-                # Explicitly set id to None to force auto-generation
-                new_session.id = None
-                self.v2_session.add(new_session)
-            
-            self.stats['related_data_migrated'] += 1
-            
-        except Exception as e:
-            logger.error(f"Error migrating related data for {v2_user.email}: {e}")
-            # Rollback the session to clear any failed transactions
-            try:
-                self.v2_session.rollback()
-            except Exception as rollback_error:
-                logger.error(f"Error during rollback for related data migration: {rollback_error}")
-            raise
     
     def _delete_all_user_data(self, user: User):
         """Delete ALL user data including the user record itself"""
@@ -887,34 +708,34 @@ class V2MigrationManager:
                 )
                 new_progress.id = None  # Force new ID
                 self.v2_session.add(new_progress)
-                
+            
                 logger.info(f"Created progress history with enhanced metrics for user {new_user.email}")
             
             # Migrate refresh tokens (if they exist)
             refresh_tokens = getattr(v1_user, 'refresh_tokens', [])
             for token in refresh_tokens:
-                new_token = RefreshToken(
+                    new_token = RefreshToken(
                     user_id=new_user.id,  # Use new user ID
-                    token=token.token,
-                    expires_at=token.expires_at,
-                    created_at=token.created_at,
+                        token=token.token,
+                        expires_at=token.expires_at,
+                        created_at=token.created_at,
                     is_revoked=getattr(token, 'is_revoked', False)
-                )
-                new_token.id = None  # Force new ID
-                self.v2_session.add(new_token)
+                    )
+                    new_token.id = None  # Force new ID
+                    self.v2_session.add(new_token)
             
             # Migrate password reset codes (if they exist)
             password_reset_codes = getattr(v1_user, 'password_reset_codes', [])
             for code in password_reset_codes:
-                new_code = PasswordResetCode(
+                    new_code = PasswordResetCode(
                     user_id=new_user.id,  # Use new user ID
-                    code=code.code,
-                    expires_at=code.expires_at,
+                        code=code.code,
+                        expires_at=code.expires_at,
                     created_at=code.created_at
-                )
-                new_code.id = None  # Force new ID
-                self.v2_session.add(new_code)
-
+                    )
+                    new_code.id = None  # Force new ID
+                    self.v2_session.add(new_code)
+            
             
             # Migrate training sessions and their ordered drills
             training_sessions = getattr(v1_user, 'training_sessions', [])
@@ -972,7 +793,7 @@ class V2MigrationManager:
             else:
                 logger.warning(f"No V2 drill found for V1 drill_id {v1_drill_id}, setting drill_uuid to None")
                 return None
-                
+            
         except Exception as e:
             logger.error(f"Error mapping drill_id {v1_drill_id} to UUID: {e}")
             return None
@@ -1049,55 +870,6 @@ class V2MigrationManager:
             logger.error(f"Error fixing drills JSON UUIDs: {e}")
             return drills_json
     
-    def _clear_user_related_data(self, user: User):
-        """Clear existing related data for a user (used when overwriting)"""
-        try:
-            # Use raw SQL for more reliable deletion
-            from sqlalchemy import text
-            
-            user_id = user.id
-            logger.info(f"Clearing related data for user {user.email} (ID: {user_id})")
-            
-            # Delete in correct order to respect foreign key constraints
-            delete_queries = [
-                "DELETE FROM completed_sessions WHERE user_id = :user_id",
-                "DELETE FROM session_preferences WHERE user_id = :user_id", 
-                "DELETE FROM drill_group_items WHERE drill_group_id IN (SELECT id FROM drill_groups WHERE user_id = :user_id)",
-                "DELETE FROM drill_groups WHERE user_id = :user_id",
-                "DELETE FROM progress_history WHERE user_id = :user_id",
-                "DELETE FROM refresh_tokens WHERE user_id = :user_id",
-                "DELETE FROM password_reset_codes WHERE user_id = :user_id",
-                "DELETE FROM email_verification_codes WHERE user_id = :user_id",
-                "DELETE FROM mental_training_sessions WHERE user_id = :user_id"
-            ]
-            
-            for query in delete_queries:
-                self.v2_session.execute(text(query), {"user_id": user_id})
-            
-            # Reset sequences to avoid ID conflicts
-            sequence_resets = [
-                "SELECT setval('completed_sessions_id_seq', (SELECT COALESCE(MAX(id), 1) FROM completed_sessions))",
-                "SELECT setval('session_preferences_id_seq', (SELECT COALESCE(MAX(id), 1) FROM session_preferences))",
-                "SELECT setval('drill_groups_id_seq', (SELECT COALESCE(MAX(id), 1) FROM drill_groups))",
-                "SELECT setval('drill_group_items_id_seq', (SELECT COALESCE(MAX(id), 1) FROM drill_group_items))",
-                "SELECT setval('progress_history_id_seq', (SELECT COALESCE(MAX(id), 1) FROM progress_history))",
-                "SELECT setval('refresh_tokens_id_seq', (SELECT COALESCE(MAX(id), 1) FROM refresh_tokens))",
-                "SELECT setval('password_reset_codes_id_seq', (SELECT COALESCE(MAX(id), 1) FROM password_reset_codes))",
-                "SELECT setval('email_verification_codes_id_seq', (SELECT COALESCE(MAX(id), 1) FROM email_verification_codes))",
-                "SELECT setval('mental_training_sessions_id_seq', (SELECT COALESCE(MAX(id), 1) FROM mental_training_sessions))"
-            ]
-            
-            for reset_query in sequence_resets:
-                self.v2_session.execute(text(reset_query))
-            
-            # Commit the deletions and sequence resets immediately
-            self.v2_session.commit()
-            logger.info(f"Successfully cleared related data and reset sequences for user {user.email}")
-            
-        except Exception as e:
-            logger.error(f"Error clearing related data for {user.email}: {e}")
-            self.v2_session.rollback()
-            raise
     
     def validate_migration(self) -> bool:
         """Validate that migration was successful"""

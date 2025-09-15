@@ -72,7 +72,7 @@ def test_specific_user(email=None):
                 print(f"❌ Failed to migrate {email}")
                 return False
         else:
-            print(f"ℹ️  User {email} not found in staging database - this is expected after deletion")
+            print(f"ℹ️  User {email} not found in staging database - no stale data")
             print("🔄 Running create migration...")
             
             # Run the create migration
