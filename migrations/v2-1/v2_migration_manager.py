@@ -19,12 +19,13 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 from models import (
     User, CompletedSession, SessionPreferences, DrillGroup, DrillGroupItem,
     ProgressHistory, SavedFilter, RefreshToken, PasswordResetCode, EmailVerificationCode,
-    MentalTrainingSession, MentalTrainingQuote
+    MentalTrainingSession, MentalTrainingQuote, OrderedSessionDrill, TrainingSession
 )
 # Import V1-specific models
 from models_v1 import (
     UserV1, CompletedSessionV1, SessionPreferencesV1, DrillGroupV1, DrillGroupItemV1,
-    ProgressHistoryV1, SavedFilterV1, RefreshTokenV1, PasswordResetCodeV1
+    ProgressHistoryV1, SavedFilterV1, RefreshTokenV1, PasswordResetCodeV1,
+    OrderedSessionDrillV1, TrainingSessionV1
 )
 from migration_config import config
 
@@ -421,7 +422,7 @@ class V2MigrationManager:
             return False
     
     def _migrate_apple_user_overwrite(self, email: str) -> bool:
-        """Migrate Apple user by overwriting stale V2 data with current V1 data"""
+        """Migrate Apple user by deleting stale V2 data and creating fresh entries with new IDs"""
         try:
             # Get user from V1 (current data) - use case-insensitive search
             v1_user = self.v1_session.query(UserV1).filter(UserV1.email.ilike(email)).first()
@@ -435,35 +436,40 @@ class V2MigrationManager:
                 logger.error(f"Apple user not found in V2: {email}")
                 return False
             
-            # Always perform migration to ensure all related data is up to date
-            # (comparing just user fields is insufficient - related data is what matters)
-            logger.info(f"Migrating Apple user {email} - ensuring all data is current")
+            logger.info(f"Migrating Apple user {email} - deleting stale data and creating fresh entries")
             
-            # Update V2 user with V1 data
-            v2_user.first_name = v1_user.first_name
-            v2_user.last_name = v1_user.last_name
-            v2_user.hashed_password = v1_user.hashed_password
-            v2_user.primary_goal = v1_user.primary_goal
-            v2_user.biggest_challenge = v1_user.biggest_challenge
-            v2_user.training_experience = v1_user.training_experience
-            v2_user.position = v1_user.position
-            v2_user.playstyle = v1_user.playstyle
-            v2_user.age_range = v1_user.age_range
-            v2_user.strengths = v1_user.strengths
-            v2_user.areas_to_improve = v1_user.areas_to_improve
-            v2_user.training_location = v1_user.training_location
-            v2_user.available_equipment = v1_user.available_equipment
-            v2_user.daily_training_time = v1_user.daily_training_time
-            v2_user.weekly_training_days = v1_user.weekly_training_days
+            # Store the email for reference after deletion
+            user_email = v2_user.email
             
-            # Migrate related data
-            self._migrate_user_related_data(v1_user, v2_user)
-            
-            self.v2_session.commit()
-            return True
+            try:
+                # Step 1: Delete all stale data for this user
+                logger.info(f"Step 1: Deleting all stale data for {user_email}")
+                self._delete_all_user_data(v2_user)
+                logger.info(f"Step 1 completed: All stale data deleted for {user_email}")
+                
+                # Step 2: Create fresh user entry with new ID
+                logger.info(f"Step 2: Creating fresh user entry for {user_email}")
+                new_user = self._create_fresh_user_entry(v1_user)
+                logger.info(f"Step 2 completed: Created fresh user entry with ID {new_user.id}")
+                
+                # Step 3: Migrate all related data with new user ID
+                logger.info(f"Step 3: Migrating related data for {user_email}")
+                self._migrate_user_related_data_fresh(v1_user, new_user)
+                logger.info(f"Step 3 completed: All related data migrated for {user_email}")
+                
+                # Step 4: Commit all changes
+                logger.info(f"Step 4: Committing all changes for {user_email}")
+                self.v2_session.commit()
+                logger.info(f"Successfully migrated {user_email} with new ID: {new_user.id}")
+                return True
+                
+            except Exception as step_error:
+                logger.error(f"Error in migration steps for {user_email}: {step_error}")
+                logger.error(f"Step that failed: {step_error}")
+                raise  # Re-raise to be caught by outer exception handler
             
         except Exception as e:
-            logger.error(f"Error overwriting Apple user {email}: {e}")
+            logger.error(f"Error migrating Apple user {email}: {e}")
             try:
                 self.v2_session.rollback()
             except Exception as rollback_error:
@@ -481,33 +487,13 @@ class V2MigrationManager:
                 logger.error(f"Apple user not found in V1: {email}")
                 return False
             
-            # Create new user in V2
-            new_user = User(
-                first_name=v1_user.first_name,
-                last_name=v1_user.last_name,
-                email=v1_user.email,
-                hashed_password=v1_user.hashed_password,
-                primary_goal=v1_user.primary_goal,
-                biggest_challenge=v1_user.biggest_challenge,
-                training_experience=v1_user.training_experience,
-                position=v1_user.position,
-                playstyle=v1_user.playstyle,
-                age_range=v1_user.age_range,
-                strengths=v1_user.strengths,
-                areas_to_improve=v1_user.areas_to_improve,
-                training_location=v1_user.training_location,
-                available_equipment=v1_user.available_equipment,
-                daily_training_time=v1_user.daily_training_time,
-                weekly_training_days=v1_user.weekly_training_days
-            )
+            logger.info(f"Creating fresh Apple user {email}")
             
-            # Explicitly set id to None to force auto-generation
-            new_user.id = None
-            self.v2_session.add(new_user)
-            self.v2_session.flush()  # Get the new user ID
+            # Create fresh user entry with new ID
+            new_user = self._create_fresh_user_entry(v1_user)
             
-            # Migrate related data
-            self._migrate_user_related_data(v1_user, new_user)
+            # Migrate all related data with new user ID
+            self._migrate_user_related_data_fresh(v1_user, new_user)
             
             self.v2_session.commit()
             return True
@@ -687,6 +673,264 @@ class V2MigrationManager:
                 self.v2_session.rollback()
             except Exception as rollback_error:
                 logger.error(f"Error during rollback for related data migration: {rollback_error}")
+            raise
+    
+    def _delete_all_user_data(self, user: User):
+        """Delete ALL user data including the user record itself"""
+        try:
+            from sqlalchemy import text
+            
+            user_id = user.id
+            user_email = user.email  # Store email before deletion
+            logger.info(f"Deleting all data for user {user_email} (ID: {user_id})")
+            
+            # Delete related data in correct order to respect foreign key constraints
+            delete_queries = [
+                "DELETE FROM ordered_session_drills WHERE session_id IN (SELECT id FROM training_sessions WHERE user_id = :user_id)",
+                "DELETE FROM training_sessions WHERE user_id = :user_id",
+                "DELETE FROM completed_sessions WHERE user_id = :user_id",
+                "DELETE FROM session_preferences WHERE user_id = :user_id", 
+                "DELETE FROM drill_group_items WHERE drill_group_id IN (SELECT id FROM drill_groups WHERE user_id = :user_id)",
+                "DELETE FROM drill_groups WHERE user_id = :user_id",
+                "DELETE FROM progress_history WHERE user_id = :user_id",
+                "DELETE FROM saved_filters WHERE user_id = :user_id",
+                "DELETE FROM refresh_tokens WHERE user_id = :user_id",
+                "DELETE FROM password_reset_codes WHERE user_id = :user_id",
+                "DELETE FROM email_verification_codes WHERE user_id = :user_id",
+                "DELETE FROM mental_training_sessions WHERE user_id = :user_id",
+                "DELETE FROM users WHERE id = :user_id"
+            ]
+            
+            for query in delete_queries:
+                self.v2_session.execute(text(query), {"user_id": user_id})
+            
+            # Reset sequences after deletion to avoid ID conflicts
+            sequence_resets = [
+                "SELECT setval('users_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM users), false)",
+                "SELECT setval('completed_sessions_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM completed_sessions), false)",
+                "SELECT setval('session_preferences_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM session_preferences), false)",
+                "SELECT setval('drill_groups_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM drill_groups), false)",
+                "SELECT setval('drill_group_items_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM drill_group_items), false)",
+                "SELECT setval('progress_history_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM progress_history), false)",
+                "SELECT setval('saved_filters_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM saved_filters), false)",
+                "SELECT setval('refresh_tokens_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM refresh_tokens), false)",
+                "SELECT setval('mental_training_sessions_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM mental_training_sessions), false)",
+                "SELECT setval('training_sessions_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM training_sessions), false)",
+                "SELECT setval('ordered_session_drills_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM ordered_session_drills), false)"
+            ]
+            
+            for reset_query in sequence_resets:
+                self.v2_session.execute(text(reset_query))
+            
+            # Commit the deletions and sequence resets immediately
+            self.v2_session.commit()
+            logger.info(f"Successfully deleted all data for user {user_email} and reset sequences")
+            
+        except Exception as e:
+            logger.error(f"Error deleting all user data for {user_email}: {e}")
+            self.v2_session.rollback()
+            raise
+    
+    def _create_fresh_user_entry(self, v1_user: UserV1) -> User:
+        """Create a fresh user entry with new ID"""
+        try:
+            from datetime import datetime
+            
+            new_user = User(
+                first_name=v1_user.first_name,
+                last_name=v1_user.last_name,
+                email=v1_user.email,
+                hashed_password=v1_user.hashed_password,
+                primary_goal=v1_user.primary_goal,
+                biggest_challenge=v1_user.biggest_challenge,
+                training_experience=v1_user.training_experience,
+                position=v1_user.position,
+                playstyle=v1_user.playstyle,
+                age_range=v1_user.age_range,
+                strengths=v1_user.strengths,
+                areas_to_improve=v1_user.areas_to_improve,
+                training_location=v1_user.training_location,
+                available_equipment=v1_user.available_equipment,
+                daily_training_time=v1_user.daily_training_time,
+                weekly_training_days=v1_user.weekly_training_days
+            )
+            
+            # Don't set ID - let database generate new one
+            new_user.id = None
+            
+            # Reset user sequence to avoid conflicts
+            from sqlalchemy import text
+            self.v2_session.execute(text("SELECT setval('users_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM users), false)"))
+            
+            self.v2_session.add(new_user)
+            self.v2_session.flush()  # Get the new ID
+            
+            logger.info(f"Created fresh user entry with new ID: {new_user.id}")
+            return new_user
+            
+        except Exception as e:
+            logger.error(f"Error creating fresh user entry: {e}")
+            raise
+    
+    def _migrate_user_related_data_fresh(self, v1_user: UserV1, new_user: User):
+        """Migrate all related data with fresh user ID (no clearing needed)"""
+        try:
+            logger.info(f"Migrating related data for fresh user {new_user.email} (ID: {new_user.id})")
+            
+            # Migrate completed sessions (if they exist)
+            completed_sessions = getattr(v1_user, 'completed_sessions', [])
+            for session in completed_sessions:
+                new_session = CompletedSession(
+                    user_id=new_user.id,  # Use new user ID
+                    date=session.date,
+                    session_type=getattr(session, 'session_type', 'drill_training'),
+                    total_completed_drills=session.total_completed_drills,
+                    total_drills=session.total_drills,
+                    drills=session.drills,
+                    duration_minutes=getattr(session, 'duration_minutes', 30),
+                    mental_training_session_id=getattr(session, 'mental_training_session_id', None)
+                )
+                new_session.id = None  # Force new ID
+                self.v2_session.add(new_session)
+            
+            # Migrate session preferences (if they exist)
+            session_prefs = getattr(v1_user, 'session_preferences', None)
+            if session_prefs:
+                new_prefs = SessionPreferences(
+                    user_id=new_user.id,  # Use new user ID
+                    duration=session_prefs.duration,
+                    available_equipment=session_prefs.available_equipment,
+                    training_style=session_prefs.training_style,
+                    training_location=session_prefs.training_location,
+                    difficulty=session_prefs.difficulty,
+                    target_skills=session_prefs.target_skills,
+                    created_at=getattr(session_prefs, 'created_at', None),
+                    updated_at=getattr(session_prefs, 'updated_at', None)
+                )
+                new_prefs.id = None  # Force new ID
+                self.v2_session.add(new_prefs)
+            
+            # Migrate drill groups (if they exist)
+            drill_groups = getattr(v1_user, 'drill_groups', [])
+            for group in drill_groups:
+                new_group = DrillGroup(
+                    user_id=new_user.id,  # Use new user ID
+                    name=group.name,
+                    description=group.description,
+                    is_liked_group=group.is_liked_group
+                )
+                new_group.id = None  # Force new ID
+                self.v2_session.add(new_group)
+                self.v2_session.flush()  # Get the new group ID
+                
+                # Migrate drill group items (if they exist)
+                drill_items = getattr(group, 'drill_items', [])
+                for item in drill_items:
+                    new_item = DrillGroupItem(
+                        drill_group_id=new_group.id,  # Use new group ID
+                        drill_uuid=None,  # V1 doesn't have drill_uuid
+                        position=item.position,
+                        created_at=getattr(item, 'created_at', None)
+                    )
+                    new_item.id = None  # Force new ID
+                    self.v2_session.add(new_item)
+            
+            # Migrate progress history (if it exists)
+            progress_history = getattr(v1_user, 'progress_history', None)
+            if progress_history:
+                new_progress = ProgressHistory(
+                    user_id=new_user.id,  # Use new user ID
+                    completed_sessions_count=progress_history.completed_sessions_count,
+                    current_streak=progress_history.current_streak,
+                    highest_streak=progress_history.highest_streak,
+                    previous_streak=getattr(progress_history, 'previous_streak', 0),
+                    favorite_drill=getattr(progress_history, 'favorite_drill', ''),
+                    drills_per_session=0.0,  # V1 doesn't have this column
+                    minutes_per_session=0.0,  # V1 doesn't have this column
+                    total_time_all_sessions=0,  # V1 doesn't have this column
+                    dribbling_drills_completed=0,  # V1 doesn't have this column
+                    first_touch_drills_completed=0,  # V1 doesn't have this column
+                    passing_drills_completed=0,  # V1 doesn't have this column
+                    shooting_drills_completed=0,  # V1 doesn't have this column
+                    defending_drills_completed=0,  # V1 doesn't have this column
+                    goalkeeping_drills_completed=0,  # V1 doesn't have this column
+                    fitness_drills_completed=0,  # V1 doesn't have this column
+                    updated_at=getattr(progress_history, 'updated_at', None)
+                )
+                new_progress.id = None  # Force new ID
+                self.v2_session.add(new_progress)
+            
+            # Migrate saved filters (if they exist)
+            saved_filters = getattr(v1_user, 'saved_filters', [])
+            for filter_item in saved_filters:
+                new_filter = SavedFilter(
+                    user_id=new_user.id,  # Use new user ID
+                    name=filter_item.name,
+                    filter_data=getattr(filter_item, 'filter_data', {}),
+                    created_at=getattr(filter_item, 'created_at', None)
+                )
+                new_filter.id = None  # Force new ID
+                self.v2_session.add(new_filter)
+            
+            # Migrate refresh tokens (if they exist)
+            refresh_tokens = getattr(v1_user, 'refresh_tokens', [])
+            for token in refresh_tokens:
+                new_token = RefreshToken(
+                    user_id=new_user.id,  # Use new user ID
+                    token=token.token,
+                    expires_at=token.expires_at,
+                    created_at=token.created_at,
+                    is_revoked=getattr(token, 'is_revoked', False)
+                )
+                new_token.id = None  # Force new ID
+                self.v2_session.add(new_token)
+            
+            # Migrate mental training sessions (if they exist)
+            mental_sessions = getattr(v1_user, 'mental_training_sessions', [])
+            for session in mental_sessions:
+                new_session = MentalTrainingSession(
+                    user_id=new_user.id,  # Use new user ID
+                    date=getattr(session, 'date', None),
+                    duration_minutes=getattr(session, 'duration_minutes', 30),
+                    session_type=getattr(session, 'session_type', 'mental_training')
+                )
+                new_session.id = None  # Force new ID
+                self.v2_session.add(new_session)
+            
+            # Migrate training sessions and their ordered drills
+            training_sessions = getattr(v1_user, 'training_sessions', [])
+            for ts in training_sessions:
+                new_training_session = TrainingSession(
+                    user_id=new_user.id,  # Use new user ID
+                    total_duration=ts.total_duration,
+                    focus_areas=ts.focus_areas,
+                    created_at=getattr(ts, 'created_at', None)
+                )
+                new_training_session.id = None  # Force new ID
+                self.v2_session.add(new_training_session)
+                self.v2_session.flush()  # Get the new training session ID
+                
+                # Migrate ordered drills for this training session
+                ordered_drills = getattr(ts, 'ordered_drills', [])
+                for od in ordered_drills:
+                    new_ordered_drill = OrderedSessionDrill(
+                        session_id=new_training_session.id,  # Use new training session ID
+                        drill_uuid=None,  # V1 uses drill_id, V2 uses drill_uuid - will need mapping
+                        position=od.position,
+                        sets_done=od.sets_done,
+                        sets=od.sets,
+                        reps=od.reps,
+                        rest=od.rest,
+                        duration=od.duration,
+                        is_completed=od.is_completed
+                    )
+                    new_ordered_drill.id = None  # Force new ID
+                    self.v2_session.add(new_ordered_drill)
+            
+            logger.info(f"Successfully migrated all related data for fresh user {new_user.email}")
+            
+        except Exception as e:
+            logger.error(f"Error migrating related data for fresh user: {e}")
             raise
     
     def _clear_user_related_data(self, user: User):
