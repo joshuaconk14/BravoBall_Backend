@@ -16,7 +16,7 @@ realize that v1 and v2 do not match, which is why were having to do migration in
 
 when we move data from v1 to v2, are we copying over the primary key ids as well? if we are then lets not do that and just follow the approach of inserting data with new primary key ids, still esuring that we keep relationships between data as they were before
 
-In the staging database, we now have stale data that belongs to Apple users from the V1 database and up-to-date android User data. There is no way to determine whether data in the staging database if it is stale data or Android data so lets not worry about that. When we run the test migration to move user data from V1 to staging,  lets just get the first five users in the staging db (guaranteed to be stale data, so when running migration it should update their stale staging db data) and last five users in staging (guaranteed to be up to date users, so when running migration it should input them as a new user in the staging db)
+In the staging database, we now have stale data that belongs to Apple users from the V1 database and up-to-date android User data. There is no way to determine whether data in the staging database if it is stale data or Android data so lets not worry about that. When we run the test migration to move user data from V1 to staging,  lets just get the first five users in the staging db (guaranteed to be stale data, so when running migration it should update their stale staging db data) and last five users in staging (guaranteed to be up to date users and shouldn’t be in the staging db since they don’t have stale data, so when running migration it should input them as a new user in the staging db)
 
 
 
