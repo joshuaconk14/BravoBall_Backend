@@ -197,7 +197,6 @@ class V2MigrationManager:
                 'session_preferences': None,
                 'drill_groups': [],
                 'progress_history': None,
-                'saved_filters': [],
                 'refresh_tokens': [],
                 'password_reset_codes': [],
                 # Note: V1 doesn't have email_verification_codes table
@@ -294,17 +293,6 @@ class V2MigrationManager:
                     'updated_at': progress.updated_at.isoformat() if progress.updated_at else None
                 }
             
-            # Get saved filters
-            saved_filters = self.v2_session.query(SavedFilter).filter(SavedFilter.user_id == user.id).all()
-            user_data['saved_filters'] = [
-                {
-                    'id': filter_item.id,
-                    'name': filter_item.name,
-                    'filter_data': filter_item.filter_data,
-                    'created_at': filter_item.created_at.isoformat() if filter_item.created_at else None
-                }
-                for filter_item in saved_filters
-            ]
             
             # Get refresh tokens
             refresh_tokens = self.v2_session.query(RefreshToken).filter(RefreshToken.user_id == user.id).all()
@@ -516,14 +504,17 @@ class V2MigrationManager:
             
             # Migrate completed sessions
             for session in v1_user.completed_sessions:
+                # Fix the drills JSON to use correct UUIDs
+                fixed_drills_json = self._fix_drills_json_uuids(session.drills)
+                
                 new_session = CompletedSession(
                     user_id=v2_user.id,
                     date=session.date,
                     session_type=getattr(session, 'session_type', 'drill_training'),  # V1 might not have this column
                     total_completed_drills=session.total_completed_drills,
                     total_drills=session.total_drills,
-                    drills=session.drills,
-                    duration_minutes=getattr(session, 'duration_minutes', 30),  # V1 might not have this column
+                    drills=fixed_drills_json,  # Use the fixed JSON with correct UUIDs
+                    duration_minutes=getattr(session, 'duration_minutes', None),  # V1 might not have this column
                     mental_training_session_id=getattr(session, 'mental_training_session_id', None)  # V1 might not have this column
                 )
                 # Explicitly set id to None to force auto-generation
@@ -572,43 +563,53 @@ class V2MigrationManager:
                     new_item.id = None
                     self.v2_session.add(new_item)
             
-            # Migrate progress history
+            # Migrate progress history - use enhanced calculation
             if v1_user.progress_history:
+                # First, we need to get the completed sessions we just migrated to calculate proper metrics
+                # Flush the session to ensure completed sessions are in the database
+                self.v2_session.flush()
+                
+                # Query the completed sessions we just migrated
+                migrated_completed_sessions = self.v2_session.query(CompletedSession).filter(
+                    CompletedSession.user_id == v2_user.id
+                ).all()
+                
+                # Calculate enhanced progress metrics using the actual completed sessions
+                from routers.data_sync_updates import calculate_enhanced_progress_metrics
+                enhanced_metrics = calculate_enhanced_progress_metrics(migrated_completed_sessions, v2_user.position)
+                
                 # V1 uses different column names and has fewer columns
                 new_progress = ProgressHistory(
                     user_id=v2_user.id,
-                    completed_sessions_count=v1_user.progress_history.completed_sessions_count,  # V1 uses 'completed_sessions_count'
-                    current_streak=v1_user.progress_history.current_streak,
-                    highest_streak=v1_user.progress_history.highest_streak,  # V1 uses 'highest_streak'
-                    previous_streak=getattr(v1_user.progress_history, 'previous_streak', 0),
-                    favorite_drill=getattr(v1_user.progress_history, 'favorite_drill', ''),
-                    drills_per_session=0.0,  # V1 doesn't have this column
-                    minutes_per_session=0.0,  # V1 doesn't have this column
-                    total_time_all_sessions=0,  # V1 doesn't have this column
-                    dribbling_drills_completed=0,  # V1 doesn't have this column
-                    first_touch_drills_completed=0,  # V1 doesn't have this column
-                    passing_drills_completed=0,  # V1 doesn't have this column
-                    shooting_drills_completed=0,  # V1 doesn't have this column
-                    defending_drills_completed=0,  # V1 doesn't have this column
-                    goalkeeping_drills_completed=0,  # V1 doesn't have this column
-                    fitness_drills_completed=0,  # V1 doesn't have this column
+                    completed_sessions_count=len(migrated_completed_sessions),  # Use actual count from migrated sessions
+                    current_streak=v1_user.progress_history.current_streak,  # Keep V1 streak data
+                    highest_streak=v1_user.progress_history.highest_streak,  # Keep V1 streak data
+                    previous_streak=getattr(v1_user.progress_history, 'previous_streak', 0),  # Keep V1 streak data
+                    favorite_drill=enhanced_metrics.get('favorite_drill', ''),
+                    drills_per_session=enhanced_metrics.get('drills_per_session', 0.0),
+                    minutes_per_session=enhanced_metrics.get('minutes_per_session', 0.0),
+                    total_time_all_sessions=enhanced_metrics.get('total_time_all_sessions', 0),
+                    dribbling_drills_completed=enhanced_metrics.get('dribbling_drills_completed', 0),
+                    first_touch_drills_completed=enhanced_metrics.get('first_touch_drills_completed', 0),
+                    passing_drills_completed=enhanced_metrics.get('passing_drills_completed', 0),
+                    shooting_drills_completed=enhanced_metrics.get('shooting_drills_completed', 0),
+                    defending_drills_completed=enhanced_metrics.get('defending_drills_completed', 0),
+                    goalkeeping_drills_completed=enhanced_metrics.get('goalkeeping_drills_completed', 0),
+                    fitness_drills_completed=enhanced_metrics.get('fitness_drills_completed', 0),
+                    most_improved_skill=enhanced_metrics.get('most_improved_skill', ''),
+                    unique_drills_completed=enhanced_metrics.get('unique_drills_completed', 0),
+                    beginner_drills_completed=enhanced_metrics.get('beginner_drills_completed', 0),
+                    intermediate_drills_completed=enhanced_metrics.get('intermediate_drills_completed', 0),
+                    advanced_drills_completed=enhanced_metrics.get('advanced_drills_completed', 0),
+                    mental_training_sessions=enhanced_metrics.get('mental_training_sessions', 0),
+                    total_mental_training_minutes=enhanced_metrics.get('total_mental_training_minutes', 0),
                     updated_at=v1_user.progress_history.updated_at
                 )
                 # Explicitly set id to None to force auto-generation
                 new_progress.id = None
                 self.v2_session.add(new_progress)
-            
-            # Migrate saved filters
-            for filter_item in v1_user.saved_filters:
-                new_filter = SavedFilter(
-                    user_id=v2_user.id,
-                    name=filter_item.name,
-                    filter_data=getattr(filter_item, 'filter_data', {}),  # V1 doesn't have filter_data column
-                    created_at=getattr(filter_item, 'created_at', None)  # V1 doesn't have created_at column
-                )
-                # Explicitly set id to None to force auto-generation
-                new_filter.id = None
-                self.v2_session.add(new_filter)
+                
+                logger.info(f"Created progress history with enhanced metrics for user {v2_user.email}")
             
             # Migrate refresh tokens - check for duplicates first
             for token in v1_user.refresh_tokens:
@@ -654,11 +655,11 @@ class V2MigrationManager:
             
             # Migrate training sessions (V1 has training_sessions, not mental_training_sessions)
             for session in v1_user.training_sessions:
-                new_session = MentalTrainingSession(
+                new_session = TrainingSession(
                     user_id=v2_user.id,
-                    date=getattr(session, 'date', None),
-                    duration_minutes=getattr(session, 'duration_minutes', 30),  # Default to 30 minutes if not specified
-                    session_type=getattr(session, 'session_type', 'mental_training')
+                    total_duration=session.total_duration,
+                    focus_areas=session.focus_areas,
+                    created_at=getattr(session, 'created_at', None)
                 )
                 # Explicitly set id to None to force auto-generation
                 new_session.id = None
@@ -693,7 +694,6 @@ class V2MigrationManager:
                 "DELETE FROM drill_group_items WHERE drill_group_id IN (SELECT id FROM drill_groups WHERE user_id = :user_id)",
                 "DELETE FROM drill_groups WHERE user_id = :user_id",
                 "DELETE FROM progress_history WHERE user_id = :user_id",
-                "DELETE FROM saved_filters WHERE user_id = :user_id",
                 "DELETE FROM refresh_tokens WHERE user_id = :user_id",
                 "DELETE FROM password_reset_codes WHERE user_id = :user_id",
                 "DELETE FROM email_verification_codes WHERE user_id = :user_id",
@@ -712,7 +712,6 @@ class V2MigrationManager:
                 "SELECT setval('drill_groups_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM drill_groups), false)",
                 "SELECT setval('drill_group_items_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM drill_group_items), false)",
                 "SELECT setval('progress_history_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM progress_history), false)",
-                "SELECT setval('saved_filters_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM saved_filters), false)",
                 "SELECT setval('refresh_tokens_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM refresh_tokens), false)",
                 "SELECT setval('mental_training_sessions_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM mental_training_sessions), false)",
                 "SELECT setval('training_sessions_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM training_sessions), false)",
@@ -779,15 +778,21 @@ class V2MigrationManager:
             
             # Migrate completed sessions (if they exist)
             completed_sessions = getattr(v1_user, 'completed_sessions', [])
+            logger.info(f"Found {len(completed_sessions)} completed sessions to migrate")
             for session in completed_sessions:
+                logger.info(f"Processing completed session from {session.date} with drills: {session.drills}")
+                # Fix the drills JSON to use correct UUIDs
+                fixed_drills_json = self._fix_drills_json_uuids(session.drills)
+                logger.info(f"Fixed drills JSON: {fixed_drills_json}")
+                
                 new_session = CompletedSession(
                     user_id=new_user.id,  # Use new user ID
                     date=session.date,
                     session_type=getattr(session, 'session_type', 'drill_training'),
                     total_completed_drills=session.total_completed_drills,
                     total_drills=session.total_drills,
-                    drills=session.drills,
-                    duration_minutes=getattr(session, 'duration_minutes', 30),
+                    drills=fixed_drills_json,  # Use the fixed JSON with correct UUIDs
+                    duration_minutes=getattr(session, 'duration_minutes', None),
                     mental_training_session_id=getattr(session, 'mental_training_session_id', None)
                 )
                 new_session.id = None  # Force new ID
@@ -826,51 +831,64 @@ class V2MigrationManager:
                 # Migrate drill group items (if they exist)
                 drill_items = getattr(group, 'drill_items', [])
                 for item in drill_items:
+                    # Map V1 drill_id to V2 drill_uuid
+                    drill_uuid = self._map_drill_id_to_uuid(item.drill_id)
+                    
                     new_item = DrillGroupItem(
                         drill_group_id=new_group.id,  # Use new group ID
-                        drill_uuid=None,  # V1 doesn't have drill_uuid
+                        drill_uuid=drill_uuid,  # Map V1 drill_id to V2 drill_uuid
                         position=item.position,
                         created_at=getattr(item, 'created_at', None)
                     )
                     new_item.id = None  # Force new ID
                     self.v2_session.add(new_item)
             
-            # Migrate progress history (if it exists)
+            # Migrate progress history (if it exists) - use enhanced calculation
             progress_history = getattr(v1_user, 'progress_history', None)
             if progress_history:
+                # First, we need to get the completed sessions we just migrated to calculate proper metrics
+                # Flush the session to ensure completed sessions are in the database
+                self.v2_session.flush()
+                
+                # Query the completed sessions we just migrated
+                migrated_completed_sessions = self.v2_session.query(CompletedSession).filter(
+                    CompletedSession.user_id == new_user.id
+                ).all()
+                
+                # Calculate enhanced progress metrics using the actual completed sessions
+                from routers.data_sync_updates import calculate_enhanced_progress_metrics
+                enhanced_metrics = calculate_enhanced_progress_metrics(migrated_completed_sessions, new_user.position)
+                
                 new_progress = ProgressHistory(
                     user_id=new_user.id,  # Use new user ID
-                    completed_sessions_count=progress_history.completed_sessions_count,
-                    current_streak=progress_history.current_streak,
-                    highest_streak=progress_history.highest_streak,
-                    previous_streak=getattr(progress_history, 'previous_streak', 0),
-                    favorite_drill=getattr(progress_history, 'favorite_drill', ''),
-                    drills_per_session=0.0,  # V1 doesn't have this column
-                    minutes_per_session=0.0,  # V1 doesn't have this column
-                    total_time_all_sessions=0,  # V1 doesn't have this column
-                    dribbling_drills_completed=0,  # V1 doesn't have this column
-                    first_touch_drills_completed=0,  # V1 doesn't have this column
-                    passing_drills_completed=0,  # V1 doesn't have this column
-                    shooting_drills_completed=0,  # V1 doesn't have this column
-                    defending_drills_completed=0,  # V1 doesn't have this column
-                    goalkeeping_drills_completed=0,  # V1 doesn't have this column
-                    fitness_drills_completed=0,  # V1 doesn't have this column
+                    completed_sessions_count=len(migrated_completed_sessions),  # Use actual count from migrated sessions
+                    current_streak=progress_history.current_streak,  # Keep V1 streak data
+                    highest_streak=progress_history.highest_streak,  # Keep V1 streak data
+                    previous_streak=getattr(progress_history, 'previous_streak', 0),  # Keep V1 streak data
+                    favorite_drill=enhanced_metrics.get('favorite_drill', ''),
+                    drills_per_session=enhanced_metrics.get('drills_per_session', 0.0),
+                    minutes_per_session=enhanced_metrics.get('minutes_per_session', 0.0),
+                    total_time_all_sessions=enhanced_metrics.get('total_time_all_sessions', 0),
+                    dribbling_drills_completed=enhanced_metrics.get('dribbling_drills_completed', 0),
+                    first_touch_drills_completed=enhanced_metrics.get('first_touch_drills_completed', 0),
+                    passing_drills_completed=enhanced_metrics.get('passing_drills_completed', 0),
+                    shooting_drills_completed=enhanced_metrics.get('shooting_drills_completed', 0),
+                    defending_drills_completed=enhanced_metrics.get('defending_drills_completed', 0),
+                    goalkeeping_drills_completed=enhanced_metrics.get('goalkeeping_drills_completed', 0),
+                    fitness_drills_completed=enhanced_metrics.get('fitness_drills_completed', 0),
+                    most_improved_skill=enhanced_metrics.get('most_improved_skill', ''),
+                    unique_drills_completed=enhanced_metrics.get('unique_drills_completed', 0),
+                    beginner_drills_completed=enhanced_metrics.get('beginner_drills_completed', 0),
+                    intermediate_drills_completed=enhanced_metrics.get('intermediate_drills_completed', 0),
+                    advanced_drills_completed=enhanced_metrics.get('advanced_drills_completed', 0),
+                    mental_training_sessions=enhanced_metrics.get('mental_training_sessions', 0),
+                    total_mental_training_minutes=enhanced_metrics.get('total_mental_training_minutes', 0),
                     updated_at=getattr(progress_history, 'updated_at', None)
                 )
                 new_progress.id = None  # Force new ID
                 self.v2_session.add(new_progress)
-            
-            # Migrate saved filters (if they exist)
-            saved_filters = getattr(v1_user, 'saved_filters', [])
-            for filter_item in saved_filters:
-                new_filter = SavedFilter(
-                    user_id=new_user.id,  # Use new user ID
-                    name=filter_item.name,
-                    filter_data=getattr(filter_item, 'filter_data', {}),
-                    created_at=getattr(filter_item, 'created_at', None)
-                )
-                new_filter.id = None  # Force new ID
-                self.v2_session.add(new_filter)
+                
+                logger.info(f"Created progress history with enhanced metrics for user {new_user.email}")
             
             # Migrate refresh tokens (if they exist)
             refresh_tokens = getattr(v1_user, 'refresh_tokens', [])
@@ -885,17 +903,18 @@ class V2MigrationManager:
                 new_token.id = None  # Force new ID
                 self.v2_session.add(new_token)
             
-            # Migrate mental training sessions (if they exist)
-            mental_sessions = getattr(v1_user, 'mental_training_sessions', [])
-            for session in mental_sessions:
-                new_session = MentalTrainingSession(
+            # Migrate password reset codes (if they exist)
+            password_reset_codes = getattr(v1_user, 'password_reset_codes', [])
+            for code in password_reset_codes:
+                new_code = PasswordResetCode(
                     user_id=new_user.id,  # Use new user ID
-                    date=getattr(session, 'date', None),
-                    duration_minutes=getattr(session, 'duration_minutes', 30),
-                    session_type=getattr(session, 'session_type', 'mental_training')
+                    code=code.code,
+                    expires_at=code.expires_at,
+                    created_at=code.created_at
                 )
-                new_session.id = None  # Force new ID
-                self.v2_session.add(new_session)
+                new_code.id = None  # Force new ID
+                self.v2_session.add(new_code)
+
             
             # Migrate training sessions and their ordered drills
             training_sessions = getattr(v1_user, 'training_sessions', [])
@@ -913,11 +932,14 @@ class V2MigrationManager:
                 # Migrate ordered drills for this training session
                 ordered_drills = getattr(ts, 'ordered_drills', [])
                 for od in ordered_drills:
+                    # Map V1 drill_id to V2 drill_uuid
+                    drill_uuid = self._map_drill_id_to_uuid(od.drill_id)
+                    
                     new_ordered_drill = OrderedSessionDrill(
                         session_id=new_training_session.id,  # Use new training session ID
-                        drill_uuid=None,  # V1 uses drill_id, V2 uses drill_uuid - will need mapping
+                        drill_uuid=drill_uuid,  # Map V1 drill_id to V2 drill_uuid
                         position=od.position,
-                        sets_done=od.sets_done,
+                        sets_done=od.sets_done if od.sets_done is not None else 0,  # Default to 0 if null
                         sets=od.sets,
                         reps=od.reps,
                         rest=od.rest,
@@ -932,6 +954,100 @@ class V2MigrationManager:
         except Exception as e:
             logger.error(f"Error migrating related data for fresh user: {e}")
             raise
+    
+    def _map_drill_id_to_uuid(self, v1_drill_id: int) -> str:
+        """Map V1 drill_id to V2 drill_uuid"""
+        try:
+            from sqlalchemy import text
+            
+            # Query the V2 drills table to find the drill with matching ID
+            # Note: V2 drills table has both id and uuid columns
+            query = text("SELECT uuid FROM drills WHERE id = :drill_id")
+            result = self.v2_session.execute(query, {"drill_id": v1_drill_id}).fetchone()
+            
+            if result:
+                drill_uuid = str(result[0])
+                logger.info(f"Mapped V1 drill_id {v1_drill_id} to V2 drill_uuid {drill_uuid}")
+                return drill_uuid
+            else:
+                logger.warning(f"No V2 drill found for V1 drill_id {v1_drill_id}, setting drill_uuid to None")
+                return None
+                
+        except Exception as e:
+            logger.error(f"Error mapping drill_id {v1_drill_id} to UUID: {e}")
+            return None
+    
+    def _fix_drills_json_uuids(self, drills_json: list) -> list:
+        """Fix drill UUIDs in the drills JSON by matching drill names"""
+        try:
+            if not drills_json or not isinstance(drills_json, list):
+                return drills_json
+            
+            fixed_drills = []
+            for drill_entry in drills_json:
+                if not isinstance(drill_entry, dict):
+                    fixed_drills.append(drill_entry)
+                    continue
+                
+                # Check if drill info is nested under 'drill' key (V2 format)
+                drill_info = drill_entry.get('drill', drill_entry)
+                if not isinstance(drill_info, dict):
+                    fixed_drills.append(drill_entry)
+                    continue
+                
+                drill_name = drill_info.get('title') or drill_info.get('name')
+                if not drill_name:
+                    logger.warning(f"Drill data missing name/title: {drill_info}")
+                    fixed_drills.append(drill_entry)
+                    continue
+                
+                # Find the drill by name in V2 database
+                from sqlalchemy import text
+                query = text("SELECT uuid FROM drills WHERE title = :drill_name")
+                result = self.v2_session.execute(query, {"drill_name": drill_name}).fetchone()
+                
+                if result:
+                    new_drill_uuid = str(result[0])
+                    old_drill_uuid = drill_info.get('uuid') or drill_info.get('id', 'unknown')
+                    
+                    # Create a copy of the drill entry and update the UUID
+                    fixed_entry = drill_entry.copy()
+                    if 'drill' in fixed_entry:
+                        # Create new drill dict with uuid first
+                        old_drill_data = fixed_entry['drill'].copy()
+                        # Remove old ID fields
+                        if 'id' in old_drill_data:
+                            del old_drill_data['id']
+                        if 'uuid' in old_drill_data:
+                            del old_drill_data['uuid']
+                        
+                        # Create new drill dict with uuid at the beginning
+                        new_drill_data = {'uuid': new_drill_uuid}
+                        new_drill_data.update(old_drill_data)
+                        fixed_entry['drill'] = new_drill_data
+                    else:
+                        # Create new dict with uuid first
+                        old_data = fixed_entry.copy()
+                        if 'id' in old_data:
+                            del old_data['id']
+                        if 'uuid' in old_data:
+                            del old_data['uuid']
+                        
+                        new_data = {'uuid': new_drill_uuid}
+                        new_data.update(old_data)
+                        fixed_entry = new_data
+                    
+                    logger.info(f"Mapped drill '{drill_name}' from old UUID {old_drill_uuid} to new UUID {new_drill_uuid}")
+                    fixed_drills.append(fixed_entry)
+                else:
+                    logger.warning(f"No V2 drill found with name '{drill_name}', keeping original data")
+                    fixed_drills.append(drill_entry)
+            
+            return fixed_drills
+            
+        except Exception as e:
+            logger.error(f"Error fixing drills JSON UUIDs: {e}")
+            return drills_json
     
     def _clear_user_related_data(self, user: User):
         """Clear existing related data for a user (used when overwriting)"""
@@ -949,7 +1065,6 @@ class V2MigrationManager:
                 "DELETE FROM drill_group_items WHERE drill_group_id IN (SELECT id FROM drill_groups WHERE user_id = :user_id)",
                 "DELETE FROM drill_groups WHERE user_id = :user_id",
                 "DELETE FROM progress_history WHERE user_id = :user_id",
-                "DELETE FROM saved_filters WHERE user_id = :user_id",
                 "DELETE FROM refresh_tokens WHERE user_id = :user_id",
                 "DELETE FROM password_reset_codes WHERE user_id = :user_id",
                 "DELETE FROM email_verification_codes WHERE user_id = :user_id",
@@ -966,7 +1081,6 @@ class V2MigrationManager:
                 "SELECT setval('drill_groups_id_seq', (SELECT COALESCE(MAX(id), 1) FROM drill_groups))",
                 "SELECT setval('drill_group_items_id_seq', (SELECT COALESCE(MAX(id), 1) FROM drill_group_items))",
                 "SELECT setval('progress_history_id_seq', (SELECT COALESCE(MAX(id), 1) FROM progress_history))",
-                "SELECT setval('saved_filters_id_seq', (SELECT COALESCE(MAX(id), 1) FROM saved_filters))",
                 "SELECT setval('refresh_tokens_id_seq', (SELECT COALESCE(MAX(id), 1) FROM refresh_tokens))",
                 "SELECT setval('password_reset_codes_id_seq', (SELECT COALESCE(MAX(id), 1) FROM password_reset_codes))",
                 "SELECT setval('email_verification_codes_id_seq', (SELECT COALESCE(MAX(id), 1) FROM email_verification_codes))",
