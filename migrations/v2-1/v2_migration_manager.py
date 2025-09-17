@@ -437,7 +437,8 @@ class V2MigrationManager:
                 
                 # Step 2: Create fresh user entry with new ID
                 logger.info(f"Step 2: Creating fresh user entry for {user_email}")
-                new_user = self._create_fresh_user_entry(v1_user)
+                # Use the exact email that was deleted to avoid case sensitivity issues
+                new_user = self._create_fresh_user_entry(v1_user, user_email)
                 logger.info(f"Step 2 completed: Created fresh user entry with ID {new_user.id}")
                 
                 # Step 3: Migrate all related data with new user ID
@@ -465,6 +466,134 @@ class V2MigrationManager:
                 # Create a fresh session if rollback fails
                 self._create_fresh_v2_session()
             return False
+    
+    def _bulk_insert_sessions(self, sessions_data: List[dict]) -> None:
+        """Bulk insert completed sessions for better performance."""
+        if not sessions_data:
+            return
+            
+        try:
+            # Use bulk insert for sessions
+            self.v2_session.execute(
+                CompletedSession.__table__.insert(),
+                sessions_data
+            )
+            logger.info(f"Bulk inserted {len(sessions_data)} completed sessions")
+        except Exception as e:
+            logger.error(f"Error bulk inserting sessions: {e}")
+            raise
+
+    def _bulk_insert_preferences(self, preferences_data: List[dict]) -> None:
+        """Bulk insert session preferences for better performance."""
+        if not preferences_data:
+            return
+            
+        try:
+            # Use bulk insert for preferences
+            self.v2_session.execute(
+                SessionPreferences.__table__.insert(),
+                preferences_data
+            )
+            logger.info(f"Bulk inserted {len(preferences_data)} session preferences")
+        except Exception as e:
+            logger.error(f"Error bulk inserting preferences: {e}")
+            raise
+
+    def _bulk_insert_drill_groups(self, drill_groups_data: List[dict]) -> None:
+        """Bulk insert drill groups for better performance."""
+        if not drill_groups_data:
+            return
+            
+        try:
+            # Use bulk insert for drill groups
+            self.v2_session.execute(
+                DrillGroup.__table__.insert(),
+                drill_groups_data
+            )
+            logger.info(f"Bulk inserted {len(drill_groups_data)} drill groups")
+        except Exception as e:
+            logger.error(f"Error bulk inserting drill groups: {e}")
+            raise
+
+    def _bulk_insert_drill_group_items(self, drill_items_data: List[dict]) -> None:
+        """Bulk insert drill group items for better performance."""
+        if not drill_items_data:
+            return
+            
+        try:
+            # Use bulk insert for drill group items
+            self.v2_session.execute(
+                DrillGroupItem.__table__.insert(),
+                drill_items_data
+            )
+            logger.info(f"Bulk inserted {len(drill_items_data)} drill group items")
+        except Exception as e:
+            logger.error(f"Error bulk inserting drill group items: {e}")
+            raise
+
+    def _bulk_insert_progress_history(self, progress_data: List[dict]) -> None:
+        """Bulk insert progress history for better performance."""
+        if not progress_data:
+            return
+            
+        try:
+            # Use bulk insert for progress history
+            self.v2_session.execute(
+                ProgressHistory.__table__.insert(),
+                progress_data
+            )
+            logger.info(f"Bulk inserted {len(progress_data)} progress history records")
+        except Exception as e:
+            logger.error(f"Error bulk inserting progress history: {e}")
+            raise
+
+    def _bulk_insert_password_reset_codes(self, reset_codes_data: List[dict]) -> None:
+        """Bulk insert password reset codes for better performance."""
+        if not reset_codes_data:
+            return
+            
+        try:
+            # Use bulk insert for password reset codes
+            self.v2_session.execute(
+                PasswordResetCode.__table__.insert(),
+                reset_codes_data
+            )
+            logger.info(f"Bulk inserted {len(reset_codes_data)} password reset codes")
+        except Exception as e:
+            logger.error(f"Error bulk inserting password reset codes: {e}")
+            raise
+
+    def _bulk_insert_training_sessions(self, training_sessions_data: List[dict]) -> None:
+        """Bulk insert training sessions for better performance."""
+        if not training_sessions_data:
+            return
+            
+        try:
+            # Use bulk insert for training sessions
+            self.v2_session.execute(
+                TrainingSession.__table__.insert(),
+                training_sessions_data
+            )
+            logger.info(f"Bulk inserted {len(training_sessions_data)} training sessions")
+        except Exception as e:
+            logger.error(f"Error bulk inserting training sessions: {e}")
+            raise
+
+    def _bulk_insert_ordered_session_drills(self, ordered_drills_data: List[dict]) -> None:
+        """Bulk insert ordered session drills for better performance."""
+        if not ordered_drills_data:
+            return
+            
+        try:
+            # Use bulk insert for ordered session drills
+            self.v2_session.execute(
+                OrderedSessionDrill.__table__.insert(),
+                ordered_drills_data
+            )
+            logger.info(f"Bulk inserted {len(ordered_drills_data)} ordered session drills")
+        except Exception as e:
+            logger.error(f"Error bulk inserting ordered session drills: {e}")
+            raise
     
     def _migrate_apple_user_create(self, email: str) -> bool:
         """Migrate Apple user by creating new entry in V2"""
@@ -519,6 +648,8 @@ class V2MigrationManager:
                 "DELETE FROM password_reset_codes WHERE user_id = :user_id",
                 "DELETE FROM email_verification_codes WHERE user_id = :user_id",
                 "DELETE FROM mental_training_sessions WHERE user_id = :user_id",
+                "DELETE FROM custom_drills WHERE user_id = :user_id",
+                "DELETE FROM saved_filters WHERE user_id = :user_id",
                 "DELETE FROM users WHERE id = :user_id"
             ]
             
@@ -536,7 +667,9 @@ class V2MigrationManager:
                 "SELECT setval('refresh_tokens_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM refresh_tokens), false)",
                 "SELECT setval('mental_training_sessions_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM mental_training_sessions), false)",
                 "SELECT setval('training_sessions_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM training_sessions), false)",
-                "SELECT setval('ordered_session_drills_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM ordered_session_drills), false)"
+                "SELECT setval('ordered_session_drills_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM ordered_session_drills), false)",
+                "SELECT setval('custom_drills_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM custom_drills), false)",
+                "SELECT setval('saved_filters_id_seq', (SELECT COALESCE(MAX(id) + 1, 1) FROM saved_filters), false)"
             ]
             
             for reset_query in sequence_resets:
@@ -551,7 +684,7 @@ class V2MigrationManager:
             self.v2_session.rollback()
             raise
     
-    def _create_fresh_user_entry(self, v1_user: UserV1) -> User:
+    def _create_fresh_user_entry(self, v1_user: UserV1, email: str = None) -> User:
         """Create a fresh user entry with new ID"""
         try:
             from datetime import datetime
@@ -559,7 +692,7 @@ class V2MigrationManager:
             new_user = User(
                 first_name=v1_user.first_name,
                 last_name=v1_user.last_name,
-                email=v1_user.email,
+                email=email or v1_user.email,
                 hashed_password=v1_user.hashed_password,
                 primary_goal=v1_user.primary_goal,
                 biggest_challenge=v1_user.biggest_challenge,
@@ -593,78 +726,98 @@ class V2MigrationManager:
             raise
     
     def _migrate_user_related_data_fresh(self, v1_user: UserV1, new_user: User):
-        """Migrate all related data with fresh user ID (no clearing needed)"""
+        """Migrate all related data with fresh user ID using bulk operations for better performance"""
         try:
             logger.info(f"Migrating related data for fresh user {new_user.email} (ID: {new_user.id})")
             
-            # Migrate completed sessions (if they exist)
+            # Migrate completed sessions (if they exist) - BULK OPERATION
             completed_sessions = getattr(v1_user, 'completed_sessions', [])
             logger.info(f"Found {len(completed_sessions)} completed sessions to migrate")
-            for session in completed_sessions:
-                logger.info(f"Processing completed session from {session.date} with drills: {session.drills}")
-                # Fix the drills JSON to use correct UUIDs
-                fixed_drills_json = self._fix_drills_json_uuids(session.drills)
-                logger.info(f"Fixed drills JSON: {fixed_drills_json}")
-                
-                new_session = CompletedSession(
-                    user_id=new_user.id,  # Use new user ID
-                    date=session.date,
-                    session_type=getattr(session, 'session_type', 'drill_training'),
-                    total_completed_drills=session.total_completed_drills,
-                    total_drills=session.total_drills,
-                    drills=fixed_drills_json,  # Use the fixed JSON with correct UUIDs
-                    duration_minutes=getattr(session, 'duration_minutes', None),
-                    mental_training_session_id=getattr(session, 'mental_training_session_id', None)
-                )
-                new_session.id = None  # Force new ID
-                self.v2_session.add(new_session)
             
-            # Migrate session preferences (if they exist)
+            if completed_sessions:
+                sessions_data = []
+                for session in completed_sessions:
+                    logger.info(f"Processing completed session from {session.date} with drills: {session.drills}")
+                    # Fix the drills JSON to use correct UUIDs
+                    fixed_drills_json = self._fix_drills_json_uuids(session.drills)
+                    logger.info(f"Fixed drills JSON: {fixed_drills_json}")
+                    
+                    sessions_data.append({
+                        'user_id': new_user.id,  # Use new user ID
+                        'date': session.date,
+                        'session_type': getattr(session, 'session_type', 'drill_training'),
+                        'total_completed_drills': session.total_completed_drills,
+                        'total_drills': session.total_drills,
+                        'drills': fixed_drills_json,  # Use the fixed JSON with correct UUIDs
+                        'duration_minutes': getattr(session, 'duration_minutes', None),
+                        'mental_training_session_id': getattr(session, 'mental_training_session_id', None)
+                    })
+                
+                # Bulk insert all sessions at once
+                self._bulk_insert_sessions(sessions_data)
+            
+            # Migrate session preferences (if they exist) - BULK OPERATION
             session_prefs = getattr(v1_user, 'session_preferences', None)
             if session_prefs:
-                new_prefs = SessionPreferences(
-                    user_id=new_user.id,  # Use new user ID
-                    duration=session_prefs.duration,
-                    available_equipment=session_prefs.available_equipment,
-                    training_style=session_prefs.training_style,
-                    training_location=session_prefs.training_location,
-                    difficulty=session_prefs.difficulty,
-                    target_skills=session_prefs.target_skills,
-                    created_at=getattr(session_prefs, 'created_at', None),
-                    updated_at=getattr(session_prefs, 'updated_at', None)
-                )
-                new_prefs.id = None  # Force new ID
-                self.v2_session.add(new_prefs)
-            
-            # Migrate drill groups (if they exist)
-            drill_groups = getattr(v1_user, 'drill_groups', [])
-            for group in drill_groups:
-                new_group = DrillGroup(
-                    user_id=new_user.id,  # Use new user ID
-                    name=group.name,
-                    description=group.description,
-                    is_liked_group=group.is_liked_group
-                )
-                new_group.id = None  # Force new ID
-                self.v2_session.add(new_group)
-                self.v2_session.flush()  # Get the new group ID
+                preferences_data = [{
+                    'user_id': new_user.id,  # Use new user ID
+                    'duration': session_prefs.duration,
+                    'available_equipment': session_prefs.available_equipment,
+                    'training_style': session_prefs.training_style,
+                    'training_location': session_prefs.training_location,
+                    'difficulty': session_prefs.difficulty,
+                    'target_skills': session_prefs.target_skills,
+                    'created_at': getattr(session_prefs, 'created_at', None),
+                    'updated_at': getattr(session_prefs, 'updated_at', None)
+                }]
                 
-                # Migrate drill group items (if they exist)
-                drill_items = getattr(group, 'drill_items', [])
-                for item in drill_items:
-                    # Map V1 drill_id to V2 drill_uuid
-                    drill_uuid = self._map_drill_id_to_uuid(item.drill_id)
-                    
-                    new_item = DrillGroupItem(
-                        drill_group_id=new_group.id,  # Use new group ID
-                        drill_uuid=drill_uuid,  # Map V1 drill_id to V2 drill_uuid
-                        position=item.position,
-                        created_at=getattr(item, 'created_at', None)
-                    )
-                    new_item.id = None  # Force new ID
-                    self.v2_session.add(new_item)
+                # Bulk insert preferences
+                self._bulk_insert_preferences(preferences_data)
             
-            # Migrate progress history (if it exists) - use enhanced calculation
+            # Migrate drill groups (if they exist) - BULK OPERATION
+            drill_groups = getattr(v1_user, 'drill_groups', [])
+            if drill_groups:
+                # First, bulk insert all drill groups
+                drill_groups_data = []
+                for group in drill_groups:
+                    drill_groups_data.append({
+                        'user_id': new_user.id,  # Use new user ID
+                        'name': group.name,
+                        'description': group.description,
+                        'is_liked_group': group.is_liked_group
+                    })
+                
+                # Bulk insert drill groups
+                self._bulk_insert_drill_groups(drill_groups_data)
+                
+                # Get the newly inserted drill groups to get their IDs
+                self.v2_session.flush()
+                new_drill_groups = self.v2_session.query(DrillGroup).filter(
+                    DrillGroup.user_id == new_user.id
+                ).all()
+                
+                # Now bulk insert drill group items
+                drill_items_data = []
+                for i, group in enumerate(drill_groups):
+                    new_group = new_drill_groups[i]  # Match by order
+                    drill_items = getattr(group, 'drill_items', [])
+                    
+                    for item in drill_items:
+                        # Map V1 drill_id to V2 drill_uuid
+                        drill_uuid = self._map_drill_id_to_uuid(item.drill_id)
+                        
+                        drill_items_data.append({
+                            'drill_group_id': new_group.id,  # Use new group ID
+                            'drill_uuid': drill_uuid,  # Map V1 drill_id to V2 drill_uuid
+                            'position': item.position,
+                            'created_at': getattr(item, 'created_at', None)
+                        })
+                
+                # Bulk insert drill group items
+                if drill_items_data:
+                    self._bulk_insert_drill_group_items(drill_items_data)
+            
+            # Migrate progress history (if it exists) - use enhanced calculation - BULK OPERATION
             progress_history = getattr(v1_user, 'progress_history', None)
             if progress_history:
                 # First, we need to get the completed sessions we just migrated to calculate proper metrics
@@ -680,95 +833,129 @@ class V2MigrationManager:
                 from routers.data_sync_updates import calculate_enhanced_progress_metrics
                 enhanced_metrics = calculate_enhanced_progress_metrics(migrated_completed_sessions, new_user.position)
                 
-                new_progress = ProgressHistory(
-                    user_id=new_user.id,  # Use new user ID
-                    completed_sessions_count=len(migrated_completed_sessions),  # Use actual count from migrated sessions
-                    current_streak=progress_history.current_streak,  # Keep V1 streak data
-                    highest_streak=progress_history.highest_streak,  # Keep V1 streak data
-                    previous_streak=getattr(progress_history, 'previous_streak', 0),  # Keep V1 streak data
-                    favorite_drill=enhanced_metrics.get('favorite_drill', ''),
-                    drills_per_session=enhanced_metrics.get('drills_per_session', 0.0),
-                    minutes_per_session=enhanced_metrics.get('minutes_per_session', 0.0),
-                    total_time_all_sessions=enhanced_metrics.get('total_time_all_sessions', 0),
-                    dribbling_drills_completed=enhanced_metrics.get('dribbling_drills_completed', 0),
-                    first_touch_drills_completed=enhanced_metrics.get('first_touch_drills_completed', 0),
-                    passing_drills_completed=enhanced_metrics.get('passing_drills_completed', 0),
-                    shooting_drills_completed=enhanced_metrics.get('shooting_drills_completed', 0),
-                    defending_drills_completed=enhanced_metrics.get('defending_drills_completed', 0),
-                    goalkeeping_drills_completed=enhanced_metrics.get('goalkeeping_drills_completed', 0),
-                    fitness_drills_completed=enhanced_metrics.get('fitness_drills_completed', 0),
-                    most_improved_skill=enhanced_metrics.get('most_improved_skill', ''),
-                    unique_drills_completed=enhanced_metrics.get('unique_drills_completed', 0),
-                    beginner_drills_completed=enhanced_metrics.get('beginner_drills_completed', 0),
-                    intermediate_drills_completed=enhanced_metrics.get('intermediate_drills_completed', 0),
-                    advanced_drills_completed=enhanced_metrics.get('advanced_drills_completed', 0),
-                    mental_training_sessions=enhanced_metrics.get('mental_training_sessions', 0),
-                    total_mental_training_minutes=enhanced_metrics.get('total_mental_training_minutes', 0),
-                    updated_at=getattr(progress_history, 'updated_at', None)
-                )
-                new_progress.id = None  # Force new ID
-                self.v2_session.add(new_progress)
-            
+                progress_data = [{
+                    'user_id': new_user.id,  # Use new user ID
+                    'completed_sessions_count': len(migrated_completed_sessions),  # Use actual count from migrated sessions
+                    'current_streak': progress_history.current_streak,  # Keep V1 streak data
+                    'highest_streak': progress_history.highest_streak,  # Keep V1 streak data
+                    'previous_streak': getattr(progress_history, 'previous_streak', 0),  # Keep V1 streak data
+                    'favorite_drill': enhanced_metrics.get('favorite_drill', ''),
+                    'drills_per_session': enhanced_metrics.get('drills_per_session', 0.0),
+                    'minutes_per_session': enhanced_metrics.get('minutes_per_session', 0.0),
+                    'total_time_all_sessions': enhanced_metrics.get('total_time_all_sessions', 0),
+                    'dribbling_drills_completed': enhanced_metrics.get('dribbling_drills_completed', 0),
+                    'first_touch_drills_completed': enhanced_metrics.get('first_touch_drills_completed', 0),
+                    'passing_drills_completed': enhanced_metrics.get('passing_drills_completed', 0),
+                    'shooting_drills_completed': enhanced_metrics.get('shooting_drills_completed', 0),
+                    'defending_drills_completed': enhanced_metrics.get('defending_drills_completed', 0),
+                    'goalkeeping_drills_completed': enhanced_metrics.get('goalkeeping_drills_completed', 0),
+                    'fitness_drills_completed': enhanced_metrics.get('fitness_drills_completed', 0),
+                    'most_improved_skill': enhanced_metrics.get('most_improved_skill', ''),
+                    'unique_drills_completed': enhanced_metrics.get('unique_drills_completed', 0),
+                    'beginner_drills_completed': enhanced_metrics.get('beginner_drills_completed', 0),
+                    'intermediate_drills_completed': enhanced_metrics.get('intermediate_drills_completed', 0),
+                    'advanced_drills_completed': enhanced_metrics.get('advanced_drills_completed', 0),
+                    'mental_training_sessions': enhanced_metrics.get('mental_training_sessions', 0),
+                    'total_mental_training_minutes': enhanced_metrics.get('total_mental_training_minutes', 0),
+                    'updated_at': getattr(progress_history, 'updated_at', None)
+                }]
+                
+                # Bulk insert progress history
+                self._bulk_insert_progress_history(progress_data)
                 logger.info(f"Created progress history with enhanced metrics for user {new_user.email}")
             
-            # Migrate refresh tokens (if they exist)
+            # Migrate refresh tokens (if they exist) - BULK OPERATION
             refresh_tokens = getattr(v1_user, 'refresh_tokens', [])
-            for token in refresh_tokens:
-                    new_token = RefreshToken(
-                    user_id=new_user.id,  # Use new user ID
-                        token=token.token,
-                        expires_at=token.expires_at,
-                        created_at=token.created_at,
-                    is_revoked=getattr(token, 'is_revoked', False)
-                    )
-                    new_token.id = None  # Force new ID
-                    self.v2_session.add(new_token)
-            
-            # Migrate password reset codes (if they exist)
-            password_reset_codes = getattr(v1_user, 'password_reset_codes', [])
-            for code in password_reset_codes:
-                    new_code = PasswordResetCode(
-                    user_id=new_user.id,  # Use new user ID
-                        code=code.code,
-                        expires_at=code.expires_at,
-                    created_at=code.created_at
-                    )
-                    new_code.id = None  # Force new ID
-                    self.v2_session.add(new_code)
-            
-            
-            # Migrate training sessions and their ordered drills
-            training_sessions = getattr(v1_user, 'training_sessions', [])
-            for ts in training_sessions:
-                new_training_session = TrainingSession(
-                    user_id=new_user.id,  # Use new user ID
-                    total_duration=ts.total_duration,
-                    focus_areas=ts.focus_areas,
-                    created_at=getattr(ts, 'created_at', None)
-                )
-                new_training_session.id = None  # Force new ID
-                self.v2_session.add(new_training_session)
-                self.v2_session.flush()  # Get the new training session ID
-                
-                # Migrate ordered drills for this training session
-                ordered_drills = getattr(ts, 'ordered_drills', [])
-                for od in ordered_drills:
-                    # Map V1 drill_id to V2 drill_uuid
-                    drill_uuid = self._map_drill_id_to_uuid(od.drill_id)
+            if refresh_tokens:
+                tokens_data = []
+                for token in refresh_tokens:
+                    # Check if token already exists to avoid unique constraint violation
+                    existing_token = self.v2_session.query(RefreshToken).filter(
+                        RefreshToken.token == token.token
+                    ).first()
                     
-                    new_ordered_drill = OrderedSessionDrill(
-                        session_id=new_training_session.id,  # Use new training session ID
-                        drill_uuid=drill_uuid,  # Map V1 drill_id to V2 drill_uuid
-                        position=od.position,
-                        sets_done=od.sets_done if od.sets_done is not None else 0,  # Default to 0 if null
-                        sets=od.sets,
-                        reps=od.reps,
-                        rest=od.rest,
-                        duration=od.duration,
-                        is_completed=od.is_completed
+                    if not existing_token:
+                        tokens_data.append({
+                            'user_id': new_user.id,  # Use new user ID
+                            'token': token.token,
+                            'expires_at': token.expires_at,
+                            'created_at': token.created_at,
+                            'is_revoked': getattr(token, 'is_revoked', False)
+                        })
+                    else:
+                        logger.info(f"Skipping duplicate refresh token for user {new_user.email}")
+                
+                # Bulk insert refresh tokens
+                if tokens_data:
+                    self.v2_session.execute(
+                        RefreshToken.__table__.insert(),
+                        tokens_data
                     )
-                    new_ordered_drill.id = None  # Force new ID
-                    self.v2_session.add(new_ordered_drill)
+                    logger.info(f"Bulk inserted {len(tokens_data)} refresh tokens")
+            
+            # Migrate password reset codes (if they exist) - BULK OPERATION
+            password_reset_codes = getattr(v1_user, 'password_reset_codes', [])
+            if password_reset_codes:
+                reset_codes_data = []
+                for code in password_reset_codes:
+                    reset_codes_data.append({
+                        'user_id': new_user.id,  # Use new user ID
+                        'code': code.code,
+                        'expires_at': code.expires_at,
+                        'created_at': code.created_at
+                    })
+                
+                # Bulk insert password reset codes
+                self._bulk_insert_password_reset_codes(reset_codes_data)
+            
+            
+            # Migrate training sessions and their ordered drills - BULK OPERATION
+            training_sessions = getattr(v1_user, 'training_sessions', [])
+            if training_sessions:
+                # First, bulk insert all training sessions
+                training_sessions_data = []
+                for ts in training_sessions:
+                    training_sessions_data.append({
+                        'user_id': new_user.id,  # Use new user ID
+                        'total_duration': ts.total_duration,
+                        'focus_areas': ts.focus_areas,
+                        'created_at': getattr(ts, 'created_at', None)
+                    })
+                
+                # Bulk insert training sessions
+                self._bulk_insert_training_sessions(training_sessions_data)
+                
+                # Get the newly inserted training sessions to get their IDs
+                self.v2_session.flush()
+                new_training_sessions = self.v2_session.query(TrainingSession).filter(
+                    TrainingSession.user_id == new_user.id
+                ).all()
+                
+                # Now bulk insert ordered session drills
+                ordered_drills_data = []
+                for i, ts in enumerate(training_sessions):
+                    new_training_session = new_training_sessions[i]  # Match by order
+                    ordered_drills = getattr(ts, 'ordered_drills', [])
+                    
+                    for od in ordered_drills:
+                        # Map V1 drill_id to V2 drill_uuid
+                        drill_uuid = self._map_drill_id_to_uuid(od.drill_id)
+                        
+                        ordered_drills_data.append({
+                            'session_id': new_training_session.id,  # Use new training session ID
+                            'drill_uuid': drill_uuid,  # Map V1 drill_id to V2 drill_uuid
+                            'position': od.position,
+                            'sets_done': od.sets_done if od.sets_done is not None else 0,  # Default to 0 if null
+                            'sets': od.sets,
+                            'reps': od.reps,
+                            'rest': od.rest,
+                            'duration': od.duration,
+                            'is_completed': od.is_completed
+                        })
+                
+                # Bulk insert ordered session drills
+                if ordered_drills_data:
+                    self._bulk_insert_ordered_session_drills(ordered_drills_data)
             
             logger.info(f"Successfully migrated all related data for fresh user {new_user.email}")
             
