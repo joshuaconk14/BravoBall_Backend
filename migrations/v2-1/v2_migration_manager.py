@@ -73,52 +73,51 @@ class V2MigrationManager:
         logger.info("Created fresh V2 session")
         
     def identify_user_platforms(self) -> Dict[str, Set[str]]:
-        """Identify Apple vs Android users based on email presence - simplified for testing"""
+        """Identify Apple vs Android users based on email presence - full analysis"""
         try:
-            logger.info("Identifying user platforms (simplified test mode)...")
+            logger.info("Identifying user platforms (full analysis)...")
             
-            # Get first 5 users from V1 (guaranteed to have stale data in staging)
-            v1_users_first_5 = self.v1_session.query(UserV1.email).limit(5).all()
-            first_5_emails = set()
-            for (email,) in v1_users_first_5:
-                if email:
-                    first_5_emails.add(email.lower())
-                    logger.info(f"First 5 V1 user: {email}")
+            # Get ALL users from V1 database
+            v1_users = self.v1_session.query(UserV1).all()
+            v1_emails = set()
+            for user in v1_users:
+                if user.email:
+                    v1_emails.add(user.email.lower())
             
-            # Get last 5 users from V1 (guaranteed to be new users not in staging)
-            v1_users_last_5 = self.v1_session.query(UserV1.email).order_by(UserV1.id.desc()).limit(5).all()
-            last_5_emails = set()
-            for (email,) in v1_users_last_5:
-                if email:
-                    last_5_emails.add(email.lower())
-                    logger.info(f"Last 5 V1 user: {email}")
+            logger.info(f"📊 V1 Database: {len(v1_users)} total users")
+            logger.info(f"📧 V1 Emails: {len(v1_emails)} valid email addresses")
             
             # Get all emails from staging to check which ones exist
+            staging_users = self.v2_session.query(User).all()
             staging_emails = set()
-            staging_users = self.v2_session.query(User.email).all()
-            for (email,) in staging_users:
-                if email:
-                    staging_emails.add(email.lower())
+            for user in staging_users:
+                if user.email:
+                    staging_emails.add(user.email.lower())
             
-            # Categorize the test users
-            apple_in_both = first_5_emails & staging_emails  # First 5 that exist in staging (stale data)
-            apple_only_v1 = last_5_emails - staging_emails   # Last 5 that don't exist in staging (new users)
+            logger.info(f"📊 Staging Database: {len(staging_users)} total users")
+            logger.info(f"📧 Staging Emails: {len(staging_emails)} valid email addresses")
+            
+            # Categorize users properly
+            apple_users = v1_emails  # All V1 users are Apple users (the ones we want to migrate)
+            users_in_both = v1_emails & staging_emails  # Users that exist in both (stale data to update)
+            apple_only_v1 = v1_emails - staging_emails  # Users only in V1 (new users to create)
+            android_users = staging_emails - v1_emails  # Users only in staging (Android users to preserve)
             
             platform_info = {
-                'apple_users_total': len(first_5_emails) + len(last_5_emails),
-                'apple_in_both': len(apple_in_both),
+                'apple_users_total': len(apple_users),
+                'apple_in_both': len(users_in_both),
                 'apple_only_v1': len(apple_only_v1),
-                'android_users': 0,  # Not processing Android users in this test
-                'apple_emails_in_both': apple_in_both,
+                'android_users': len(android_users),
+                'apple_emails_in_both': users_in_both,
                 'apple_emails_only_v1': apple_only_v1,
-                'android_emails': set()  # Not processing Android users in this test
+                'android_emails': android_users
             }
             
-            logger.info(f"Simplified platform identification complete:")
-            logger.info(f"  First 5 V1 users (to update stale data): {len(first_5_emails)}")
-            logger.info(f"  Last 5 V1 users (to create new): {len(last_5_emails)}")
-            logger.info(f"  Users that exist in staging (will be updated): {len(apple_in_both)}")
-            logger.info(f"  Users that don't exist in staging (will be created): {len(apple_only_v1)}")
+            logger.info(f"📋 Platform identification complete:")
+            logger.info(f"  🍎 Apple users (V1) to migrate: {len(apple_users)}")
+            logger.info(f"  🔄 Users in both databases (stale data to update): {len(users_in_both)}")
+            logger.info(f"  ➕ Users only in V1 (new users to create): {len(apple_only_v1)}")
+            logger.info(f"  🤖 Android users (staging only, to preserve): {len(android_users)}")
             
             return platform_info
             

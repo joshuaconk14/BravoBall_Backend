@@ -147,21 +147,21 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
         logger.info(f"⏱️  Batch delay: {batch_delay} seconds between batches")
         logger.info(f"🔄 Parallel workers: {parallel_workers} users processed simultaneously per batch")
         
-        # Get user statistics
-        stats = get_user_statistics(migration_manager)
-        if not stats:
-            logger.error("❌ Failed to get user statistics")
+        # Get platform information from migration manager
+        platform_info = migration_manager.identify_user_platforms()
+        if not platform_info:
+            logger.error("❌ Failed to identify user platforms")
             return False
         
         logger.info("📋 Migration Plan:")
-        logger.info(f"   • Users with stale data to overwrite: {stats['users_in_both']}")
-        logger.info(f"   • New Apple users to create: {stats['new_apple_users']}")
-        logger.info(f"   • Android users to preserve: {stats['android_users']}")
+        logger.info(f"   • Users with stale data to overwrite: {platform_info['apple_in_both']}")
+        logger.info(f"   • New Apple users to create: {platform_info['apple_only_v1']}")
+        logger.info(f"   • Android users to preserve: {platform_info['android_users']}")
         
         if dry_run:
             logger.info("🔍 DRY RUN MODE - No changes will be made")
-            logger.info(f"   • Would overwrite stale data for: {stats['users_in_both_emails']}")
-            logger.info(f"   • Would create new users for: {stats['new_apple_emails']}")
+            logger.info(f"   • Would overwrite stale data for: {list(platform_info['apple_emails_in_both'])[:10]}")
+            logger.info(f"   • Would create new users for: {list(platform_info['apple_emails_only_v1'])[:10]}")
             return True
         
         # Confirm before proceeding
@@ -169,14 +169,22 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
         print("⚠️  TRICKLE MIGRATION CONFIRMATION")
         print("="*60)
         print(f"Target Database: {config.get_database_url('staging')}")
-        print(f"Users to migrate: {stats['apple_users']} Apple users")
-        print(f"  - Overwrite stale data: {stats['users_in_both']} users")
-        print(f"  - Create new entries: {stats['new_apple_users']} users")
-        print(f"Android users preserved: {stats['android_users']} users")
+        print(f"Users to migrate: {platform_info['apple_users_total']} Apple users from V1")
+        print(f"  - Overwrite stale data: {platform_info['apple_in_both']} users (exist in both V1 and staging)")
+        print(f"  - Create new entries: {platform_info['apple_only_v1']} users (only in V1)")
+        print(f"Android users preserved: {platform_info['android_users']} users (only in staging)")
+        print(f"")
+        print(f"📊 Expected Final Database State:")
+        current_staging_users = platform_info['apple_in_both'] + platform_info['android_users']
+        expected_final_users = current_staging_users + platform_info['apple_only_v1']
+        print(f"  - Current staging users: {current_staging_users}")
+        print(f"  - New users to be added: {platform_info['apple_only_v1']}")
+        print(f"  - Expected final total: {expected_final_users} users")
+        print(f"")
         print(f"Batch size: {batch_size} users per batch")
         print(f"Parallel workers: {parallel_workers} users simultaneously per batch")
         print(f"Batch delay: {batch_delay} seconds")
-        estimated_time = (stats['apple_users'] / batch_size) * batch_delay / 60
+        estimated_time = (platform_info['apple_users_total'] / batch_size) * batch_delay / 60
         print(f"Estimated time: ~{estimated_time:.1f} minutes")
         if parallel_workers > 1:
             print(f"Expected speed improvement: ~{parallel_workers}x faster than sequential processing")
@@ -200,19 +208,16 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
         
         # Get all Apple users from V1
         v1_users = migration_manager.v1_session.query(UserV1).all()
-        staging_users = migration_manager.v2_session.query(User).all()
-        staging_emails = {user.email.lower() for user in staging_users}
+        staging_emails = platform_info['apple_emails_in_both'] | platform_info['android_emails']
         
         total_users = len(v1_users)
         
         # Apply start_from offset
         if start_from:
-            if start_from > total_users:
-                logger.error(f"❌ Start from ({start_from}) is greater than total users ({total_users})")
-                return False
-            v1_users = v1_users[start_from-1:]  # Convert to 0-based index
+            # Filter users by ID instead of array index to handle gaps in ID sequence
+            v1_users = [user for user in v1_users if user.id >= start_from]
             total_users = len(v1_users)
-            logger.info(f"🔢 Starting from user {start_from}, processing {total_users} remaining users")
+            logger.info(f"🔢 Starting from user ID {start_from}, processing {total_users} remaining users")
         
         # Apply limit
         if limit:
@@ -322,6 +327,15 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
         success_rate = (migration_stats['users_updated'] + migration_stats['users_created']) / total_users * 100
         logger.info(f"📈 Overall success rate: {success_rate:.1f}%")
         
+        # Migration comparison with initial expectations
+        logger.info(f"\n📊 MIGRATION RESULTS vs EXPECTATIONS:")
+        logger.info(f"   Expected to update (stale data): {platform_info['apple_in_both']} users")
+        logger.info(f"   Actually updated: {migration_stats['users_updated']} users")
+        logger.info(f"   Expected to create (new users): {platform_info['apple_only_v1']} users")
+        logger.info(f"   Actually created: {migration_stats['users_created']} users")
+        logger.info(f"   Expected final total: {platform_info['apple_in_both'] + platform_info['android_users'] + platform_info['apple_only_v1']} users")
+        logger.info(f"   Android users preserved: {platform_info['android_users']} users")
+        
         # Performance metrics
         total_time = migration_stats['batches_completed'] * batch_delay
         logger.info(f"⏱️  Total time: ~{total_time / 60:.1f} minutes")
@@ -364,8 +378,8 @@ def main():
         
         if args.stats_only:
             logger.info("📊 Statistics only mode")
-            stats = get_user_statistics(migration_manager)
-            if stats:
+            platform_info = migration_manager.identify_user_platforms()
+            if platform_info:
                 logger.info("✅ Statistics retrieved successfully")
             sys.exit(0)
         
