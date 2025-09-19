@@ -8,6 +8,10 @@ from typing import Optional
 from pathlib import Path
 import json
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv(Path(__file__).parent.parent.parent / '.env')
 
 class MigrationConfig:
     """Configuration for V2 migration process"""

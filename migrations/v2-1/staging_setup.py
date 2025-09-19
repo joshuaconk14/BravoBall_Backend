@@ -174,12 +174,15 @@ class StagingSetup:
                     'drill_skill_focus', 'mental_training_quotes', 'session_drills'
                 ]
                 
-                # Clear tables in the specified order
+                # Clear tables in the specified order - each in its own transaction
                 for table_name in table_clear_order:
                     if any(t[0] == table_name for t in tables):
                         try:
-                            conn.execute(text(f'TRUNCATE TABLE "{table_name}" CASCADE'))
-                            logger.info(f"Cleared table: {table_name}")
+                            # Use a separate connection for each table to avoid transaction issues
+                            with self.target_engine.connect() as table_conn:
+                                table_conn.execute(text(f'TRUNCATE TABLE "{table_name}" CASCADE'))
+                                table_conn.commit()
+                                logger.info(f"Cleared table: {table_name}")
                         except Exception as e:
                             logger.warning(f"Could not clear table {table_name}: {e}")
                 
@@ -187,15 +190,19 @@ class StagingSetup:
                 for (table_name,) in tables:
                     if table_name not in table_clear_order:
                         try:
-                            conn.execute(text(f'TRUNCATE TABLE "{table_name}" CASCADE'))
-                            logger.info(f"Cleared table: {table_name}")
+                            # Use a separate connection for each table to avoid transaction issues
+                            with self.target_engine.connect() as table_conn:
+                                table_conn.execute(text(f'TRUNCATE TABLE "{table_name}" CASCADE'))
+                                table_conn.commit()
+                                logger.info(f"Cleared table: {table_name}")
                         except Exception as e:
                             logger.warning(f"Could not clear table {table_name}: {e}")
                 
                 # Re-enable foreign key checks if we disabled them
                 if disable_fk_checks:
-                    conn.execute(text("SET session_replication_role = DEFAULT;"))
-                conn.commit()
+                    with self.target_engine.connect() as fk_conn:
+                        fk_conn.execute(text("SET session_replication_role = DEFAULT;"))
+                        fk_conn.commit()
             
             logger.info("✅ Staging database cleared")
             return True
@@ -216,9 +223,11 @@ class StagingSetup:
             logger.info("Copying data from source to staging...")
             
             # Use pg_dump and pg_restore for efficient data transfer
+            # Try custom format first, fall back to plain SQL if needed
             dump_file = config.get_backup_path("temp_dump").with_suffix('.dump')
+            sql_file = config.get_backup_path("temp_dump").with_suffix('.sql')
             
-            # Create dump from source
+            # Create dump from source - try custom format first
             logger.info("Creating dump from source database...")
             dump_cmd = [
                 'pg_dump',
@@ -230,33 +239,94 @@ class StagingSetup:
             
             result = subprocess.run(dump_cmd, capture_output=True, text=True)
             if result.returncode != 0:
-                logger.error(f"Dump creation failed: {result.stderr}")
-                return False
+                logger.warning(f"Custom format dump failed: {result.stderr}")
+                logger.info("Trying plain SQL format...")
+                
+                # Fall back to plain SQL format
+                dump_cmd = [
+                    'pg_dump',
+                    self.source_url,
+                    '--format=plain',
+                    '--data-only',
+                    '--file', str(sql_file)
+                ]
+                
+                result = subprocess.run(dump_cmd, capture_output=True, text=True)
+                if result.returncode != 0:
+                    logger.error(f"Plain SQL dump also failed: {result.stderr}")
+                    return False
+                
+                # Use SQL file for restore
+                dump_file = sql_file
             
-            # Restore to staging
+            # Restore to staging with improved error handling
             logger.info("Restoring data to staging database...")
-            restore_cmd = [
-                'pg_restore',
-                '--data-only',
-                '--disable-triggers',
-                '--no-owner',
-                '--no-privileges',
-                '--dbname', self.target_url,
-                str(dump_file)
-            ]
+            
+            # Choose restore method based on file format
+            if dump_file.suffix == '.sql':
+                # Use psql for SQL files
+                restore_cmd = [
+                    'psql',
+                    self.target_url,
+                    '-f', str(dump_file)
+                ]
+            else:
+                # Use pg_restore for custom format
+                restore_cmd = [
+                    'pg_restore',
+                    '--data-only',
+                    '--no-owner',
+                    '--no-privileges',
+                    '--single-transaction',  # Use single transaction for better error handling
+                    '--exit-on-error',       # Stop on first error
+                    '--dbname', self.target_url,
+                    str(dump_file)
+                ]
             
             result = subprocess.run(restore_cmd, capture_output=True, text=True)
-            if result.returncode != 0:
-                logger.warning(f"Restore completed with warnings: {result.stderr}")
-                # Check if the warnings are just about duplicate keys or permission issues
-                if "duplicate key value violates unique constraint" in result.stderr:
-                    logger.warning("Duplicate key violations detected - this is expected if staging already has some data")
-                elif "permission denied" in result.stderr:
-                    logger.warning("Permission issues detected - this is expected in some database configurations")
-                # Continue anyway as some warnings are expected
             
-            # Clean up temp file
+            # Check for specific error types and handle them appropriately
+            if result.returncode != 0:
+                stderr_lower = result.stderr.lower()
+                
+                # Check for permission issues with triggers (these are warnings, not errors)
+                if "permission denied" in stderr_lower and "trigger" in stderr_lower:
+                    logger.warning("Permission issues with system triggers detected - this is expected and can be ignored")
+                    # Try restore again without --exit-on-error to continue despite trigger warnings
+                    logger.info("Retrying restore without exit-on-error to handle trigger warnings...")
+                    
+                    if dump_file.suffix == '.sql':
+                        # For SQL files, just retry with psql
+                        restore_cmd_retry = [
+                            'psql',
+                            self.target_url,
+                            '-f', str(dump_file)
+                        ]
+                    else:
+                        # For custom format, retry without exit-on-error
+                        restore_cmd_retry = [
+                            'pg_restore',
+                            '--data-only',
+                            '--no-owner',
+                            '--no-privileges',
+                            '--dbname', self.target_url,
+                            str(dump_file)
+                        ]
+                    result = subprocess.run(restore_cmd_retry, capture_output=True, text=True)
+                    
+                # Check for duplicate key violations (these are expected if staging has data)
+                if "duplicate key value violates unique constraint" in stderr_lower:
+                    logger.warning("Duplicate key violations detected - this is expected if staging already has some data")
+                    # This is actually fine - the data is already there
+                    
+                # Check for other serious errors
+                if result.returncode != 0 and "duplicate key value violates unique constraint" not in stderr_lower:
+                    logger.error(f"Restore failed with serious error: {result.stderr}")
+                    return False
+            
+            # Clean up temp files
             dump_file.unlink(missing_ok=True)
+            sql_file.unlink(missing_ok=True)
             
             # Reset sequence numbers to avoid ID conflicts
             self._reset_sequences()
@@ -273,30 +343,33 @@ class StagingSetup:
         try:
             logger.info("Resetting sequence numbers...")
             
+            # Get all sequences first
             with self.target_engine.connect() as conn:
-                # Get all sequences
                 sequences = conn.execute(text("""
                     SELECT sequence_name 
                     FROM information_schema.sequences 
                     WHERE sequence_schema = 'public'
                 """)).fetchall()
-                
-                for (seq_name,) in sequences:
-                    try:
-                        # Get the table name from sequence name (remove _id_seq suffix)
-                        table_name = seq_name.replace('_id_seq', '')
-                        
+            
+            # Reset each sequence in its own transaction to avoid transaction issues
+            for (seq_name,) in sequences:
+                try:
+                    # Get the table name from sequence name (remove _id_seq suffix)
+                    table_name = seq_name.replace('_id_seq', '')
+                    
+                    # Use separate connection for each sequence reset
+                    with self.target_engine.connect() as seq_conn:
                         # Reset sequence to max ID + 1
-                        conn.execute(text(f"""
+                        seq_conn.execute(text(f"""
                             SELECT setval('{seq_name}', 
                                 COALESCE((SELECT MAX(id) FROM "{table_name}"), 0) + 1, 
                                 false)
                         """))
+                        seq_conn.commit()
                         logger.info(f"Reset sequence {seq_name}")
-                    except Exception as e:
-                        logger.warning(f"Could not reset sequence {seq_name}: {e}")
-                
-                conn.commit()
+                        
+                except Exception as e:
+                    logger.warning(f"Could not reset sequence {seq_name}: {e}")
             
             logger.info("✅ Sequence numbers reset")
             

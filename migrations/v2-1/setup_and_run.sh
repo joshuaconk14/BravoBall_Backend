@@ -80,12 +80,14 @@ echo "   1) Check migration status"
 echo "   2) Test migration on staging (recommended first)"
 echo "   3) Run full migration on staging"
 echo "   4) Run migration on production V2 (⚠️  DANGEROUS)"
-echo "   5) List rollback points"
-echo "   6) Rollback migration"
-echo "   7) Exit"
+echo "   5) Create rollback point"
+echo "   6) List rollback points"
+echo "   7) Quick rollback (to latest backup)"
+echo "   8) Advanced rollback (select specific backup)"
+echo "   9) Exit"
 echo ""
 
-read -p "Enter your choice (1-7): " choice
+read -p "Enter your choice (1-9): " choice
 
 case $choice in
     1)
@@ -112,10 +114,18 @@ case $choice in
         fi
         ;;
     5)
+        echo "🔄 Creating rollback point..."
+        python3 create_rollback_point.py
+        ;;
+    6)
         echo "📋 Listing rollback points..."
         python3 rollback_manager.py "$V2_DATABASE_URL" "$STAGING_DATABASE_URL" list
         ;;
-    6)
+    7)
+        echo "🔄 Quick rollback to latest backup..."
+        python3 quick_rollback.py
+        ;;
+    8)
         echo "📋 Available rollback points:"
         python3 rollback_manager.py "$V2_DATABASE_URL" "$STAGING_DATABASE_URL" list
         echo ""
@@ -127,7 +137,7 @@ case $choice in
             echo "❌ Rollback file not found: $rollback_file"
         fi
         ;;
-    7)
+    9)
         echo "👋 Goodbye!"
         exit 0
         ;;
