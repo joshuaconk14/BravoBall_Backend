@@ -164,20 +164,43 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             logger.info(f"   • Would create new users for: {list(platform_info['apple_emails_only_v1'])[:10]}")
             return True
         
+        # Production safety check
+        if 'production' in str(target_url).lower() or 'prod' in str(target_url).lower() or migration_manager.v2_engine.url == config.get_database_url("v2"):
+            print("\n" + "🚨" * 20)
+            print("🚨 PRODUCTION DATABASE DETECTED 🚨")
+            print("🚨" * 20)
+            print("⚠️  WARNING: You are about to run migration against PRODUCTION!")
+            print("⚠️  This will PERMANENTLY modify production data!")
+            print("⚠️  Make sure you have:")
+            print("   • Created a full database backup")
+            print("   • Tested this migration on staging")
+            print("   • Coordinated with your team")
+            print("   • Have rollback plan ready")
+            print("🚨" * 20)
+            
+            production_confirm = input("\n🔴 Type 'PRODUCTION' to confirm you want to proceed: ").strip()
+            if production_confirm != 'PRODUCTION':
+                logger.info("❌ Production migration cancelled - confirmation failed")
+                return False
+            
+            print("✅ Production confirmation received")
+        
         # Confirm before proceeding
         print("\n" + "="*60)
         print("⚠️  TRICKLE MIGRATION CONFIRMATION")
         print("="*60)
-        print(f"Target Database: {config.get_database_url('staging')}")
+        # Get the actual target database URL from the migration manager
+        target_url = migration_manager.v2_engine.url
+        print(f"Target Database: {target_url}")
         print(f"Users to migrate: {platform_info['apple_users_total']} Apple users from V1")
-        print(f"  - Overwrite stale data: {platform_info['apple_in_both']} users (exist in both V1 and staging)")
+        print(f"  - Overwrite stale data: {platform_info['apple_in_both']} users (exist in both V1 and target)")
         print(f"  - Create new entries: {platform_info['apple_only_v1']} users (only in V1)")
-        print(f"Android users preserved: {platform_info['android_users']} users (only in staging)")
+        print(f"Android users preserved: {platform_info['android_users']} users (only in target)")
         print(f"")
         print(f"📊 Expected Final Database State:")
-        current_staging_users = platform_info['apple_in_both'] + platform_info['android_users']
-        expected_final_users = current_staging_users + platform_info['apple_only_v1']
-        print(f"  - Current staging users: {current_staging_users}")
+        current_target_users = platform_info['apple_in_both'] + platform_info['android_users']
+        expected_final_users = current_target_users + platform_info['apple_only_v1']
+        print(f"  - Current target users: {current_target_users}")
         print(f"  - New users to be added: {platform_info['apple_only_v1']}")
         print(f"  - Expected final total: {expected_final_users} users")
         print(f"")
@@ -359,6 +382,7 @@ def main():
     parser.add_argument('--batch-delay', type=int, default=30, help='Seconds to wait between batches (default: 30)')
     parser.add_argument('--parallel-workers', type=int, default=1, help='Number of parallel workers per batch (default: 1 - sequential with bulk operations)')
     parser.add_argument('--start-from', type=int, help='Start migration from user number X (1-based index)')
+    parser.add_argument('--production', action='store_true', help='Run migration against production V2 database (default: uses staging)')
     
     args = parser.parse_args()
     
@@ -366,14 +390,33 @@ def main():
         logger.info("🚀 V2 Migration Runner Starting...")
         logger.info(f"📅 Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         
+        # Set production mode if --production flag is used
+        if args.production:
+            logger.info("🏭 PRODUCTION MODE ENABLED")
+            # Override debug mode for production
+            import os
+            os.environ["MIGRATION_DEBUG"] = "false"
+            # Reload config to pick up the change
+            from migration_config import MigrationConfig
+            global config
+            config = MigrationConfig()
+            logger.info("📊 Debug mode disabled for production")
+            logger.info("🚫 User limits disabled for production")
+        
         # Validate configuration
         if not validate_configuration():
             sys.exit(1)
         
-        # Create migration manager
+        # Create migration manager - choose target database based on production flag
+        target_db = "v2" if args.production else "staging"
+        target_url = config.get_database_url(target_db)
+        
+        logger.info(f"🎯 Target Database: {target_db.upper()}")
+        logger.info(f"🔗 Target URL: {target_url}")
+        
         migration_manager = V2MigrationManager(
             config.get_database_url("v1"),
-            config.get_database_url("staging")  # Use staging for testing
+            target_url
         )
         
         if args.stats_only:

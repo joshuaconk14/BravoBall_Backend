@@ -30,26 +30,40 @@ python3 run_full_migration.py --limit 10
 - Good for testing before full migration
 - Interactive confirmation required
 
-### 4. **Full Migration**
+### 4. **Full Migration (Staging)**
 ```bash
 python3 run_full_migration.py
 ```
-- Migrates all Apple users
+- Migrates all Apple users to staging database
 - Interactive confirmation required
 - Comprehensive logging
+
+### 5. **Production Migration**
+```bash
+python3 run_full_migration.py --production
+```
+- Migrates all Apple users to **PRODUCTION V2 database**
+- ⚠️ **DANGEROUS**: Modifies production data permanently
+- Extra safety confirmations required
+- Disables debug mode and user limits
 
 ## 🔧 Environment Setup
 
 Make sure these environment variables are set:
 ```bash
 export V1_DATABASE_URL="postgresql://user:pass@host:port/v1_db"
+export V2_DATABASE_URL="postgresql://user:pass@host:port/v2_db"
 export STAGING_DATABASE_URL="postgresql://user:pass@host:port/staging_db"
 ```
+
+**Note**: 
+- Default migration targets **staging** database
+- Use `--production` flag to target **V2 production** database
 
 ## 📊 What the Script Does
 
 ### For Each Apple User:
-1. **Checks if user exists in staging**
+1. **Checks if user exists in target database**
    - If yes: Overwrites stale data with fresh V1 data
    - If no: Creates new user entry with V1 data
 
@@ -145,12 +159,27 @@ python3 test_specific_user.py "user@example.com"
 
 ## 🚀 Production Usage
 
-When ready for production:
-1. Update `STAGING_DATABASE_URL` to `V2_DATABASE_URL`
-2. Create full database backups
-3. Run dry-run first
-4. Execute full migration
-5. Monitor and validate results
+### Staging Testing (Recommended First):
+```bash
+# Test on staging first
+python3 run_full_migration.py --dry-run
+python3 run_full_migration.py --limit 5
+python3 run_full_migration.py  # Full staging migration
+```
+
+### Production Migration:
+```bash
+# ⚠️ PRODUCTION MIGRATION - DANGEROUS!
+python3 run_full_migration.py --production --dry-run  # Preview
+python3 run_full_migration.py --production            # Execute
+```
+
+**Pre-Production Checklist:**
+1. ✅ Create full V2 database backup
+2. ✅ Test migration completely on staging
+3. ✅ Coordinate with team (downtime if needed)
+4. ✅ Have rollback plan ready
+5. ✅ Monitor and validate results
 
 ---
 

@@ -7,6 +7,11 @@ set -e  # Exit on any error
 
 echo "🚀 V2 Migration Setup and Run Script"
 echo "====================================="
+echo ""
+echo "💡 Usage:"
+echo "   ./setup_and_run.sh                    # Run staging migration"
+echo "   ./setup_and_run.sh --production       # Run PRODUCTION migration"
+echo ""
 
 # Check if we're in the right directory
 if [ ! -f "migration_config.py" ]; then
@@ -73,13 +78,25 @@ echo "   V1 Database: ${V1_DATABASE_URL}"
 echo "   V2 Database: ${V2_DATABASE_URL}"
 echo "   Staging Database: ${STAGING_DATABASE_URL}"
 
+# Check for production flag
+PRODUCTION_FLAG=""
+if [ "$1" = "--production" ]; then
+    PRODUCTION_FLAG="--production"
+    echo "🏭 PRODUCTION MODE ENABLED"
+    echo "⚠️  WARNING: This will target the PRODUCTION V2 database!"
+fi
+
 # Ask user what they want to do
 echo ""
 echo "🎯 What would you like to do?"
-echo "   1) Check migration status"
-echo "   2) Test migration on staging (recommended first)"
-echo "   3) Run full migration on staging"
-echo "   4) Run migration on production V2 (⚠️  DANGEROUS)"
+echo "   1) View statistics only"
+echo "   2) Dry run (preview what would be migrated)"
+echo "   3) Test with limited users (5 users)"
+if [ -n "$PRODUCTION_FLAG" ]; then
+    echo "   4) 🚨 Run PRODUCTION migration (DANGEROUS!)"
+else
+    echo "   4) Run full staging migration"
+fi
 echo "   5) Create rollback point"
 echo "   6) List rollback points"
 echo "   7) Quick rollback (to latest backup)"
@@ -91,26 +108,32 @@ read -p "Enter your choice (1-9): " choice
 
 case $choice in
     1)
-        echo "🔍 Checking migration status..."
-        python3 run_migration.py "$V1_DATABASE_URL" "$V2_DATABASE_URL" "$STAGING_DATABASE_URL" status
+        echo "📊 Viewing migration statistics..."
+        python3 run_full_migration.py $PRODUCTION_FLAG --stats-only
         ;;
     2)
-        echo "🧪 Testing migration on staging..."
-        python3 run_migration.py "$V1_DATABASE_URL" "$V2_DATABASE_URL" "$STAGING_DATABASE_URL" test
+        echo "🔍 Running dry run (preview)..."
+        python3 run_full_migration.py $PRODUCTION_FLAG --dry-run
         ;;
     3)
-        echo "🚀 Running full migration on staging..."
-        python3 run_migration.py "$V1_DATABASE_URL" "$V2_DATABASE_URL" "$STAGING_DATABASE_URL" migrate
+        echo "🧪 Testing with limited users..."
+        python3 run_full_migration.py $PRODUCTION_FLAG --limit 5
         ;;
     4)
-        echo "⚠️  WARNING: This will run migration on PRODUCTION V2 database!"
-        echo "   Make sure you have backups and have tested on staging first."
-        read -p "Are you sure you want to continue? (yes/no): " confirm
-        if [ "$confirm" = "yes" ]; then
-            echo "🚀 Running migration on production V2..."
-            python3 run_migration.py "$V1_DATABASE_URL" "$V2_DATABASE_URL" "$STAGING_DATABASE_URL" migrate --skip-staging
+        if [ -n "$PRODUCTION_FLAG" ]; then
+            echo "🚨 WARNING: This will run migration on PRODUCTION V2 database!"
+            echo "   This will PERMANENTLY modify production data!"
+            echo "   Make sure you have backups and have tested on staging first."
+            read -p "Are you absolutely sure? Type 'PRODUCTION' to confirm: " confirm
+            if [ "$confirm" = "PRODUCTION" ]; then
+                echo "🚀 Running PRODUCTION migration..."
+                python3 run_full_migration.py --production
+            else
+                echo "❌ Production migration cancelled"
+            fi
         else
-            echo "❌ Migration cancelled"
+            echo "🚀 Running full staging migration..."
+            python3 run_full_migration.py
         fi
         ;;
     5)
