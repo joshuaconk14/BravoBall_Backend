@@ -25,9 +25,9 @@ from staging_setup import StagingSetup
 class RollbackManager:
     """Simple rollback manager for migration recovery with version compatibility"""
     
-    def __init__(self, v2_url: str, staging_url: str):
-        self.v2_url = v2_url
-        self.staging_url = staging_url
+    def __init__(self, target_url: str, source_url: str):
+        self.target_url = target_url  # Database to restore TO
+        self.source_url = source_url  # Database to restore FROM (not used in rollback)
         self.backup_dir = config.backup_dir
         self.backup_dir.mkdir(exist_ok=True)
         
@@ -44,7 +44,7 @@ class RollbackManager:
             # Create data-only backup using pg_dump
             cmd = [
                 'pg_dump',
-                self.staging_url,
+                self.target_url,
                 '--format=plain',
                 '--data-only',  # Only backup data, not schema
                 '--no-sync',
@@ -61,7 +61,7 @@ class RollbackManager:
                 "backup_name": backup_name,
                 "created_at": datetime.now().isoformat(),
                 "description": description or "Rollback point",
-                "staging_url": self.staging_url,
+                "target_url": self.target_url,
                 "backup_file": str(backup_path),
                 "backup_format": "sql"
             }
@@ -126,9 +126,9 @@ class RollbackManager:
                 return False
             
             if confirm:
-                print(f"⚠️  This will restore staging database from backup:")
+                print(f"⚠️  This will restore target database from backup:")
                 print(f"   Backup: {backup_file}")
-                print(f"   Target: {self.staging_url}")
+                print(f"   Target: {self.target_url}")
                 print()
                 response = input("Are you sure you want to proceed? (yes/no): ").strip().lower()
                 if response not in ['yes', 'y']:
@@ -154,8 +154,8 @@ class RollbackManager:
             # Verify the database is actually cleared
             print("   Verifying database is cleared...")
             from sqlalchemy import create_engine, text
-            staging_engine = create_engine(self.staging_url)
-            with staging_engine.connect() as conn:
+            target_engine = create_engine(self.target_url)
+            with target_engine.connect() as conn:
                 user_count = conn.execute(text('SELECT COUNT(*) FROM users')).scalar()
                 if user_count > 0:
                     print(f"   ⚠️  Database still has {user_count} users - clearing manually...")
@@ -189,7 +189,7 @@ class RollbackManager:
             # Use psql with connection parameters to handle large files and timeouts
             restore_cmd = [
                 'psql',
-                self.staging_url,
+                self.target_url,
                 '-f', str(backup_file),
                 '--set=ON_ERROR_STOP=off',  # Continue on errors
                 '--quiet',                  # Reduce output
@@ -248,7 +248,7 @@ class RollbackManager:
             from sqlalchemy import create_engine, text
             
             # Create database connection
-            engine = create_engine(self.staging_url)
+            engine = create_engine(self.target_url)
             
             # Read the SQL file and split into chunks
             with open(backup_file, 'r') as f:

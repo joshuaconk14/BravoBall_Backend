@@ -29,6 +29,21 @@ def main():
             print("❌ Configuration validation failed")
             sys.exit(1)
         
+        # Determine target database based on environment or command line args
+        # Check if we're in production mode
+        is_production = os.getenv("MIGRATION_DEBUG", "true").lower() == "false" or "--production" in sys.argv
+        
+        if is_production:
+            # Production mode: create rollback point for V2 database
+            target_db = "v2"
+            source_db = "staging"  # Not used for backup creation, but required by RollbackManager
+            print("🏭 PRODUCTION MODE: Creating rollback point for V2 production database")
+        else:
+            # Development mode: create rollback point for staging database  
+            target_db = "staging"
+            source_db = "v2"
+            print("🧪 DEVELOPMENT MODE: Creating rollback point for staging database")
+        
         # Get description from user
         description = input("Enter description for this rollback point (or press Enter for default): ").strip()
         if not description:
@@ -36,8 +51,8 @@ def main():
         
         # Create rollback manager
         manager = RollbackManager(
-            config.get_database_url("v2"),
-            config.get_database_url("staging")
+            config.get_database_url(target_db),
+            config.get_database_url(source_db)
         )
         
         # Create rollback point

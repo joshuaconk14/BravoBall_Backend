@@ -22,15 +22,28 @@ from v2_migration_manager import V2MigrationManager
 from models import User
 from models_v1 import UserV1
 
-# Set up logging (console only)
-logging.basicConfig(
-    level=logging.INFO, 
-    format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
-    handlers=[
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
+# Set up logging (console and file)
+def setup_logging():
+    """Set up logging to both console and file"""
+    # Create log file name with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_file = config.log_dir / f"migration_run_{timestamp}.log"
+    
+    # Configure logging with both console and file handlers
+    logging.basicConfig(
+        level=logging.INFO, 
+        format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        handlers=[
+            logging.StreamHandler(),  # Console output
+            logging.FileHandler(log_file, encoding='utf-8')  # File output
+        ]
+    )
+    
+    logger = logging.getLogger(__name__)
+    logger.info(f"📝 Logging initialized - Log file: {log_file}")
+    return logger
+
+logger = setup_logging()
 
 def validate_configuration():
     """Validate that all required configuration is present"""
@@ -222,13 +235,32 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             return False
         
         # Start migration
+        migration_start_time = datetime.now()
         migration_stats = {
             'users_updated': 0,
             'users_created': 0,
             'users_failed': 0,
             'batches_completed': 0,
-            'errors': []
+            'errors': [],
+            'start_time': migration_start_time
         }
+        
+        # Log migration start details
+        logger.info("\n" + "🚀" * 20)
+        logger.info("🚀 MIGRATION STARTED")
+        logger.info("🚀" * 20)
+        logger.info(f"📅 Start Time: {migration_start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        logger.info(f"🎯 Target Database: {migration_manager.v2_engine.url}")
+        logger.info(f"📊 Total Apple Users to Migrate: {platform_info['apple_users_total']}")
+        logger.info(f"   • Users to Update (stale data): {platform_info['apple_in_both']}")
+        logger.info(f"   • Users to Create (new): {platform_info['apple_only_v1']}")
+        logger.info(f"🔒 Android Users to Preserve: {platform_info['android_users']}")
+        logger.info(f"📦 Batch Configuration:")
+        logger.info(f"   • Batch Size: {batch_size} users")
+        logger.info(f"   • Parallel Workers: {parallel_workers}")
+        logger.info(f"   • Batch Delay: {batch_delay} seconds")
+        logger.info(f"   • Total Batches: {(platform_info['apple_users_total'] + batch_size - 1) // batch_size}")
+        logger.info("🚀" * 20)
         
         # Get all Apple users from V1
         v1_users = migration_manager.v1_session.query(UserV1).all()
@@ -264,7 +296,9 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             display_start = actual_start + start_idx + 1
             display_end = actual_start + end_idx
             
+            batch_start_time = datetime.now()
             logger.info(f"\n📦 BATCH {batch_num + 1}/{total_batches} - Processing users {display_start}-{display_end}")
+            logger.info(f"⏱️  Batch Start Time: {batch_start_time.strftime('%H:%M:%S')}")
             
             batch_stats = {
                 'updated': 0,
@@ -319,11 +353,25 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             
             # Batch completion summary
             migration_stats['batches_completed'] += 1
-            logger.info(f"\n📊 BATCH {batch_num + 1} COMPLETED:")
-            logger.info(f"   ✅ Updated: {batch_stats['updated']}")
-            logger.info(f"   ✅ Created: {batch_stats['created']}")
-            logger.info(f"   ❌ Failed: {batch_stats['failed']}")
-            logger.info(f"   📈 Success rate: {(batch_stats['updated'] + batch_stats['created']) / len(batch_users) * 100:.1f}%")
+            batch_end_time = datetime.now()
+            batch_duration = (batch_end_time - batch_start_time).total_seconds()
+            
+            logger.info(f"\n" + "📊" * 15)
+            logger.info(f"📊 BATCH {batch_num + 1}/{total_batches} COMPLETED")
+            logger.info(f"📊" * 15)
+            logger.info(f"⏱️  Batch Duration: {batch_duration:.1f} seconds")
+            logger.info(f"📧 Users in Batch: {len(batch_users)}")
+            logger.info(f"✅ Updated: {batch_stats['updated']}")
+            logger.info(f"✅ Created: {batch_stats['created']}")
+            logger.info(f"❌ Failed: {batch_stats['failed']}")
+            logger.info(f"📈 Batch Success Rate: {(batch_stats['updated'] + batch_stats['created']) / len(batch_users) * 100:.1f}%")
+            logger.info(f"🏃 Processing Speed: {len(batch_users) / batch_duration:.1f} users/second")
+            
+            # Overall progress
+            total_processed = migration_stats['users_updated'] + migration_stats['users_created'] + migration_stats['users_failed']
+            overall_progress = total_processed / total_users * 100
+            logger.info(f"📈 Overall Progress: {total_processed}/{total_users} ({overall_progress:.1f}%)")
+            logger.info(f"📊" * 15)
             
             # Add delay between batches (except for the last batch)
             if batch_num < total_batches - 1:
@@ -332,24 +380,42 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
                 time.sleep(batch_delay)
         
         # Final statistics
-        logger.info("\n" + "="*60)
-        logger.info("🎉 TRICKLE MIGRATION COMPLETED")
-        logger.info("="*60)
-        logger.info(f"📦 Batches completed: {migration_stats['batches_completed']}/{total_batches}")
-        logger.info(f"✅ Users updated (stale data): {migration_stats['users_updated']}")
-        logger.info(f"✅ Users created (new): {migration_stats['users_created']}")
-        logger.info(f"❌ Users failed: {migration_stats['users_failed']}")
-        logger.info(f"📊 Total processed: {migration_stats['users_updated'] + migration_stats['users_created'] + migration_stats['users_failed']}")
+        migration_end_time = datetime.now()
+        total_migration_time = migration_end_time - migration_stats['start_time']
         
-        if migration_stats['errors']:
-            logger.info(f"\n⚠️  Errors encountered ({len(migration_stats['errors'])}):")
-            for error in migration_stats['errors'][:5]:  # Show first 5 errors
-                logger.info(f"   • {error}")
-            if len(migration_stats['errors']) > 5:
-                logger.info(f"   • ... and {len(migration_stats['errors']) - 5} more errors")
+        logger.info("\n" + "🎉" * 20)
+        logger.info("🎉 MIGRATION COMPLETED SUCCESSFULLY")
+        logger.info("🎉" * 20)
+        logger.info(f"📅 Completion Time: {migration_end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        logger.info(f"⏱️  Total Migration Duration: {total_migration_time}")
+        logger.info(f"📦 Batches Completed: {migration_stats['batches_completed']}/{total_batches}")
+        
+        logger.info(f"\n📊 MIGRATION RESULTS:")
+        logger.info(f"   ✅ Users Updated (stale data): {migration_stats['users_updated']}")
+        logger.info(f"   ✅ Users Created (new): {migration_stats['users_created']}")
+        logger.info(f"   ❌ Users Failed: {migration_stats['users_failed']}")
+        logger.info(f"   📊 Total Processed: {migration_stats['users_updated'] + migration_stats['users_created'] + migration_stats['users_failed']}")
         
         success_rate = (migration_stats['users_updated'] + migration_stats['users_created']) / total_users * 100
-        logger.info(f"📈 Overall success rate: {success_rate:.1f}%")
+        logger.info(f"   📈 Overall Success Rate: {success_rate:.1f}%")
+        
+        # Performance metrics
+        total_seconds = total_migration_time.total_seconds()
+        if total_seconds > 0:
+            users_per_second = total_users / total_seconds
+            logger.info(f"   🚀 Average Processing Speed: {users_per_second:.2f} users/second")
+            logger.info(f"   ⚡ Total Throughput: {total_users} users in {total_seconds:.1f} seconds")
+        
+        if migration_stats['errors']:
+            logger.info(f"\n⚠️  ERRORS ENCOUNTERED ({len(migration_stats['errors'])}):")
+            for i, error in enumerate(migration_stats['errors'][:5], 1):  # Show first 5 errors
+                logger.info(f"   {i}. {error}")
+            if len(migration_stats['errors']) > 5:
+                logger.info(f"   ... and {len(migration_stats['errors']) - 5} more errors")
+        else:
+            logger.info(f"\n✨ NO ERRORS - Perfect migration execution!")
+        
+        logger.info("🎉" * 20)
         
         # Migration comparison with initial expectations
         logger.info(f"\n📊 MIGRATION RESULTS vs EXPECTATIONS:")
