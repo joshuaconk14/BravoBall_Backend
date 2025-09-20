@@ -74,9 +74,9 @@ echo ""
 echo "📊 Current Configuration:"
 echo "   Debug Mode: ${MIGRATION_DEBUG:-true}"
 echo "   Max Test Users: ${MAX_TEST_USERS:-5}"
-echo "   V1 Database: ${V1_DATABASE_URL}"
-echo "   V2 Database: ${V2_DATABASE_URL}"
-echo "   Staging Database: ${STAGING_DATABASE_URL}"
+echo "   V1 Database: ${V1_DATABASE_URL:0:30}..."
+echo "   V2 Database: ${V2_DATABASE_URL:0:30}..."
+echo "   Staging Database: ${STAGING_DATABASE_URL:0:30}..."
 
 # Check for production flag
 PRODUCTION_FLAG=""
@@ -86,22 +86,51 @@ if [ "$1" = "--production" ]; then
     echo "⚠️  WARNING: This will target the PRODUCTION V2 database!"
 fi
 
+# Database connectivity test
+echo ""
+echo "🔌 Testing database connections..."
+python3 -c "
+import os
+from sqlalchemy import create_engine, text
+try:
+    v1_engine = create_engine(os.getenv('V1_DATABASE_URL'))
+    v2_engine = create_engine(os.getenv('V2_DATABASE_URL'))
+    with v1_engine.connect() as conn:
+        conn.execute(text('SELECT 1'))
+    with v2_engine.connect() as conn:
+        conn.execute(text('SELECT 1'))
+    print('✅ All database connections successful')
+except Exception as e:
+    print(f'❌ Database connection failed: {e}')
+    exit(1)
+"
+
 # Ask user what they want to do
 echo ""
 echo "🎯 What would you like to do?"
-echo "   1) View statistics only"
-echo "   2) Dry run (preview what would be migrated)"
-echo "   3) Test with limited users (5 users)"
-if [ -n "$PRODUCTION_FLAG" ]; then
-    echo "   4) 🚨 Run PRODUCTION migration (DANGEROUS!)"
-else
-    echo "   4) Run full staging migration"
-fi
-echo "   5) Create rollback point"
+echo ""
+echo "   📊 SAFE OPERATIONS:"
+echo "   1) View statistics only (shows user counts)"
+echo "   2) Dry run preview (shows what would be migrated)"
+echo "   3) Test with 5 users (safe test run)"
+echo ""
+echo "   🛡️  BACKUP & ROLLBACK:"
+echo "   5) Create rollback point (recommended before migration)"
 echo "   6) List rollback points"
 echo "   7) Quick rollback (to latest backup)"
 echo "   8) Advanced rollback (select specific backup)"
+echo ""
+if [ -n "$PRODUCTION_FLAG" ]; then
+    echo "   🚨 PRODUCTION OPERATIONS:"
+    echo "   4) Run PRODUCTION migration (PERMANENT CHANGES!)"
+else
+    echo "   🧪 STAGING OPERATIONS:"
+    echo "   4) Run full staging migration"
+fi
+echo ""
 echo "   9) Exit"
+echo ""
+echo "💡 Recommended workflow: 5 → 1 → 2 → 3 → 4"
 echo ""
 
 read -p "Enter your choice (1-9): " choice
@@ -121,15 +150,33 @@ case $choice in
         ;;
     4)
         if [ -n "$PRODUCTION_FLAG" ]; then
-            echo "🚨 WARNING: This will run migration on PRODUCTION V2 database!"
-            echo "   This will PERMANENTLY modify production data!"
-            echo "   Make sure you have backups and have tested on staging first."
-            read -p "Are you absolutely sure? Type 'PRODUCTION' to confirm: " confirm
-            if [ "$confirm" = "PRODUCTION" ]; then
-                echo "🚀 Running PRODUCTION migration..."
+            echo ""
+            echo "🚨" | tr -d '\n'; for i in {1..20}; do echo -n "🚨"; done; echo ""
+            echo "🚨 FINAL PRODUCTION MIGRATION WARNING 🚨"
+            echo "🚨" | tr -d '\n'; for i in {1..20}; do echo -n "🚨"; done; echo ""
+            echo ""
+            echo "⚠️  This will PERMANENTLY modify your PRODUCTION V2 database!"
+            echo "⚠️  This affects your live Android users' data!"
+            echo ""
+            echo "📋 Pre-flight checklist:"
+            echo "   ✅ Created rollback point? (option 5)"
+            echo "   ✅ Tested dry run? (option 2)" 
+            echo "   ✅ Tested with 5 users? (option 3)"
+            echo "   ✅ Verified statistics look correct? (option 1)"
+            echo "   ✅ Team coordinated and aware?"
+            echo "   ✅ Ready to monitor for ~97 minutes?"
+            echo ""
+            read -p "🔴 Type 'I UNDERSTAND THE RISKS' to proceed: " confirm
+            if [ "$confirm" = "I UNDERSTAND THE RISKS" ]; then
+                echo ""
+                echo "🚀 Initiating PRODUCTION migration..."
+                echo "📊 This will take approximately 97 minutes"
+                echo "📱 Monitor Android user performance during migration"
+                echo ""
                 python3 run_full_migration.py --production
             else
-                echo "❌ Production migration cancelled"
+                echo "❌ Production migration cancelled - confirmation failed"
+                echo "💡 Run tests first: options 1, 2, 3, then try again"
             fi
         else
             echo "🚀 Running full staging migration..."
@@ -172,5 +219,12 @@ esac
 
 echo ""
 echo "✅ Operation completed!"
-echo "📁 Check the logs/ directory for detailed logs"
-echo "📁 Check the backups/ directory for backup files"
+echo ""
+echo "📁 Check the logs/ directory for detailed logs:"
+ls -la logs/ 2>/dev/null | tail -3 || echo "   No logs directory found"
+echo ""
+echo "📁 Check the backups/ directory for backup files:"
+ls -la backups/ 2>/dev/null | tail -3 || echo "   No backups directory found"
+echo ""
+echo "💡 To run this script again: ./setup_and_run.sh --production"
+echo "🆘 For emergency rollback: python3 quick_rollback.py"
