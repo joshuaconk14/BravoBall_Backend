@@ -165,7 +165,8 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             return True
         
         # Production safety check
-        if 'production' in str(target_url).lower() or 'prod' in str(target_url).lower() or migration_manager.v2_engine.url == config.get_database_url("v2"):
+        target_url = migration_manager.v2_engine.url
+        if 'production' in str(target_url).lower() or 'prod' in str(target_url).lower() or target_url == config.get_database_url("v2"):
             print("\n" + "🚨" * 20)
             print("🚨 PRODUCTION DATABASE DETECTED 🚨")
             print("🚨" * 20)
