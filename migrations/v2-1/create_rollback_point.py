@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv(Path(__file__).parent.parent.parent / '.env')
-
+ 
 # Add parent directory to path to import our modules
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
