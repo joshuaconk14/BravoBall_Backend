@@ -148,14 +148,12 @@ def process_user_parallel(migration_manager, v1_user, staging_emails, user_index
                 if email.lower() in staging_emails:
                     logger.info(f"   🔄 Overwriting stale data for {email}")
                     
-                    # Production-ready timeout checks (test delay removed)
-                    
                     # Check timeout before main processing
                     if timeout_tracker.is_timeout():
                         raise TimeoutException(f"Hard timeout before main processing for {email} after {timeout_tracker.elapsed():.1f}s")
-                    
+                        
                     success = thread_migration_manager._migrate_apple_user_overwrite(email)
-                    
+                        
                     # Check timeout after processing
                     if timeout_tracker.is_timeout():
                         logger.warning(f"   ⏰ User {email} completed but took {timeout_tracker.elapsed():.1f}s (timeout: {user_timeout}s)")
@@ -168,13 +166,13 @@ def process_user_parallel(migration_manager, v1_user, staging_emails, user_index
                         return {'status': 'failed', 'email': email, 'error': f"Failed to update {email}"}
                 else:
                     logger.info(f"   ➕ Creating new user {email}")
-                    
+                        
                     # Check timeout before main processing
                     if timeout_tracker.is_timeout():
                         raise TimeoutException(f"Hard timeout before user creation for {email} after {timeout_tracker.elapsed():.1f}s")
-                    
+                        
                     success = thread_migration_manager._migrate_apple_user_create(email)
-                    
+                        
                     # Check timeout after processing
                     if timeout_tracker.is_timeout():
                         logger.warning(f"   ⏰ User {email} completed but took {timeout_tracker.elapsed():.1f}s (timeout: {user_timeout}s)")
@@ -193,7 +191,7 @@ def process_user_parallel(migration_manager, v1_user, staging_emails, user_index
                     thread_migration_manager.v2_session.close()
                 except:
                     pass
-                    
+                
     except TimeoutException as e:
         logger.error(f"   ⏰ Timeout processing {email}: {e}")
         return {'status': 'failed', 'email': email, 'error': f"Timeout processing {email}: {e}"}
@@ -245,7 +243,7 @@ def get_user_statistics(migration_manager):
         logger.error(f"❌ Error getting user statistics: {e}")
         return None
 
-def run_migration(migration_manager, dry_run=False, limit=None, start_from=None, batch_size=25, batch_delay=30, parallel_workers=1, user_timeout=300, batch_timeout=900, migration_timeout_hours=6):
+def run_migration(migration_manager, dry_run=False, limit=None, start_from=None, batch_size=25, batch_delay=30, parallel_workers=1, user_timeout=300, batch_timeout=900, migration_timeout_hours=6, skip_confirmations=False):
     """Run the full migration with trickle/batch processing"""
     try:
         logger.info("🚀 Starting hybrid trickle migration process...")
@@ -285,12 +283,14 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             print("   • Have rollback plan ready")
             print("🚨" * 20)
             
-            production_confirm = input("\n🔴 Type 'PRODUCTION' to confirm you want to proceed: ").strip()
-            if production_confirm != 'PRODUCTION':
-                logger.info("❌ Production migration cancelled - confirmation failed")
-                return False
-            
-            print("✅ Production confirmation received")
+            if not skip_confirmations:
+                production_confirm = input("\n🔴 Type 'PRODUCTION' to confirm you want to proceed: ").strip()
+                if production_confirm != 'PRODUCTION':
+                    logger.info("❌ Production migration cancelled - confirmation failed")
+                    return False
+                print("✅ Production confirmation received")
+            else:
+                logger.info("✅ Production confirmation skipped (--yes flag)")
         
         # Confirm before proceeding
         print("\n" + "="*60)
@@ -322,10 +322,13 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             print(f"Expected speed improvement: ~3-5x faster with bulk operations (sequential processing)")
         print("="*60)
         
-        confirm = input("\nDo you want to proceed with the trickle migration? (yes/no): ").strip().lower()
-        if confirm not in ['yes', 'y']:
-            logger.info("❌ Migration cancelled by user")
-            return False
+        if not skip_confirmations:
+            confirm = input("\nDo you want to proceed with the trickle migration? (yes/no): ").strip().lower()
+            if confirm not in ['yes', 'y']:
+                logger.info("❌ Migration cancelled by user")
+                return False
+        else:
+            logger.info("✅ Migration confirmation skipped (--yes flag)")
         
         # Start migration
         migration_start_time = datetime.now()
@@ -629,6 +632,7 @@ def main():
     parser.add_argument('--user-timeout', type=int, default=300, help='Timeout per user in seconds (default: 300 = 5 minutes)')
     parser.add_argument('--batch-timeout', type=int, default=900, help='Timeout per batch in seconds (default: 900 = 15 minutes)')
     parser.add_argument('--migration-timeout', type=int, default=6, help='Maximum migration duration in hours (default: 6 hours)')
+    parser.add_argument('--yes', action='store_true', help='Skip all confirmation prompts (for non-interactive use)')
     
     args = parser.parse_args()
     
@@ -683,7 +687,8 @@ def main():
             parallel_workers=args.parallel_workers,
             user_timeout=args.user_timeout,
             batch_timeout=args.batch_timeout,
-            migration_timeout_hours=args.migration_timeout
+            migration_timeout_hours=args.migration_timeout,
+            skip_confirmations=args.yes
         )
         
         if success:
