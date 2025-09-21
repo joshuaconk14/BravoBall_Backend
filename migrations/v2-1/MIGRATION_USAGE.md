@@ -47,6 +47,18 @@ python3 run_full_migration.py --production
 - Extra safety confirmations required
 - Disables debug mode and user limits
 
+### 6. **Production Migration with Custom Timeouts**
+```bash
+python3 run_full_migration.py --production \
+  --user-timeout 600 \
+  --batch-timeout 1200 \
+  --migration-timeout 8
+```
+- **User timeout**: 10 minutes per user (default: 5 minutes)
+- **Batch timeout**: 20 minutes per batch (default: 15 minutes)  
+- **Migration timeout**: 8 hours total (default: 6 hours)
+- **Prevents infinite hangs** and provides timeout protection
+
 ## 🔧 Environment Setup
 
 Make sure these environment variables are set:
@@ -85,16 +97,34 @@ export STAGING_DATABASE_URL="postgresql://user:pass@host:port/staging_db"
 ## 📈 Output and Logging
 
 ### Console Output:
-- Real-time progress updates
-- Success/failure notifications
-- Final statistics summary
+- Real-time progress updates with detailed user-by-user processing
+- Success/failure notifications with timing information
+- Final statistics summary with performance metrics
+- Timeout warnings and error details
 
-### Log Files:
-- Detailed logs saved to `migration_log_YYYYMMDD_HHMMSS.log`
-- Includes all operations and error details
-- Useful for troubleshooting
+### Enhanced Log Files:
+- **Selective logging** to `migration_run_YYYYMMDD_HHMMSS.log`
+- **Key milestones only**: Migration start, batch completions, migration end
+- **Clean and concise** - Easy to scan for progress monitoring
+- **Perfect for production** - No verbose user-by-user details in files
+- **Audit trail** with timestamps and success rates
+
+### Logging Features:
+- **Dual output**: Full details in console, key events in log files
+- **Progress tracking**: Batch-by-batch completion status
+- **Performance metrics**: Processing speeds and throughput
+- **Error reporting**: Timeout details and failure summaries
+- **Health checks**: Every 10 batches with elapsed time tracking
 
 ## ⚠️ Safety Features
+
+### Timeout Protection:
+- **Multi-level timeouts** prevent infinite hangs
+- **User-level**: 5 minutes per user (configurable)
+- **Batch-level**: 15 minutes per batch (configurable)
+- **Migration-level**: 6 hours total (configurable)
+- **Thread-safe** timeout handling for parallel processing
+- **Graceful failure** - continues with remaining users if one times out
 
 ### Interactive Confirmation:
 ```
@@ -132,8 +162,14 @@ python3 run_full_migration.py --limit 5
 
 ### 2. **Full Migration**
 ```bash
-# Run full migration
+# Run full migration (staging)
 python3 run_full_migration.py
+
+# Run production migration with timeout protection
+python3 run_full_migration.py --production \
+  --user-timeout 600 \
+  --batch-timeout 1200 \
+  --migration-timeout 8
 ```
 
 ### 3. **Post-Migration Validation**

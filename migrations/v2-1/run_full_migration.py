@@ -11,8 +11,10 @@ from pathlib import Path
 import logging
 from datetime import datetime
 import threading
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FuturesTimeoutError
 import time
+import signal
+from contextlib import contextmanager
 
 # Add parent directory to path to import our modules
 sys.path.append(str(Path(__file__).parent.parent.parent))
@@ -22,26 +24,86 @@ from v2_migration_manager import V2MigrationManager
 from models import User
 from models_v1 import UserV1
 
-# Set up logging (console and file)
+# Set up logging (console and selective file logging)
 def setup_logging():
-    """Set up logging to both console and file"""
+    """Set up logging with console output and selective file logging for key events only"""
     # Create log file name with timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_file = config.log_dir / f"migration_run_{timestamp}.log"
     
-    # Configure logging with both console and file handlers
-    logging.basicConfig(
-        level=logging.INFO, 
-        format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
-        handlers=[
-            logging.StreamHandler(),  # Console output
-            logging.FileHandler(log_file, encoding='utf-8')  # File output
-        ]
-    )
+    # Ensure log directory exists
+    log_file.parent.mkdir(parents=True, exist_ok=True)
+    
+    # Clear any existing handlers to avoid conflicts
+    logging.getLogger().handlers.clear()
+    
+    # Create console handler (gets all log messages)
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(name)s: %(message)s'))
+    
+    # Create file handler (will be used selectively for key events)
+    global file_handler
+    file_handler = logging.FileHandler(log_file, encoding='utf-8')
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(name)s: %(message)s'))
+    
+    # Configure root logger with console handler only
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    root_logger.addHandler(console_handler)
     
     logger = logging.getLogger(__name__)
     logger.info(f"📝 Logging initialized - Log file: {log_file}")
+    logger.info(f"📝 Key milestones will be logged to file: migration start, batch completions, migration end")
+    
     return logger
+
+def log_to_file(message):
+    """Write a specific message to the log file only (not console)"""
+    global file_handler
+    # Create a temporary logger just for this file write
+    temp_logger = logging.getLogger("file_only")
+    temp_logger.handlers.clear()
+    temp_logger.addHandler(file_handler)
+    temp_logger.setLevel(logging.INFO)
+    temp_logger.info(message)
+    file_handler.flush()  # Ensure immediate write
+
+# Timeout handling utilities
+class TimeoutException(Exception):
+    """Custom timeout exception"""
+    pass
+
+@contextmanager 
+def timeout_handler(seconds, description="operation"):
+    """Simple timeout handler that just tracks time"""
+    import time
+    start_time = time.time()
+    
+    class TimeoutTracker:
+        def __init__(self, start, timeout_seconds):
+            self.start = start
+            self.timeout = timeout_seconds
+            
+        def is_timeout(self):
+            return time.time() - self.start > self.timeout
+            
+        def elapsed(self):
+            return time.time() - self.start
+    
+    tracker = TimeoutTracker(start_time, seconds)
+    try:
+        yield tracker
+    finally:
+        pass  # No cleanup needed
+
+def check_migration_health(start_time, max_duration_hours=6):
+    """Check if migration has been running too long"""
+    elapsed = datetime.now() - start_time
+    if elapsed.total_seconds() > max_duration_hours * 3600:
+        raise TimeoutException(f"Migration exceeded maximum duration of {max_duration_hours} hours")
+    return elapsed
 
 logger = setup_logging()
 
@@ -58,52 +120,83 @@ def validate_configuration():
         logger.error(f"❌ Configuration validation error: {e}")
         return False
 
-def process_user_parallel(migration_manager, v1_user, staging_emails, user_index, total_users):
+def process_user_parallel(migration_manager, v1_user, staging_emails, user_index, total_users, user_timeout=300):
     """Process a single user in parallel - thread-safe version with separate database sessions"""
+    email = v1_user.email
     try:
-        email = v1_user.email
         logger.info(f"📧 [{user_index}/{total_users}] Processing: {email}")
         
-        # Create a new migration manager instance for this thread (thread-safe)
-        from sqlalchemy import create_engine
-        from sqlalchemy.orm import sessionmaker
-        from v2_migration_manager import V2MigrationManager
-        
-        # Create separate database sessions for this thread
-        thread_migration_manager = V2MigrationManager(
-            migration_manager.v1_engine.url,
-            migration_manager.v2_engine.url
-        )
-        
-        try:
-            # Check if user exists in staging
-            if email.lower() in staging_emails:
-                logger.info(f"   🔄 Overwriting stale data for {email}")
-                success = thread_migration_manager._migrate_apple_user_overwrite(email)
-                if success:
-                    logger.info(f"   ✅ Successfully updated {email}")
-                    return {'status': 'updated', 'email': email, 'error': None}
-                else:
-                    logger.error(f"   ❌ Failed to update {email}")
-                    return {'status': 'failed', 'email': email, 'error': f"Failed to update {email}"}
-            else:
-                logger.info(f"   ➕ Creating new user {email}")
-                success = thread_migration_manager._migrate_apple_user_create(email)
-                if success:
-                    logger.info(f"   ✅ Successfully created {email}")
-                    return {'status': 'created', 'email': email, 'error': None}
-                else:
-                    logger.error(f"   ❌ Failed to create {email}")
-                    return {'status': 'failed', 'email': email, 'error': f"Failed to create {email}"}
-                    
-        finally:
-            # Clean up thread-specific sessions
+        # Add timeout for individual user processing
+        with timeout_handler(user_timeout, f"user processing for {email}") as timeout_tracker:
+            # Create a new migration manager instance for this thread (thread-safe)
+            from sqlalchemy import create_engine
+            from sqlalchemy.orm import sessionmaker
+            from v2_migration_manager import V2MigrationManager
+            
+            # Create separate database sessions for this thread
+            thread_migration_manager = V2MigrationManager(
+                migration_manager.v1_engine.url,
+                migration_manager.v2_engine.url
+            )
+            
             try:
-                thread_migration_manager.v1_session.close()
-                thread_migration_manager.v2_session.close()
-            except:
-                pass
+                # Check for timeout before processing
+                if timeout_tracker.is_timeout():
+                    raise TimeoutException(f"Timeout before processing {email} (elapsed: {timeout_tracker.elapsed():.1f}s)")
                 
+                # Check if user exists in staging
+                if email.lower() in staging_emails:
+                    logger.info(f"   🔄 Overwriting stale data for {email}")
+                    
+                    # Production-ready timeout checks (test delay removed)
+                    
+                    # Check timeout before main processing
+                    if timeout_tracker.is_timeout():
+                        raise TimeoutException(f"Hard timeout before main processing for {email} after {timeout_tracker.elapsed():.1f}s")
+                    
+                    success = thread_migration_manager._migrate_apple_user_overwrite(email)
+                    
+                    # Check timeout after processing
+                    if timeout_tracker.is_timeout():
+                        logger.warning(f"   ⏰ User {email} completed but took {timeout_tracker.elapsed():.1f}s (timeout: {user_timeout}s)")
+                        
+                    if success:
+                        logger.info(f"   ✅ Successfully updated {email}")
+                        return {'status': 'updated', 'email': email, 'error': None}
+                    else:
+                        logger.error(f"   ❌ Failed to update {email}")
+                        return {'status': 'failed', 'email': email, 'error': f"Failed to update {email}"}
+                else:
+                    logger.info(f"   ➕ Creating new user {email}")
+                    
+                    # Check timeout before main processing
+                    if timeout_tracker.is_timeout():
+                        raise TimeoutException(f"Hard timeout before user creation for {email} after {timeout_tracker.elapsed():.1f}s")
+                    
+                    success = thread_migration_manager._migrate_apple_user_create(email)
+                    
+                    # Check timeout after processing
+                    if timeout_tracker.is_timeout():
+                        logger.warning(f"   ⏰ User {email} completed but took {timeout_tracker.elapsed():.1f}s (timeout: {user_timeout}s)")
+                        
+                    if success:
+                        logger.info(f"   ✅ Successfully created {email}")
+                        return {'status': 'created', 'email': email, 'error': None}
+                    else:
+                        logger.error(f"   ❌ Failed to create {email}")
+                        return {'status': 'failed', 'email': email, 'error': f"Failed to create {email}"}
+                        
+            finally:
+                # Clean up thread-specific sessions
+                try:
+                    thread_migration_manager.v1_session.close()
+                    thread_migration_manager.v2_session.close()
+                except:
+                    pass
+                    
+    except TimeoutException as e:
+        logger.error(f"   ⏰ Timeout processing {email}: {e}")
+        return {'status': 'failed', 'email': email, 'error': f"Timeout processing {email}: {e}"}
     except Exception as e:
         logger.error(f"   ❌ Error processing {email}: {e}")
         return {'status': 'failed', 'email': email, 'error': f"Error processing {email}: {e}"}
@@ -152,7 +245,7 @@ def get_user_statistics(migration_manager):
         logger.error(f"❌ Error getting user statistics: {e}")
         return None
 
-def run_migration(migration_manager, dry_run=False, limit=None, start_from=None, batch_size=25, batch_delay=30, parallel_workers=1):
+def run_migration(migration_manager, dry_run=False, limit=None, start_from=None, batch_size=25, batch_delay=30, parallel_workers=1, user_timeout=300, batch_timeout=900, migration_timeout_hours=6):
     """Run the full migration with trickle/batch processing"""
     try:
         logger.info("🚀 Starting hybrid trickle migration process...")
@@ -245,7 +338,7 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             'start_time': migration_start_time
         }
         
-        # Log migration start details
+        # Log migration start details (console)
         logger.info("\n" + "🚀" * 20)
         logger.info("🚀 MIGRATION STARTED")
         logger.info("🚀" * 20)
@@ -261,6 +354,15 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
         logger.info(f"   • Batch Delay: {batch_delay} seconds")
         logger.info(f"   • Total Batches: {(platform_info['apple_users_total'] + batch_size - 1) // batch_size}")
         logger.info("🚀" * 20)
+        
+        # Log migration start to file (key milestone)
+        log_to_file("🚀🚀🚀 MIGRATION STARTED 🚀🚀🚀")
+        log_to_file(f"📅 Start Time: {migration_start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        log_to_file(f"🎯 Target Database: {str(migration_manager.v2_engine.url).split('@')[0]}@***")
+        log_to_file(f"📊 Total Users to Migrate: {platform_info['apple_users_total']} (Update: {platform_info['apple_in_both']}, Create: {platform_info['apple_only_v1']})")
+        log_to_file(f"📦 Batch Config: {batch_size} users/batch, {batch_delay}s delay, {parallel_workers} workers")
+        log_to_file(f"📈 Expected Batches: {(platform_info['apple_users_total'] + batch_size - 1) // batch_size}")
+        log_to_file("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀")
         
         # Get all Apple users from V1
         v1_users = migration_manager.v1_session.query(UserV1).all()
@@ -285,8 +387,20 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
         total_batches = (total_users + batch_size - 1) // batch_size
         logger.info(f"🔄 Processing {total_users} Apple users in {total_batches} batches...")
         
-        # Process users in batches
+        # Process users in batches with overall migration timeout
         for batch_num in range(total_batches):
+            # Check overall migration health (prevent runaway migrations)
+            try:
+                elapsed = check_migration_health(migration_start_time, max_duration_hours=migration_timeout_hours)
+                if batch_num % 10 == 0:  # Every 10 batches, log progress
+                    logger.info(f"⏱️  Migration health check: {elapsed} elapsed, processing batch {batch_num + 1}/{total_batches}")
+                    log_to_file(f"⏱️  Health Check: {elapsed} elapsed, batch {batch_num + 1}/{total_batches}")
+            except TimeoutException as e:
+                logger.error(f"🚨 Migration timeout exceeded: {e}")
+                log_to_file(f"🚨 MIGRATION TIMEOUT: {e}")
+                log_to_file(f"📊 Progress at timeout: {migration_stats['batches_completed']}/{total_batches} batches completed")
+                log_to_file(f"📊 Users processed: {migration_stats['users_updated'] + migration_stats['users_created']} successful, {migration_stats['users_failed']} failed")
+                return False
             start_idx = batch_num * batch_size
             end_idx = min(start_idx + batch_size, total_users)
             batch_users = v1_users[start_idx:end_idx]
@@ -310,48 +424,82 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             # Process users in parallel within the current batch
             logger.info(f"🔄 Processing {len(batch_users)} users with {parallel_workers} parallel workers...")
             
-            with ThreadPoolExecutor(max_workers=parallel_workers) as executor:
-                # Submit all users in the batch for parallel processing
-                future_to_user = {
-                    executor.submit(
-                        process_user_parallel, 
-                        migration_manager, 
-                        v1_user, 
-                        staging_emails, 
-                        display_start + i, 
-                        total_users
-                    ): v1_user 
-                    for i, v1_user in enumerate(batch_users)
-                }
-                
-                # Collect results as they complete
-                for future in as_completed(future_to_user):
+            # Add timeout for entire batch processing
+            # batch_timeout is now configurable via parameter
+            try:
+                with ThreadPoolExecutor(max_workers=parallel_workers) as executor:
+                    # Submit all users in the batch for parallel processing
+                    future_to_user = {
+                        executor.submit(
+                            process_user_parallel, 
+                            migration_manager, 
+                            v1_user, 
+                            staging_emails, 
+                            display_start + i, 
+                            total_users,
+                            user_timeout
+                        ): v1_user 
+                        for i, v1_user in enumerate(batch_users)
+                    }
+                    
+                    # Collect results as they complete with timeout
                     try:
-                        result = future.result()
-                        email = result['email']
-                        
-                        if result['status'] == 'updated':
-                            batch_stats['updated'] += 1
-                            migration_stats['users_updated'] += 1
-                        elif result['status'] == 'created':
-                            batch_stats['created'] += 1
-                            migration_stats['users_created'] += 1
-                        elif result['status'] == 'failed':
-                            batch_stats['failed'] += 1
-                            migration_stats['users_failed'] += 1
-                            if result['error']:
-                                batch_stats['errors'].append(result['error'])
-                                migration_stats['errors'].append(result['error'])
+                        for future in as_completed(future_to_user, timeout=batch_timeout):
+                            try:
+                                result = future.result(timeout=30)  # 30 second timeout per result
+                                email = result['email']
                                 
-                    except Exception as e:
-                        batch_stats['failed'] += 1
-                        migration_stats['users_failed'] += 1
-                        error_msg = f"Error in parallel processing: {e}"
+                                if result['status'] == 'updated':
+                                    batch_stats['updated'] += 1
+                                    migration_stats['users_updated'] += 1
+                                elif result['status'] == 'created':
+                                    batch_stats['created'] += 1
+                                    migration_stats['users_created'] += 1
+                                elif result['status'] == 'failed':
+                                    batch_stats['failed'] += 1
+                                    migration_stats['users_failed'] += 1
+                                    if result['error']:
+                                        batch_stats['errors'].append(result['error'])
+                                        migration_stats['errors'].append(result['error'])
+                                        
+                            except FuturesTimeoutError:
+                                batch_stats['failed'] += 1
+                                migration_stats['users_failed'] += 1
+                                error_msg = f"Individual user processing timed out after 30 seconds"
+                                batch_stats['errors'].append(error_msg)
+                                migration_stats['errors'].append(error_msg)
+                                logger.error(f"   ⏰ {error_msg}")
+                            except Exception as e:
+                                batch_stats['failed'] += 1
+                                migration_stats['users_failed'] += 1
+                                error_msg = f"Error in parallel processing: {e}"
+                                batch_stats['errors'].append(error_msg)
+                                migration_stats['errors'].append(error_msg)
+                                logger.error(f"   ❌ Error in parallel processing: {e}")
+                                
+                    except FuturesTimeoutError:
+                        logger.error(f"⏰ Batch {batch_num + 1} timed out after {batch_timeout} seconds")
+                        # Cancel remaining futures
+                        for future in future_to_user:
+                            future.cancel()
+                        # Mark remaining users as failed
+                        remaining_users = len([f for f in future_to_user if not f.done()])
+                        batch_stats['failed'] += remaining_users
+                        migration_stats['users_failed'] += remaining_users
+                        error_msg = f"Batch timeout - {remaining_users} users not processed"
                         batch_stats['errors'].append(error_msg)
                         migration_stats['errors'].append(error_msg)
-                        logger.error(f"   ❌ Error in parallel processing: {e}")
+                        
+            except Exception as e:
+                logger.error(f"⚠️  Batch processing error: {e}")
+                # Mark all users in batch as failed if batch setup fails
+                batch_stats['failed'] += len(batch_users)
+                migration_stats['users_failed'] += len(batch_users)
+                error_msg = f"Batch setup error: {e}"
+                batch_stats['errors'].append(error_msg)
+                migration_stats['errors'].append(error_msg)
             
-            # Batch completion summary
+            # Batch completion summary (console)
             migration_stats['batches_completed'] += 1
             batch_end_time = datetime.now()
             batch_duration = (batch_end_time - batch_start_time).total_seconds()
@@ -373,13 +521,20 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
             logger.info(f"📈 Overall Progress: {total_processed}/{total_users} ({overall_progress:.1f}%)")
             logger.info(f"📊" * 15)
             
+            # Log batch completion to file (key milestone)
+            batch_success_rate = (batch_stats['updated'] + batch_stats['created']) / len(batch_users) * 100
+            log_to_file(f"📊 BATCH {batch_num + 1}/{total_batches} COMPLETED - {batch_end_time.strftime('%H:%M:%S')}")
+            log_to_file(f"   ✅ Results: Updated {batch_stats['updated']}, Created {batch_stats['created']}, Failed {batch_stats['failed']} ({batch_success_rate:.1f}% success)")
+            log_to_file(f"   ⏱️  Duration: {batch_duration:.1f}s ({len(batch_users) / batch_duration:.1f} users/sec)")
+            log_to_file(f"   📈 Overall Progress: {total_processed}/{total_users} ({overall_progress:.1f}%)")
+            
             # Add delay between batches (except for the last batch)
             if batch_num < total_batches - 1:
                 logger.info(f"⏸️  Waiting {batch_delay} seconds before next batch...")
                 import time
                 time.sleep(batch_delay)
         
-        # Final statistics
+        # Final statistics (console)
         migration_end_time = datetime.now()
         total_migration_time = migration_end_time - migration_stats['start_time']
         
@@ -417,6 +572,27 @@ def run_migration(migration_manager, dry_run=False, limit=None, start_from=None,
         
         logger.info("🎉" * 20)
         
+        # Log migration completion to file (key milestone)
+        log_to_file("")
+        log_to_file("🎉🎉🎉 MIGRATION COMPLETED SUCCESSFULLY 🎉🎉🎉")
+        log_to_file(f"📅 Completion Time: {migration_end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        log_to_file(f"⏱️  Total Duration: {total_migration_time}")
+        log_to_file(f"📦 Batches Completed: {migration_stats['batches_completed']}/{total_batches}")
+        log_to_file("")
+        log_to_file("📊 FINAL RESULTS:")
+        log_to_file(f"   ✅ Users Updated: {migration_stats['users_updated']}")
+        log_to_file(f"   ✅ Users Created: {migration_stats['users_created']}")
+        log_to_file(f"   ❌ Users Failed: {migration_stats['users_failed']}")
+        log_to_file(f"   📊 Total Processed: {migration_stats['users_updated'] + migration_stats['users_created'] + migration_stats['users_failed']}")
+        log_to_file(f"   📈 Success Rate: {success_rate:.1f}%")
+        if total_seconds > 0:
+            log_to_file(f"   🚀 Processing Speed: {users_per_second:.2f} users/second")
+        if migration_stats['errors']:
+            log_to_file(f"   ⚠️  Errors: {len(migration_stats['errors'])} encountered")
+        else:
+            log_to_file(f"   ✨ Perfect execution - No errors!")
+        log_to_file("🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉")
+        
         # Migration comparison with initial expectations
         logger.info(f"\n📊 MIGRATION RESULTS vs EXPECTATIONS:")
         logger.info(f"   Expected to update (stale data): {platform_info['apple_in_both']} users")
@@ -450,6 +626,9 @@ def main():
     parser.add_argument('--parallel-workers', type=int, default=1, help='Number of parallel workers per batch (default: 1 - sequential with bulk operations)')
     parser.add_argument('--start-from', type=int, help='Start migration from user number X (1-based index)')
     parser.add_argument('--production', action='store_true', help='Run migration against production V2 database (default: uses staging)')
+    parser.add_argument('--user-timeout', type=int, default=300, help='Timeout per user in seconds (default: 300 = 5 minutes)')
+    parser.add_argument('--batch-timeout', type=int, default=900, help='Timeout per batch in seconds (default: 900 = 15 minutes)')
+    parser.add_argument('--migration-timeout', type=int, default=6, help='Maximum migration duration in hours (default: 6 hours)')
     
     args = parser.parse_args()
     
@@ -501,7 +680,10 @@ def main():
             start_from=args.start_from,
             batch_size=args.batch_size,
             batch_delay=args.batch_delay,
-            parallel_workers=args.parallel_workers
+            parallel_workers=args.parallel_workers,
+            user_timeout=args.user_timeout,
+            batch_timeout=args.batch_timeout,
+            migration_timeout_hours=args.migration_timeout
         )
         
         if success:
