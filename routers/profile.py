@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from models import User, EmailUpdate, PasswordUpdate, PremiumSubscription
+from models import User, EmailUpdate, PasswordUpdate
 from db import get_db
 from auth import get_current_user
 from passlib.context import CryptContext
@@ -90,11 +90,6 @@ async def delete_account(
 ):
     """Delete user account and all associated data"""
     try:
-        # Delete premium subscription first
-        db.query(PremiumSubscription).filter(
-            PremiumSubscription.user_id == current_user.id
-        ).delete()
-        
         # Delete all user's data (you might want to add more cascading deletes)
         db.delete(current_user)
         db.commit()
