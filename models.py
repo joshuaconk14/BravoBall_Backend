@@ -45,46 +45,6 @@ class UserInfoDisplay(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-# *** PREMIUM SUBSCRIPTION MODELS ***
-class PremiumSubscription(Base):
-    __tablename__ = "premium_subscriptions"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    status = Column(String(50), nullable=False, default="free")  # 'free', 'premium', 'trial', 'expired'
-    plan_type = Column(String(50), nullable=False, default="free")  # 'free', 'monthly', 'yearly', 'lifetime'
-    start_date = Column(DateTime, nullable=False, server_default=func.now())
-    end_date = Column(DateTime, nullable=True)
-    trial_end_date = Column(DateTime, nullable=True)
-    is_active = Column(Boolean, default=True)
-    platform = Column(String(20), nullable=True)  # 'ios', 'android', 'web'
-    receipt_data = Column(Text, nullable=True)
-    created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, onupdate=func.now())
-
-    # Relationships
-    user = relationship("User", back_populates="premium_subscription")
-
-
-
-# *** AUDIT LOG MODEL ***
-class AuditLog(Base):
-    __tablename__ = "audit_logs"
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    action = Column(String(100), nullable=False)
-    endpoint = Column(String(200), nullable=False)
-    method = Column(String(10), nullable=False)
-    ip_address = Column(String(100), nullable=True)
-    user_agent = Column(Text, nullable=True)
-    device_fingerprint = Column(String(255), nullable=True)
-    status = Column(String(50), nullable=False)
-    details = Column(JSONB, nullable=True)
-    created_at = Column(DateTime, server_default=func.now())
-
-
-
 # *** MENTAL TRAINING MODELS ***
 class MentalTrainingQuote(Base):
     __tablename__ = "mental_training_quotes"
@@ -144,7 +104,6 @@ class User(Base):
     refresh_tokens = relationship("RefreshToken", back_populates="user")
     password_reset_codes = relationship("PasswordResetCode", back_populates="user")
     email_verification_codes = relationship("EmailVerificationCode", back_populates="user")
-    premium_subscription = relationship("PremiumSubscription", back_populates="user")
 
 
 
