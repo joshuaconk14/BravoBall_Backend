@@ -196,4 +196,31 @@ class ProgressHistoryResponse(ProgressHistoryBase):
 
     model_config = ConfigDict(from_attributes=True)
 
+
+# Store Items Schemas
+class UserStoreItemsBase(BaseModel):
+    treats: int = 0
+    streak_freezes: int = 0
+    streak_revivers: int = 0
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserStoreItemsResponse(UserStoreItemsBase):
+    id: int
+    user_id: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserStoreItemsUpdate(BaseModel):
+    treats: Optional[int] = None
+    streak_freezes: Optional[int] = None
+    streak_revivers: Optional[int] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 # Saved Filters Schemas

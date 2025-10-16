@@ -68,6 +68,23 @@ class MentalTrainingSession(Base):
     # Relationship
     user = relationship("User", backref="mental_training_sessions")
 
+
+# *** STORE ITEMS MODELS ***
+class UserStoreItems(Base):
+    __tablename__ = "user_store_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
+    treats = Column(Integer, default=0, nullable=False)
+    streak_freezes = Column(Integer, default=0, nullable=False)
+    streak_revivers = Column(Integer, default=0, nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationship
+    user = relationship("User", back_populates="store_items")
+
+
 # *** USER AND USER DATA MODELS ***
 
 class User(Base):
@@ -104,6 +121,7 @@ class User(Base):
     refresh_tokens = relationship("RefreshToken", back_populates="user")
     password_reset_codes = relationship("PasswordResetCode", back_populates="user")
     email_verification_codes = relationship("EmailVerificationCode", back_populates="user")
+    store_items = relationship("UserStoreItems", back_populates="user", uselist=False)
 
 
 
