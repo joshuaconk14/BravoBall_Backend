@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from typing import List, Optional, Dict, Any
-from datetime import datetime
+from datetime import datetime, date
 from enum import Enum
 
 
@@ -162,6 +162,8 @@ class ProgressHistoryBase(BaseModel):
     previous_streak: int = 0  # Add previous_streak field
     highest_streak: int = 0
     completed_sessions_count: int = 0
+    # ✅ NEW: Streak freeze date
+    active_freeze_date: Optional[date] = None
     # ✅ NEW: Enhanced progress metrics
     favorite_drill: str = ''
     drills_per_session: float = 0.0

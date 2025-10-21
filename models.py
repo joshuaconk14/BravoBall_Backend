@@ -5,7 +5,7 @@ This defines all models used in chatbot app
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional, Dict, Any, Union
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table, Float, Text
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, ForeignKey, JSON, ARRAY, Table, Float, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
 from sqlalchemy.orm import relationship
 from db import Base
@@ -765,6 +765,8 @@ class ProgressHistory(Base):
     previous_streak = Column(Integer, default=0)  # Add previous_streak field
     highest_streak = Column(Integer, default=0)
     completed_sessions_count = Column(Integer, default=0)
+    # ✅ NEW: Streak freeze date - date when freeze is active
+    active_freeze_date = Column(Date, nullable=True)
     # ✅ NEW: Enhanced progress metrics
     favorite_drill = Column(String, default='', nullable=True)
     drills_per_session = Column(Float, default=0.0)
