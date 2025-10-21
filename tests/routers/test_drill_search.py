@@ -187,7 +187,9 @@ def print_search_results(query: str, results: Dict[str, Any], highlight: bool = 
             description = pattern.sub(lambda m: f"\033[1;31m{m.group(0)}\033[0m", description)
         
         logging.info(f"\n{i+1}. {title}")
-        logging.info(f"   ID: {drill['id']}")
+        # Use uuid instead of id (id might not be in the API response)
+        drill_id = drill.get('uuid', drill.get('id', 'N/A'))
+        logging.info(f"   ID/UUID: {drill_id}")
         logging.info(f"   Description: {description}")
         if 'primary_skill' in drill and drill['primary_skill']:
             primary_skill = drill['primary_skill']
