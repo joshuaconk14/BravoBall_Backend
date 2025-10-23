@@ -162,8 +162,6 @@ class ProgressHistoryBase(BaseModel):
     previous_streak: int = 0  # Add previous_streak field
     highest_streak: int = 0
     completed_sessions_count: int = 0
-    # ✅ NEW: Streak freeze date
-    active_freeze_date: Optional[date] = None
     # ✅ NEW: Enhanced progress metrics
     favorite_drill: str = ''
     drills_per_session: float = 0.0
@@ -204,6 +202,10 @@ class UserStoreItemsBase(BaseModel):
     treats: int = 0
     streak_freezes: int = 0
     streak_revivers: int = 0
+    # ✅ NEW: Streak freeze date
+    active_freeze_date: Optional[date] = None
+    # ✅ NEW: History of all freeze dates used (list of ISO date strings)
+    used_freezes: List[str] = []
 
     model_config = ConfigDict(from_attributes=True)
 

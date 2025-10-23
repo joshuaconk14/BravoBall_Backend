@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from typing import List
 from datetime import datetime, timedelta
-from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory, TrainingSession, CustomDrill
+from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory, TrainingSession, CustomDrill, UserStoreItems
 from schemas import (
     CompletedSession as CompletedSessionSchema,
     CompletedSessionCreate,
@@ -436,14 +436,19 @@ def create_completed_session(session: CompletedSessionCreate,
                 elif days_diff == 2:
                     # Gap of 1 day - check if it was frozen
                     yesterday = session_date_only - timedelta(days=1)
-                    if progress_history.active_freeze_date == yesterday:
+                    
+                    # Get user's store items to check for active freeze
+                    store_items = db.query(UserStoreItems).filter(
+                        UserStoreItems.user_id == current_user.id
+                    ).first()
+                    
+                    if store_items and store_items.active_freeze_date == yesterday:
                         # Freeze protected the gap - continue streak
                         progress_history.current_streak += 1
                         progress_history.highest_streak = max(
                             progress_history.highest_streak,
                             progress_history.current_streak
                         )
-
                     else:
                         # Gap not protected - reset streak
                         progress_history.previous_streak = progress_history.current_streak
@@ -549,14 +554,17 @@ async def get_progress_history(
                 advanced_drills_completed=enhanced_metrics['advanced_drills_completed'],
                 # ✅ NEW: Mental training metrics
                 mental_training_sessions=enhanced_metrics['mental_training_sessions'],
-                total_mental_training_minutes=enhanced_metrics['total_mental_training_minutes'],
-                # ✅ NEW: Streak freeze date
-                active_freeze_date=None
+                total_mental_training_minutes=enhanced_metrics['total_mental_training_minutes']
             )
             db.add(progress_history)
             db.commit()
             db.refresh(progress_history)
         else:
+            # Get user's store items to check for active freeze
+            store_items = db.query(UserStoreItems).filter(
+                UserStoreItems.user_id == current_user.id
+            ).first()
+            
             # Check if streak should expire due to inactivity
             if progress_history.current_streak > 0 and last_session_date:
                 days_since_last = (today - last_session_date).days
@@ -566,7 +574,7 @@ async def get_progress_history(
                     # Check if yesterday was protected by a freeze
                     yesterday = today - timedelta(days=1)
                     
-                    if days_since_last == 2 and progress_history.active_freeze_date == yesterday:
+                    if days_since_last == 2 and store_items and store_items.active_freeze_date == yesterday:
                         # Yesterday was frozen - streak is protected
                         pass  # Keep the streak, don't clear freeze yet
                     else:
@@ -575,10 +583,10 @@ async def get_progress_history(
                         progress_history.current_streak = 0
             
             # Clear expired freeze dates (older than yesterday)
-            if progress_history.active_freeze_date:
+            if store_items and store_items.active_freeze_date:
                 yesterday = today - timedelta(days=1)
-                if progress_history.active_freeze_date < yesterday:
-                    progress_history.active_freeze_date = None
+                if store_items.active_freeze_date < yesterday:
+                    store_items.active_freeze_date = None
             
             # Update session count and enhanced metrics (but NOT streak unless expired)
             progress_history.completed_sessions_count = completed_sessions_count
