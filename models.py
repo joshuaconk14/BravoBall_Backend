@@ -78,6 +78,10 @@ class UserStoreItems(Base):
     treats = Column(Integer, default=0, nullable=False)
     streak_freezes = Column(Integer, default=0, nullable=False)
     streak_revivers = Column(Integer, default=0, nullable=False)
+    # ✅ NEW: Streak freeze date - date when freeze is active
+    active_freeze_date = Column(Date, nullable=True)
+    # ✅ NEW: History of all freeze dates used/activated (stored as JSON array of ISO date strings)
+    used_freezes = Column(JSON, default=list, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
@@ -765,8 +769,6 @@ class ProgressHistory(Base):
     previous_streak = Column(Integer, default=0)  # Add previous_streak field
     highest_streak = Column(Integer, default=0)
     completed_sessions_count = Column(Integer, default=0)
-    # ✅ NEW: Streak freeze date - date when freeze is active
-    active_freeze_date = Column(Date, nullable=True)
     # ✅ NEW: Enhanced progress metrics
     favorite_drill = Column(String, default='', nullable=True)
     drills_per_session = Column(Float, default=0.0)
