@@ -433,30 +433,43 @@ def create_completed_session(session: CompletedSessionCreate,
                         progress_history.highest_streak,
                         progress_history.current_streak
                     )
-                elif days_diff == 2:
-                    # Gap of 1 day - check if it was frozen
-                    yesterday = session_date_only - timedelta(days=1)
-                    
-                    # Get user's store items to check for active freeze
+                elif days_diff >= 2:
+                    # Gap of 1+ days - check if gaps were protected by freezes
+                    # Get user's store items to check for used freezes
                     store_items = db.query(UserStoreItems).filter(
                         UserStoreItems.user_id == current_user.id
                     ).first()
                     
-                    if store_items and store_items.active_freeze_date == yesterday:
-                        # Freeze protected the gap - continue streak
-                        progress_history.current_streak += 1
-                        progress_history.highest_streak = max(
-                            progress_history.highest_streak,
-                            progress_history.current_streak
-                        )
+                    if store_items and (store_items.used_freezes or store_items.used_revivers):
+                        # Check if all gap days were protected by freezes OR revivers
+                        gap_days = []
+                        for i in range(1, days_diff):
+                            gap_day = session_date_only - timedelta(days=i)
+                            gap_days.append(gap_day.isoformat())
+                        
+                        # Combine all used freezes and revivers
+                        used_freezes_set = set(store_items.used_freezes or [])
+                        used_revivers_set = set(store_items.used_revivers or [])
+                        all_protected_days = used_freezes_set.union(used_revivers_set)
+                        
+                        # Check if all gap days are protected by either freezes or revivers
+                        all_gaps_protected = all(day in all_protected_days for day in gap_days)
+                        
+                        if all_gaps_protected:
+                            # All gaps were protected by freezes or revivers - continue streak
+                            progress_history.current_streak += 1
+                            progress_history.highest_streak = max(
+                                progress_history.highest_streak,
+                                progress_history.current_streak
+                            )
+                        else:
+                            # Some gaps not protected - reset streak
+                            progress_history.previous_streak = progress_history.current_streak
+                            progress_history.current_streak = 1
                     else:
-                        # Gap not protected - reset streak
+                        # No freezes or revivers used - reset streak
                         progress_history.previous_streak = progress_history.current_streak
                         progress_history.current_streak = 1
-                else:
-                    # Larger gap - streak broken, start new
-                    progress_history.previous_streak = progress_history.current_streak
-                    progress_history.current_streak = 1
             else:
                 # First session ever - start streak at 1
                 progress_history.current_streak = 1
@@ -571,22 +584,23 @@ async def get_progress_history(
                 
                 if days_since_last > 1:
                     # More than 1 day since last session
-                    # Check if yesterday was protected by a freeze
+                    # Only check if yesterday was protected (simplified approach)
                     yesterday = today - timedelta(days=1)
                     
-                    if days_since_last == 2 and store_items and store_items.active_freeze_date == yesterday:
-                        # Yesterday was frozen - streak is protected
-                        pass  # Keep the streak, don't clear freeze yet
-                    else:
-                        # Streak should expire - no freeze protection
+                    yesterday_protected = False
+                    if store_items:
+                        # Check if yesterday was protected by active freeze or reviver
+                        yesterday_protected = (
+                            store_items.active_freeze_date == yesterday or
+                            store_items.active_streak_reviver == yesterday
+                        )
+                    
+                    if not yesterday_protected:
+                        # Yesterday not protected - reset streak
                         progress_history.previous_streak = progress_history.current_streak
                         progress_history.current_streak = 0
             
-            # Clear expired freeze dates (older than yesterday)
-            if store_items and store_items.active_freeze_date:
-                yesterday = today - timedelta(days=1)
-                if store_items.active_freeze_date < yesterday:
-                    store_items.active_freeze_date = None
+
             
             # Update session count and enhanced metrics (but NOT streak unless expired)
             progress_history.completed_sessions_count = completed_sessions_count

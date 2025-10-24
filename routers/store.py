@@ -36,7 +36,8 @@ async def get_user_store_items(
                 treats=0,
                 streak_freezes=0,
                 streak_revivers=0,
-                used_freezes=[]
+                used_freezes=[],
+                used_revivers=[]
             )
             db.add(store_items)
             db.commit()
@@ -260,8 +261,21 @@ async def use_streak_reviver(
         progress_history.current_streak = progress_history.previous_streak
         progress_history.previous_streak = 0
         
+        # Track reviver usage
+        today = datetime.now().date()
+        store_items.active_streak_reviver = today
+        
+        # Add to used revivers history
+        if store_items.used_revivers is None:
+            store_items.used_revivers = []
+        store_items.used_revivers.append(today.isoformat())
+        
         # Decrement streak revivers
         store_items.streak_revivers -= 1
+        
+        # ✅ IMPORTANT: Flag the JSON field as modified so SQLAlchemy saves it
+        from sqlalchemy.orm.attributes import flag_modified
+        flag_modified(store_items, 'used_revivers')
         
         db.commit()
         db.refresh(progress_history)
@@ -275,7 +289,9 @@ async def use_streak_reviver(
                 "previous_streak": progress_history.previous_streak
             },
             "store_items": {
-                "streak_revivers": store_items.streak_revivers
+                "streak_revivers": store_items.streak_revivers,
+                "active_streak_reviver": store_items.active_streak_reviver.isoformat() if store_items.active_streak_reviver else None,
+                "used_revivers": store_items.used_revivers
             }
         }
     
@@ -360,6 +376,10 @@ async def use_streak_freeze(
         # Decrement streak freezes
         store_items.streak_freezes -= 1
         
+        # ✅ IMPORTANT: Flag the JSON field as modified so SQLAlchemy saves it
+        from sqlalchemy.orm.attributes import flag_modified
+        flag_modified(store_items, 'used_freezes')
+        
         db.commit()
         db.refresh(store_items)
         
@@ -373,7 +393,9 @@ async def use_streak_freeze(
             "store_items": {
                 "streak_freezes": store_items.streak_freezes,
                 "active_freeze_date": store_items.active_freeze_date.isoformat() if store_items.active_freeze_date else None,
-                "used_freezes": store_items.used_freezes
+                "used_freezes": store_items.used_freezes,
+                "active_streak_reviver": store_items.active_streak_reviver.isoformat() if store_items.active_streak_reviver else None,
+                "used_revivers": store_items.used_revivers
             }
         }
     

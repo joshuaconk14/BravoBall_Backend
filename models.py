@@ -82,6 +82,10 @@ class UserStoreItems(Base):
     active_freeze_date = Column(Date, nullable=True)
     # ✅ NEW: History of all freeze dates used/activated (stored as JSON array of ISO date strings)
     used_freezes = Column(JSON, default=list, nullable=False)
+    # ✅ NEW: Streak reviver date - date when reviver was used
+    active_streak_reviver = Column(Date, nullable=True)
+    # ✅ NEW: History of all reviver dates used (stored as JSON array of ISO date strings)
+    used_revivers = Column(JSON, default=list, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
