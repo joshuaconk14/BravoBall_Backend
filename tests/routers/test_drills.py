@@ -18,7 +18,8 @@ def test_get_all_drills(client, auth_headers, test_drill):
     
     # Check if our test drill is in the results
     drill_uuids = [drill["uuid"] for drill in data["drills"]]  # Use UUID instead of id
-    assert test_drill.uuid in drill_uuids  # Use UUID instead of id
+    # Convert test_drill.uuid to string for comparison (API returns UUIDs as strings)
+    assert str(test_drill.uuid) in drill_uuids
 
 def test_get_drill_categories(client, auth_headers, test_drill_category):
     """Test getting all drill categories"""
