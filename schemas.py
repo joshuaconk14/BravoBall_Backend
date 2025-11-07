@@ -206,6 +206,10 @@ class UserStoreItemsBase(BaseModel):
     active_freeze_date: Optional[date] = None
     # ✅ NEW: History of all freeze dates used (list of ISO date strings)
     used_freezes: List[str] = []
+    # ✅ NEW: Streak reviver date
+    active_streak_reviver: Optional[date] = None
+    # ✅ NEW: History of all reviver dates used (list of ISO date strings)
+    used_revivers: List[str] = []
 
     model_config = ConfigDict(from_attributes=True)
 

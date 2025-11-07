@@ -174,6 +174,49 @@ def calculate_enhanced_progress_metrics(completed_sessions: List[CompletedSessio
         'total_mental_training_minutes': total_mental_training_minutes
     }
 
+def update_streak_on_session_completion(
+    progress_history: ProgressHistory,
+    session_date: datetime.date,
+    previous_session: CompletedSession = None
+) -> None:
+    """
+    Update user's streak when a session is completed.
+    
+    Logic:
+    - Same day as previous session: No change to streak
+    - Different day: Increment streak by 1
+    - First session ever: Set streak to 1
+    
+    Note: Streak decay/expiration is handled by the GET progress_history endpoint
+    when the app loads, so this function focuses on simple increment logic.
+    
+    Args:
+        progress_history: User's progress history object to update
+        session_date: Date of the completed session (date object, not datetime)
+        previous_session: Most recent previous session (optional)
+    """
+    if previous_session:
+        prev_date = previous_session.date.date() if hasattr(previous_session.date, 'date') else previous_session.date
+        days_diff = (session_date - prev_date).days
+        
+        if days_diff == 0:
+            # Same day - no streak change
+            pass
+        else:
+            # Different day - increment streak by 1
+            progress_history.current_streak += 1
+            progress_history.highest_streak = max(
+                progress_history.highest_streak,
+                progress_history.current_streak
+            )
+    else:
+        # First session ever - start streak at 1
+        progress_history.current_streak = 1
+        progress_history.highest_streak = max(
+            progress_history.highest_streak,
+            progress_history.current_streak
+        )
+
 # ordered drills endpoint
 @router.get("/api/sessions/ordered_drills/")
 async def get_ordered_session_drills(
@@ -419,52 +462,12 @@ def create_completed_session(session: CompletedSessionCreate,
         ).order_by(CompletedSession.date.desc()).first()
         
         if progress_history:
-            if previous_session:
-                prev_date = previous_session.date.date() if hasattr(previous_session.date, 'date') else previous_session.date
-                days_diff = (session_date_only - prev_date).days
-                
-                if days_diff == 0:
-                    # Same day - no streak change
-                    pass
-                elif days_diff == 1:
-                    # Consecutive day - increment streak
-                    progress_history.current_streak += 1
-                    progress_history.highest_streak = max(
-                        progress_history.highest_streak,
-                        progress_history.current_streak
-                    )
-                elif days_diff == 2:
-                    # Gap of 1 day - check if it was frozen
-                    yesterday = session_date_only - timedelta(days=1)
-                    
-                    # Get user's store items to check for active freeze
-                    store_items = db.query(UserStoreItems).filter(
-                        UserStoreItems.user_id == current_user.id
-                    ).first()
-                    
-                    if store_items and store_items.active_freeze_date == yesterday:
-                        # Freeze protected the gap - continue streak
-                        progress_history.current_streak += 1
-                        progress_history.highest_streak = max(
-                            progress_history.highest_streak,
-                            progress_history.current_streak
-                        )
-                    else:
-                        # Gap not protected - reset streak
-                        progress_history.previous_streak = progress_history.current_streak
-                        progress_history.current_streak = 1
-                else:
-                    # Larger gap - streak broken, start new
-                    progress_history.previous_streak = progress_history.current_streak
-                    progress_history.current_streak = 1
-            else:
-                # First session ever - start streak at 1
-                progress_history.current_streak = 1
-                progress_history.highest_streak = max(
-                    progress_history.highest_streak,
-                    progress_history.current_streak
-                )
-            
+            # Update streak using helper function
+            update_streak_on_session_completion(
+                progress_history=progress_history,
+                session_date=session_date_only,
+                previous_session=previous_session
+            )
             db.commit()
         
         return db_session
@@ -571,22 +574,23 @@ async def get_progress_history(
                 
                 if days_since_last > 1:
                     # More than 1 day since last session
-                    # Check if yesterday was protected by a freeze
+                    # Only check if yesterday was protected (simplified approach)
                     yesterday = today - timedelta(days=1)
                     
-                    if days_since_last == 2 and store_items and store_items.active_freeze_date == yesterday:
-                        # Yesterday was frozen - streak is protected
-                        pass  # Keep the streak, don't clear freeze yet
-                    else:
-                        # Streak should expire - no freeze protection
+                    yesterday_protected = False
+                    if store_items:
+                        # Check if yesterday was protected by active freeze or reviver
+                        yesterday_protected = (
+                            store_items.active_freeze_date == yesterday or
+                            store_items.active_streak_reviver == yesterday
+                        )
+                    
+                    if not yesterday_protected:
+                        # Yesterday not protected - reset streak
                         progress_history.previous_streak = progress_history.current_streak
                         progress_history.current_streak = 0
             
-            # Clear expired freeze dates (older than yesterday)
-            if store_items and store_items.active_freeze_date:
-                yesterday = today - timedelta(days=1)
-                if store_items.active_freeze_date < yesterday:
-                    store_items.active_freeze_date = None
+
             
             # Update session count and enhanced metrics (but NOT streak unless expired)
             progress_history.completed_sessions_count = completed_sessions_count
