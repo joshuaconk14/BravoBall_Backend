@@ -93,6 +93,23 @@ class UserStoreItems(Base):
     user = relationship("User", back_populates="store_items")
 
 
+class PurchaseTransaction(Base):
+    __tablename__ = "purchase_transactions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    transaction_id = Column(String, unique=True, nullable=False, index=True)
+    original_transaction_id = Column(String, nullable=True)
+    product_id = Column(String, nullable=False)
+    treat_amount = Column(Integer, nullable=False)
+    platform = Column(String, nullable=False)  # 'ios' or 'android'
+    processed_at = Column(DateTime, server_default=func.now(), nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
+
+    # Relationship
+    user = relationship("User", backref="purchase_transactions")
+
+
 # *** USER AND USER DATA MODELS ***
 
 class User(Base):
