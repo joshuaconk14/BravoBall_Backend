@@ -30,3 +30,8 @@ class UserAuth:
     REFRESH_TOKEN_EXPIRE_DAYS = 90  # 90 days
     # password hashing context
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# **** REVENUECAT CONFIGURATION ****
+class RevenueCat:
+    API_KEY = os.getenv("REVENUECAT_API_KEY")
+    API_URL = "https://api.revenuecat.com/v1"

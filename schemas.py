@@ -231,4 +231,24 @@ class UserStoreItemsUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+# Purchase Verification Schemas
+class VerifyTreatPurchaseRequest(BaseModel):
+    product_id: str
+    package_identifier: str
+    treat_amount: int
+    transaction_id: str
+    original_transaction_id: str
+    purchase_date: str
+    revenue_cat_user_id: str
+    platform: str  # 'ios' or 'android'
+
+
+class VerifyTreatPurchaseResponse(BaseModel):
+    success: bool
+    treats: int
+    message: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 # Saved Filters Schemas
