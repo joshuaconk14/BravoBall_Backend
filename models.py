@@ -103,6 +103,8 @@ class PurchaseTransaction(Base):
     product_id = Column(String, nullable=False)
     treat_amount = Column(Integer, nullable=False)
     platform = Column(String, nullable=False)  # 'ios' or 'android'
+    device_fingerprint = Column(String, nullable=True, index=True)  # Device fingerprint for security/audit
+    app_version = Column(String, nullable=True)  # App version for audit purposes
     processed_at = Column(DateTime, server_default=func.now(), nullable=False)
     created_at = Column(DateTime, server_default=func.now())
 

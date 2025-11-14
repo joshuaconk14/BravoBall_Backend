@@ -35,3 +35,17 @@ class UserAuth:
 class RevenueCat:
     API_KEY = os.getenv("REVENUECAT_API_KEY")
     API_URL = "https://api.revenuecat.com/v1"
+    # Allow simulator purchases to bypass RevenueCat verification (development/testing only)
+    # Set to True to allow StoreKit simulator transactions without RevenueCat verification
+    ALLOW_SIMULATOR_BYPASS = os.getenv("REVENUECAT_ALLOW_SIMULATOR_BYPASS", "false").lower() == "true"
+    
+    # Product ID to treat amount mapping for validation
+    # This ensures clients can't manipulate treat amounts
+    PRODUCT_TREAT_MAPPING = {
+        "bravoball_treats_100": 100,
+        "bravoball_treats_500": 500,
+        "bravoball_treats_1000": 1000,
+        "bravoball_treats_2500": 2500,
+        "bravoball_treats_5000": 5000,
+        # Add more product IDs as needed
+    }
