@@ -4,11 +4,12 @@ Endpoints for managing user store items (treats, streak freezes, streak revivers
 RevenueCat handles all transactions - these endpoints just manage item quantities
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from datetime import datetime, date
 from typing import Optional
 import httpx
+import json
 from models import User, UserStoreItems, ProgressHistory, PurchaseTransaction
 from schemas import (
     UserStoreItemsResponse, 
@@ -19,7 +20,7 @@ from schemas import (
 )
 from db import get_db
 from auth import get_current_user
-from config import RevenueCat
+from config import RevenueCat, get_logger
 
 router = APIRouter()
 
@@ -449,18 +450,104 @@ def transaction_exists_in_customer_info(
 ) -> bool:
     """
     Check if transaction exists in RevenueCat customer info
-    """
-    # Check non-subscription transactions
-    subscriber = customer_info.get("subscriber", {})
-    non_subscription_transactions = subscriber.get("non_subscriptions", {})
     
-    # Look for the product_id in transactions
-    for product_key, transactions in non_subscription_transactions.items():
-        if product_key == product_id:
-            # Check if transaction_id exists in this product's transactions
-            for transaction in transactions:
-                if transaction.get("id") == transaction_id:
-                    return True
+    RevenueCat stores transactions in:
+    1. non_subscriptions - for regular one-time purchases
+    2. other_purchases - for StoreKit simulator/test purchases
+    
+    Structure:
+    {
+      "product_id": [
+        {
+          "id": "transaction_id",
+          "is_sandbox": true/false,
+          "original_purchase_date": "...",
+          "purchase_date": "..."
+        }
+      ]
+    }
+    """
+    logger = get_logger(__name__)
+    
+    subscriber = customer_info.get("subscriber", {})
+    
+    # Log for debugging
+    logger.info(f"Looking for transaction_id: {transaction_id}, product_id: {product_id}")
+    
+    # Helper function to check transactions in a dictionary
+    def check_transactions_in_dict(transactions_dict: dict, source_name: str) -> bool:
+        """Check if transaction exists in a transactions dictionary"""
+        if not transactions_dict:
+            logger.info(f"No transactions found in {source_name}")
+            return False
+        
+        logger.info(f"Available products in {source_name}: {list(transactions_dict.keys())}")
+        
+        # Look for the product_id in transactions
+        for product_key, transactions in transactions_dict.items():
+            logger.info(f"Checking product: {product_key}, has {len(transactions)} transactions")
+            
+            # Try exact match first
+            if product_key == product_id:
+                # Check if transaction_id exists in this product's transactions
+                for transaction in transactions:
+                    # Try multiple possible field names for transaction ID
+                    trans_id = (
+                        transaction.get("id") or 
+                        transaction.get("transaction_id") or 
+                        transaction.get("original_transaction_id")
+                    )
+                    logger.info(f"  Transaction ID in RevenueCat ({source_name}): {trans_id}")
+                    if trans_id == transaction_id:
+                        logger.info(f"✅ Found matching transaction in {source_name}!")
+                        return True
+            
+            # Also check if product_id is a substring match (for package identifiers)
+            if product_id in product_key or product_key in product_id:
+                logger.info(f"Product ID partial match: {product_key} vs {product_id}")
+                for transaction in transactions:
+                    trans_id = (
+                        transaction.get("id") or 
+                        transaction.get("transaction_id") or 
+                        transaction.get("original_transaction_id")
+                    )
+                    if trans_id == transaction_id:
+                        logger.info(f"✅ Found matching transaction with partial product match in {source_name}!")
+                        return True
+        
+        return False
+    
+    # Check non_subscriptions first (regular purchases)
+    non_subscription_transactions = subscriber.get("non_subscriptions", {})
+    if check_transactions_in_dict(non_subscription_transactions, "non_subscriptions"):
+        return True
+    
+    # Check other_purchases (StoreKit simulator/test purchases)
+    other_purchases = subscriber.get("other_purchases", {})
+    if check_transactions_in_dict(other_purchases, "other_purchases"):
+        return True
+    
+    # If not found, log full structure for debugging
+    logger.warning("Transaction not found in non_subscriptions or other_purchases")
+    logger.info(f"Full subscriber structure keys: {list(subscriber.keys())}")
+    
+    # Log the actual content (not just debug level)
+    logger.info(f"non_subscriptions content: {json.dumps(non_subscription_transactions, indent=2, default=str)}")
+    logger.info(f"other_purchases content: {json.dumps(other_purchases, indent=2, default=str)}")
+    
+    # Check if there are any transactions in entitlements (sometimes purchases show up there)
+    entitlements = subscriber.get("entitlements", {})
+    if entitlements:
+        logger.info(f"Found entitlements: {list(entitlements.keys())}")
+        for entitlement_key, entitlement_data in entitlements.items():
+            logger.info(f"  Entitlement: {entitlement_key}, product_identifier: {entitlement_data.get('product_identifier')}")
+    
+    # Log full subscriber for deep debugging (truncated if too large)
+    full_subscriber_str = json.dumps(subscriber, indent=2, default=str)
+    if len(full_subscriber_str) > 2000:
+        logger.info(f"Full subscriber structure (truncated): {full_subscriber_str[:2000]}...")
+    else:
+        logger.info(f"Full subscriber structure: {full_subscriber_str}")
     
     return False
 
@@ -518,10 +605,12 @@ def store_transaction(
     treat_amount: int,
     product_id: str,
     platform: str,
-    original_transaction_id: Optional[str] = None
+    original_transaction_id: Optional[str] = None,
+    device_fingerprint: Optional[str] = None,
+    app_version: Optional[str] = None
 ) -> PurchaseTransaction:
     """
-    Store transaction record for idempotency
+    Store transaction record for idempotency and audit trail
     """
     transaction = PurchaseTransaction(
         user_id=user_id,
@@ -530,6 +619,8 @@ def store_transaction(
         product_id=product_id,
         treat_amount=treat_amount,
         platform=platform,
+        device_fingerprint=device_fingerprint,
+        app_version=app_version,
         processed_at=datetime.utcnow()
     )
     db.add(transaction)
@@ -566,6 +657,7 @@ def get_user_store_items(db: Session, user_id: int) -> UserStoreItems:
 @router.post("/api/store/verify-treat-purchase", response_model=VerifyTreatPurchaseResponse)
 async def verify_treat_purchase(
     request_data: VerifyTreatPurchaseRequest,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -575,29 +667,114 @@ async def verify_treat_purchase(
     This endpoint:
     - Verifies the purchase with RevenueCat API
     - Checks if transaction exists in RevenueCat customer info
+    - Validates that treat amount matches the product ID (security)
     - Prevents duplicate processing (idempotency)
     - Grants treats to the user
     - Records the transaction
     """
+    logger = get_logger(__name__)
+    
     try:
+        # Extract device fingerprint and app version from headers
+        device_fingerprint = request.headers.get("Device-Fingerprint")
+        app_version = request.headers.get("App-Version")
+        
+        logger.info(f"Verifying purchase for user {current_user.id}")
+        logger.info(f"RevenueCat User ID: {request_data.revenue_cat_user_id}")
+        logger.info(f"Transaction ID: {request_data.transaction_id}")
+        logger.info(f"Product ID: {request_data.product_id}")
+        logger.info(f"Platform: {request_data.platform}")
+        if device_fingerprint:
+            logger.info(f"Device Fingerprint: {device_fingerprint[:20]}...")  # Log partial for security
+        if app_version:
+            logger.info(f"App Version: {app_version}")
+        
         # 1. Verify with RevenueCat API
         customer_info = await verify_with_revenuecat_api(
             request_data.revenue_cat_user_id,
             request_data.platform
         )
         
+        logger.info(f"RevenueCat API response received successfully")
+        
         # 2. Check if transaction exists in customer_info
-        if not transaction_exists_in_customer_info(
+        transaction_found = transaction_exists_in_customer_info(
             customer_info, 
             request_data.transaction_id, 
             request_data.product_id
-        ):
+        )
+        
+        # Check if this is a StoreKit simulator transaction
+        is_simulator = request_data.revenue_cat_user_id.startswith("$RCAnonymousID")
+        
+        if not transaction_found:
+            # Log more details about what we received
+            subscriber = customer_info.get("subscriber", {})
+            non_subscriptions = subscriber.get("non_subscriptions", {})
+            other_purchases = subscriber.get("other_purchases", {})
+            
+            logger.error(f"Transaction not found. Available products in non_subscriptions: {list(non_subscriptions.keys())}")
+            logger.error(f"Available products in other_purchases: {list(other_purchases.keys())}")
+            logger.error(f"Looking for product_id: {request_data.product_id}, transaction_id: {request_data.transaction_id}")
+            
+            # Development mode: Allow simulator purchases to bypass RevenueCat verification
+            if is_simulator and RevenueCat.ALLOW_SIMULATOR_BYPASS:
+                logger.warning(
+                    f"⚠️ DEVELOPMENT MODE: Allowing simulator purchase to bypass RevenueCat verification. "
+                    f"Transaction ID: {request_data.transaction_id}, Product ID: {request_data.product_id}"
+                )
+                # Skip RevenueCat verification for simulator in development mode
+                transaction_found = True
+            else:
+                error_detail = (
+                    f"Transaction not found in RevenueCat. "
+                    f"Product ID: {request_data.product_id}, Transaction ID: {request_data.transaction_id}. "
+                )
+                
+                if is_simulator:
+                    error_detail += (
+                        "Note: StoreKit simulator transactions may take a few seconds to sync to RevenueCat. "
+                        "Make sure the RevenueCat SDK has processed the purchase on the client side before verifying. "
+                        "For development/testing, set REVENUECAT_ALLOW_SIMULATOR_BYPASS=true to bypass verification."
+                    )
+                
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=error_detail
+                )
+        
+        if not transaction_found:
+            # This shouldn't happen, but just in case
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Transaction not found in RevenueCat"
+                detail="Transaction verification failed"
             )
         
-        # 3. Check for duplicate (idempotency)
+        # 3. Validate treat amount matches product ID
+        expected_treats = RevenueCat.PRODUCT_TREAT_MAPPING.get(request_data.product_id)
+        if expected_treats is None:
+            logger.error(f"Unknown product ID: {request_data.product_id}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Unknown product ID: {request_data.product_id}"
+            )
+        
+        if request_data.treat_amount != expected_treats:
+            logger.error(
+                f"Treat amount mismatch for product {request_data.product_id}. "
+                f"Expected: {expected_treats}, Received: {request_data.treat_amount}"
+            )
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=(
+                    f"Treat amount mismatch. Product '{request_data.product_id}' should grant "
+                    f"{expected_treats} treats, but received {request_data.treat_amount} treats."
+                )
+            )
+        
+        logger.info(f"✅ Treat amount validated: {request_data.treat_amount} treats for product {request_data.product_id}")
+        
+        # 4. Check for duplicate (idempotency)
         if transaction_already_processed(db, request_data.transaction_id):
             # Already processed, return current balance
             store_items = get_user_store_items(db, current_user.id)
@@ -607,14 +784,14 @@ async def verify_treat_purchase(
                 message="Transaction already processed"
             )
         
-        # 4. Grant treats
+        # 5. Grant treats (amount already validated)
         store_items = grant_treats_to_user(
             db,
             current_user.id,
             request_data.treat_amount
         )
         
-        # 5. Record transaction
+        # 6. Record transaction with device fingerprint and app version
         store_transaction(
             db,
             request_data.transaction_id,
@@ -622,10 +799,12 @@ async def verify_treat_purchase(
             request_data.treat_amount,
             request_data.product_id,
             request_data.platform,
-            request_data.original_transaction_id
+            request_data.original_transaction_id,
+            device_fingerprint=device_fingerprint,
+            app_version=app_version
         )
         
-        # 6. Return success
+        # 7. Return success
         return VerifyTreatPurchaseResponse(
             success=True,
             treats=store_items.treats,

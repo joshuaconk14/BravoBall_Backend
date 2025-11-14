@@ -574,19 +574,26 @@ async def get_progress_history(
                 
                 if days_since_last > 1:
                     # More than 1 day since last session
-                    # Only check if yesterday was protected (simplified approach)
+                    # Check if yesterday OR today was protected by freeze or reviver
                     yesterday = today - timedelta(days=1)
                     
                     yesterday_protected = False
+                    today_protected = False
                     if store_items:
                         # Check if yesterday was protected by active freeze or reviver
                         yesterday_protected = (
                             store_items.active_freeze_date == yesterday or
                             store_items.active_streak_reviver == yesterday
                         )
+                        # Check if today is protected by active freeze or reviver
+                        today_protected = (
+                            store_items.active_freeze_date == today or
+                            store_items.active_streak_reviver == today
+                        )
                     
-                    if not yesterday_protected:
-                        # Yesterday not protected - reset streak
+                    # Only reset streak if neither yesterday nor today is protected
+                    if not yesterday_protected and not today_protected:
+                        # Neither day protected - reset streak
                         progress_history.previous_streak = progress_history.current_streak
                         progress_history.current_streak = 0
             
