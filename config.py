@@ -42,10 +42,8 @@ class RevenueCat:
     # Product ID to treat amount mapping for validation
     # This ensures clients can't manipulate treat amounts
     PRODUCT_TREAT_MAPPING = {
-        "bravoball_treats_100": 100,
         "bravoball_treats_500": 500,
         "bravoball_treats_1000": 1000,
-        "bravoball_treats_2500": 2500,
-        "bravoball_treats_5000": 5000,
+        "bravoball_treats_2000": 2000,
         # Add more product IDs as needed
     }
