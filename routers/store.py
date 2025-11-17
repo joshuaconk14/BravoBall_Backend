@@ -6,6 +6,7 @@ RevenueCat handles all transactions - these endpoints just manage item quantitie
 
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from datetime import datetime, date
 from typing import Optional
 import httpx
@@ -573,6 +574,9 @@ def grant_treats_to_user(
 ) -> UserStoreItems:
     """
     Grant treats to user by incrementing their treat balance
+    
+    NOTE: Does NOT commit - caller must commit for atomicity.
+    Use db.flush() to get updated value without committing.
     """
     store_items = db.query(UserStoreItems).filter(
         UserStoreItems.user_id == user_id
@@ -593,7 +597,9 @@ def grant_treats_to_user(
         # Increment existing treats
         store_items.treats += treat_amount
     
-    db.commit()
+    # Flush to get updated value without committing
+    # Caller will handle the commit for atomicity
+    db.flush()
     db.refresh(store_items)
     return store_items
 
@@ -611,6 +617,10 @@ def store_transaction(
 ) -> PurchaseTransaction:
     """
     Store transaction record for idempotency and audit trail
+    
+    NOTE: Does NOT commit - caller must commit for atomicity.
+    Use db.flush() to check constraint without committing.
+    Raises IntegrityError if transaction_id already exists (unique constraint).
     """
     transaction = PurchaseTransaction(
         user_id=user_id,
@@ -624,7 +634,9 @@ def store_transaction(
         processed_at=datetime.utcnow()
     )
     db.add(transaction)
-    db.commit()
+    # Flush to check constraint without committing
+    # Caller will handle the commit for atomicity
+    db.flush()
     db.refresh(transaction)
     return transaction
 
@@ -774,40 +786,75 @@ async def verify_treat_purchase(
         
         logger.info(f"✅ Treat amount validated: {request_data.treat_amount} treats for product {request_data.product_id}")
         
-        # 4. Check for duplicate (idempotency)
+        # 4. Quick check for duplicate (optimization - database constraint is the real guard)
+        # This avoids unnecessary work if transaction already processed
         if transaction_already_processed(db, request_data.transaction_id):
             # Already processed, return current balance
             store_items = get_user_store_items(db, current_user.id)
+            logger.info(f"Transaction already processed. Returning current treat balance: {store_items.treats}")
             return VerifyTreatPurchaseResponse(
                 success=True,
                 treats=store_items.treats,
                 message="Transaction already processed"
             )
         
-        # 5. Grant treats (amount already validated)
-        store_items = grant_treats_to_user(
-            db,
-            current_user.id,
-            request_data.treat_amount
+        # 5. Atomic transaction: Store transaction FIRST (database-level idempotency)
+        # The unique constraint on transaction_id prevents race conditions
+        # If this succeeds, we know the transaction hasn't been processed yet
+        try:
+            transaction_record = store_transaction(
+                db,
+                request_data.transaction_id,
+                current_user.id,
+                request_data.treat_amount,
+                request_data.product_id,
+                request_data.platform,
+                request_data.original_transaction_id,
+                device_fingerprint=device_fingerprint,
+                app_version=app_version
+            )
+            
+            # 6. Grant treats (only if transaction record was successfully added)
+            # Both operations are in the same transaction - atomicity guaranteed
+            store_items = grant_treats_to_user(
+                db,
+                current_user.id,
+                request_data.treat_amount
+            )
+            
+            # 7. Commit both operations atomically
+            # If commit fails, both changes are rolled back
+            db.commit()
+            
+        except IntegrityError:
+            # Transaction already exists (race condition caught at database level)
+            db.rollback()
+            store_items = get_user_store_items(db, current_user.id)
+            logger.info(
+                f"Transaction already processed (race condition detected). "
+                f"Returning current treat balance: {store_items.treats}"
+            )
+            return VerifyTreatPurchaseResponse(
+                success=True,
+                treats=store_items.treats,
+                message="Transaction already processed"
+            )
+        
+        # 8. Refresh store_items to ensure we have the absolute latest treat balance
+        db.refresh(store_items)
+        
+        # 9. Log the calculation (we know the amount added, and we have the final balance)
+        final_treat_balance = store_items.treats
+        logger.info(
+            f"✅ Treat purchase complete. "
+            f"Added: {request_data.treat_amount} treats. "
+            f"Final balance: {final_treat_balance}"
         )
         
-        # 6. Record transaction with device fingerprint and app version
-        store_transaction(
-            db,
-            request_data.transaction_id,
-            current_user.id,
-            request_data.treat_amount,
-            request_data.product_id,
-            request_data.platform,
-            request_data.original_transaction_id,
-            device_fingerprint=device_fingerprint,
-            app_version=app_version
-        )
-        
-        # 7. Return success
+        # 10. Return success with full treat balance (existing + purchased)
         return VerifyTreatPurchaseResponse(
             success=True,
-            treats=store_items.treats,
+            treats=final_treat_balance,
             message="Purchase verified and treats granted"
         )
         
