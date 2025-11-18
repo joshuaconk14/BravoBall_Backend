@@ -11,6 +11,7 @@ from datetime import datetime, date
 from typing import Optional
 import httpx
 import json
+import asyncio
 from models import User, UserStoreItems, ProgressHistory, PurchaseTransaction
 from schemas import (
     UserStoreItemsResponse, 
@@ -470,7 +471,17 @@ def transaction_exists_in_customer_info(
     """
     logger = get_logger(__name__)
     
+    # Ensure customer_info is a dict
+    if not isinstance(customer_info, dict):
+        logger.error(f"Invalid customer_info type: {type(customer_info)}")
+        return False
+    
     subscriber = customer_info.get("subscriber", {})
+    
+    # Ensure subscriber is a dict
+    if not isinstance(subscriber, dict):
+        logger.error(f"Invalid subscriber type: {type(subscriber)}")
+        return False
     
     # Log for debugging
     logger.info(f"Looking for transaction_id: {transaction_id}, product_id: {product_id}")
@@ -478,7 +489,7 @@ def transaction_exists_in_customer_info(
     # Helper function to check transactions in a dictionary
     def check_transactions_in_dict(transactions_dict: dict, source_name: str) -> bool:
         """Check if transaction exists in a transactions dictionary"""
-        if not transactions_dict:
+        if not transactions_dict or not isinstance(transactions_dict, dict):
             logger.info(f"No transactions found in {source_name}")
             return False
         
@@ -486,18 +497,32 @@ def transaction_exists_in_customer_info(
         
         # Look for the product_id in transactions
         for product_key, transactions in transactions_dict.items():
+            # Ensure transactions is a list/iterable
+            if not isinstance(transactions, (list, tuple)):
+                logger.warning(f"Transactions for product {product_key} is not a list: {type(transactions)}")
+                continue
+            
             logger.info(f"Checking product: {product_key}, has {len(transactions)} transactions")
             
             # Try exact match first
             if product_key == product_id:
                 # Check if transaction_id exists in this product's transactions
                 for transaction in transactions:
-                    # Try multiple possible field names for transaction ID
-                    trans_id = (
-                        transaction.get("id") or 
-                        transaction.get("transaction_id") or 
-                        transaction.get("original_transaction_id")
-                    )
+                    # Handle case where transaction might be a dict or string
+                    if isinstance(transaction, dict):
+                        # Try multiple possible field names for transaction ID
+                        trans_id = (
+                            transaction.get("id") or 
+                            transaction.get("transaction_id") or 
+                            transaction.get("original_transaction_id")
+                        )
+                    elif isinstance(transaction, str):
+                        # Transaction might be stored as a string ID directly
+                        trans_id = transaction
+                    else:
+                        logger.warning(f"Unexpected transaction type in {source_name}: {type(transaction)}")
+                        continue
+                    
                     logger.info(f"  Transaction ID in RevenueCat ({source_name}): {trans_id}")
                     if trans_id == transaction_id:
                         logger.info(f"✅ Found matching transaction in {source_name}!")
@@ -507,11 +532,18 @@ def transaction_exists_in_customer_info(
             if product_id in product_key or product_key in product_id:
                 logger.info(f"Product ID partial match: {product_key} vs {product_id}")
                 for transaction in transactions:
-                    trans_id = (
-                        transaction.get("id") or 
-                        transaction.get("transaction_id") or 
-                        transaction.get("original_transaction_id")
-                    )
+                    # Handle case where transaction might be a dict or string
+                    if isinstance(transaction, dict):
+                        trans_id = (
+                            transaction.get("id") or 
+                            transaction.get("transaction_id") or 
+                            transaction.get("original_transaction_id")
+                        )
+                    elif isinstance(transaction, str):
+                        trans_id = transaction
+                    else:
+                        continue
+                    
                     if trans_id == transaction_id:
                         logger.info(f"✅ Found matching transaction with partial product match in {source_name}!")
                         return True
@@ -701,66 +733,93 @@ async def verify_treat_purchase(
         if app_version:
             logger.info(f"App Version: {app_version}")
         
-        # 1. Verify with RevenueCat API
-        customer_info = await verify_with_revenuecat_api(
-            request_data.revenue_cat_user_id,
-            request_data.platform
-        )
-        
-        logger.info(f"RevenueCat API response received successfully")
-        
-        # 2. Check if transaction exists in customer_info
-        transaction_found = transaction_exists_in_customer_info(
-            customer_info, 
-            request_data.transaction_id, 
-            request_data.product_id
-        )
-        
-        # Check if this is a StoreKit simulator transaction
+        # Check if this is a StoreKit simulator/sandbox transaction
         is_simulator = request_data.revenue_cat_user_id.startswith("$RCAnonymousID")
+        
+        # 1. Verify with RevenueCat API with retry mechanism
+        # RevenueCat processes transactions asynchronously, so we may need to retry
+        max_retries = 3
+        retry_delay = 1.0  # Start with 1 second delay
+        transaction_found = False
+        customer_info = None
+        
+        for attempt in range(max_retries):
+            customer_info = await verify_with_revenuecat_api(
+                request_data.revenue_cat_user_id,
+                request_data.platform
+            )
+            
+            logger.info(f"RevenueCat API response received successfully (attempt {attempt + 1}/{max_retries})")
+            
+            # 2. Check if transaction exists in customer_info
+            transaction_found = transaction_exists_in_customer_info(
+                customer_info, 
+                request_data.transaction_id, 
+                request_data.product_id
+            )
+            
+            if transaction_found:
+                logger.info(f"✅ Transaction found in RevenueCat on attempt {attempt + 1}")
+                break
+            
+            # If not found and not last attempt, wait and retry
+            if attempt < max_retries - 1:
+                logger.info(
+                    f"Transaction not found yet (attempt {attempt + 1}/{max_retries}). "
+                    f"Retrying in {retry_delay} seconds..."
+                )
+                await asyncio.sleep(retry_delay)
+                retry_delay *= 2  # Exponential backoff: 1s, 2s, 4s
         
         if not transaction_found:
             # Log more details about what we received
-            subscriber = customer_info.get("subscriber", {})
-            non_subscriptions = subscriber.get("non_subscriptions", {})
-            other_purchases = subscriber.get("other_purchases", {})
+            # Ensure customer_info is a dict before accessing it
+            if isinstance(customer_info, dict):
+                subscriber = customer_info.get("subscriber", {})
+                non_subscriptions = subscriber.get("non_subscriptions", {}) if isinstance(subscriber, dict) else {}
+                other_purchases = subscriber.get("other_purchases", {}) if isinstance(subscriber, dict) else {}
+                
+                logger.error(f"Transaction not found after {max_retries} attempts. Available products in non_subscriptions: {list(non_subscriptions.keys()) if isinstance(non_subscriptions, dict) else []}")
+                logger.error(f"Available products in other_purchases: {list(other_purchases.keys()) if isinstance(other_purchases, dict) else []}")
+            else:
+                logger.error(f"Transaction not found after {max_retries} attempts. Invalid customer_info type: {type(customer_info)}")
+                non_subscriptions = {}
+                other_purchases = {}
             
-            logger.error(f"Transaction not found. Available products in non_subscriptions: {list(non_subscriptions.keys())}")
-            logger.error(f"Available products in other_purchases: {list(other_purchases.keys())}")
             logger.error(f"Looking for product_id: {request_data.product_id}, transaction_id: {request_data.transaction_id}")
             
-            # Development mode: Allow simulator purchases to bypass RevenueCat verification
+            # Development mode: Allow simulator/sandbox purchases to bypass RevenueCat verification
+            # This handles cases where RevenueCat hasn't synced yet or simulator transactions
             if is_simulator and RevenueCat.ALLOW_SIMULATOR_BYPASS:
                 logger.warning(
-                    f"⚠️ DEVELOPMENT MODE: Allowing simulator purchase to bypass RevenueCat verification. "
-                    f"Transaction ID: {request_data.transaction_id}, Product ID: {request_data.product_id}"
+                    f"⚠️ DEVELOPMENT MODE: Allowing simulator/sandbox purchase to bypass RevenueCat verification. "
+                    f"Transaction ID: {request_data.transaction_id}, Product ID: {request_data.product_id}. "
+                    f"Note: Purchase was posted to RevenueCat but hasn't appeared in customer info yet."
                 )
-                # Skip RevenueCat verification for simulator in development mode
+                # Skip RevenueCat verification for simulator/sandbox in development mode
                 transaction_found = True
             else:
                 error_detail = (
-                    f"Transaction not found in RevenueCat. "
+                    f"Transaction not found in RevenueCat after {max_retries} attempts. "
                     f"Product ID: {request_data.product_id}, Transaction ID: {request_data.transaction_id}. "
                 )
                 
                 if is_simulator:
                     error_detail += (
-                        "Note: StoreKit simulator transactions may take a few seconds to sync to RevenueCat. "
+                        "Note: StoreKit simulator/sandbox transactions may take a few seconds to sync to RevenueCat. "
                         "Make sure the RevenueCat SDK has processed the purchase on the client side before verifying. "
                         "For development/testing, set REVENUECAT_ALLOW_SIMULATOR_BYPASS=true to bypass verification."
+                    )
+                else:
+                    error_detail += (
+                        "This may indicate a timing issue - RevenueCat processes transactions asynchronously. "
+                        "Please try again in a few seconds."
                     )
                 
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail=error_detail
                 )
-        
-        if not transaction_found:
-            # This shouldn't happen, but just in case
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Transaction verification failed"
-            )
         
         # 3. Validate treat amount matches product ID
         expected_treats = RevenueCat.PRODUCT_TREAT_MAPPING.get(request_data.product_id)
