@@ -237,7 +237,6 @@ class VerifyTreatPurchaseRequest(BaseModel):
     package_identifier: str
     treat_amount: int
     transaction_id: str
-    original_transaction_id: str
     purchase_date: str
     revenue_cat_user_id: str
     platform: str  # 'ios' or 'android'

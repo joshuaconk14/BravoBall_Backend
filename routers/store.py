@@ -511,21 +511,32 @@ def transaction_exists_in_customer_info(
                     # Handle case where transaction might be a dict or string
                     if isinstance(transaction, dict):
                         # Try multiple possible field names for transaction ID
+                        # RevenueCat API uses "id" for RevenueCat transaction ID
+                        # RevenueCat API uses "store_transaction_id" for StoreKit transaction ID (what webhooks send)
                         trans_id = (
-                            transaction.get("id") or 
-                            transaction.get("transaction_id") or 
-                            transaction.get("original_transaction_id")
+                            transaction.get("id") or  # RevenueCat transaction ID (e.g., "o1_...")
+                            transaction.get("store_transaction_id") or  # StoreKit transaction ID (e.g., "2000001060006162")
+                            transaction.get("transaction_id")
                         )
+                        store_trans_id = transaction.get("store_transaction_id")
                     elif isinstance(transaction, str):
                         # Transaction might be stored as a string ID directly
                         trans_id = transaction
+                        store_trans_id = None
                     else:
                         logger.warning(f"Unexpected transaction type in {source_name}: {type(transaction)}")
                         continue
                     
-                    logger.info(f"  Transaction ID in RevenueCat ({source_name}): {trans_id}")
+                    logger.info(f"  Transaction ID in RevenueCat ({source_name}): {trans_id}, StoreTransactionID: {store_trans_id}")
+                    
+                    # Match on RevenueCat transaction ID
                     if trans_id == transaction_id:
-                        logger.info(f"✅ Found matching transaction in {source_name}!")
+                        logger.info(f"✅ Found matching transaction in {source_name} (by RevenueCat ID)!")
+                        return True
+                    
+                    # Also match on StoreKit transaction ID (what webhooks send)
+                    if store_trans_id and store_trans_id == transaction_id:
+                        logger.info(f"✅ Found matching transaction in {source_name} (by StoreKit transaction ID)!")
                         return True
             
             # Also check if product_id is a substring match (for package identifiers)
@@ -535,17 +546,25 @@ def transaction_exists_in_customer_info(
                     # Handle case where transaction might be a dict or string
                     if isinstance(transaction, dict):
                         trans_id = (
-                            transaction.get("id") or 
-                            transaction.get("transaction_id") or 
-                            transaction.get("original_transaction_id")
+                            transaction.get("id") or  # RevenueCat transaction ID
+                            transaction.get("store_transaction_id") or  # StoreKit transaction ID
+                            transaction.get("transaction_id")
                         )
+                        store_trans_id = transaction.get("store_transaction_id")
                     elif isinstance(transaction, str):
                         trans_id = transaction
+                        store_trans_id = None
                     else:
                         continue
                     
+                    # Match on RevenueCat transaction ID
                     if trans_id == transaction_id:
-                        logger.info(f"✅ Found matching transaction with partial product match in {source_name}!")
+                        logger.info(f"✅ Found matching transaction with partial product match in {source_name} (by RevenueCat ID)!")
+                        return True
+                    
+                    # Also match on StoreKit transaction ID
+                    if store_trans_id and store_trans_id == transaction_id:
+                        logger.info(f"✅ Found matching transaction with partial product match in {source_name} (by StoreKit transaction ID)!")
                         return True
         
         return False
@@ -643,7 +662,6 @@ def store_transaction(
     treat_amount: int,
     product_id: str,
     platform: str,
-    original_transaction_id: Optional[str] = None,
     device_fingerprint: Optional[str] = None,
     app_version: Optional[str] = None
 ) -> PurchaseTransaction:
@@ -657,7 +675,6 @@ def store_transaction(
     transaction = PurchaseTransaction(
         user_id=user_id,
         transaction_id=transaction_id,
-        original_transaction_id=original_transaction_id,
         product_id=product_id,
         treat_amount=treat_amount,
         platform=platform,
@@ -868,7 +885,6 @@ async def verify_treat_purchase(
                 request_data.treat_amount,
                 request_data.product_id,
                 request_data.platform,
-                request_data.original_transaction_id,
                 device_fingerprint=device_fingerprint,
                 app_version=app_version
             )

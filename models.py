@@ -99,7 +99,6 @@ class PurchaseTransaction(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     transaction_id = Column(String, unique=True, nullable=False, index=True)
-    original_transaction_id = Column(String, nullable=True)
     product_id = Column(String, nullable=False)
     treat_amount = Column(Integer, nullable=False)
     platform = Column(String, nullable=False)  # 'ios' or 'android'
