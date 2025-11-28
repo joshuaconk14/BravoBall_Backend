@@ -84,6 +84,16 @@ class CompletedSession(CompletedSessionBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+class CompletedSessionResponse(CompletedSessionBase):
+    """Response schema including treat reward information"""
+    id: int
+    user_id: int
+    treats_awarded: int = 0  # Treats granted for this session
+    treats_already_granted: bool = False  # Whether treats were already granted (idempotency)
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
 
 # Drill Group Schemas
 class DrillGroupBase(BaseModel):
