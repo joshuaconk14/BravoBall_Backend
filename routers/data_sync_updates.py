@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import func
 from typing import List
 from datetime import datetime, timedelta
 from models import User, CompletedSession, DrillGroup, OrderedSessionDrill, Drill, ProgressHistory, TrainingSession, CustomDrill, UserStoreItems
 from schemas import (
     CompletedSession as CompletedSessionSchema,
+    CompletedSessionResponse,
     CompletedSessionCreate,
     DrillGroup as DrillGroupSchema,
     DrillGroupCreate,
@@ -13,6 +15,7 @@ from schemas import (
     ProgressHistoryUpdate,
     ProgressHistoryResponse
 )
+from services.treat_reward_service import TreatRewardService
 from db import get_db
 from auth import get_current_user
 from collections import Counter
@@ -391,16 +394,18 @@ async def sync_ordered_session_drills(
     
 
 # Completed Sessions Endpoints
-@router.post("/api/sessions/completed/", response_model=CompletedSessionSchema)
+@router.post("/api/sessions/completed/", response_model=CompletedSessionResponse)
 def create_completed_session(session: CompletedSessionCreate,
                            current_user: User = Depends(get_current_user),
                            db: Session = Depends(get_db)):
     try:
         # Parse the ISO8601 date string to datetime
         session_date = datetime.fromisoformat(session.date.replace('Z', '+00:00'))
+        session_date_only = session_date.date()
 
-        # Check for duplicate sessions (same user, same date, same drill count)
-        existing_session = db.query(CompletedSession).filter(
+        # Check for exact duplicate sessions (same user, same datetime, same drill count)
+        # This prevents creating the exact same session twice
+        exact_duplicate = db.query(CompletedSession).filter(
             CompletedSession.user_id == current_user.id,
             CompletedSession.date == session_date,
             CompletedSession.total_drills == session.total_drills,
@@ -408,52 +413,66 @@ def create_completed_session(session: CompletedSessionCreate,
             CompletedSession.session_type == session.session_type
         ).first()
         
-        if existing_session:
+        # Check if user already completed ANY session on the same date
+        # This determines if treats should be granted (only first session of the day gets treats)
+        session_today = db.query(CompletedSession).filter(
+            CompletedSession.user_id == current_user.id,
+            func.date(CompletedSession.date) == session_date_only
+        ).first()
+        
+        is_new_session = exact_duplicate is None
+        already_completed_today = session_today is not None
+        
+        if exact_duplicate:
             # Return existing session instead of creating duplicate
-            return existing_session
+            # Don't grant treats again (idempotency)
+            db_session = exact_duplicate
+            treats_awarded = 0
+            treats_already_granted = True
+        else:
+            # Create the completed session
+            db_session = CompletedSession(
+                user_id=current_user.id,
+                date=session_date,
+                total_completed_drills=session.total_completed_drills,
+                total_drills=session.total_drills,
+                session_type=session.session_type,
+                drills=[{
+                    "drill": {
+                        "uuid": drill.drill.uuid,  # Use UUID as primary identifier
+                        "title": drill.drill.title,
+                        "skill": drill.drill.skill,
+                        "subSkills": drill.drill.subSkills,
+                        "sets": drill.drill.sets,
+                        "reps": drill.drill.reps,
+                        "duration": drill.drill.duration,
+                        "description": drill.drill.description,
+                        "instructions": drill.drill.instructions,
+                        "tips": drill.drill.tips,
+                        "equipment": drill.drill.equipment,
+                        "trainingStyle": drill.drill.trainingStyle,
+                        "difficulty": drill.drill.difficulty,
+                        "videoUrl": drill.drill.videoUrl
+                    },
+                    "setsDone": drill.setsDone,
+                    "totalSets": drill.totalSets,
+                    "totalReps": drill.totalReps,
+                    "totalDuration": drill.totalDuration,
+                    "isCompleted": drill.isCompleted
+                } for drill in session.drills] if session.drills else None,
+                duration_minutes=session.duration_minutes
+            )
+            db.add(db_session)
+            db.commit()
+            db.refresh(db_session)
+            # Initialize treats - will be set below based on whether already completed today
+            treats_awarded = 0
+            treats_already_granted = already_completed_today
         
-        # Create the completed session
-        db_session = CompletedSession(
-            user_id=current_user.id,
-            date=session_date,
-            total_completed_drills=session.total_completed_drills,
-            total_drills=session.total_drills,
-            session_type=session.session_type,
-            drills=[{
-                "drill": {
-                    "uuid": drill.drill.uuid,  # Use UUID as primary identifier
-                    "title": drill.drill.title,
-                    "skill": drill.drill.skill,
-                    "subSkills": drill.drill.subSkills,
-                    "sets": drill.drill.sets,
-                    "reps": drill.drill.reps,
-                    "duration": drill.drill.duration,
-                    "description": drill.drill.description,
-                    "instructions": drill.drill.instructions,
-                    "tips": drill.drill.tips,
-                    "equipment": drill.drill.equipment,
-                    "trainingStyle": drill.drill.trainingStyle,
-                    "difficulty": drill.drill.difficulty,
-                    "videoUrl": drill.drill.videoUrl
-                },
-                "setsDone": drill.setsDone,
-                "totalSets": drill.totalSets,
-                "totalReps": drill.totalReps,
-                "totalDuration": drill.totalDuration,
-                "isCompleted": drill.isCompleted
-            } for drill in session.drills] if session.drills else None,
-            duration_minutes=session.duration_minutes
-        )
-        db.add(db_session)
-        db.commit()
-        db.refresh(db_session)
-        
-        # ✅ NEW: Update streak in progress history when session is completed
+        # ✅ Update streak in progress history when session is completed
         progress_history = db.query(ProgressHistory).filter(
             ProgressHistory.user_id == current_user.id
         ).first()
-        
-        session_date_only = session_date.date()
         
         # Get the previous session (before this one)
         previous_session = db.query(CompletedSession).filter(
@@ -470,7 +489,68 @@ def create_completed_session(session: CompletedSessionCreate,
             )
             db.commit()
         
-        return db_session
+        # ✅ NEW: Calculate and grant treats (only for first session of the day)
+        # Don't grant treats if user already completed a session today
+        if is_new_session and not already_completed_today:
+            treat_service = TreatRewardService(db)
+            
+            # Prepare session data for calculation
+            # Normalize session_type: frontend sends "training" but we use "drill_training" internally
+            session_type = session.session_type or 'drill_training'
+            if session_type == 'training':
+                session_type = 'drill_training'
+            
+            # Convert drills to dict format for calculator (handles both Pydantic models and dicts)
+            drills_list = []
+            if session.drills:
+                for drill in session.drills:
+                    if hasattr(drill, 'model_dump'):
+                        # Pydantic model - convert to dict
+                        drills_list.append(drill.model_dump())
+                    elif hasattr(drill, 'dict'):
+                        # Pydantic v1 model - convert to dict
+                        drills_list.append(drill.dict())
+                    elif isinstance(drill, dict):
+                        # Already a dict
+                        drills_list.append(drill)
+                    else:
+                        # Try to access as object
+                        drills_list.append({
+                            'isCompleted': getattr(drill, 'isCompleted', False)
+                        })
+            
+            session_data = {
+                'session_type': session_type,
+                'drills': drills_list,
+                'total_completed_drills': session.total_completed_drills or 0,
+                'total_drills': session.total_drills or 0,
+                'duration_minutes': session.duration_minutes,
+            }
+            
+            # Get user context (streak from progress_history, refreshed after update)
+            if progress_history:
+                db.refresh(progress_history)  # Refresh to get updated streak
+            
+            user_context = {
+                'current_streak': progress_history.current_streak if progress_history else 0,
+                'previous_streak': progress_history.previous_streak if progress_history else 0,
+            }
+            
+            # Grant treats (only for new sessions)
+            treats_awarded, treats_already_granted = treat_service.grant_session_reward(
+                user=current_user,
+                session_data=session_data,
+                is_new_session=is_new_session,
+                user_context=user_context
+            )
+        
+        # Prepare response with treats information
+        # Use model_validate to convert from SQLAlchemy model, then update treats fields
+        response_data = CompletedSessionResponse.model_validate(db_session)
+        response_data.treats_awarded = treats_awarded
+        response_data.treats_already_granted = treats_already_granted
+        
+        return response_data
         
     except Exception as e:
         db.rollback()

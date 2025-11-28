@@ -1,233 +1,235 @@
-when a user purchases treats , we are using revenuecat api webhooks to ensure the purchase verification and transaction, and then verifying in the backend to make sure that the purchase went through so we can grant user treats
+# my original prompt from the frontend: i want to create a dynmaic calculation in the backend that will determine how much treats the user gets after a session, what would i mneed to do for this to work. what would be good ways that would follow good swe principles and practices
 
-from fastapi import APIRouter, Depends, HTTPException, status
+# game plan:
+Architecture Overview
+1. Separation of Concerns
+TreatCalculator: Calculates treats (separate from streak logic)
+TreatRewardService: Grants treats and handles idempotency
+Calculation Strategies: Different rules for different session types
+
+# files need to implement
+
+# app/services/treat_reward_service.py
+
+from typing import Dict, Optional, Tuple
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
-from typing import Optional
-import httpx
-import os
-from datetime import datetime
+from app.models.user import User
+from app.models.store_items import UserStoreItems  # Your existing model
+from app.services.treat_calculator import TreatCalculator
 
-# Assuming you have these imports from your existing code
-from your_auth import get_current_user, User
-from your_database import get_db
-from your_models import UserStoreItems, PurchaseTransaction
-
-router = APIRouter()
-
-# Request/Response Models
-class VerifyTreatPurchaseRequest(BaseModel):
-    product_id: str
-    package_identifier: str
-    treat_amount: int
-    transaction_id: str
-    purchase_date: str
-    revenue_cat_user_id: str
-    platform: str
-
-class VerifyTreatPurchaseResponse(BaseModel):
-    success: bool
-    treats: int
-    message: Optional[str] = None
-
-# RevenueCat API Configuration
-REVENUECAT_API_KEY = os.getenv("REVENUECAT_API_KEY", "appl_OIYtlnvDkuuhmFAAWJojwiAgBxi")
-REVENUECAT_API_URL = "https://api.revenuecat.com/v1"
-
-# Helper Functions
-async def verify_with_revenuecat_api(revenue_cat_user_id: str) -> dict:
-    """
-    Fetch customer info from RevenueCat API to verify purchase
-    """
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            f"{REVENUECAT_API_URL}/subscribers/{revenue_cat_user_id}",
-            headers={
-                "Authorization": f"Bearer {REVENUECAT_API_KEY}",
-                "X-Platform": "ios"  # or "android" based on platform
-            },
-            timeout=10.0
-        )
+class TreatRewardService:
+    """Service for granting treat rewards with idempotency"""
+    
+    def __init__(self, db: Session):
+        self.db = db
+        self.calculator = TreatCalculator()
+    
+    def grant_session_reward(
+        self,
+        user: User,
+        session_data: Dict,
+        is_new_session: bool,  # True if session was just created, False if duplicate
+        user_context: Optional[Dict] = None
+    ) -> Tuple[int, bool]:
+        """
+        Grant treats for a completed session with idempotency.
         
-        if response.status_code != 200:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Failed to verify with RevenueCat: {response.status_code}"
+        Args:
+            user: The user to grant treats to
+            session_data: Session data for calculation
+            is_new_session: Whether this is a newly created session (False = duplicate)
+            user_context: Optional user context (streak, etc.)
+        
+        Returns:
+            Tuple of (treats_awarded, was_already_granted)
+        """
+        # If session already exists (duplicate), treats were already granted
+        if not is_new_session:
+            # Return 0 treats since this is a duplicate session
+            return 0, True
+        
+        # Calculate treats
+        treats_amount = self.calculator.calculate_treats(session_data, user_context)
+        
+        if treats_amount <= 0:
+            return 0, False
+        
+        # Grant treats to user via UserStoreItems
+        self._increment_user_treats(user.id, treats_amount)
+        
+        return treats_amount, False
+    
+    def _increment_user_treats(self, user_id: int, amount: int):
+        """Increment user's treat balance using UserStoreItems"""
+        # Get or create UserStoreItems for this user
+        store_items = self.db.query(UserStoreItems).filter(
+            UserStoreItems.user_id == user_id
+        ).first()
+        
+        if not store_items:
+            # Create new UserStoreItems if it doesn't exist
+            store_items = UserStoreItems(
+                user_id=user_id,
+                treats=amount
             )
+            self.db.add(store_items)
+        else:
+            # Increment existing treats
+            store_items.treats = (store_items.treats or 0) + amount
         
-        return response.json()
+        self.db.commit()
+        self.db.refresh(store_items)
 
-def transaction_exists_in_customer_info(
-    customer_info: dict, 
-    transaction_id: str, 
-    product_id: str
-) -> bool:
-    """
-    Check if transaction exists in RevenueCat customer info
-    """
-    # Check non-subscription transactions
-    non_subscription_transactions = customer_info.get("subscriber", {}).get("non_subscriptions", {})
-    
-    # Look for the product_id in transactions
-    for product_key, transactions in non_subscription_transactions.items():
-        if product_key == product_id:
-            # Check if transaction_id exists in this product's transactions
-            for transaction in transactions:
-                if transaction.get("id") == transaction_id:
-                    return True
-    
-    return False
+# app/routers/sessions.py
 
-async def transaction_already_processed(
-    db: Session,
-    transaction_id: str
-) -> bool:
-    """
-    Check if transaction was already processed (idempotency check)
-    """
-    existing = db.query(PurchaseTransaction).filter(
-        PurchaseTransaction.transaction_id == transaction_id
-    ).first()
-    
-    return existing is not None
+from app.services.treat_reward_service import TreatRewardService
+from app.models.store_items import UserStoreItems
 
-async def grant_treats_to_user(
-    db: Session,
-    user_id: int,
-    treat_amount: int
-):
-    """
-    Grant treats to user by incrementing their treat balance
-    """
-    store_items = db.query(UserStoreItems).filter(
-        UserStoreItems.user_id == user_id
-    ).first()
-    
-    if not store_items:
-        # Create new store items record
-        store_items = UserStoreItems(
-            user_id=user_id,
-            treats=treat_amount,
-            streak_freezes=0,
-            streak_revivers=0
-        )
-        db.add(store_items)
-    else:
-        # Increment existing treats
-        store_items.treats += treat_amount
-    
-    db.commit()
-    db.refresh(store_items)
-    return store_items
-
-async def store_transaction(
-    db: Session,
-    transaction_id: str,
-    user_id: int,
-    treat_amount: int,
-    product_id: str,
-    platform: str
-):
-    """
-    Store transaction record for idempotency
-    """
-    transaction = PurchaseTransaction(
-        user_id=user_id,
-        transaction_id=transaction_id,
-        product_id=product_id,
-        treat_amount=treat_amount,
-        platform=platform,
-        processed_at=datetime.utcnow()
-    )
-    db.add(transaction)
-    db.commit()
-    return transaction
-
-async def get_user_store_items(db: Session, user_id: int) -> UserStoreItems:
-    """
-    Get user's store items, creating if doesn't exist
-    """
-    store_items = db.query(UserStoreItems).filter(
-        UserStoreItems.user_id == user_id
-    ).first()
-    
-    if not store_items:
-        store_items = UserStoreItems(
-            user_id=user_id,
-            treats=0,
-            streak_freezes=0,
-            streak_revivers=0
-        )
-        db.add(store_items)
-        db.commit()
-        db.refresh(store_items)
-    
-    return store_items
-
-# Main Endpoint
-@router.post("/api/store/verify-treat-purchase", response_model=VerifyTreatPurchaseResponse)
-async def verify_treat_purchase(
-    request_data: VerifyTreatPurchaseRequest,
+@router.post("/api/sessions/completed/", response_model=CompletedSessionResponse)
+def create_completed_session(
+    session: CompletedSessionCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """
-    Verify purchase directly with RevenueCat API and grant treats
-    """
     try:
-        # 1. Verify with RevenueCat API
-        customer_info = await verify_with_revenuecat_api(request_data.revenue_cat_user_id)
+        # Parse the ISO8601 date string to datetime
+        session_date = datetime.fromisoformat(session.date.replace('Z', '+00:00'))
+
+        # Check for duplicate sessions (same user, same date, same drill count)
+        existing_session = db.query(CompletedSession).filter(
+            CompletedSession.user_id == current_user.id,
+            CompletedSession.date == session_date,
+            CompletedSession.total_drills == session.total_drills,
+            CompletedSession.total_completed_drills == session.total_completed_drills,
+            CompletedSession.session_type == session.session_type
+        ).first()
         
-        # 2. Check if transaction exists in customer_info
-        if not transaction_exists_in_customer_info(
-            customer_info, 
-            request_data.transaction_id, 
-            request_data.product_id
-        ):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Transaction not found in RevenueCat"
+        is_new_session = existing_session is None
+        
+        if existing_session:
+            # Return existing session instead of creating duplicate
+            # Don't grant treats again (idempotency)
+            treats_awarded = 0
+            treats_already_granted = True
+            db_session = existing_session
+        else:
+            # Create the completed session
+            db_session = CompletedSession(
+                user_id=current_user.id,
+                date=session_date,
+                total_completed_drills=session.total_completed_drills,
+                total_drills=session.total_drills,
+                session_type=session.session_type,
+                drills=[{
+                    "drill": {
+                        "uuid": drill.drill.uuid,
+                        "title": drill.drill.title,
+                        "skill": drill.drill.skill,
+                        "subSkills": drill.drill.subSkills,
+                        "sets": drill.drill.sets,
+                        "reps": drill.drill.reps,
+                        "duration": drill.drill.duration,
+                        "description": drill.drill.description,
+                        "instructions": drill.drill.instructions,
+                        "tips": drill.drill.tips,
+                        "equipment": drill.drill.equipment,
+                        "trainingStyle": drill.drill.trainingStyle,
+                        "difficulty": drill.drill.difficulty,
+                        "videoUrl": drill.drill.videoUrl
+                    },
+                    "setsDone": drill.setsDone,
+                    "totalSets": drill.totalSets,
+                    "totalReps": drill.totalReps,
+                    "totalDuration": drill.totalDuration,
+                    "isCompleted": drill.isCompleted
+                } for drill in session.drills] if session.drills else None,
+                duration_minutes=session.duration_minutes
+            )
+            db.add(db_session)
+            db.commit()
+            db.refresh(db_session)
+        
+        # ✅ Update streak in progress history (existing code - keep separate!)
+        progress_history = db.query(ProgressHistory).filter(
+            ProgressHistory.user_id == current_user.id
+        ).first()
+        
+        session_date_only = session_date.date()
+        
+        # Get the previous session (before this one)
+        previous_session = db.query(CompletedSession).filter(
+            CompletedSession.user_id == current_user.id,
+            CompletedSession.id != db_session.id
+        ).order_by(CompletedSession.date.desc()).first()
+        
+        if progress_history:
+            # Update streak using helper function
+            update_streak_on_session_completion(
+                progress_history=progress_history,
+                session_date=session_date_only,
+                previous_session=previous_session
+            )
+            db.commit()
+        
+        # ✅ NEW: Calculate and grant treats (only for new sessions)
+        treats_awarded = 0
+        treats_already_granted = False
+        
+        if is_new_session:
+            treat_service = TreatRewardService(db)
+            
+            # Prepare session data for calculation
+            session_data = {
+                'session_type': session.session_type or 'drill_training',
+                'drills': session.drills or [],
+                'total_completed_drills': session.total_completed_drills or 0,
+                'total_drills': session.total_drills or 0,
+                'duration_minutes': session.duration_minutes,
+            }
+            
+            # Get user context (streak from progress_history, refreshed after update)
+            if progress_history:
+                db.refresh(progress_history)  # Refresh to get updated streak
+            
+            user_context = {
+                'current_streak': progress_history.current_streak if progress_history else 0,
+                'previous_streak': progress_history.previous_streak if progress_history else 0,
+            }
+            
+            # Grant treats (only for new sessions)
+            treats_awarded, treats_already_granted = treat_service.grant_session_reward(
+                user=current_user,
+                session_data=session_data,
+                is_new_session=is_new_session,
+                user_context=user_context
             )
         
-        # 3. Check for duplicate (idempotency)
-        if await transaction_already_processed(db, request_data.transaction_id):
-            # Already processed, return current balance
-            store_items = await get_user_store_items(db, current_user.id)
-            return VerifyTreatPurchaseResponse(
-                success=True,
-                treats=store_items.treats,
-                message="Transaction already processed"
-            )
+        # Prepare response with treats information
+        response_data = {
+            **db_session.dict(),  # Existing session data
+            'treats_awarded': treats_awarded,
+            'treats_already_granted': treats_already_granted,
+        }
         
-        # 4. Grant treats
-        store_items = await grant_treats_to_user(
-            db,
-            current_user.id,
-            request_data.treat_amount
-        )
+        return response_data
         
-        # 5. Record transaction
-        await store_transaction(
-            db,
-            request_data.transaction_id,
-            current_user.id,
-            request_data.treat_amount,
-            request_data.product_id,
-            request_data.platform
-        )
-        
-        # 6. Return success
-        return VerifyTreatPurchaseResponse(
-            success=True,
-            treats=store_items.treats,
-            message="Purchase verified and treats granted"
-        )
-        
-    except HTTPException:
-        raise
     except Exception as e:
         db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to verify purchase: {str(e)}"
+            status_code=500,
+            detail=f"Failed to create completed session: {str(e)}"
         )
+
+# response schema
+# app/schemas/sessions.py
+
+class CompletedSessionResponse(CompletedSessionBase):
+    """Response schema including treat reward information"""
+    id: int
+    user_id: int
+    treats_awarded: int  # ✅ NEW: Treats granted for this session
+    treats_already_granted: bool  # ✅ NEW: Whether treats were already granted (idempotency)
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# what our current frontend sends right now:
