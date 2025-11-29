@@ -26,7 +26,7 @@ class TreatRewardService:
         session_data: Dict,
         is_new_session: bool,  # True if session was just created, False if duplicate
         user_context: Optional[Dict] = None
-    ) -> Tuple[int, bool]:
+    ) -> Tuple[int, bool, Dict]:
         """
         Grant treats for a completed session with idempotency.
         
@@ -37,19 +37,26 @@ class TreatRewardService:
             user_context: Optional user context (streak, etc.)
         
         Returns:
-            Tuple of (treats_awarded, was_already_granted)
+            Tuple of (treats_awarded, was_already_granted, breakdown_dict)
         """
         # If session already exists (duplicate), treats were already granted
         if not is_new_session:
             logger.info(f"Duplicate session detected for user {user.id}, skipping treat reward")
-            return 0, True
+            return 0, True, {
+                'drills_completed': 0,
+                'difficulty_bonus': 0,
+                'completion_bonus': 0,
+                'streak_multiplier': 1.0,
+                'base_treats': 0,
+                'total_before_streak': 0
+            }
         
         # Calculate treats
-        treats_amount = self.calculator.calculate_treats(session_data, user_context)
+        treats_amount, breakdown = self.calculator.calculate_treats(session_data, user_context)
         
         if treats_amount <= 0:
             logger.info(f"No treats calculated for user {user.id}, session_type: {session_data.get('session_type')}")
-            return 0, False
+            return 0, False, breakdown
         
         # Grant treats to user via UserStoreItems
         self._increment_user_treats(user.id, treats_amount)
@@ -60,7 +67,7 @@ class TreatRewardService:
             f"streak: {user_context.get('current_streak', 0) if user_context else 0})"
         )
         
-        return treats_amount, False
+        return treats_amount, False, breakdown
     
     def _increment_user_treats(self, user_id: int, amount: int):
         """Increment user's treat balance using UserStoreItems"""
