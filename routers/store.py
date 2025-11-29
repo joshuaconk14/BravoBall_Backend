@@ -22,7 +22,8 @@ from schemas import (
 )
 from db import get_db
 from auth import get_current_user
-from config import RevenueCat, get_logger
+from config import RevenueCat, get_logger, log_debug, log_debug_error, log_debug_warning
+from utils.encryption import hash_transaction_id
 
 router = APIRouter()
 
@@ -473,36 +474,36 @@ def transaction_exists_in_customer_info(
     
     # Ensure customer_info is a dict
     if not isinstance(customer_info, dict):
-        logger.error(f"Invalid customer_info type: {type(customer_info)}")
+        log_debug_error(logger, f"Invalid customer_info type: {type(customer_info)}")
         return False
     
     subscriber = customer_info.get("subscriber", {})
     
     # Ensure subscriber is a dict
     if not isinstance(subscriber, dict):
-        logger.error(f"Invalid subscriber type: {type(subscriber)}")
+        log_debug_error(logger, f"Invalid subscriber type: {type(subscriber)}")
         return False
     
     # Log for debugging
-    logger.info(f"Looking for transaction_id: {transaction_id}, product_id: {product_id}")
+    log_debug(logger, f"Looking for transaction_id: {transaction_id}, product_id: {product_id}")
     
     # Helper function to check transactions in a dictionary
     def check_transactions_in_dict(transactions_dict: dict, source_name: str) -> bool:
         """Check if transaction exists in a transactions dictionary"""
         if not transactions_dict or not isinstance(transactions_dict, dict):
-            logger.info(f"No transactions found in {source_name}")
+            log_debug(logger, f"No transactions found in {source_name}")
             return False
         
-        logger.info(f"Available products in {source_name}: {list(transactions_dict.keys())}")
+        log_debug(logger, f"Available products in {source_name}: {list(transactions_dict.keys())}")
         
         # Look for the product_id in transactions
         for product_key, transactions in transactions_dict.items():
             # Ensure transactions is a list/iterable
             if not isinstance(transactions, (list, tuple)):
-                logger.warning(f"Transactions for product {product_key} is not a list: {type(transactions)}")
+                log_debug_warning(logger, f"Transactions for product {product_key} is not a list: {type(transactions)}")
                 continue
             
-            logger.info(f"Checking product: {product_key}, has {len(transactions)} transactions")
+            log_debug(logger, f"Checking product: {product_key}, has {len(transactions)} transactions")
             
             # Try exact match first
             if product_key == product_id:
@@ -524,24 +525,24 @@ def transaction_exists_in_customer_info(
                         trans_id = transaction
                         store_trans_id = None
                     else:
-                        logger.warning(f"Unexpected transaction type in {source_name}: {type(transaction)}")
+                        log_debug_warning(logger, f"Unexpected transaction type in {source_name}: {type(transaction)}")
                         continue
                     
-                    logger.info(f"  Transaction ID in RevenueCat ({source_name}): {trans_id}, StoreTransactionID: {store_trans_id}")
+                    log_debug(logger, f"  Transaction ID in RevenueCat ({source_name}): {trans_id}, StoreTransactionID: {store_trans_id}")
                     
                     # Match on RevenueCat transaction ID
                     if trans_id == transaction_id:
-                        logger.info(f"✅ Found matching transaction in {source_name} (by RevenueCat ID)!")
+                        log_debug(logger, f"✅ Found matching transaction in {source_name} (by RevenueCat ID)!")
                         return True
                     
                     # Also match on StoreKit transaction ID (what webhooks send)
                     if store_trans_id and store_trans_id == transaction_id:
-                        logger.info(f"✅ Found matching transaction in {source_name} (by StoreKit transaction ID)!")
+                        log_debug(logger, f"✅ Found matching transaction in {source_name} (by StoreKit transaction ID)!")
                         return True
             
             # Also check if product_id is a substring match (for package identifiers)
             if product_id in product_key or product_key in product_id:
-                logger.info(f"Product ID partial match: {product_key} vs {product_id}")
+                log_debug(logger, f"Product ID partial match: {product_key} vs {product_id}")
                 for transaction in transactions:
                     # Handle case where transaction might be a dict or string
                     if isinstance(transaction, dict):
@@ -559,12 +560,12 @@ def transaction_exists_in_customer_info(
                     
                     # Match on RevenueCat transaction ID
                     if trans_id == transaction_id:
-                        logger.info(f"✅ Found matching transaction with partial product match in {source_name} (by RevenueCat ID)!")
+                        log_debug(logger, f"✅ Found matching transaction with partial product match in {source_name} (by RevenueCat ID)!")
                         return True
                     
                     # Also match on StoreKit transaction ID
                     if store_trans_id and store_trans_id == transaction_id:
-                        logger.info(f"✅ Found matching transaction with partial product match in {source_name} (by StoreKit transaction ID)!")
+                        log_debug(logger, f"✅ Found matching transaction with partial product match in {source_name} (by StoreKit transaction ID)!")
                         return True
         
         return False
@@ -580,26 +581,26 @@ def transaction_exists_in_customer_info(
         return True
     
     # If not found, log full structure for debugging
-    logger.warning("Transaction not found in non_subscriptions or other_purchases")
-    logger.info(f"Full subscriber structure keys: {list(subscriber.keys())}")
+    log_debug_warning(logger, "Transaction not found in non_subscriptions or other_purchases")
+    log_debug(logger, f"Full subscriber structure keys: {list(subscriber.keys())}")
     
-    # Log the actual content (not just debug level)
-    logger.info(f"non_subscriptions content: {json.dumps(non_subscription_transactions, indent=2, default=str)}")
-    logger.info(f"other_purchases content: {json.dumps(other_purchases, indent=2, default=str)}")
+    # Log the actual content (only when debug logging is enabled)
+    log_debug(logger, f"non_subscriptions content: {json.dumps(non_subscription_transactions, indent=2, default=str)}")
+    log_debug(logger, f"other_purchases content: {json.dumps(other_purchases, indent=2, default=str)}")
     
     # Check if there are any transactions in entitlements (sometimes purchases show up there)
     entitlements = subscriber.get("entitlements", {})
     if entitlements:
-        logger.info(f"Found entitlements: {list(entitlements.keys())}")
+        log_debug(logger, f"Found entitlements: {list(entitlements.keys())}")
         for entitlement_key, entitlement_data in entitlements.items():
-            logger.info(f"  Entitlement: {entitlement_key}, product_identifier: {entitlement_data.get('product_identifier')}")
+            log_debug(logger, f"  Entitlement: {entitlement_key}, product_identifier: {entitlement_data.get('product_identifier')}")
     
     # Log full subscriber for deep debugging (truncated if too large)
     full_subscriber_str = json.dumps(subscriber, indent=2, default=str)
     if len(full_subscriber_str) > 2000:
-        logger.info(f"Full subscriber structure (truncated): {full_subscriber_str[:2000]}...")
+        log_debug(logger, f"Full subscriber structure (truncated): {full_subscriber_str[:2000]}...")
     else:
-        logger.info(f"Full subscriber structure: {full_subscriber_str}")
+        log_debug(logger, f"Full subscriber structure: {full_subscriber_str}")
     
     return False
 
@@ -610,9 +611,13 @@ def transaction_already_processed(
 ) -> bool:
     """
     Check if transaction was already processed (idempotency check)
+    
+    Uses hashed transaction_id for secure querying.
     """
+    # Hash the transaction_id for secure querying
+    hashed_transaction_id = hash_transaction_id(transaction_id)
     existing = db.query(PurchaseTransaction).filter(
-        PurchaseTransaction.transaction_id == transaction_id
+        PurchaseTransaction.transaction_id == hashed_transaction_id
     ).first()
     
     return existing is not None
@@ -668,17 +673,27 @@ def store_transaction(
     """
     Store transaction record for idempotency and audit trail
     
+    Sensitive fields are encrypted/hashed before storage:
+    - transaction_id: Hashed (deterministic, for queries)
+    - device_fingerprint: Stored as-is (already hashed by frontend)
+    
     NOTE: Does NOT commit - caller must commit for atomicity.
     Use db.flush() to check constraint without committing.
     Raises IntegrityError if transaction_id already exists (unique constraint).
     """
+    # Hash transaction_id before storage (comes from RevenueCat/StoreKit, needs hashing)
+    hashed_transaction_id = hash_transaction_id(transaction_id)
+    
+    # Device fingerprint is already hashed by the frontend, so store as-is
+    # This avoids double-hashing which would break queries and is unnecessary
+    
     transaction = PurchaseTransaction(
         user_id=user_id,
-        transaction_id=transaction_id,
+        transaction_id=hashed_transaction_id,  # Stored as hash for secure querying
         product_id=product_id,
         treat_amount=treat_amount,
         platform=platform,
-        device_fingerprint=device_fingerprint,
+        device_fingerprint=device_fingerprint,  # Already hashed by frontend, store as-is
         app_version=app_version,
         processed_at=datetime.utcnow()
     )
@@ -740,15 +755,15 @@ async def verify_treat_purchase(
         device_fingerprint = request.headers.get("Device-Fingerprint")
         app_version = request.headers.get("App-Version")
         
-        logger.info(f"Verifying purchase for user {current_user.id}")
-        logger.info(f"RevenueCat User ID: {request_data.revenue_cat_user_id}")
-        logger.info(f"Transaction ID: {request_data.transaction_id}")
-        logger.info(f"Product ID: {request_data.product_id}")
-        logger.info(f"Platform: {request_data.platform}")
+        log_debug(logger, f"Verifying purchase for user {current_user.id}")
+        log_debug(logger, f"RevenueCat User ID: {request_data.revenue_cat_user_id}")
+        log_debug(logger, f"Transaction ID: {request_data.transaction_id}")
+        log_debug(logger, f"Product ID: {request_data.product_id}")
+        log_debug(logger, f"Platform: {request_data.platform}")
         if device_fingerprint:
-            logger.info(f"Device Fingerprint: {device_fingerprint[:20]}...")  # Log partial for security
+            log_debug(logger, f"Device Fingerprint: {device_fingerprint[:20]}...")  # Log partial for security
         if app_version:
-            logger.info(f"App Version: {app_version}")
+            log_debug(logger, f"App Version: {app_version}")
         
         # Check if this is a StoreKit simulator/sandbox transaction
         is_simulator = request_data.revenue_cat_user_id.startswith("$RCAnonymousID")
@@ -766,7 +781,7 @@ async def verify_treat_purchase(
                 request_data.platform
             )
             
-            logger.info(f"RevenueCat API response received successfully (attempt {attempt + 1}/{max_retries})")
+            log_debug(logger, f"RevenueCat API response received successfully (attempt {attempt + 1}/{max_retries})")
             
             # 2. Check if transaction exists in customer_info
             transaction_found = transaction_exists_in_customer_info(
@@ -776,12 +791,12 @@ async def verify_treat_purchase(
             )
             
             if transaction_found:
-                logger.info(f"✅ Transaction found in RevenueCat on attempt {attempt + 1}")
+                log_debug(logger, f"✅ Transaction found in RevenueCat on attempt {attempt + 1}")
                 break
             
             # If not found and not last attempt, wait and retry
             if attempt < max_retries - 1:
-                logger.info(
+                log_debug(logger,
                     f"Transaction not found yet (attempt {attempt + 1}/{max_retries}). "
                     f"Retrying in {retry_delay} seconds..."
                 )
@@ -796,19 +811,19 @@ async def verify_treat_purchase(
                 non_subscriptions = subscriber.get("non_subscriptions", {}) if isinstance(subscriber, dict) else {}
                 other_purchases = subscriber.get("other_purchases", {}) if isinstance(subscriber, dict) else {}
                 
-                logger.error(f"Transaction not found after {max_retries} attempts. Available products in non_subscriptions: {list(non_subscriptions.keys()) if isinstance(non_subscriptions, dict) else []}")
-                logger.error(f"Available products in other_purchases: {list(other_purchases.keys()) if isinstance(other_purchases, dict) else []}")
+                log_debug_error(logger, f"Transaction not found after {max_retries} attempts. Available products in non_subscriptions: {list(non_subscriptions.keys()) if isinstance(non_subscriptions, dict) else []}")
+                log_debug_error(logger, f"Available products in other_purchases: {list(other_purchases.keys()) if isinstance(other_purchases, dict) else []}")
             else:
-                logger.error(f"Transaction not found after {max_retries} attempts. Invalid customer_info type: {type(customer_info)}")
+                log_debug_error(logger, f"Transaction not found after {max_retries} attempts. Invalid customer_info type: {type(customer_info)}")
                 non_subscriptions = {}
                 other_purchases = {}
             
-            logger.error(f"Looking for product_id: {request_data.product_id}, transaction_id: {request_data.transaction_id}")
+            log_debug_error(logger, f"Looking for product_id: {request_data.product_id}, transaction_id: {request_data.transaction_id}")
             
             # Development mode: Allow simulator/sandbox purchases to bypass RevenueCat verification
             # This handles cases where RevenueCat hasn't synced yet or simulator transactions
             if is_simulator and RevenueCat.ALLOW_SIMULATOR_BYPASS:
-                logger.warning(
+                log_debug_warning(logger,
                     f"⚠️ DEVELOPMENT MODE: Allowing simulator/sandbox purchase to bypass RevenueCat verification. "
                     f"Transaction ID: {request_data.transaction_id}, Product ID: {request_data.product_id}. "
                     f"Note: Purchase was posted to RevenueCat but hasn't appeared in customer info yet."
@@ -841,14 +856,14 @@ async def verify_treat_purchase(
         # 3. Validate treat amount matches product ID
         expected_treats = RevenueCat.PRODUCT_TREAT_MAPPING.get(request_data.product_id)
         if expected_treats is None:
-            logger.error(f"Unknown product ID: {request_data.product_id}")
+            log_debug_error(logger, f"Unknown product ID: {request_data.product_id}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Unknown product ID: {request_data.product_id}"
             )
         
         if request_data.treat_amount != expected_treats:
-            logger.error(
+            log_debug_error(logger,
                 f"Treat amount mismatch for product {request_data.product_id}. "
                 f"Expected: {expected_treats}, Received: {request_data.treat_amount}"
             )
@@ -860,14 +875,14 @@ async def verify_treat_purchase(
                 )
             )
         
-        logger.info(f"✅ Treat amount validated: {request_data.treat_amount} treats for product {request_data.product_id}")
+        log_debug(logger, f"✅ Treat amount validated: {request_data.treat_amount} treats for product {request_data.product_id}")
         
         # 4. Quick check for duplicate (optimization - database constraint is the real guard)
         # This avoids unnecessary work if transaction already processed
         if transaction_already_processed(db, request_data.transaction_id):
             # Already processed, return current balance
             store_items = get_user_store_items(db, current_user.id)
-            logger.info(f"Transaction already processed. Returning current treat balance: {store_items.treats}")
+            log_debug(logger, f"Transaction already processed. Returning current treat balance: {store_items.treats}")
             return VerifyTreatPurchaseResponse(
                 success=True,
                 treats=store_items.treats,
@@ -905,7 +920,7 @@ async def verify_treat_purchase(
             # Transaction already exists (race condition caught at database level)
             db.rollback()
             store_items = get_user_store_items(db, current_user.id)
-            logger.info(
+            log_debug(logger,
                 f"Transaction already processed (race condition detected). "
                 f"Returning current treat balance: {store_items.treats}"
             )
@@ -920,7 +935,7 @@ async def verify_treat_purchase(
         
         # 9. Log the calculation (we know the amount added, and we have the final balance)
         final_treat_balance = store_items.treats
-        logger.info(
+        log_debug(logger,
             f"✅ Treat purchase complete. "
             f"Added: {request_data.treat_amount} treats. "
             f"Final balance: {final_treat_balance}"
