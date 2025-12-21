@@ -84,12 +84,25 @@ class CompletedSession(CompletedSessionBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+class TreatBreakdown(BaseModel):
+    """Breakdown of how treats were calculated"""
+    drills_completed: int = 0  # Number of drills completed
+    difficulty_bonus: int = 0  # Bonus treats from drill difficulty
+    completion_bonus: int = 0  # Bonus for completing all drills
+    streak_multiplier: float = 1.0  # Streak multiplier applied
+    base_treats: int = 0  # Base treats before bonuses
+    total_before_streak: int = 0  # Total treats before streak multiplier
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
 class CompletedSessionResponse(CompletedSessionBase):
     """Response schema including treat reward information"""
     id: int
     user_id: int
     treats_awarded: int = 0  # Treats granted for this session
     treats_already_granted: bool = False  # Whether treats were already granted (idempotency)
+    treat_breakdown: Optional[TreatBreakdown] = None  # Breakdown of treat calculation
     
     model_config = ConfigDict(from_attributes=True)
 

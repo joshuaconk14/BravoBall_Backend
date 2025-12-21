@@ -8,6 +8,7 @@ from schemas import (
     CompletedSession as CompletedSessionSchema,
     CompletedSessionResponse,
     CompletedSessionCreate,
+    TreatBreakdown,
     DrillGroup as DrillGroupSchema,
     DrillGroupCreate,
     DrillGroupUpdate,
@@ -429,6 +430,14 @@ def create_completed_session(session: CompletedSessionCreate,
             db_session = exact_duplicate
             treats_awarded = 0
             treats_already_granted = True
+            treat_breakdown = {
+                'drills_completed': 0,
+                'difficulty_bonus': 0,
+                'completion_bonus': 0,
+                'streak_multiplier': 1.0,
+                'base_treats': 0,
+                'total_before_streak': 0
+            }
         else:
             # Create the completed session
             db_session = CompletedSession(
@@ -468,6 +477,15 @@ def create_completed_session(session: CompletedSessionCreate,
             # Initialize treats - will be set below based on whether already completed today
             treats_awarded = 0
             treats_already_granted = already_completed_today
+            # Initialize breakdown - will be set below if treats are granted
+            treat_breakdown = {
+                'drills_completed': 0,
+                'difficulty_bonus': 0,
+                'completion_bonus': 0,
+                'streak_multiplier': 1.0,
+                'base_treats': 0,
+                'total_before_streak': 0
+            }
         
         # ✅ Update streak in progress history when session is completed
         progress_history = db.query(ProgressHistory).filter(
@@ -537,18 +555,29 @@ def create_completed_session(session: CompletedSessionCreate,
             }
             
             # Grant treats (only for new sessions)
-            treats_awarded, treats_already_granted = treat_service.grant_session_reward(
+            treats_awarded, treats_already_granted, treat_breakdown = treat_service.grant_session_reward(
                 user=current_user,
                 session_data=session_data,
                 is_new_session=is_new_session,
                 user_context=user_context
             )
+        else:
+            # No treats awarded, create empty breakdown
+            treat_breakdown = {
+                'drills_completed': 0,
+                'difficulty_bonus': 0,
+                'completion_bonus': 0,
+                'streak_multiplier': 1.0,
+                'base_treats': 0,
+                'total_before_streak': 0
+            }
         
         # Prepare response with treats information
         # Use model_validate to convert from SQLAlchemy model, then update treats fields
         response_data = CompletedSessionResponse.model_validate(db_session)
         response_data.treats_awarded = treats_awarded
         response_data.treats_already_granted = treats_already_granted
+        response_data.treat_breakdown = TreatBreakdown(**treat_breakdown)
         
         return response_data
         

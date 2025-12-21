@@ -4,7 +4,7 @@ Service for calculating treat rewards based on session data.
 Follows strategy pattern for different session types.
 """
 
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple
 from config import get_logger
 
 logger = get_logger(__name__)
@@ -27,19 +27,25 @@ class TreatCalculator:
             4: 1.3,      # 4 day streak
             5: 1.5,      # 5 day streak
             7: 2.0,      # 7 day streak
-            14: 2.5,     # 14 day streak
-            30: 3.0,     # 30 day streak
+            14: 2.2,     # 14 day streak
+            30: 2.5,     # 30 day streak
         }
         
-        # Completion bonuses (reduced to target ~45 treats per session)
-        self.COMPLETION_BONUS = 12  # Reduced from 20 - Bonus for completing all drills
-        self.PERFECT_SESSION_BONUS = 18  # Reduced from 50 - Bonus for perfect session (all drills completed)
+        # Completion bonus (reduced to target ~45 treats per session)
+        self.COMPLETION_BONUS = 12  # Bonus for completing all drills
+        
+        # Difficulty multipliers (bonus treats per drill based on difficulty)
+        self.DIFFICULTY_BONUSES = {
+            'beginner': 0,        # No bonus for beginner drills
+            'intermediate': 2,    # +2 treats per intermediate drill
+            'advanced': 5,        # +5 treats per advanced drill
+        }
     
     def calculate_treats(
         self, 
         session_data: Dict, 
         user_context: Optional[Dict] = None
-    ) -> int:
+    ) -> Tuple[int, Dict]:
         """
         Calculate treats based on session data and user context.
         
@@ -55,7 +61,13 @@ class TreatCalculator:
                 - previous_streak: Previous streak count
         
         Returns:
-            Number of treats to award
+            Tuple of (treats_amount, breakdown_dict) where breakdown_dict contains:
+            - drills_completed: int
+            - difficulty_bonus: int
+            - completion_bonus: int
+            - streak_multiplier: float
+            - base_treats: int
+            - total_before_streak: int
         """
         session_type = session_data.get('session_type', 'drill_training')
         
@@ -66,13 +78,20 @@ class TreatCalculator:
             return self._calculate_mental_training_treats(session_data, user_context)
         else:
             # Unknown session type, return 0
-            return 0
+            return 0, {
+                'drills_completed': 0,
+                'difficulty_bonus': 0,
+                'completion_bonus': 0,
+                'streak_multiplier': 1.0,
+                'base_treats': 0,
+                'total_before_streak': 0
+            }
     
     def _calculate_drill_training_treats(
         self, 
         session_data: Dict, 
         user_context: Optional[Dict] = None
-    ) -> int:
+    ) -> Tuple[int, Dict]:
         """Calculate treats for drill training sessions"""
         total_completed_drills = session_data.get('total_completed_drills', 0)
         total_drills = session_data.get('total_drills', 0)
@@ -86,11 +105,38 @@ class TreatCalculator:
         
         if total_drills == 0:
             logger.warning("No drills in session, returning 0 treats")
-            return 0
+            return 0, {
+                'drills_completed': 0,
+                'difficulty_bonus': 0,
+                'completion_bonus': 0,
+                'streak_multiplier': 1.0,
+                'base_treats': 0,
+                'total_before_streak': 0
+            }
         
         # Base treats from completed drills
         base_treats = total_completed_drills * self.BASE_TREATS_PER_DRILL
         logger.info(f"Base treats: {base_treats} ({total_completed_drills} drills × {self.BASE_TREATS_PER_DRILL})")
+        
+        # Difficulty bonus (extra treats for harder drills)
+        difficulty_bonus = 0
+        if drills:
+            for drill in drills:
+                # Extract difficulty from drill data
+                drill_data = drill.get('drill', drill) if isinstance(drill, dict) else drill
+                if isinstance(drill_data, dict):
+                    difficulty = drill_data.get('difficulty', '').lower()
+                else:
+                    difficulty = getattr(drill_data, 'difficulty', '').lower() if hasattr(drill_data, 'difficulty') else ''
+                
+                # Get bonus for this difficulty level
+                bonus = self.DIFFICULTY_BONUSES.get(difficulty, 0)
+                difficulty_bonus += bonus
+                if bonus > 0:
+                    logger.info(f"Difficulty bonus for {difficulty}: +{bonus} treats")
+        
+        if difficulty_bonus > 0:
+            logger.info(f"Total difficulty bonus: {difficulty_bonus}")
         
         # Completion bonus (if all drills completed)
         completion_bonus = 0
@@ -98,21 +144,8 @@ class TreatCalculator:
             completion_bonus = self.COMPLETION_BONUS
             logger.info(f"Completion bonus: {completion_bonus}")
         
-        # Perfect session bonus (if all drills are marked as completed)
-        perfect_bonus = 0
-        if drills:
-            # Handle both dict and object access
-            all_completed = all(
-                drill.get('isCompleted', False) if isinstance(drill, dict) else getattr(drill, 'isCompleted', False)
-                for drill in drills
-            )
-            logger.info(f"All drills completed check: {all_completed} (checked {len(drills)} drills)")
-            if all_completed:
-                perfect_bonus = self.PERFECT_SESSION_BONUS
-                logger.info(f"Perfect session bonus: {perfect_bonus}")
-        
         # Calculate total before streak multiplier
-        total_before_streak = base_treats + completion_bonus + perfect_bonus
+        total_before_streak = base_treats + difficulty_bonus + completion_bonus
         logger.info(f"Total before streak multiplier: {total_before_streak}")
         
         # Apply streak multiplier
@@ -124,18 +157,35 @@ class TreatCalculator:
             f"multiplier: {streak_multiplier}x)"
         )
         
-        return max(0, final_treats)  # Ensure non-negative
+        # Return treats amount and breakdown
+        breakdown = {
+            'drills_completed': total_completed_drills,
+            'difficulty_bonus': difficulty_bonus,
+            'completion_bonus': completion_bonus,
+            'streak_multiplier': streak_multiplier,
+            'base_treats': base_treats,
+            'total_before_streak': total_before_streak
+        }
+        
+        return max(0, final_treats), breakdown  # Ensure non-negative
     
     def _calculate_mental_training_treats(
         self, 
         session_data: Dict, 
         user_context: Optional[Dict] = None
-    ) -> int:
+    ) -> Tuple[int, Dict]:
         """Calculate treats for mental training sessions"""
         duration_minutes = session_data.get('duration_minutes', 0)
         
         if duration_minutes <= 0:
-            return 0
+            return 0, {
+                'drills_completed': 0,
+                'difficulty_bonus': 0,
+                'completion_bonus': 0,
+                'streak_multiplier': 1.0,
+                'base_treats': 0,
+                'total_before_streak': 0
+            }
         
         # Base treats from duration
         base_treats = duration_minutes * self.BASE_TREATS_PER_MENTAL_MINUTE
@@ -144,7 +194,17 @@ class TreatCalculator:
         streak_multiplier = self._get_streak_multiplier(user_context)
         final_treats = int(base_treats * streak_multiplier)
         
-        return max(0, final_treats)  # Ensure non-negative
+        # Return treats amount and breakdown (mental training doesn't have drills/difficulty)
+        breakdown = {
+            'drills_completed': 0,
+            'difficulty_bonus': 0,
+            'completion_bonus': 0,
+            'streak_multiplier': streak_multiplier,
+            'base_treats': base_treats,
+            'total_before_streak': base_treats
+        }
+        
+        return max(0, final_treats), breakdown  # Ensure non-negative
     
     def _get_streak_multiplier(self, user_context: Optional[Dict] = None) -> float:
         """Get streak multiplier based on user's current streak"""

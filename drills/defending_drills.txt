@@ -20,13 +20,11 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "defending",
-            "sub_skill": "agility"
+            "sub_skill": "jockeying"
         },
         "secondary_skills": [
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
-            }
+            "category": "defending",
+            "sub_skill": "marking"
         ],
         "instructions": [
             "Place 3 cones in a triangle shape, with each side measuring 3-5 yards long.",
@@ -85,11 +83,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "positioning"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "agility"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -148,11 +142,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -212,11 +202,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -276,11 +262,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -334,13 +316,11 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "defending",
-            "sub_skill": "positioning"
+            "sub_skill": "jockeying"
         },
         "secondary_skills": [
-            {
-                "category": "defending",
-                "sub_skill": "agility"
-            }
+            "category": "defending",
+            "sub_skill": "marking"
         ],
         "instructions": [
             "Set up 4 cones in a square pattern, 3-4 yards apart.",
@@ -393,13 +373,11 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "defending",
-            "sub_skill": "agility"
+            "sub_skill": "jockeying"
         },
         "secondary_skills": [
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
-            }
+            "category": "defending",
+            "sub_skill": "marking"
         ],
         "instructions": [
             "Set up 3 cones in a straight line, 2-3 yards apart.",
@@ -458,11 +436,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "positioning"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "agility"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -525,11 +499,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -588,11 +558,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "positioning"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "agility"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
