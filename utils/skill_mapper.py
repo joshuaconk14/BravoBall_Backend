@@ -42,8 +42,7 @@ SKILL_MAP: Dict[str, str] = {
     "Tackling": "defending-tackling",
     "Marking": "defending-marking",
     "Intercepting": "defending-intercepting",
-    "Positioning": "defending-positioning",
-    "Agility": "defending-agility",
+    "Jockeying": "defending-jockeying",
     "Aerial defending": "defending-aerial_defending",
     
     # Goalkeeping

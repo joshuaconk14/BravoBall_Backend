@@ -759,8 +759,7 @@ class DefendingSubSkill(str, Enum):
     TACKLING = "tackling"
     MARKING = "marking"
     INTERCEPTING = "intercepting"
-    POSITIONING = "positioning"
-    AGILITY = "agility"
+    JOCKEYING = "jockeying"
     AERIAL_DEFENDING = "aerial_defending"
 
 class GoalkeepingSubSkill(str, Enum):
