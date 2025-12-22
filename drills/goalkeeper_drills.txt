@@ -670,5 +670,413 @@
         "rest": 150,
         "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/dynamic-shot-stopping-challenge.mp4",
         "thumbnail_url": "https://example.com/dynamic-shot-stopping-challenge-thumbnail.jpg"
+    },
+    {
+        "title": "Cross Claiming and Distribution",
+        "description": "A professional goalkeeper drill focusing on commanding the penalty area, claiming crosses under pressure, and immediately distributing to start counter-attacks.",
+        "type": "set_based",
+        "duration": 20,
+        "sets": 3,
+        "reps": 8,
+        "equipment": [
+            "soccer_ball",
+            "goal",
+            "cones"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "catching"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "shot_stopping"
+            }
+        ],
+        "instructions": [
+            "Position yourself in goal with multiple attackers in the penalty area.",
+            "Partner or coach delivers crosses from both flanks at various heights.",
+            "Read the flight of the cross and decide whether to claim or stay on line.",
+            "If claiming, communicate loudly, time your jump perfectly, and catch securely.",
+            "Immediately distribute the ball to a teammate to start counter-attack.",
+            "Practice both catching and punching techniques for different scenarios.",
+            "Focus on commanding presence and decisive decision-making."
+        ],
+        "tips": [
+            "Communicate loudly and clearly to command your area.",
+            "Read the flight of the cross early to position yourself correctly.",
+            "Time your jump to meet the ball at its highest point.",
+            "Catch the ball securely with both hands at the highest point.",
+            "Distribute quickly and accurately to start counter-attacks."
+        ],
+        "common_mistakes": [
+            "Not communicating with teammates about claiming the ball.",
+            "Misjudging the flight of the cross.",
+            "Not timing the jump correctly.",
+            "Not catching the ball securely, leading to drops.",
+            "Distributing poorly after claiming the cross."
+        ],
+        "progression_steps": [
+            "Start with uncontested crosses to perfect technique.",
+            "Add attackers to create pressure and contested situations.",
+            "Increase the pace and unpredictability of crosses.",
+            "Incorporate different types of crosses (in-swinging, out-swinging).",
+            "Add game-like scenarios with counter-attack opportunities."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/cross-claiming-distribution.mp4",
+        "thumbnail_url": "https://example.com/cross-claiming-distribution-thumbnail.jpg"
+    },
+    {
+        "title": "1v1 Breakaway Mastery",
+        "description": "An elite goalkeeper drill simulating one-on-one situations, developing decision-making, positioning, and shot-stopping techniques for breakaway scenarios.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 4,
+        "reps": 6,
+        "equipment": [
+            "soccer_ball",
+            "goal",
+            "cones"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "shot_stopping"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "diving"
+            }
+        ],
+        "instructions": [
+            "Set up a 1v1 scenario with an attacker starting 20-30 yards from goal.",
+            "Attacker dribbles toward goal at various speeds and angles.",
+            "Read the attacker's body language and movement to anticipate their actions.",
+            "Time your approach: stay on your line initially, then narrow the angle.",
+            "Make yourself big when the attacker is about to shoot.",
+            "React quickly to shots, chips, or attempts to round you.",
+            "Practice different techniques: spread save, smother, or diving save."
+        ],
+        "tips": [
+            "Read the attacker's body language to anticipate their intentions.",
+            "Stay on your line until the attacker commits to a direction.",
+            "Narrow the angle by moving forward at the right moment.",
+            "Make yourself big by spreading your body when they shoot.",
+            "React quickly and decisively to shots or attempts to round you."
+        ],
+        "common_mistakes": [
+            "Coming off the line too early, allowing the attacker to round you.",
+            "Not reading the attacker's body language effectively.",
+            "Not making yourself big when the attacker shoots.",
+            "Reacting too slowly to shots or attempts to round you.",
+            "Not maintaining proper positioning relative to the attacker."
+        ],
+        "progression_steps": [
+            "Start with slower, more predictable approaches.",
+            "Increase the speed and unpredictability of attacks.",
+            "Add different types of attackers (fast, skillful, powerful).",
+            "Incorporate different scenarios (through balls, breakaways).",
+            "Add game-like pressure with scoring opportunities."
+        ],
+        "rest": 75,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/1v1-breakaway-mastery.mp4",
+        "thumbnail_url": "https://example.com/1v1-breakaway-mastery-thumbnail.jpg"
+    },
+    {
+        "title": "Penalty Kick Reading and Saving",
+        "description": "A professional goalkeeper drill focusing on penalty kick scenarios, developing anticipation, positioning, and explosive diving techniques for saving spot kicks.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 5,
+        "reps": 8,
+        "equipment": [
+            "soccer_ball",
+            "goal"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "shot_stopping"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "reflexes"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "diving"
+            }
+        ],
+        "instructions": [
+            "Position yourself on the goal line for penalty kicks.",
+            "Observe the penalty taker's approach, body position, and run-up.",
+            "Read subtle cues: plant foot position, hip rotation, body lean.",
+            "Make a decision early but stay balanced until the shot is taken.",
+            "Explode into a dive in the chosen direction with maximum power.",
+            "Extend fully to cover as much of the goal as possible.",
+            "Practice both guessing direction and reacting to the shot."
+        ],
+        "tips": [
+            "Study the penalty taker's body language and approach.",
+            "Look for subtle cues: plant foot position, hip rotation, body lean.",
+            "Stay balanced and ready until the shot is taken.",
+            "Explode into the dive with maximum power and extension.",
+            "Practice both anticipation and reaction techniques."
+        ],
+        "common_mistakes": [
+            "Moving too early and committing before the shot.",
+            "Not reading the penalty taker's body language effectively.",
+            "Not diving with enough power and extension.",
+            "Not staying balanced and ready until the shot.",
+            "Guessing incorrectly and not being able to recover."
+        ],
+        "progression_steps": [
+            "Start with slower, more predictable penalty kicks.",
+            "Increase the pace and unpredictability of penalties.",
+            "Add different penalty takers with varying techniques.",
+            "Incorporate pressure situations (mock shootouts).",
+            "Practice in game-like scenarios with consequences."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/penalty-kick-reading-saving.mp4",
+        "thumbnail_url": "https://example.com/penalty-kick-reading-saving-thumbnail.jpg"
+    },
+    {
+        "title": "Sweeper Keeper Distribution",
+        "description": "An elite goalkeeper drill focusing on playing as a sweeper keeper, developing passing accuracy, decision-making, and distribution under pressure from advanced positions.",
+        "type": "set_based",
+        "duration": 18,
+        "sets": 3,
+        "reps": 10,
+        "equipment": [
+            "soccer_ball",
+            "cones",
+            "goal"
+        ],
+        "suitable_locations": [
+            "full_field"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "positioning"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "catching"
+            }
+        ],
+        "instructions": [
+            "Position yourself outside the penalty area, acting as a sweeper keeper.",
+            "Receive back passes from teammates under various pressure situations.",
+            "Control the ball cleanly with both feet.",
+            "Quickly assess passing options: short, medium, or long distribution.",
+            "Execute accurate passes with both feet to various target zones.",
+            "Practice different distribution techniques: ground passes, driven passes, chips.",
+            "Focus on quick decision-making and accurate execution."
+        ],
+        "tips": [
+            "Stay alert and ready to receive back passes at any moment.",
+            "Control the ball cleanly with your first touch.",
+            "Keep your head up to identify passing options quickly.",
+            "Use both feet for distribution to increase options.",
+            "Make quick decisions but execute with accuracy."
+        ],
+        "common_mistakes": [
+            "Not staying alert and ready for back passes.",
+            "Poor first touch leading to loss of possession.",
+            "Not keeping head up to identify passing options.",
+            "Making poor distribution decisions under pressure.",
+            "Not using both feet effectively for distribution."
+        ],
+        "progression_steps": [
+            "Start with uncontested back passes to perfect technique.",
+            "Add pressure from opponents to simulate game situations.",
+            "Increase the speed and unpredictability of back passes.",
+            "Incorporate different types of distribution (short, medium, long).",
+            "Add game-like scenarios with transitions and counter-attacks."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/sweeper-keeper-distribution.mp4",
+        "thumbnail_url": "https://example.com/sweeper-keeper-distribution-thumbnail.jpg"
+    },
+    {
+        "title": "Double Save Reaction Training",
+        "description": "A professional goalkeeper drill simulating rebound situations, developing rapid recovery, second-save reactions, and maintaining focus after initial saves.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 4,
+        "reps": 8,
+        "equipment": [
+            "soccer_ball",
+            "goal",
+            "partner"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "reflexes"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "shot_stopping"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "diving"
+            }
+        ],
+        "instructions": [
+            "Position yourself in goal with a partner or coach ready to shoot.",
+            "Partner takes the first shot from various angles and distances.",
+            "Make the initial save using proper technique.",
+            "Immediately recover and prepare for a second shot.",
+            "Partner quickly takes a second shot, often to the opposite side.",
+            "React explosively to make the second save.",
+            "Focus on rapid recovery and maintaining focus between saves."
+        ],
+        "tips": [
+            "Stay focused after making the initial save.",
+            "Recover quickly and efficiently to ready position.",
+            "Anticipate the possibility of a second shot.",
+            "React explosively to the second shot.",
+            "Maintain proper technique throughout both saves."
+        ],
+        "common_mistakes": [
+            "Not staying focused after the initial save.",
+            "Recovering too slowly for the second shot.",
+            "Not anticipating the possibility of a second shot.",
+            "Reacting too slowly to the second shot.",
+            "Not maintaining proper technique during recovery."
+        ],
+        "progression_steps": [
+            "Start with slower, more predictable shot sequences.",
+            "Increase the speed and unpredictability of second shots.",
+            "Add different types of shots (low, high, driven, placed).",
+            "Incorporate different angles and distances for second shots.",
+            "Add game-like pressure with scoring opportunities."
+        ],
+        "rest": 75,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/double-save-reaction-training.mp4",
+        "thumbnail_url": "https://example.com/double-save-reaction-training-thumbnail.jpg"
+    },
+    {
+        "title": "Narrow Angle Shot Stopping",
+        "description": "An elite goalkeeper drill focusing on defending near-post and tight-angle shots, developing positioning, footwork, and shot-stopping techniques for difficult angles.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 4,
+        "reps": 8,
+        "equipment": [
+            "soccer_ball",
+            "goal",
+            "cones"
+        ],
+        "suitable_locations": [
+            "location_with_goals",
+            "full_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "goalkeeping",
+            "sub_skill": "shot_stopping"
+        },
+        "secondary_skills": [
+            {
+                "category": "goalkeeping",
+                "sub_skill": "positioning"
+            },
+            {
+                "category": "goalkeeping",
+                "sub_skill": "reflexes"
+            }
+        ],
+        "instructions": [
+            "Set up cones to create narrow shooting angles from the flanks.",
+            "Partner or coach takes shots from tight angles near the goal line.",
+            "Position yourself correctly to cover the near post effectively.",
+            "Use quick footwork to adjust position as the attacker approaches.",
+            "Make yourself big to cover as much of the goal as possible.",
+            "React quickly to shots aimed at near post, far post, or through your legs.",
+            "Practice both staying on your line and coming out to narrow the angle."
+        ],
+        "tips": [
+            "Position yourself correctly relative to the near post.",
+            "Use quick footwork to adjust position as needed.",
+            "Make yourself big to cover maximum goal area.",
+            "React quickly to shots at various heights and angles.",
+            "Stay balanced and ready for quick reactions."
+        ],
+        "common_mistakes": [
+            "Not positioning correctly relative to the near post.",
+            "Not using quick footwork to adjust position.",
+            "Not making yourself big to cover the goal.",
+            "Reacting too slowly to shots from tight angles.",
+            "Not staying balanced and ready for quick reactions."
+        ],
+        "progression_steps": [
+            "Start with slower, more predictable shots from tight angles.",
+            "Increase the pace and unpredictability of shots.",
+            "Add different types of shots (driven, placed, curled).",
+            "Incorporate different angles and distances.",
+            "Add game-like pressure with scoring opportunities."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/goalkeeper-drills/narrow-angle-shot-stopping.mp4",
+        "thumbnail_url": "https://example.com/narrow-angle-shot-stopping-thumbnail.jpg"
     }
 ] 
