@@ -1117,5 +1117,333 @@
         "rest": null,
         "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/passing-drills/middle-across-touch-to-touch-on-side.mp4",
         "thumbnail_url": "https://example.com/middle-across-touch-to-touch-on-side-thumbnail.jpg"
+    },
+    {
+        "title": "Wall Pass Accuracy Challenge",
+        "description": "A beginner-friendly passing drill that improves accuracy and consistency by targeting specific spots on a wall, developing fundamental passing technique.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 4,
+        "reps": 20,
+        "equipment": [
+            "ball",
+            "wall",
+            "tape_or_markers"
+        ],
+        "suitable_locations": [
+            "small_space",
+            "location_with_wall"
+        ],
+        "intensity": "low",
+        "training_styles": [
+            "low_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "short_passing"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "technique"
+            }
+        ],
+        "instructions": [
+            "Mark 3-4 target spots on a wall at different heights (knee, waist, chest level).",
+            "Stand 5-7 yards away from the wall with the ball.",
+            "Aim to hit each target spot with your passes in sequence.",
+            "Control the return pass and pass to the next target.",
+            "Continue cycling through all targets for the designated reps.",
+            "Focus on accuracy and consistent technique with each pass."
+        ],
+        "tips": [
+            "Use the inside of your foot for maximum accuracy.",
+            "Keep your ankle locked and follow through toward the target.",
+            "Stay balanced and adjust your body position for each target height.",
+            "Start with slower passes to build accuracy before increasing speed.",
+            "Practice with both feet to develop ambidextrous ability."
+        ],
+        "common_mistakes": [
+            "Not aiming specifically at targets, reducing accuracy.",
+            "Passing too hard or too soft, affecting control.",
+            "Not controlling the return pass properly.",
+            "Rushing through passes without focusing on technique.",
+            "Not using proper passing form."
+        ],
+        "progression_steps": [
+            "Start with larger targets and closer distance.",
+            "Gradually reduce target size and increase distance.",
+            "Increase passing speed while maintaining accuracy.",
+            "Add more targets or vary the sequence.",
+            "Challenge yourself to hit targets with both feet."
+        ],
+        "rest": 30,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/passing-drills/wall-pass-accuracy-challenge.mp4",
+        "thumbnail_url": "https://example.com/wall-pass-accuracy-challenge-thumbnail.jpg"
+    },
+    {
+        "title": "Passing Square Pattern",
+        "description": "A beginner passing drill that develops passing technique and footwork by moving in a square pattern while passing against a wall.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 4,
+        "reps": 8,
+        "equipment": [
+            "ball",
+            "wall",
+            "cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "small_space",
+            "location_with_wall"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "short_passing"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "technique"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones in a square pattern, 5-7 yards from a wall.",
+            "Start at the first cone with the ball at your feet.",
+            "Pass the ball against the wall and move to the next cone.",
+            "Control the return pass at the new cone position.",
+            "Pass again and continue moving around the square.",
+            "Complete one full rotation around all 4 cones.",
+            "Focus on maintaining passing accuracy while moving."
+        ],
+        "tips": [
+            "Keep your head up to see the next cone position.",
+            "Use proper passing technique with the inside of your foot.",
+            "Control the ball with your first touch before passing.",
+            "Maintain a steady rhythm as you move around the square.",
+            "Practice moving in both clockwise and counterclockwise directions."
+        ],
+        "common_mistakes": [
+            "Not controlling the ball before passing.",
+            "Losing accuracy while moving between cones.",
+            "Moving too quickly and losing control.",
+            "Not maintaining proper passing form.",
+            "Taking eyes off the ball completely."
+        ],
+        "progression_steps": [
+            "Start with slower movement to perfect technique.",
+            "Increase speed while maintaining accuracy.",
+            "Reduce the distance between cones for quicker transitions.",
+            "Add one-touch passing for advanced challenge.",
+            "Incorporate different passing techniques at each cone."
+        ],
+        "rest": 45,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/passing-drills/passing-square-pattern.mp4",
+        "thumbnail_url": "https://example.com/passing-square-pattern-thumbnail.jpg"
+    },
+    {
+        "title": "Alternating Foot Wall Pass",
+        "description": "A beginner passing drill that develops passing ability with both feet by alternating between left and right foot passes against a wall.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 5,
+        "reps": 20,
+        "equipment": [
+            "ball",
+            "wall"
+        ],
+        "suitable_locations": [
+            "small_space",
+            "location_with_wall"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "short_passing"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "technique"
+            }
+        ],
+        "instructions": [
+            "Stand 5-7 yards away from a wall with the ball.",
+            "Pass the ball against the wall with your right foot.",
+            "Control the return pass with your right foot.",
+            "Immediately pass with your left foot.",
+            "Control with your left foot and continue alternating.",
+            "Focus on maintaining consistent rhythm and accuracy.",
+            "Complete equal reps with both feet."
+        ],
+        "tips": [
+            "Use the inside of your foot for both passes.",
+            "Keep your body balanced and centered.",
+            "Focus on making both feet feel equally comfortable.",
+            "Maintain consistent passing power with both feet.",
+            "Practice until your weaker foot feels natural."
+        ],
+        "common_mistakes": [
+            "Favoring one foot over the other.",
+            "Not maintaining consistent technique with both feet.",
+            "Rushing the alternation and losing control.",
+            "Not controlling the ball properly before passing.",
+            "Passing with different power from each foot."
+        ],
+        "progression_steps": [
+            "Start slowly to perfect technique with both feet.",
+            "Increase speed while maintaining accuracy.",
+            "Add one-touch passing for advanced challenge.",
+            "Incorporate different passing angles.",
+            "Challenge yourself to pass with equal power from both feet."
+        ],
+        "rest": 30,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/passing-drills/alternating-foot-wall-pass.mp4",
+        "thumbnail_url": "https://example.com/alternating-foot-wall-pass-thumbnail.jpg"
+    },
+    {
+        "title": "Pass and Move Backward",
+        "description": "A beginner passing drill that combines passing with backward movement, developing passing accuracy while maintaining spatial awareness.",
+        "type": "set_based",
+        "duration": 8,
+        "sets": 4,
+        "reps": 10,
+        "equipment": [
+            "ball",
+            "wall",
+            "cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "location_with_wall"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "beginner",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "short_passing"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "technique"
+            }
+        ],
+        "instructions": [
+            "Set up a cone 10 yards from a wall.",
+            "Start at the cone with the ball at your feet.",
+            "Pass the ball against the wall.",
+            "Immediately move backward away from the wall.",
+            "Control the return pass while moving backward.",
+            "Pass again and continue moving backward.",
+            "After 5 reps, move forward back to the starting cone.",
+            "Repeat the sequence."
+        ],
+        "tips": [
+            "Keep your head up to see the ball and your position.",
+            "Use small backward steps to maintain balance.",
+            "Control the ball with the inside of your foot.",
+            "Maintain proper passing technique while moving.",
+            "Stay balanced and ready to adjust your position."
+        ],
+        "common_mistakes": [
+            "Losing balance while moving backward.",
+            "Not controlling the ball properly while moving.",
+            "Passing inaccurately due to poor body position.",
+            "Moving too quickly and losing control.",
+            "Not maintaining awareness of your position."
+        ],
+        "progression_steps": [
+            "Start with shorter backward movement.",
+            "Gradually increase the distance you move backward.",
+            "Increase passing speed while maintaining control.",
+            "Add lateral movement in addition to backward movement.",
+            "Incorporate one-touch passing for advanced challenge."
+        ],
+        "rest": 45,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/passing-drills/pass-and-move-backward.mp4",
+        "thumbnail_url": "https://example.com/pass-and-move-backward-thumbnail.jpg"
+    },
+    {
+        "title": "Rapid Fire Passing Sequence",
+        "description": "An elite passing drill that combines maximum speed passing with complex footwork patterns, developing world-class passing tempo and technical precision.",
+        "type": "time_based",
+        "duration": 8,
+        "sets": 5,
+        "reps": 1,
+        "equipment": [
+            "ball",
+            "wall"
+        ],
+        "suitable_locations": [
+            "small_space",
+            "location_with_wall"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "passing",
+            "sub_skill": "one_touch_passing"
+        },
+        "secondary_skills": [
+            {
+                "category": "passing",
+                "sub_skill": "short_passing"
+            },
+            {
+                "category": "passing",
+                "sub_skill": "technique"
+            }
+        ],
+        "instructions": [
+            "Stand 3-5 yards from a wall with the ball.",
+            "Pass the ball against the wall with maximum speed.",
+            "One-touch the return pass immediately back to the wall.",
+            "Continue rapid-fire one-touch passing for the entire duration.",
+            "Focus on maintaining accuracy at maximum tempo.",
+            "Count how many successful passes you complete.",
+            "Challenge yourself to beat your previous record each set."
+        ],
+        "tips": [
+            "Use the inside of your foot for quick, accurate passes.",
+            "Keep your body balanced and ready to react quickly.",
+            "Maintain a consistent rhythm and tempo.",
+            "Focus on precision over power at high speed.",
+            "Stay mentally focused throughout the entire duration."
+        ],
+        "common_mistakes": [
+            "Sacrificing accuracy for speed.",
+            "Not maintaining proper passing technique at high tempo.",
+            "Losing rhythm and breaking the sequence.",
+            "Taking multiple touches, slowing down the drill.",
+            "Not staying mentally engaged throughout."
+        ],
+        "progression_steps": [
+            "Start at slower tempo to perfect technique.",
+            "Gradually increase speed while maintaining accuracy.",
+            "Challenge yourself to complete more passes per set.",
+            "Add variations: alternating feet, different heights.",
+            "Incorporate movement while maintaining rapid passing."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/passing-drills/rapid-fire-passing-sequence.mp4",
+        "thumbnail_url": "https://example.com/rapid-fire-passing-sequence-thumbnail.jpg"
     }
 ] 
