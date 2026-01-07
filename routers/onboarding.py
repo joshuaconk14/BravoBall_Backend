@@ -113,21 +113,23 @@ async def create_onboarding_with_generated_session(player_info: OnboardingData, 
     # if user already exists, raise an error
     if existing_user:
         logger.warning(f"Email already registered: {player_info.email}")
+<<<<<<< Updated upstream
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
             detail="This email is already registered. Please use a different email or try logging in instead."
         )
     
+=======
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
+
+>>>>>>> Stashed changes
     # hash the password
     hashed_password = hash_password(player_info.password)
 
     try:
-        # connects pydantic onboarding data model to the User table
         user = User(
-            # Registration / User ID
             email=player_info.email,
             hashed_password=hashed_password,
-
             # Onboarding - handle null values with defaults
             primary_goal=player_info.primaryGoal,
             biggest_challenge=player_info.biggestChallenge or [],
