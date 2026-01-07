@@ -109,20 +109,21 @@ async def create_onboarding_with_generated_session(player_info: OnboardingData, 
     
     # queries through the db to find user
     existing_user = db.query(User).filter(User.email == player_info.email).first()
+    # Sets to email if username is not provided
+    desired_username = getattr(player_info, "username", None) or player_info.email
+    # Check if username already exists )
+    existing_username = db.query(User).filter(User.username == desired_username).first()
 
     # if user already exists, raise an error
     if existing_user:
         logger.warning(f"Email already registered: {player_info.email}")
-<<<<<<< Updated upstream
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, 
             detail="This email is already registered. Please use a different email or try logging in instead."
         )
     
-=======
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
 
->>>>>>> Stashed changes
     # hash the password
     hashed_password = hash_password(player_info.password)
 
@@ -130,6 +131,8 @@ async def create_onboarding_with_generated_session(player_info: OnboardingData, 
         user = User(
             email=player_info.email,
             hashed_password=hashed_password,
+            username =desired_username,
+
             # Onboarding - handle null values with defaults
             primary_goal=player_info.primaryGoal,
             biggest_challenge=player_info.biggestChallenge or [],

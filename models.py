@@ -105,9 +105,7 @@ class User(Base):
     saved_filters = relationship("SavedFilter", back_populates="user")
     refresh_tokens = relationship("RefreshToken", back_populates="user")
     password_reset_codes = relationship("PasswordResetCode", back_populates="user")
-<<<<<<< Updated upstream
     email_verification_codes = relationship("EmailVerificationCode", back_populates="user")
-=======
     sent_friend_requests = relationship("Friendship", foreign_keys="[Friendship.requester_user_id]", back_populates="requester", cascade="all, delete-orphan")
     received_friend_requests = relationship("Friendship", foreign_keys="[Friendship.addressee_user_id]", back_populates="addressee", cascade="all, delete-orphan")
 
@@ -125,7 +123,6 @@ class Friendship(Base):
     # Relationships to User
     requester = relationship("User", foreign_keys=[requester_user_id], back_populates="sent_friend_requests")
     addressee = relationship("User", foreign_keys=[addressee_user_id], back_populates="received_friend_requests")
->>>>>>> Stashed changes
 
 
 class CompletedSession(Base):
