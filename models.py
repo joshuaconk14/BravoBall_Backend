@@ -32,6 +32,7 @@ class LoginResponse(BaseModel):
     access_token: str
     token_type: str
     email: str
+    username: str
     refresh_token: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
@@ -77,6 +78,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
+    username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
 
@@ -93,6 +95,7 @@ class User(Base):
     available_equipment = Column(JSON)
     daily_training_time = Column(String)
     weekly_training_days = Column(String)
+    points = Column(Integer, default=0)
     
     
     # Relationships
@@ -104,6 +107,23 @@ class User(Base):
     refresh_tokens = relationship("RefreshToken", back_populates="user")
     password_reset_codes = relationship("PasswordResetCode", back_populates="user")
     email_verification_codes = relationship("EmailVerificationCode", back_populates="user")
+    sent_friend_requests = relationship("Friendship", foreign_keys="[Friendship.requester_user_id]", back_populates="requester", cascade="all, delete-orphan")
+    received_friend_requests = relationship("Friendship", foreign_keys="[Friendship.addressee_user_id]", back_populates="addressee", cascade="all, delete-orphan")
+
+# Friendship model to support friend requests and relationships between users
+class Friendship(Base):
+    __tablename__ = "friendships"
+
+    id = Column(Integer, primary_key=True, index=True)
+    requester_user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    addressee_user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    status = Column(String, default="pending") 
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+
+    # Relationships to User
+    requester = relationship("User", foreign_keys=[requester_user_id], back_populates="sent_friend_requests")
+    addressee = relationship("User", foreign_keys=[addressee_user_id], back_populates="received_friend_requests")
 
 
 class CompletedSession(Base):
@@ -382,6 +402,7 @@ class TrainingSession(Base):
 class OnboardingData(BaseModel):
     # Required fields for authentication
     email: str
+    username: Optional[str] = None
     password: str
 
     # Optional onboarding fields
@@ -834,6 +855,14 @@ class EmailUpdate(BaseModel):
         populate_by_name=True
     )
 
+class UsernameUpdate(BaseModel):
+    username: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
+    
 class PasswordUpdate(BaseModel):
     current_password: str
     new_password: str

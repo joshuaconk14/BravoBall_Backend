@@ -405,6 +405,18 @@ def create_completed_session(session: CompletedSessionCreate,
         
         db.commit()
         db.refresh(db_session)
+
+        # Award 10 points to the user for completing a session
+        try:
+            db_user = db.query(User).filter(User.id == current_user.id).first()
+            if db_user:
+                db_user.points = (db_user.points or 0) + 10
+                db.commit()
+                db.refresh(db_user)
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=f"Failed updating user points: {str(e)}")
+
         return db_session
         
     except Exception as e:
@@ -419,6 +431,12 @@ def get_completed_sessions(current_user: User = Depends(get_current_user),
                          db: Session = Depends(get_db)):
     return db.query(CompletedSession).filter(CompletedSession.user_id == current_user.id).all()
 
+# Return total points
+@router.get("/api/sessions/points/")
+def get_user_points(current_user: User = Depends(get_current_user),
+                    db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == current_user.id).first()
+    return {"points": user.points}
 
 
 
