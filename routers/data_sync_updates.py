@@ -593,6 +593,12 @@ def get_completed_sessions(current_user: User = Depends(get_current_user),
                          db: Session = Depends(get_db)):
     return db.query(CompletedSession).filter(CompletedSession.user_id == current_user.id).all()
 
+# Return total points
+@router.get("/api/sessions/points/")
+def get_user_points(current_user: User = Depends(get_current_user),
+                    db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == current_user.id).first()
+    return {"points": user.points}
 
 
 
