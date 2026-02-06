@@ -74,7 +74,9 @@ def login(login_request: LoginRequest, db: Session = Depends(get_db)):
         refresh_token=refresh_token,
         token_type="bearer",
         email=user.email,
-        username=user.username
+        username=user.username,
+        avatar_path=user.avatar_path,
+        avatar_background_color=user.avatar_background_color
     )
 
 @router.post("/refresh/", response_model=TokenResponse)

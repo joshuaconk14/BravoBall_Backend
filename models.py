@@ -34,6 +34,8 @@ class LoginResponse(BaseModel):
     email: str
     username: str
     refresh_token: Optional[str] = None
+    avatar_path: Optional[str] = None
+    avatar_background_color: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -140,6 +142,9 @@ class User(Base):
     weekly_training_days = Column(String)
     points = Column(Integer, default=0)
     
+    # Profile customization
+    avatar_path = Column(String, nullable=True)
+    avatar_background_color = Column(String, nullable=True)  # Hex color code
     
     # Relationships
     completed_sessions = relationship("CompletedSession", back_populates="user")
@@ -909,6 +914,15 @@ class UsernameUpdate(BaseModel):
 class PasswordUpdate(BaseModel):
     current_password: str
     new_password: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
+
+class AvatarUpdate(BaseModel):
+    avatar_path: str
+    avatar_background_color: str  # Hex color code (e.g., "#FF5733")
 
     model_config = ConfigDict(
         from_attributes=True,

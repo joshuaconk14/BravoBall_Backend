@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from models import User, EmailUpdate, UsernameUpdate, PasswordUpdate
+from models import User, EmailUpdate, UsernameUpdate, PasswordUpdate, AvatarUpdate
 from db import get_db
 from auth import get_current_user
 from passlib.context import CryptContext
@@ -15,7 +15,10 @@ async def get_profile(
 ):
     """Get user profile information"""
     return {
-        "email": current_user.email
+        "email": current_user.email,
+        "username": current_user.username,
+        "avatar_path": current_user.avatar_path,
+        "avatar_background_color": current_user.avatar_background_color
     }
 
 # Update user email
@@ -143,4 +146,53 @@ async def lookup_user_id(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found"
         )
-    return {"user_id": user.id}
+    return {
+        "user_id": user.id,
+        "username": user.username,
+        "avatar_path": user.avatar_path,
+        "avatar_background_color": user.avatar_background_color
+    }
+
+# Update user avatar and background color
+@router.put("/api/user/update-avatar")
+async def update_avatar(
+    avatar_update: AvatarUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Update user avatar path and background color"""
+    try:
+        # Validate hex color format (optional but recommended)
+        hex_color = avatar_update.avatar_background_color.strip()
+        if hex_color.startswith('#'):
+            if len(hex_color) != 7:  # #RRGGBB format
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid hex color format. Expected format: #RRGGBB"
+                )
+        elif len(hex_color) == 6:
+            # Add # if missing
+            hex_color = f"#{hex_color}"
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid hex color format. Expected format: #RRGGBB or RRGGBB"
+            )
+        
+        # Update avatar fields
+        current_user.avatar_path = avatar_update.avatar_path
+        current_user.avatar_background_color = hex_color
+        
+        db.commit()
+        db.refresh(current_user)
+        
+        return {
+            "message": "Avatar updated successfully",
+            "avatar_path": current_user.avatar_path,
+            "avatar_background_color": current_user.avatar_background_color
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to update avatar: {str(e)}")
