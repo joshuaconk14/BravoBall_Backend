@@ -100,8 +100,8 @@ class FriendService:
                 "id": u.id,
                 "username": u.username,
                 "email": u.email,
-                "first_name": u.first_name,
-                "last_name": u.last_name,
+                "avatar_path": u.avatar_path,
+                "avatar_background_color": u.avatar_background_color,
             }
             for u in users
         ]
@@ -127,6 +127,8 @@ class FriendService:
                 "requester_id": fr.requester_user_id,
                 "username": user_map[fr.requester_user_id].username,
                 "email": user_map[fr.requester_user_id].email,
+                "avatar_path": user_map[fr.requester_user_id].avatar_path,
+                "avatar_background_color": user_map[fr.requester_user_id].avatar_background_color,
             }
             for fr in rows
             if fr.requester_user_id in user_map
@@ -137,11 +139,25 @@ class FriendService:
     def list_leaderboard(db: Session, current_user: User):
         friends = FriendService.list_friends(db, current_user.id)
         ranking = []
-        ranking.append({"id": current_user.id, "username": current_user.username, "points": current_user.points, "sessions_completed": SessionService.completed_session_count(db, current_user.id)})
+        ranking.append({
+            "id": current_user.id,
+            "username": current_user.username,
+            "points": current_user.points,
+            "sessions_completed": SessionService.completed_session_count(db, current_user.id),
+            "avatar_path": current_user.avatar_path,
+            "avatar_background_color": current_user.avatar_background_color
+        })
         users = db.query(User).filter(User.id.in_([f["id"] for f in friends])).all()
         if users:
            for user in users:
-                ranking.append({"id": user.id, "username": user.username, "points": user.points, "sessions_completed": SessionService.completed_session_count(db, user.id)})
+                ranking.append({
+                    "id": user.id,
+                    "username": user.username,
+                    "points": user.points,
+                    "sessions_completed": SessionService.completed_session_count(db, user.id),
+                    "avatar_path": user.avatar_path,
+                    "avatar_background_color": user.avatar_background_color
+                })
         ranking.sort(key=lambda x: x["points"], reverse=True)
         for idx, entry in enumerate(ranking, start=1):
             entry["rank"] = idx
