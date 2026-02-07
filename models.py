@@ -976,3 +976,25 @@ class MentalTrainingQuoteResponse(BaseModel):
     display_duration: int
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# *** LEADERBOARD PYDANTIC MODELS ***
+class LeaderboardEntry(BaseModel):
+    """Individual leaderboard entry"""
+    id: int
+    username: str
+    points: int
+    sessions_completed: int
+    rank: int
+    avatar_path: Optional[str] = None
+    avatar_background_color: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class WorldLeaderboardResponse(BaseModel):
+    """World leaderboard response with top 50 and user rank"""
+    top_50: List[LeaderboardEntry]
+    user_rank: LeaderboardEntry
+
+    model_config = ConfigDict(from_attributes=True)

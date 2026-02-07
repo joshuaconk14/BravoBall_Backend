@@ -406,13 +406,28 @@ def create_completed_session(session: CompletedSessionCreate,
         db.commit()
         db.refresh(db_session)
 
-        # Award 10 points to the user for completing a session
+        # Award 10 points to the user for completing a session (only if they haven't completed one today)
         try:
-            db_user = db.query(User).filter(User.id == current_user.id).first()
-            if db_user:
-                db_user.points = (db_user.points or 0) + 10
-                db.commit()
-                db.refresh(db_user)
+            # Check if user has already completed a session today (using current date, not session date)
+            from sqlalchemy import func
+            today = datetime.now().date()
+            today_start = datetime.combine(today, datetime.min.time())
+            today_end = today_start + timedelta(days=1)
+            
+            existing_today_session = db.query(CompletedSession).filter(
+                CompletedSession.user_id == current_user.id,
+                CompletedSession.date >= today_start,
+                CompletedSession.date < today_end,
+                CompletedSession.id != db_session.id  # Exclude the session we just created
+            ).first()
+            
+            # Only award points if no session was completed today (before this one)
+            if not existing_today_session:
+                db_user = db.query(User).filter(User.id == current_user.id).first()
+                if db_user:
+                    db_user.points = (db_user.points or 0) + 10
+                    db.commit()
+                    db.refresh(db_user)
         except Exception as e:
             db.rollback()
             raise HTTPException(status_code=500, detail=f"Failed updating user points: {str(e)}")

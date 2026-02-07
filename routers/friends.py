@@ -46,10 +46,6 @@ def list_friends(db: Session = Depends(get_db), current_user: User = Depends(get
 def list_incoming_requests(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return FriendService.list_requests(db, current_user.id)
 
-@router.get("/api/friends/leaderboard")
-def get_friends_leaderboard(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    return FriendService.list_leaderboard(db, current_user)
-
 @router.get("/api/friends/{friend_id}/profile")
 def get_friend_profile(friend_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return FriendService.get_friend_profile(db, current_user.id, friend_id)
