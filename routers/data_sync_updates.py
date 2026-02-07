@@ -492,94 +492,36 @@ def create_completed_session(session: CompletedSessionCreate,
             ProgressHistory.user_id == current_user.id
         ).first()
         
-        # Get the previous session (before this one)
-        previous_session = db.query(CompletedSession).filter(
-            CompletedSession.user_id == current_user.id,
-            CompletedSession.id != db_session.id
-        ).order_by(CompletedSession.date.desc()).first()
-        
-        if progress_history:
-            # Update streak using helper function
-            update_streak_on_session_completion(
-                progress_history=progress_history,
-                session_date=session_date_only,
-                previous_session=previous_session
-            )
-            db.commit()
-        
-        # ✅ NEW: Calculate and grant treats (only for first session of the day)
-        # Don't grant treats if user already completed a session today
-        if is_new_session and not already_completed_today:
-            treat_service = TreatRewardService(db)
+        db.commit()
+        db.refresh(db_session)
+
+        # Award 10 points to the user for completing a session (only if they haven't completed one today)
+        try:
+            # Check if user has already completed a session today (using current date, not session date)
+            from sqlalchemy import func
+            today = datetime.now().date()
+            today_start = datetime.combine(today, datetime.min.time())
+            today_end = today_start + timedelta(days=1)
             
-            # Prepare session data for calculation
-            # Normalize session_type: frontend sends "training" but we use "drill_training" internally
-            session_type = session.session_type or 'drill_training'
-            if session_type == 'training':
-                session_type = 'drill_training'
+            existing_today_session = db.query(CompletedSession).filter(
+                CompletedSession.user_id == current_user.id,
+                CompletedSession.date >= today_start,
+                CompletedSession.date < today_end,
+                CompletedSession.id != db_session.id  # Exclude the session we just created
+            ).first()
             
-            # Convert drills to dict format for calculator (handles both Pydantic models and dicts)
-            drills_list = []
-            if session.drills:
-                for drill in session.drills:
-                    if hasattr(drill, 'model_dump'):
-                        # Pydantic model - convert to dict
-                        drills_list.append(drill.model_dump())
-                    elif hasattr(drill, 'dict'):
-                        # Pydantic v1 model - convert to dict
-                        drills_list.append(drill.dict())
-                    elif isinstance(drill, dict):
-                        # Already a dict
-                        drills_list.append(drill)
-                    else:
-                        # Try to access as object
-                        drills_list.append({
-                            'isCompleted': getattr(drill, 'isCompleted', False)
-                        })
-            
-            session_data = {
-                'session_type': session_type,
-                'drills': drills_list,
-                'total_completed_drills': session.total_completed_drills or 0,
-                'total_drills': session.total_drills or 0,
-                'duration_minutes': session.duration_minutes,
-            }
-            
-            # Get user context (streak from progress_history, refreshed after update)
-            if progress_history:
-                db.refresh(progress_history)  # Refresh to get updated streak
-            
-            user_context = {
-                'current_streak': progress_history.current_streak if progress_history else 0,
-                'previous_streak': progress_history.previous_streak if progress_history else 0,
-            }
-            
-            # Grant treats (only for new sessions)
-            treats_awarded, treats_already_granted, treat_breakdown = treat_service.grant_session_reward(
-                user=current_user,
-                session_data=session_data,
-                is_new_session=is_new_session,
-                user_context=user_context
-            )
-        else:
-            # No treats awarded, create empty breakdown
-            treat_breakdown = {
-                'drills_completed': 0,
-                'difficulty_bonus': 0,
-                'completion_bonus': 0,
-                'streak_multiplier': 1.0,
-                'base_treats': 0,
-                'total_before_streak': 0
-            }
-        
-        # Prepare response with treats information
-        # Use model_validate to convert from SQLAlchemy model, then update treats fields
-        response_data = CompletedSessionResponse.model_validate(db_session)
-        response_data.treats_awarded = treats_awarded
-        response_data.treats_already_granted = treats_already_granted
-        response_data.treat_breakdown = TreatBreakdown(**treat_breakdown)
-        
-        return response_data
+            # Only award points if no session was completed today (before this one)
+            if not existing_today_session:
+                db_user = db.query(User).filter(User.id == current_user.id).first()
+                if db_user:
+                    db_user.points = (db_user.points or 0) + 10
+                    db.commit()
+                    db.refresh(db_user)
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=f"Failed updating user points: {str(e)}")
+
+        return db_session
         
     except Exception as e:
         db.rollback()
