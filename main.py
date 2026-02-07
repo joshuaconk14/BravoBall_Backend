@@ -21,6 +21,7 @@ app.include_router(saved_filters.router)
 app.include_router(profile.router)
 app.include_router(mental_training.router)
 app.include_router(custom_drills.router)
+app.include_router(store.router)
 app.include_router(friends.router)
 app.include_router(leaderboard.router)
 

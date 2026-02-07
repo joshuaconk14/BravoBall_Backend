@@ -994,5 +994,144 @@
         "rest": 30,
         "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/check-to-dribble-to-shot.mp4",
         "thumbnail_url": "https://example.com/check-to-dribble-to-shot-thumbnail.jpg"
+    },
+    {
+        "title": "Agility Ladder to Power Shot",
+        "description": "An elite shooting drill that combines agility footwork with explosive shooting, developing coordination, balance, and powerful finishing after dynamic movement.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 5,
+        "reps": 6,
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "location_with_goals"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "power_shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
+            },
+            {
+                "category": "shooting",
+                "sub_skill": "first_time_shots"
+            }
+        ],
+        "instructions": [
+            "Set up cones in a ladder pattern (5-6 rungs) 10-12 yards from the goal.",
+            "Place a ball 5 yards beyond the last cone, toward the goal.",
+            "Perform quick agility footwork through the cone ladder: in-in-out-out pattern.",
+            "Upon exiting the ladder, sprint to the ball.",
+            "Take one touch to set up and immediately strike with power toward the goal.",
+            "Focus on generating maximum power while maintaining accuracy.",
+            "Retrieve the ball and repeat from the opposite side."
+        ],
+        "tips": [
+            "Maintain quick, light footwork through the ladder.",
+            "Keep your head up to see the ball and goal.",
+            "Explode out of the ladder toward the ball.",
+            "Use proper shooting technique: plant foot, follow-through, power.",
+            "Practice with both feet for balanced development."
+        ],
+        "common_mistakes": [
+            "Moving too slowly through the ladder.",
+            "Losing balance during footwork transitions.",
+            "Not generating enough power after agility work.",
+            "Taking too many touches before shooting.",
+            "Not maintaining proper shooting form."
+        ],
+        "progression_steps": [
+            "Start with simpler footwork patterns.",
+            "Increase the speed of ladder movement.",
+            "Add more ladder rungs for longer sequences.",
+            "Reduce setup touches to one-touch shooting.",
+            "Incorporate different shooting techniques (driven, curled, placed)."
+        ],
+        "rest": 75,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/agility-ladder-to-power-shot.mp4",
+        "thumbnail_url": "https://example.com/agility-ladder-to-power-shot-thumbnail.jpg"
+    },
+    {
+        "title": "Rapid Fire Shooting Sequence",
+        "description": "An elite shooting drill that develops quick decision-making and finishing ability by shooting multiple balls in rapid succession from different positions, simulating game pressure situations.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 4,
+        "reps": 1,
+        "equipment": [
+            "ball",
+            "cones",
+            "goals"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "location_with_goals"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "shooting",
+            "sub_skill": "first_time_shots"
+        },
+        "secondary_skills": [
+            {
+                "category": "shooting",
+                "sub_skill": "power_shots"
+            },
+            {
+                "category": "shooting",
+                "sub_skill": "shooting_on_the_run"
+            }
+        ],
+        "instructions": [
+            "Set up 5-6 balls at different positions around the 18-yard box: left side, center-left, center, center-right, right side.",
+            "Start at the first ball position.",
+            "Shoot the first ball first-time toward the goal.",
+            "Immediately sprint to the next ball and shoot first-time.",
+            "Continue through all balls as quickly as possible.",
+            "Focus on maintaining accuracy and power with each shot.",
+            "Challenge yourself to complete all shots within the time limit.",
+            "Count successful shots on target."
+        ],
+        "tips": [
+            "Use quick, explosive movements between balls.",
+            "Keep your head up to see the goal before each shot.",
+            "Maintain proper shooting technique even at high speed.",
+            "Use appropriate technique for each angle: power for center, finesse for angles.",
+            "Stay mentally focused throughout the entire sequence."
+        ],
+        "common_mistakes": [
+            "Moving too slowly between balls.",
+            "Losing accuracy when shooting quickly.",
+            "Not maintaining proper shooting form.",
+            "Taking multiple touches instead of first-time shots.",
+            "Not staying mentally engaged throughout."
+        ],
+        "progression_steps": [
+            "Start with fewer balls and slower pace.",
+            "Gradually increase number of balls and speed.",
+            "Add more complex movement patterns between shots.",
+            "Reduce time limit for increased pressure.",
+            "Challenge yourself to hit specific target zones with each shot."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/shooting-drills/rapid-fire-shooting-sequence.mp4",
+        "thumbnail_url": "https://example.com/rapid-fire-shooting-sequence-thumbnail.jpg"
     }
 ]

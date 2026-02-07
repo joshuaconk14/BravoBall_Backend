@@ -20,12 +20,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "defending",
-            "sub_skill": "agility"
+            "sub_skill": "jockeying"
         },
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "marking"
             }
         ],
         "instructions": [
@@ -85,11 +85,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "positioning"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "agility"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -148,11 +144,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -212,11 +204,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -276,11 +264,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -334,12 +318,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "defending",
-            "sub_skill": "positioning"
+            "sub_skill": "jockeying"
         },
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "agility"
+                "sub_skill": "marking"
             }
         ],
         "instructions": [
@@ -393,12 +377,12 @@
         "difficulty": "beginner",
         "primary_skill": {
             "category": "defending",
-            "sub_skill": "agility"
+            "sub_skill": "jockeying"
         },
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "marking"
             }
         ],
         "instructions": [
@@ -458,11 +442,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "positioning"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "agility"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -525,11 +505,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "agility"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "positioning"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -588,11 +564,7 @@
         "secondary_skills": [
             {
                 "category": "defending",
-                "sub_skill": "positioning"
-            },
-            {
-                "category": "defending",
-                "sub_skill": "agility"
+                "sub_skill": "jockeying"
             }
         ],
         "instructions": [
@@ -628,5 +600,415 @@
         "rest": 120,
         "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/pressure-and-contain-drill.mp4",
         "thumbnail_url": "https://example.com/pressure-and-contain-drill-thumbnail.jpg"
+    },
+    {
+        "title": "Competitive Aerial Duels",
+        "description": "An elite-level aerial defending drill that simulates match conditions with contested headers, improving timing, positioning, and physical dominance in aerial battles.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 4,
+        "reps": 6,
+        "equipment": [
+            "soccer_ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "aerial_defending"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "marking"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "jockeying"
+            }
+        ],
+        "instructions": [
+            "Set up a 10x10 yard grid with two defenders and two attackers.",
+            "Coach or partner serves balls from various angles into the grid.",
+            "Defenders must track attackers' runs and compete for every aerial ball.",
+            "Focus on getting goal-side positioning before the ball arrives.",
+            "Use proper jumping technique: both feet, arms for balance, eyes on the ball.",
+            "Win the header and direct it away from danger or to a teammate.",
+            "Rotate positions after each set to practice different scenarios."
+        ],
+        "tips": [
+            "Read the flight of the ball early to gain positioning advantage.",
+            "Use your body to shield and create space for the jump.",
+            "Time your jump to meet the ball at its highest point.",
+            "Keep your eyes on the ball throughout the entire aerial challenge.",
+            "Use your arms for balance and leverage, but avoid fouls."
+        ],
+        "common_mistakes": [
+            "Not reading the flight of the ball early enough.",
+            "Jumping too early or too late, losing timing advantage.",
+            "Allowing attackers to get goal-side positioning.",
+            "Not using proper jumping technique, reducing effectiveness.",
+            "Taking eyes off the ball during the aerial challenge."
+        ],
+        "progression_steps": [
+            "Start with slower, more predictable serves to perfect technique.",
+            "Increase the speed and unpredictability of serves.",
+            "Add more attackers to create complex aerial scenarios.",
+            "Incorporate different types of serves (crosses, long balls, corners).",
+            "Add game-like pressure with scoring opportunities after headers."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/competitive-aerial-duels.mp4",
+        "thumbnail_url": "https://example.com/competitive-aerial-duels-thumbnail.jpg"
+    },
+    {
+        "title": "Back Post Header Clearance",
+        "description": "A professional defensive drill focusing on clearing dangerous crosses from the back post, developing spatial awareness and powerful defensive headers under pressure.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 3,
+        "reps": 10,
+        "equipment": [
+            "soccer_ball",
+            "cones",
+            "goal"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "location_with_goals"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "aerial_defending"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "marking"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "intercepting"
+            }
+        ],
+        "instructions": [
+            "Position yourself at the back post of a goal.",
+            "Partner or coach delivers crosses from the opposite flank.",
+            "Track the flight of the ball and position yourself at the back post.",
+            "Jump explosively and clear the ball with a powerful header away from goal.",
+            "Focus on getting height and distance on your clearance.",
+            "Immediately reset and prepare for the next cross.",
+            "Vary the cross height and pace to simulate game conditions."
+        ],
+        "tips": [
+            "Anticipate the cross trajectory early to gain positioning.",
+            "Use your body to shield space and create room for the jump.",
+            "Generate power through proper jumping technique and neck strength.",
+            "Clear the ball high and wide, away from dangerous areas.",
+            "Communicate with teammates about your intentions."
+        ],
+        "common_mistakes": [
+            "Not positioning correctly at the back post.",
+            "Jumping too early and missing the ball.",
+            "Not generating enough power on the clearance.",
+            "Clearing the ball into dangerous areas.",
+            "Not resetting quickly for the next cross."
+        ],
+        "progression_steps": [
+            "Start with slower, more predictable crosses.",
+            "Increase the pace and unpredictability of crosses.",
+            "Add attackers to create contested situations.",
+            "Incorporate different types of crosses (in-swinging, out-swinging).",
+            "Add game-like scenarios with follow-up plays."
+        ],
+        "rest": 75,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/back-post-header-clearance.mp4",
+        "thumbnail_url": "https://example.com/back-post-header-clearance-thumbnail.jpg"
+    },
+    {
+        "title": "Aerial Interception and Distribution",
+        "description": "An elite defensive drill that combines aerial defending with quick decision-making, teaching defenders to win headers and immediately transition to positive distribution.",
+        "type": "set_based",
+        "duration": 18,
+        "sets": 3,
+        "reps": 8,
+        "equipment": [
+            "soccer_ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "aerial_defending"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "intercepting"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "marking"
+            }
+        ],
+        "instructions": [
+            "Set up a 15x15 yard grid with multiple target zones.",
+            "Coach serves long aerial balls into the grid.",
+            "Win the aerial challenge and head the ball to a designated target zone.",
+            "Immediately transition to receive a return pass on the ground.",
+            "Control and distribute to another target zone or teammate.",
+            "Focus on winning the first ball and quality distribution.",
+            "Rotate between different starting positions and target zones."
+        ],
+        "tips": [
+            "Read the flight of the ball early to position yourself correctly.",
+            "Win the header cleanly and direct it with purpose.",
+            "Transition quickly from aerial challenge to ground play.",
+            "Keep your head up to identify distribution options.",
+            "Maintain composure under pressure during distribution."
+        ],
+        "common_mistakes": [
+            "Not reading the ball flight early enough.",
+            "Winning the header but losing possession immediately after.",
+            "Not transitioning quickly from aerial to ground play.",
+            "Poor distribution choices after winning the header.",
+            "Not maintaining awareness of surrounding players."
+        ],
+        "progression_steps": [
+            "Start with uncontested headers to focus on distribution.",
+            "Add pressure from opponents during aerial challenges.",
+            "Increase the speed and unpredictability of serves.",
+            "Add multiple target zones for more complex distribution.",
+            "Incorporate game-like scenarios with transitions."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/aerial-interception-distribution.mp4",
+        "thumbnail_url": "https://example.com/aerial-interception-distribution-thumbnail.jpg"
+    },
+    {
+        "title": "Set Piece Aerial Defense",
+        "description": "A professional-level drill simulating corner kicks and free kicks, focusing on zonal and man-marking aerial defending strategies used at the highest levels.",
+        "type": "set_based",
+        "duration": 20,
+        "sets": 3,
+        "reps": 5,
+        "equipment": [
+            "soccer_ball",
+            "cones",
+            "goal"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "location_with_goals"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "aerial_defending"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "marking"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "intercepting"
+            }
+        ],
+        "instructions": [
+            "Set up defensive positions as you would for a corner kick or free kick.",
+            "Assign zonal or man-marking responsibilities.",
+            "Coach or partner delivers set pieces from various angles.",
+            "Defenders must track runs, maintain positions, and win aerial challenges.",
+            "Clear the ball decisively or win possession and initiate counter-attack.",
+            "Focus on communication and coordination between defenders.",
+            "Practice both zonal and man-marking systems."
+        ],
+        "tips": [
+            "Communicate clearly with teammates about marking assignments.",
+            "Read the flight of the ball early to position yourself correctly.",
+            "Maintain awareness of both the ball and attacking players.",
+            "Use your body to create space and shield opponents.",
+            "Clear the ball with power and purpose, away from danger."
+        ],
+        "common_mistakes": [
+            "Not communicating with teammates about assignments.",
+            "Losing track of attacking players during set pieces.",
+            "Not reading the flight of the ball early enough.",
+            "Poor positioning relative to goal and attackers.",
+            "Not clearing the ball decisively, allowing second chances."
+        ],
+        "progression_steps": [
+            "Start with static set pieces to perfect positioning.",
+            "Add movement from attacking players.",
+            "Increase the pace and unpredictability of deliveries.",
+            "Incorporate different types of set pieces (corners, free kicks).",
+            "Add game-like pressure with scoring opportunities."
+        ],
+        "rest": 120,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/set-piece-aerial-defense.mp4",
+        "thumbnail_url": "https://example.com/set-piece-aerial-defense-thumbnail.jpg"
+    },
+    {
+        "title": "Backpedal to Cone Header Circuit",
+        "description": "An elite agility and aerial defending drill that combines backward movement, explosive jumping, and header technique, developing footwork, balance, and aerial dominance.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 4,
+        "reps": 8,
+        "equipment": [
+            "soccer_ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "aerial_defending"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "jockeying"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "marking"
+            }
+        ],
+        "instructions": [
+            "Set up 3-4 cones in a straight line, spaced 5-7 yards apart.",
+            "Start at the first cone facing forward in a defensive stance.",
+            "Backpedal quickly to the second cone while maintaining proper defensive positioning.",
+            "As you reach the cone, partner or coach serves an aerial ball.",
+            "Explosively jump and win the header, clearing it decisively.",
+            "Immediately backpedal to the next cone and repeat the header sequence.",
+            "Continue through all cones, then sprint forward to the start and repeat."
+        ],
+        "tips": [
+            "Maintain proper defensive stance while backpedaling.",
+            "Keep your eyes on the ball and cone simultaneously.",
+            "Time your jump to meet the ball at its highest point.",
+            "Use your arms for balance and leverage during the jump.",
+            "Land safely and immediately prepare for the next backpedal."
+        ],
+        "common_mistakes": [
+            "Not maintaining proper defensive stance during backpedal.",
+            "Losing balance while backpedaling to the cone.",
+            "Not timing the jump correctly for the header.",
+            "Taking eyes off the ball during the backpedal.",
+            "Not recovering quickly enough between headers."
+        ],
+        "progression_steps": [
+            "Start with slower backpedal and predictable serves.",
+            "Increase the speed of backpedal and serve pace.",
+            "Add more cones for increased distance and challenge.",
+            "Incorporate different header directions (clear, pass, control).",
+            "Add opponents or pressure to simulate game situations."
+        ],
+        "rest": 75,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/backpedal-to-cone-header-circuit.mp4",
+        "thumbnail_url": "https://example.com/backpedal-to-cone-header-circuit-thumbnail.jpg"
+    },
+    {
+        "title": "Lateral Shuffle Header Progression",
+        "description": "A professional agility drill combining lateral movement, explosive jumping, and aerial defending, developing quick footwork and powerful headers from various angles.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 3,
+        "reps": 10,
+        "equipment": [
+            "soccer_ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "defending",
+            "sub_skill": "jockeying"
+        },
+        "secondary_skills": [
+            {
+                "category": "defending",
+                "sub_skill": "aerial_defending"
+            },
+            {
+                "category": "defending",
+                "sub_skill": "intercepting"
+            }
+        ],
+        "instructions": [
+            "Set up 4-5 cones in a zigzag pattern, 4-6 yards apart.",
+            "Start at the first cone in a defensive stance facing forward.",
+            "Shuffle laterally to the second cone using proper defensive footwork.",
+            "As you reach the cone, partner serves an aerial ball from the side.",
+            "Explosively jump and win the header, directing it away from danger.",
+            "Immediately shuffle to the next cone and repeat the header sequence.",
+            "Continue through all cones, then reverse direction and repeat the pattern."
+        ],
+        "tips": [
+            "Use quick, controlled lateral shuffles between cones.",
+            "Maintain low center of gravity during lateral movement.",
+            "Read the ball flight early to position yourself correctly.",
+            "Generate power through proper jumping technique and timing.",
+            "Stay balanced and ready for quick transitions between movements."
+        ],
+        "common_mistakes": [
+            "Crossing feet during lateral shuffles.",
+            "Not maintaining proper defensive stance during movement.",
+            "Jumping too early or too late for the header.",
+            "Not generating enough power on the header.",
+            "Losing balance during the transition from shuffle to jump."
+        ],
+        "progression_steps": [
+            "Start with slower shuffles and predictable serves.",
+            "Increase the speed of lateral movement and serve pace.",
+            "Add more cones and vary the zigzag pattern.",
+            "Incorporate different header techniques (powerful clear, controlled pass).",
+            "Add game-like pressure with opponents or time constraints."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/defending-drills/lateral-shuffle-header-progression.mp4",
+        "thumbnail_url": "https://example.com/lateral-shuffle-header-progression-thumbnail.jpg"
     }
 ] 

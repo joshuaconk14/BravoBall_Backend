@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict
-from typing import List, Optional
-from datetime import datetime
+from typing import List, Optional, Dict, Any
+from datetime import datetime, date
+from enum import Enum
 
 
 # Completed Session Schemas
@@ -80,6 +81,29 @@ class CompletedSession(CompletedSessionBase):
     id: int
     user_id: int
 
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TreatBreakdown(BaseModel):
+    """Breakdown of how treats were calculated"""
+    drills_completed: int = 0  # Number of drills completed
+    difficulty_bonus: int = 0  # Bonus treats from drill difficulty
+    completion_bonus: int = 0  # Bonus for completing all drills
+    streak_multiplier: float = 1.0  # Streak multiplier applied
+    base_treats: int = 0  # Base treats before bonuses
+    total_before_streak: int = 0  # Total treats before streak multiplier
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CompletedSessionResponse(CompletedSessionBase):
+    """Response schema including treat reward information"""
+    id: int
+    user_id: int
+    treats_awarded: int = 0  # Treats granted for this session
+    treats_already_granted: bool = False  # Whether treats were already granted (idempotency)
+    treat_breakdown: Optional[TreatBreakdown] = None  # Breakdown of treat calculation
+    
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -194,5 +218,59 @@ class ProgressHistoryResponse(ProgressHistoryBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# Store Items Schemas
+class UserStoreItemsBase(BaseModel):
+    treats: int = 0
+    streak_freezes: int = 0
+    streak_revivers: int = 0
+    # ✅ NEW: Streak freeze date
+    active_freeze_date: Optional[date] = None
+    # ✅ NEW: History of all freeze dates used (list of ISO date strings)
+    used_freezes: List[str] = []
+    # ✅ NEW: Streak reviver date
+    active_streak_reviver: Optional[date] = None
+    # ✅ NEW: History of all reviver dates used (list of ISO date strings)
+    used_revivers: List[str] = []
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserStoreItemsResponse(UserStoreItemsBase):
+    id: int
+    user_id: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserStoreItemsUpdate(BaseModel):
+    treats: Optional[int] = None
+    streak_freezes: Optional[int] = None
+    streak_revivers: Optional[int] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+# Purchase Verification Schemas
+class VerifyTreatPurchaseRequest(BaseModel):
+    product_id: str
+    package_identifier: str
+    treat_amount: int
+    transaction_id: str
+    purchase_date: str
+    revenue_cat_user_id: str
+    platform: str  # 'ios' or 'android'
+
+
+class VerifyTreatPurchaseResponse(BaseModel):
+    success: bool
+    treats: int
+    message: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
 
 # Saved Filters Schemas

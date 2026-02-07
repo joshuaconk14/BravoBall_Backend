@@ -5,7 +5,7 @@ This defines all models used in chatbot app
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional, Dict, Any, Union
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON, ARRAY, Table, Float
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, ForeignKey, JSON, ARRAY, Table, Float, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
 from sqlalchemy.orm import relationship
 from db import Base
@@ -71,6 +71,49 @@ class MentalTrainingSession(Base):
     # Relationship
     user = relationship("User", backref="mental_training_sessions")
 
+
+# *** STORE ITEMS MODELS ***
+class UserStoreItems(Base):
+    __tablename__ = "user_store_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
+    treats = Column(Integer, default=0, nullable=False)
+    streak_freezes = Column(Integer, default=0, nullable=False)
+    streak_revivers = Column(Integer, default=0, nullable=False)
+    # ✅ NEW: Streak freeze date - date when freeze is active
+    active_freeze_date = Column(Date, nullable=True)
+    # ✅ NEW: History of all freeze dates used/activated (stored as JSON array of ISO date strings)
+    used_freezes = Column(JSON, default=list, nullable=False)
+    # ✅ NEW: Streak reviver date - date when reviver was used
+    active_streak_reviver = Column(Date, nullable=True)
+    # ✅ NEW: History of all reviver dates used (stored as JSON array of ISO date strings)
+    used_revivers = Column(JSON, default=list, nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    # Relationship
+    user = relationship("User", back_populates="store_items")
+
+
+class PurchaseTransaction(Base):
+    __tablename__ = "purchase_transactions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    transaction_id = Column(String, unique=True, nullable=False, index=True)
+    product_id = Column(String, nullable=False)
+    treat_amount = Column(Integer, nullable=False)
+    platform = Column(String, nullable=False)  # 'ios' or 'android'
+    device_fingerprint = Column(String, nullable=True, index=True)  # Device fingerprint for security/audit
+    app_version = Column(String, nullable=True)  # App version for audit purposes
+    processed_at = Column(DateTime, server_default=func.now(), nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
+
+    # Relationship
+    user = relationship("User", backref="purchase_transactions")
+
+
 # *** USER AND USER DATA MODELS ***
 
 class User(Base):
@@ -112,6 +155,7 @@ class User(Base):
     refresh_tokens = relationship("RefreshToken", back_populates="user")
     password_reset_codes = relationship("PasswordResetCode", back_populates="user")
     email_verification_codes = relationship("EmailVerificationCode", back_populates="user")
+    store_items = relationship("UserStoreItems", back_populates="user", uselist=False)
     sent_friend_requests = relationship("Friendship", foreign_keys="[Friendship.requester_user_id]", back_populates="requester", cascade="all, delete-orphan")
     received_friend_requests = relationship("Friendship", foreign_keys="[Friendship.addressee_user_id]", back_populates="addressee", cascade="all, delete-orphan")
 
@@ -740,8 +784,7 @@ class DefendingSubSkill(str, Enum):
     TACKLING = "tackling"
     MARKING = "marking"
     INTERCEPTING = "intercepting"
-    POSITIONING = "positioning"
-    AGILITY = "agility"
+    JOCKEYING = "jockeying"
     AERIAL_DEFENDING = "aerial_defending"
 
 class GoalkeepingSubSkill(str, Enum):

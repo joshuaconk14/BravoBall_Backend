@@ -1210,5 +1210,481 @@
         "rest": 30,
         "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/box-dribble-with-center-cone.mp4",
         "thumbnail_url": "https://example.com/box-dribble-with-center-cone-thumbnail.jpg"
+    },
+    {
+        "title": "Elite Skill Chain Challenge",
+        "description": "An advanced dribbling drill that combines multiple skill moves in rapid succession, developing creativity, muscle memory, and seamless transitions between moves.",
+        "type": "time_based",
+        "duration": 10,
+        "sets": 4,
+        "reps": 1,
+        "equipment": [
+            "ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "small_space"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "1v1_moves"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            }
+        ],
+        "instructions": [
+            "Set up 5 cones in a straight line, 3 yards apart.",
+            "At each cone, perform a different skill move: stepover, roulette, elastico, nutmeg, and rainbow flick.",
+            "Execute each move smoothly and transition immediately to the next cone.",
+            "After reaching the last cone, turn and repeat the sequence in reverse order.",
+            "Focus on fluidity and maintaining ball control throughout the chain.",
+            "Complete as many full cycles as possible within the time duration."
+        ],
+        "tips": [
+            "Practice each skill move individually before chaining them together.",
+            "Keep your body balanced and low to maintain control during transitions.",
+            "Use your arms for balance and to sell each move convincingly.",
+            "Focus on speed and precision rather than rushing through moves.",
+            "Visualize defenders at each cone to make the drill more game-realistic."
+        ],
+        "common_mistakes": [
+            "Rushing through moves without proper execution.",
+            "Losing ball control during transitions between skills.",
+            "Not maintaining proper body positioning for each move.",
+            "Forgetting the sequence and breaking the flow.",
+            "Not completing each move fully before moving to the next."
+        ],
+        "progression_steps": [
+            "Start with slower execution to perfect each move.",
+            "Increase speed while maintaining technique.",
+            "Add variations to each skill move for creativity.",
+            "Incorporate different skill combinations.",
+            "Add a partner to provide defensive pressure."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/elite-skill-chain-challenge.mp4",
+        "thumbnail_url": "https://example.com/elite-skill-chain-challenge-thumbnail.jpg"
+    },
+    {
+        "title": "Speed Burst Dribble Circuit",
+        "description": "An elite dribbling drill that alternates between explosive speed bursts and tight control zones, simulating game situations where you need to accelerate past defenders.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 4,
+        "reps": 3,
+        "equipment": [
+            "ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "speed_dribbling"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
+            }
+        ],
+        "instructions": [
+            "Set up alternating zones: 5-yard control zones and 10-yard speed zones.",
+            "Start in a control zone with tight touches, keeping the ball close.",
+            "Upon entering a speed zone, explode forward with larger touches and maximum pace.",
+            "Transition smoothly back to tight control in the next control zone.",
+            "Continue alternating between control and speed zones throughout the circuit.",
+            "Focus on maintaining ball control at both speeds."
+        ],
+        "tips": [
+            "Use small, quick touches in control zones to keep the ball close.",
+            "Push the ball further ahead in speed zones while maintaining control.",
+            "Keep your head up to anticipate zone transitions.",
+            "Use your arms for balance and to generate speed.",
+            "Practice accelerating and decelerating smoothly."
+        ],
+        "common_mistakes": [
+            "Not differentiating between control and speed zones.",
+            "Losing ball control when transitioning to speed.",
+            "Not maintaining proper technique at high speeds.",
+            "Taking too long to transition between zones.",
+            "Not keeping the ball close enough in control zones."
+        ],
+        "progression_steps": [
+            "Start with longer control zones to perfect technique.",
+            "Increase the length of speed zones for more distance.",
+            "Reduce transition time between zones.",
+            "Add direction changes within speed zones.",
+            "Incorporate skill moves at zone transitions."
+        ],
+        "rest": 75,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/speed-burst-dribble-circuit.mp4",
+        "thumbnail_url": "https://example.com/speed-burst-dribble-circuit-thumbnail.jpg"
+    },
+    {
+        "title": "360-Degree Turn Mastery",
+        "description": "An advanced dribbling drill focusing on complete rotations and turns while maintaining ball control, developing spatial awareness and technical mastery.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 5,
+        "reps": 8,
+        "equipment": [
+            "ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "medium_field",
+            "small_space"
+        ],
+        "intensity": "medium",
+        "training_styles": [
+            "medium_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "change_of_direction"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
+            }
+        ],
+        "instructions": [
+            "Set up 4 cones in a square pattern, 4-5 yards apart.",
+            "Start at one cone with the ball at your feet.",
+            "Dribble to the center of the square and perform a complete 360-degree turn while keeping the ball close.",
+            "After completing the turn, dribble to the next cone.",
+            "Repeat the 360-degree turn at the center before moving to the next cone.",
+            "Continue around all 4 cones, performing a turn at each center point.",
+            "Alternate between clockwise and counterclockwise rotations."
+        ],
+        "tips": [
+            "Use the sole of your foot to shield the ball during the turn.",
+            "Keep your body low and balanced throughout the rotation.",
+            "Use your arms for balance and to maintain momentum.",
+            "Keep the ball close to your feet during the entire turn.",
+            "Practice both directions to develop ambidextrous ability."
+        ],
+        "common_mistakes": [
+            "Losing ball control during the rotation.",
+            "Not completing the full 360-degree turn.",
+            "Moving too slowly and losing momentum.",
+            "Not maintaining proper body positioning.",
+            "Taking eyes off the ball during the turn."
+        ],
+        "progression_steps": [
+            "Start with slower turns to perfect technique.",
+            "Increase speed while maintaining control.",
+            "Add skill moves before or after the turn.",
+            "Incorporate multiple consecutive turns.",
+            "Add a partner to provide defensive pressure."
+        ],
+        "rest": 45,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/360-degree-turn-mastery.mp4",
+        "thumbnail_url": "https://example.com/360-degree-turn-mastery-thumbnail.jpg"
+    },
+    {
+        "title": "Messi-Style Tight Space Dribbling",
+        "description": "An elite dribbling drill inspired by Lionel Messi, focusing on maintaining control in extremely tight spaces with rapid, precise touches.",
+        "type": "time_based",
+        "duration": 8,
+        "sets": 5,
+        "reps": 1,
+        "equipment": [
+            "ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "small_space",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "close_control"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
+            }
+        ],
+        "instructions": [
+            "Set up a tight 3x3 yard grid using cones.",
+            "Dribble within the grid using only the inside and outside of your feet.",
+            "Take rapid, small touches while constantly changing direction.",
+            "Keep the ball extremely close to your feet at all times.",
+            "Use quick body feints and shifts to create space.",
+            "Focus on maintaining control while moving at high speed.",
+            "Complete as many direction changes as possible within the time limit."
+        ],
+        "tips": [
+            "Use the smallest touches possible to maintain control.",
+            "Keep your knees bent and stay low to the ground.",
+            "Use your body to shield the ball and create angles.",
+            "Practice with both feet equally.",
+            "Focus on quick decision-making and rapid execution."
+        ],
+        "common_mistakes": [
+            "Taking touches that are too large, losing control.",
+            "Not changing direction frequently enough.",
+            "Staying in one spot instead of moving constantly.",
+            "Not using both feet effectively.",
+            "Moving too slowly and not challenging yourself."
+        ],
+        "progression_steps": [
+            "Start with a slightly larger grid to build confidence.",
+            "Gradually reduce the grid size as you improve.",
+            "Increase the speed of touches and direction changes.",
+            "Add more complex footwork patterns.",
+            "Incorporate skill moves within the tight space."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/messi-style-tight-space-dribbling.mp4",
+        "thumbnail_url": "https://example.com/messi-style-tight-space-dribbling-thumbnail.jpg"
+    },
+    {
+        "title": "Turn Mastery at Distance",
+        "description": "An advanced dribbling drill focusing on executing various turn moves at cones spaced 10 yards apart, developing turn technique, acceleration, and change of direction skills.",
+        "type": "set_based",
+        "duration": 12,
+        "sets": 4,
+        "reps": 6,
+        "equipment": [
+            "ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "change_of_direction"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "1v1_moves"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "speed_dribbling"
+            }
+        ],
+        "instructions": [
+            "Set up two cones exactly 10 yards apart.",
+            "Start at the first cone with the ball at your feet.",
+            "Dribble toward the second cone at a controlled pace.",
+            "Upon reaching the second cone, perform a turn move (Cruyff turn, inside foot chop, outside foot cut, drag back, etc.).",
+            "After completing the turn, accelerate back toward the first cone.",
+            "Perform a different turn move at the first cone.",
+            "Continue alternating between cones, performing different turns at each.",
+            "Focus on executing each turn cleanly and accelerating immediately after."
+        ],
+        "tips": [
+            "Practice a variety of turn moves: Cruyff turn, inside foot chop, outside foot cut, drag back, stepover turn.",
+            "Execute each turn with precision and proper body positioning.",
+            "Accelerate explosively after each turn to maximize effectiveness.",
+            "Keep the ball close during the turn to maintain control.",
+            "Use your body to shield the ball and create space during turns."
+        ],
+        "common_mistakes": [
+            "Not executing turns cleanly, losing ball control.",
+            "Taking too long to accelerate after the turn.",
+            "Repeating the same turn instead of varying techniques.",
+            "Not maintaining proper body positioning during turns.",
+            "Losing balance and control when changing direction."
+        ],
+        "progression_steps": [
+            "Start with slower pace to perfect turn technique.",
+            "Increase speed while maintaining control.",
+            "Add more complex turn combinations.",
+            "Reduce the distance between cones for quicker turns.",
+            "Incorporate skill moves before or after turns."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/turn-mastery-at-distance.mp4",
+        "thumbnail_url": "https://example.com/turn-mastery-at-distance-thumbnail.jpg"
+    },
+    {
+        "title": "Dynamic Direction Change Sprint",
+        "description": "An elite dribbling drill that combines explosive sprints with sharp direction changes, simulating game situations where you need to beat defenders with speed and agility.",
+        "type": "set_based",
+        "duration": 15,
+        "sets": 4,
+        "reps": 4,
+        "equipment": [
+            "ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "speed_dribbling"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "change_of_direction"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "1v1_moves"
+            }
+        ],
+        "instructions": [
+            "Set up cones in a random pattern covering 20x20 yards.",
+            "Start at one end and sprint dribble to the first cone.",
+            "Upon reaching each cone, perform a sharp cut or skill move to change direction.",
+            "Immediately accelerate to the next cone at maximum speed.",
+            "Continue sprinting and cutting through all cones.",
+            "Focus on maintaining ball control at high speed.",
+            "Complete the circuit, then rest before repeating."
+        ],
+        "tips": [
+            "Use the outside of your foot for sharp cuts to maintain speed.",
+            "Keep your body low when changing direction for better balance.",
+            "Push the ball ahead when sprinting, but not too far.",
+            "Use your arms for balance and to generate power.",
+            "Practice both left and right direction changes equally."
+        ],
+        "common_mistakes": [
+            "Not maintaining speed after direction changes.",
+            "Losing ball control when cutting sharply.",
+            "Not pushing the ball far enough ahead when sprinting.",
+            "Taking too long to change direction.",
+            "Not maintaining proper body positioning during cuts."
+        ],
+        "progression_steps": [
+            "Start with fewer cones and slower pace.",
+            "Gradually increase the number of cones and speed.",
+            "Add more complex skill moves at each cone.",
+            "Reduce the distance between cones for tighter turns.",
+            "Incorporate game-like scenarios with visual defenders."
+        ],
+        "rest": 90,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/dynamic-direction-change-sprint.mp4",
+        "thumbnail_url": "https://example.com/dynamic-direction-change-sprint-thumbnail.jpg"
+    },
+    {
+        "title": "Freestyle Skill Journey",
+        "description": "An advanced creative dribbling drill where players freestyle dribble from one cone to another, performing different skills along the way, developing creativity, flair, and technical versatility.",
+        "type": "set_based",
+        "duration": 10,
+        "sets": 4,
+        "reps": 5,
+        "equipment": [
+            "ball",
+            "cones"
+        ],
+        "suitable_locations": [
+            "full_field",
+            "medium_field"
+        ],
+        "intensity": "high",
+        "training_styles": [
+            "high_intensity"
+        ],
+        "difficulty": "advanced",
+        "primary_skill": {
+            "category": "dribbling",
+            "sub_skill": "1v1_moves"
+        },
+        "secondary_skills": [
+            {
+                "category": "dribbling",
+                "sub_skill": "ball_mastery"
+            },
+            {
+                "category": "dribbling",
+                "sub_skill": "close_control"
+            }
+        ],
+        "instructions": [
+            "Set up two cones 15-20 yards apart.",
+            "Start at the first cone with the ball at your feet.",
+            "Freestyle dribble toward the second cone, performing different skills along the way.",
+            "Examples of skills: stepovers, elastico, roulette, rainbow flick, nutmeg, around the world.",
+            "Perform at least 3-5 different skills before reaching the second cone.",
+            "Upon reaching the second cone, turn and freestyle dribble back using different skills.",
+            "Focus on creativity and smooth transitions between skills.",
+            "Challenge yourself to perform different skills each rep."
+        ],
+        "tips": [
+            "Let your creativity flow and experiment with different skill combinations.",
+            "Use your whole body to make moves look more convincing and deceptive.",
+            "Practice skills with both feet to increase your versatility.",
+            "Keep the ball close while performing skills to maintain control.",
+            "Visualize defenders to make the drill more game-realistic."
+        ],
+        "common_mistakes": [
+            "Repeating the same skills instead of being creative.",
+            "Not completing each skill fully before moving to the next.",
+            "Losing ball control during skill transitions.",
+            "Moving too slowly and not maintaining intensity.",
+            "Not challenging yourself with new or difficult skills."
+        ],
+        "progression_steps": [
+            "Start with skills you're comfortable with to build confidence.",
+            "Gradually incorporate more difficult and creative moves.",
+            "Increase the speed of execution while maintaining technique.",
+            "Add more skills per journey (5-7 skills instead of 3-5).",
+            "Challenge yourself to perform skills you've never tried before."
+        ],
+        "rest": 60,
+        "video_url": "https://bravoball-drills-h264.s3.us-east-2.amazonaws.com/dribbling-drills/freestyle-skill-journey.mp4",
+        "thumbnail_url": "https://example.com/freestyle-skill-journey-thumbnail.jpg"
     }
 ]

@@ -200,7 +200,7 @@ async def create_onboarding_with_generated_session(player_info: OnboardingData, 
                     "Shooting": ["Power shots", "Finesse shots"],
                     "First touch": ["Ground control", "Touch and move"],
                     "First Touch": ["Ground control", "Touch and move"],  # Handle both cases
-                    "Defending": ["Tackling", "Positioning"],
+                    "Defending": ["Tackling", "Jockeying"],
                     "Goalkeeping": ["Catching", "Shot stopping"],
                     "Fitness": ["Speed", "Agility"]
                 }
