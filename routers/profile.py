@@ -21,6 +21,18 @@ async def get_profile(
         "avatar_background_color": current_user.avatar_background_color
     }
 
+# Get user profile (avatar only)
+@router.get("/api/user/profile")
+async def get_user_profile(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get user profile avatar information"""
+    return {
+        "avatar_path": current_user.avatar_path,
+        "avatar_background_color": current_user.avatar_background_color,
+    }
+
 # Update user email
 @router.put("/api/user/update-email")
 async def update_email(

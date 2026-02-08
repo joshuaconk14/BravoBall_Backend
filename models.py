@@ -169,6 +169,7 @@ class Friendship(Base):
     status = Column(String, default="pending") 
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
+    removed_at = Column(DateTime, nullable=True)  # For soft delete tracking
 
     # Relationships to User
     requester = relationship("User", foreign_keys=[requester_user_id], back_populates="sent_friend_requests")
