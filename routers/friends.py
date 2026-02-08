@@ -46,6 +46,10 @@ def list_friends(db: Session = Depends(get_db), current_user: User = Depends(get
 def list_incoming_requests(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return FriendService.list_requests(db, current_user.id)
 
-@router.get("/api/friends/{friend_id}/profile")
-def get_friend_profile(friend_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    return FriendService.get_friend_profile(db, current_user.id, friend_id)
+@router.get("/api/friends/{user_id}")
+def get_friend_profile(user_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """
+    Get friend details including stats and rank.
+    Returns friend information for a user who is friends with the current user.
+    """
+    return FriendService.get_friend_profile(db, current_user.id, user_id)
