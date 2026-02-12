@@ -876,7 +876,7 @@ def main():
         print("Usage: python migrate_schema.py [command] [options]")
         print("")
         print("Commands:")
-        print("  status                     - Show database status vs models")
+        print("  status [DATABASE_URL]      - Show database status vs models (optional DB URL)")
         print("  migrate                    - Run full migration")
         print("  migrate --dry-run          - Show what would be changed")
         print("  migrate --seed             - Run migration + seed data")
@@ -888,6 +888,7 @@ def main():
         print("")
         print("Examples:")
         print("  python migrate_schema.py status")
+        print("  python migrate_schema.py status 'postgresql://user:pass@host:5432/db'")
         print("  python migrate_schema.py migrate --dry-run")
         print("  python migrate_schema.py migrate --seed")
         print("  python migrate_schema.py seed")
@@ -933,7 +934,13 @@ def main():
             else:
                 logger.info(f"✅ Fixed {fixed_count} drill_skill_focus relationships")
         else:
-            migrator = SchemaMigrator()
+            # Check if a database URL was provided as second argument
+            database_url = None
+            if len(sys.argv) > 2 and not sys.argv[2].startswith("--"):
+                database_url = sys.argv[2]
+                logger.info(f"🔗 Using provided database URL")
+            
+            migrator = SchemaMigrator(database_url)
             
             if command == "status":
                 migrator.show_status()
